@@ -1,0 +1,18 @@
+{
+  "tables": [],
+  "groups": [],
+  "patches": [
+    {
+      "table": "medicalTable",
+      "add": [
+        { "id": "precision_liquid_extractor", "weight": 15.0 }
+      ]
+    },
+    {
+      "table": "junkTable",
+      "add": [
+        { "id": "precision_purifier", "weight": 10.0 }
+      ]
+    }
+  ]
+}

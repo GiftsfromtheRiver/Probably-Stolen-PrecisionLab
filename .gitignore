@@ -1,0 +1,7 @@
+bin/
+obj/
+.vs/
+*.user
+*.pdb
+*.es3
+*.logtools/snapshots/

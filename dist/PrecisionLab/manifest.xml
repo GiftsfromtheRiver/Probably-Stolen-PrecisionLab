@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  精密实验室设备 / Precision Lab Equipment — Probably Stolen (0.46D) mod manifest.
+  See the game's ModLoader.ParseManifestCore: <ID>, <Assemblies> and <Capabilities>
+  are required; the <Capabilities> element may be empty when the mod uses none of
+  files / network / process / dynamic-code / native / reflection-external.
+-->
+<Manifest>
+  <ID>precision_lab</ID>
+  <Name>Precision Lab Equipment / 精密实验室设备</Name>
+  <Author>DeepSeek Harness Agent</Author>
+  <ModVersion>1.0.0</ModVersion>
+  <Description>新增两件实验设备：精确取液器（以 1 µL 精度定量转移液体）与提纯机器（去除物理/化学/生物污染物而不破坏有效成分）。 / Adds a Precision Liquid Extractor (exact 1 µL metered liquid transfer) and a Purification Machine (removes physical/chemical/biological contaminants without destroying valuable ingredients).</Description>
+  <GameVersions>
+    <Version>0.46</Version>
+  </GameVersions>
+  <Prerequisites />
+  <Assemblies>
+    <Assembly>PrecisionLab.dll</Assembly>
+  </Assemblies>
+  <Capabilities />
+</Manifest>
