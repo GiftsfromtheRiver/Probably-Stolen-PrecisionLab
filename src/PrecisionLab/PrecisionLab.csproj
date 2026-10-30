@@ -1,0 +1,84 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    精密实验室设备 / Precision Lab Equipment — Probably Stolen (0.46D) mod.
+
+    Build:   dotnet build -c Release
+    Output:  ..\..\dist\PrecisionLab\PrecisionLab.dll   (directly next to manifest.xml)
+
+    The DLL must only reference assemblies that the game already ships
+    (Probably Stolen_Data\Managed\*.dll) — the game's ModScanner refuses mods that
+    reference unknown assemblies and requires <Capabilities> declarations for
+    file/network/process/dynamic-code/native/reflection-external usage.
+    This mod uses none of those capabilities.
+  -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>PrecisionLab</AssemblyName>
+    <RootNamespace>PrecisionLab</RootNamespace>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <DebugType>none</DebugType>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Deterministic>true</Deterministic>
+
+    <!-- Game install root. Pass -p:GameDir=&quot;...&quot; or set the GameDir environment variable. -->
+    <ManagedDir>$(GameDir)\Probably Stolen_Data\Managed</ManagedDir>
+
+    <OutputPath>..\..\dist\PrecisionLab\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Game code: IMod, ModManifest, ModHook, ModHelper, ModConfig, GameItem, all helpers -->
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(ManagedDir)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+      <SpecificVersion>false</SpecificVersion>
+    </Reference>
+    <!-- UnityEngine.Debug / Sprite / Texture2D etc. -->
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(ManagedDir)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+      <SpecificVersion>false</SpecificVersion>
+    </Reference>
+    <!-- TextAnchor (CustomUI builder row alignment) -->
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(ManagedDir)\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>false</Private>
+      <SpecificVersion>false</SpecificVersion>
+    </Reference>
+    <!-- LoadedMod.Sounds uses AudioClip -->
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>$(ManagedDir)\UnityEngine.AudioModule.dll</HintPath>
+      <Private>false</Private>
+      <SpecificVersion>false</SpecificVersion>
+    </Reference>
+    <!-- MachineryText/MachineryButton use TMPro horizontal alignment (UI widgets) -->
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>$(ManagedDir)\Unity.TextMeshPro.dll</HintPath>
+      <Private>false</Private>
+      <SpecificVersion>false</SpecificVersion>
+    </Reference>
+    <!-- PixelElement/TreeNodeRender use UnityEngine.UI (Image/Selectable) -->
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(ManagedDir)\UnityEngine.UI.dll</HintPath>
+      <Private>false</Private>
+      <SpecificVersion>false</SpecificVersion>
+    </Reference>
+    <!-- Harmony is shipped by the game; ModLoader.PatchAll runs on this assembly, and we use a
+         single Prefix patch for the extractor double-click (no bundled Harmony is shipped). -->
+    <Reference Include="0Harmony">
+      <HintPath>$(ManagedDir)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+      <SpecificVersion>false</SpecificVersion>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="CheckGameManagedDir" BeforeTargets="BeforeBuild">
+    <Error Condition="!Exists('$(ManagedDir)\Assembly-CSharp.dll')"
+           Text="Game assemblies not found under '$(ManagedDir)'. Pass -p:GameDir=&quot;&lt;game install root&gt;&quot;." />
+  </Target>
+</Project>

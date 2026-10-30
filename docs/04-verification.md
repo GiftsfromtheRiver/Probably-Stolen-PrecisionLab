@@ -1,0 +1,432 @@
+# 04 — Verification: launching, logging, mod loading, trust and item spawning
+
+Status: **PASS (2026-10-30, game 0.46D / Unity 2021.3.45f2, Windows, Steam running)**
+Verifier: agent "verifier". Game install: `<game>`, Steam appid **4348910**.
+Final frozen mod build verified: `PrecisionLab.dll` 50688 B, sha256
+`77f2720b4308928ec60f3e0ea7f6bea1279646c7515f5e3f08d2d6996f31c847`, combinedHash
+`35687f61f5bfed9faa9380cc7861d329eda875899baca56043398ab3db6b0a0f` (input-box CustomUI
+metering-window build, META-style element prefabs so the slider renders, 760×440 default frame on
+the `overlay` layer; Harmony prefix on `ItemMouseDoubleClickHandler.DoubleClickAction`).
+window on the `overlay` layer, default frame, 700×440, `Center()`).
+
+This document is the reference for "did the mod actually load and work?" It covers the log paths,
+the exact launch recipe, the mod-loader/trust pipeline, how to spawn items in-game, and the
+repeatable verification harness in `tools/verify/`.
+
+---
+
+## 1. TL;DR verdict
+
+- The game boots headless-of-human fine from PowerShell, writes a full Unity log to a chosen path,
+  reaches the main menu in ~15 s, and can be closed cleanly (WM_CLOSE).
+- `[ModLoader]` runs **at boot, before any save is selected** — a local mod's `Init`/`OnEnable`,
+  Harmony patches and asset/locale/loot loading can all be verified without loading a save.
+- A local mod is loaded only when **enabled in `SaveFile.es3` (`modOrder`) AND trusted
+  (`modTrust` record)**. A populated trust record makes it load with **no user prompt**; with no
+  record the mod is only *registered as disabled* (`trust=NotChecked`) until the user enables it in
+  the in-game Mods menu (first enable runs the capability scanner and may prompt for approval).
+- **Steam Cloud overwrites `SaveFile.es3` at launch** if it differs from the synced copy. Seed the
+  file and launch immediately with it temporarily **read-only**, then clear the attribute — see §5.
+- Dev tools are unlockable with an empty file `dev.txt` next to `Probably Stolen.exe`:
+  **F9 = Debug Panel** (in store scene). Mods can add entries there; the real mod contributes
+  *"PrecisionLab: spawn extractor"* / *"…: spawn purifier"*, and the panel has **Open Debug Spawner**
+  to spawn any item id into the store.
+- **Final build window verification (PASS):** the CustomUI metering window is now **visibly rendered**
+  (screenshot `evidence/ingame-10-customui-visible-window.png`): title 精确取液器 · 量程设置,
+  量程 input field, 滑条 slider, six preset buttons (1 µL / 10 µL / 100 µL / 1 mL / 5 mL / 10 mL),
+  内容物 line, 关闭/应用 buttons. Window id `precision_lab:extractor_settings`, layer `overlay`,
+  `IsAlive/IsVisible true`, root rect `sizeDelta=(700,440)`, native fallback not opened; end-to-end
+  input test: `3333` → Apply → tag `PRECISION_EXTRACTOR_DOSE_UL=3333`, reopen `250` → Apply → `250`,
+  Apply closes the window. Cosmetic note: the 700×440 window is anchored slightly right of centre,
+  so its right edge/close button sits at the viewport edge (no content lost).
+- Historical note: making the window visible required fixing two separate things found in earlier
+  rounds — (1) store-scene CustomUI layer must be `overlay` (the `meta` layer is not rendered on top
+  in `InventoryScene`), and (2) the 4th `CreateWindow` `windowPrefabOverride` argument must NOT be
+  `CustomUIManager.optionUIPrefab` (it produced a 10×10 invisible root); the default frame +
+  `SetSize(700,440)` renders correctly (`evidence/ingame-09-default-overlay-test.png` control window
+  proved the overlay canvas itself was fine).
+
+---
+
+## 2. Log locations
+
+| What | Path / how |
+|---|---|
+| Unity log (default) | `%USERPROFILE%\AppData\LocalLow\Questing Goose Studio\Probably Stolen\Player.log` (rotated to `Player-prev.log`) |
+| Unity log (captured run) | `Probably Stolen.exe -logFile "<path>"` writes **only** that file; `Player.log` is left untouched. Paths with spaces work when the whole argument is passed as one quoted string (see §3). |
+| Game's own log | same LocalLow folder, `GameLog_YYYY-MM-DD_HH-MM-SS.txt` (timestamped mod/game lines incl. exceptions) |
+| Mod trust cache | same folder, `mod-trust-list.json` (signed payload: `blocked[]`, `verified[]`, `killSwitch`) |
+| Saves | same folder: `save_<slot>.es3`, `save_<slot>_day<N>_<stamp>.es3` (history), `saves_index.es3`, `SaveFile.es3` (options + `modOrder` + `modTrust`) |
+| Mod settings | same folder, `ModConfigs\<mod_id>.json` |
+
+Keep captures in `tools/verify/logs/`, screenshots in `tools/verify/evidence/`, backups in
+`tools/verify/snapshots/`. **Never test with the user's real save slots** — copy one to a scratch
+file first (see §8).
+
+---
+
+## 3. Exact launch recipe (PowerShell 5.1, proven)
+
+```powershell
+$game = '<game>'
+$log  = 'C:\Temp\psmod\run.log'                 # no-space path is safest
+$argsString = '-logFile "' + $log + '"'         # ONE string, quoted path
+$p = Start-Process -FilePath "$game\Probably Stolen.exe" -ArgumentList $argsString `
+                   -WorkingDirectory $game -PassThru
+```
+
+Facts learned the hard way:
+
+- **Steam must be running** (`D:\Steam\steam.exe` here). The exe is Steam-DRM wrapped:
+  `Start-Process` returns a process that **exits immediately with code 53**, and Steam relaunches
+  the real game as a child of `steam.exe`, **preserving the `-logFile` argument**. Do not treat the
+  starter's exit code as a failure.
+- **Argument quoting matters.** In Windows PowerShell 5.1 passing `-ArgumentList @('-logFile','"C:\p a\x.log"')`
+  (array with embedded quotes) double-escapes the path; Unity then quietly writes no log and can
+  exit early. Use a **single argument string** as above.
+- Timeline observed: real game process ≈ +4 s, log file created ≈ +5 s, `[ModLoader]`/audit sentinel
+  ≈ +15 s, main menu ready (window title `Probably Stolen`) ≈ +18 s.
+- **Graceful quit**: post `WM_CLOSE` (0x0010) to the game window handle; it exits within seconds and
+  writes Unity's shutdown block. Never `Stop-Process` Steam or unrelated processes.
+- `-batchmode`/`-nographics` are **not** viable (the game needs D3D + Steam overlay path).
+- Boot sentinels that mean "loader ran / main menu reached":
+  `[ModLoader] audit: game 0.46D` and `[AchievementTracker] SteamManager.Initialized = True`.
+  There is no explicit "main menu" line in the log.
+
+`tools/verify/run-game.ps1` wraps all of this: it refuses to start if a game instance is already
+running, launches with the log path, waits for the sentinel / `-WaitForMod <id>` audit line, and can
+optionally quit (`-Quit`) or leave the game running for UI work. Example:
+
+```powershell
+& .\run-game.ps1 -LogPath C:\Temp\psmod\run.log -WaitForMod precision_lab -TimeoutSeconds 120
+& .\run-game.ps1 -LogPath C:\Temp\psmod\run.log -Quit          # boot then close
+```
+
+> Windows may block unsigned `.ps1` files from the workspace drive. Run with
+> `powershell -NoProfile -ExecutionPolicy Bypass -File .\run-game.ps1 …`, or
+> `Set-ExecutionPolicy -Scope Process Bypass -Force` inside the current session.
+
+---
+
+## 4. Expected-good log evidence (real captured excerpt)
+
+From the verified frozen build (`tools/verify/logs/final3.log`, short scratch-copy save):
+
+```
+[ModLoader] 2 mod(s) enabled
+[ModLoader] Found 1 mod folder(s) in F:/…/Probably Stolen/Probably Stolen_Data\..\Mods
+[ModLoader] Loading: PrecisionLab.dll
+[ModLoader]   Harmony: 0 method(s) patched
+[Precision Lab Equipment / 精密实验室设备]: v1.0.0 initializing (game 0.46D)
+[Precision Lab Equipment / 精密实验室设备]: config loaded: dose_ul=1000
+[Precision Lab Equipment / 精密实验室设备]: network upgrades deferred until a run is loaded
+[Precision Lab Equipment / 精密实验室设备]: enabled
+[ModLoader]   Initialized: Precision Lab Equipment / 精密实验室设备 v1.0.0
+[ModLoader] …: 3 item sprite(s), 2 locale(s) [68–72 entries], 1 loot file(s): 2 patch(es) loaded
+[ModLoader] audit: game 0.46D, trust list: issued … kill switch off
+[ModLoader] audit: precision_lab v1.0.0 source=Local workshop=0 owner=0 running=True trust=Match caps=none hash=1fd55ebc…
+[DevTools] Developer tools enabled: F9 debug panel and F8 console.       (only when dev.txt exists)
+[AchievementTracker] SteamManager.Initialized = True
+```
+
+Item registration (fires when the game's mod item directory wakes, main-menu/UI stage):
+
+```
+[Precision Lab Equipment / 精密实验室设备]: items registered in mod item directory: extractor=True purifier=True
+```
+
+After loading a save (self-test + Wild Network):
+
+```
+[Precision Lab Equipment / 精密实验室设备]: network upgrades registered (tab precision_lab)
+[PrecisionLab] SELFTEST items extractor='精确取液器' capacity=10000µL dose=1000µL window=True | purifier='提纯机器' power=6 qualityCap=9900bp
+[PrecisionLab] SELFTEST exact transfer: moved=1234µL targetTotal=1234µL … sourceTotal=7066µL …
+[PrecisionLab] SELFTEST exact-or-nothing: overRequest=0µL targetVolume=1234µL (expect unchanged 1234)
+[PrecisionLab] SELFTEST purify/clean water: mode=CleanWater removed=1037µL total=7066->7066µL water=5959->6996µL purity=8433->9900bp cap=9900bp
+[PrecisionLab] SELFTEST purify/concentrate: mode=Concentrate removed=500µL total=7500->7000µL product=4000->4000µL purity=4000->4285bp contaminants=500->0µL
+[PrecisionLab] SELFTEST metering dial: window=True slider=True sliderWritesDose=True doseNow=1000µL
+[PrecisionLab] SELFTEST OK exact=True refuseOverdose=True window=True slider=True cleanWater=True concentrate=True
+```
+
+Native extractor content window (pipette settings) — final build uses a **CustomUI input window**,
+not the machinery window: double-clicking (or the equivalent native `DoubleClickAction`) opens
+`precision_lab:extractor_settings` via a Harmony prefix. Verified in-game:
+`WINDOW/ CUSTOMWINDOW opened mgr=True windowNull=False IsAlive=True IsVisible=True
+id='precision_lab:extractor_settings' layer='meta' nativeFallbackVisible=False`, then
+`elements input=True slider=True apply=True(button=True) close=True`;
+`tagTest#1 inputSet='3333' inputEcho='3333' doseTag=3333`, reopen, `tagTest#2 inputSet='250'
+inputEcho='250' doseTag=250`. The machinery PixelWindow remains only as a fallback (and now uses
+`MachineryPanelRow.SetColumns(2)` = 2×2 grid if it ever opens).
+Screenshot capture caveat: in our automated store-scene runs (loaded save at day-start with the
+tablet/report overlay) the CustomUI window was never visible in screenshots even though the window
+object was alive/visible and its input+apply controls worked; after sending ESC (closed the tablet)
+the screenshot still showed no window. Likely the `meta` layer anchor/canvas used for the window in
+`InventoryScene` is not rendered on top (it is the options-menu layer) — recommend opening the window
+on the `overlay`/`front` layer in the store scene, or verify visually in normal play with the tablet
+closed. Evidence: `evidence/ingame-05a-customui-before-esc.png`,
+`evidence/ingame-05-customui-window.png`.
+
+Failures to look for: `"Registered (disabled, Local): <name>"` + `trust=NotChecked` (mod installed but
+not enabled/seeded), `Not loaded: Unknown` / `Changed` (trust record missing/mismatched),
+`[ModScanner]` refusal, `Harmony: … method(s) patched` followed by an exception inside `Init`, and any
+`NullReferenceException` / `Exception:` stack trace mentioning `PrecisionLab`.
+
+Known benign quirks in a good log:
+- `Invalid sprite entry. Ensure all keys and sprites are assigned.` / `Duplicate key detected: …` —
+  pre-existing base-game warnings.
+- Missing-glyph warnings (`The character with Unicode value \uXXXX was not found …`) when the game
+  UI font lacks CJK glyphs; cosmetic only.
+- `[PrecisionLab] water feature init deferred: Object reference not set to an instance of an object`
+  may appear once right after a save load; the mod retries and the SELFTEST/items still behave
+  correctly (tracked as a cosmetic warning).
+- If `SaveFile.es3` is read-only during boot (Steam-Cloud workaround), ES3 throws
+  `IOException`/`UnauthorizedAccessException` for `SaveFile.es3.tmp.bak`. Harmless, but clear the
+  attribute ASAP (see §5) and delete stale `.tmp` files before the next run.
+
+---
+
+## 5. Enabling a local mod without the in-game prompt (pre-seeded trust) + the Steam-Cloud trap
+
+`SaveFile.es3` (Easy Save 3 JSON) stores:
+
+- `modOrder` — array of enabled mod ids,
+- `modTrust` — JSON **string** `{"records":[{id, source, workshopId, manifestHash, files:[
+  "Assembly.dll|<sha256>"], combinedHash, declared, detected, gameVersion, approvedAt, updatedAt,
+  developerMode}]}`.
+
+The loader (`ModLoader.EvaluateTrust/ModTrust.CompareFiles`) loads a mod when:
+`source` matches (`Local`, `workshopId="0"`), and `combinedHash` equals the current
+`ModFingerprint` (`Match`) — or differs but the IL scan passes and capabilities are unchanged
+(`Updated`). `developerMode=true` forces a load for local mods even if the scanner refuses.
+
+**Steam Cloud trap:** Steam auto-cloud restores the cloud copy of `SaveFile.es3` ~5–10 s after the
+game starts, overwriting a seeded file. Symptom: the mod shows
+`[ModLoader] Registered (disabled, Local)` and `trust=NotChecked` even though you seeded it.
+Working procedure used by `seed-local-mod.ps1` + runs:
+
+1. `snapshot.ps1 -Label before-seed` (backup).
+2. Copy the mod folder into `<game>\Mods\<ModFolder>`.
+3. `.\seed-local-mod.ps1 -ModFolder '<game>\Mods\PrecisionLab'` (adds id to `modOrder`, writes the
+   exact-hash trust record; backs up `SaveFile.es3` automatically; idempotent; `-DeveloperMode` sets
+   the dev flag; `-Restore` rolls back the newest backup).
+4. Set `SaveFile.es3` **read-only**, launch with `-logFile`, wait for the log/sentinel (~10 s), then
+   clear read-only and delete stale `SaveFile.es3.tmp*` files.
+5. Verify the audit line `running=True trust=Match`. If the user later rebuilds the DLL the record
+   becomes `Updated`; re-run the seed script (or approve once in the Mods menu).
+
+`seed-local-mod.ps1` computes the game's exact fingerprint: `manifestHash = sha256(manifest.xml)`,
+`combinedHash = sha256(utf8(manifestHash + "\n" + "<rel dll>|<sha256 dll>"))`.
+
+**Trust-prompt behaviour observed for a new local mod:**
+- Not in `modOrder` → `[ModLoader] Registered (disabled, Local): <name> v1.0.0`, `running=False
+  trust=NotChecked`; nothing loads until the user enables it.
+- In `modOrder` but no record → `Not loaded: Unknown`; wrong source/hash → `Changed`.
+- In `modOrder` + matching record → loads silently, no UI prompt; audit shows `trust=Match`.
+- A first-time enable through the in-game **Mods** menu runs `ModScanner`; if the manifest declares
+  the capabilities it needs it loads/prompts, otherwise the loader reports `Not loaded: <state>` /
+  scanner refusal. For this mod the manifest has `<Capabilities/>` and the build scanned clean
+  (`caps=none`), so approval is the only interaction.
+- The user's older `developerMode=false` records keep working; `developerMode=true` is only needed
+  to bypass a scanner refusal during iteration.
+
+---
+
+## 6. Dev tools, dev console and item spawning
+
+`DevTools.cs` (decompiled) reads marker files next to the executable:
+
+- empty **`dev.txt`** → `[DevTools] Developer tools enabled: F9 debug panel and F8 console.`
+- **`1dev.txt`** → full dev tools (`DevTools.IsFullEnabled`, extra Marketing/Story panels).
+- neither → `[DevTools] Developer tools disabled: no dev.txt next to the executable (<path>).`
+  and `DevConsoleStripper` destroys the QFSW Quantum Console objects.
+
+With `dev.txt` present (verified, screenshots in `tools/verify/evidence/`):
+
+- **F9 (in the store scene, i.e. with a save loaded)** opens the **Debug Panel**
+  (`ingame-01-F9-panel.png`): tabs **Store / Command / Spawn / Special**. Mods register entries in
+  it via `ModHelper.AddDebugFunction`; the real mod contributes **"PrecisionLab: spawn extractor"**
+  and **"PrecisionLab: spawn purifier"** in the *Spawn* column.
+- **"Open Debug Spawner"** opens `CustomUIItemSpawner`: it lists every `DirectoryMaster` item id
+  (search box), and a left-click spawns 1 (Shift+click ×10) into the store inventory
+  (`GraphUtils.EmporiumTryAdd`). Modded ids appear because the list is built from the item directory;
+  clicking logs `[CustomUI] Spawned '<id>' x1`.
+- **F8** is announced as the console key. At the main menu it visibly toggles a dark scrollable
+  overlay; inside the loaded store scene our F8 screenshot showed no console
+  (`ingame-02-F8-console.png`). Treat the F9 Debug Panel as the reliable dev spawn path. The QFSW
+  console's game commands (registered via `[Command]` attributes, e.g. `loot-list`, `loot-roll`,
+  `mod-trust`, `mod-scan`, `paper-item`, `client-faces`) only work if a console object exists in the
+  current scene.
+- Delete `dev.txt` afterwards for a clean (non-dev) install; the mod's normal acquisition path does
+  not need it.
+
+**How a human obtains a modded item:**
+
+1. Normal play path (no dev tools): in-game **phone → Wild Network → "Precision Lab" tab**, buy
+   *精确取液器 / Precision Liquid Extractor* (1200 credits) or *提纯机器 / Purification Machine*
+   (2400) — delivered to the store inventory. Also low chance in `medicalTable` / `junkTable` loot
+   (the mod patches those loot tables), and existing saves get the items added on load.
+2. Verification/dev path: add empty `dev.txt` next to `Probably Stolen.exe`, load a save, press
+   **F9 → Spawn → "PrecisionLab: spawn extractor"** (or *Open Debug Spawner* and search
+   `precision_liquid_extractor` / `precision_purifier`). Both were confirmed spawnable in a loaded
+   game. Remove `dev.txt` when finished.
+
+**Extractor pipette window (double-click):** double-clicking a *Precision Liquid Extractor* opens its
+native content window via `ItemMouseDoubleClickHandler.OpenContentAction` (title = item name;
+verified `WINDOW openVisible=True title='精确取液器'`). Layout is a single horizontal
+`MachineryPanelRow` — 量程 (slider 1–10000 µL + live `当前值` text), 微调 (±1/±10), 预设
+(1/10/100/1 mL/5 mL/10 mL), 状态 (contents) — but because `MachineryPanelRow.columns` defaults to
+the panel count, the row is wider than the screen and the right-hand panels are cut off
+(screenshot `ingame-03-extractor-window.png`). Opening the window does not change the dose.
+The slider writes the per-item `PRECISION_EXTRACTOR_DOSE_UL` tag: the mod self-test asserts
+`SetValue(4321, notify:true)` → dose 4321 (`SELFTEST metering dial … sliderWritesDose=True`).
+
+---
+
+## 7. Fully automated in-game self-test (no human, no clicks)
+
+Two mechanisms, both proven here:
+
+1. **Mod-side logging (part of PrecisionLab itself).** On `ModHook.OnGameLoadedInit` the mod runs a
+   one-time `SELFTEST` that:
+   - logs both items from the item directory (`SELFTEST items …`),
+   - creates test liquid containers and asserts exact 1234 µL transfer, exact-or-nothing refusal,
+     clean-water and concentrate purification modes,
+   - ends with `[PrecisionLab] SELFTEST OK exact=True refuseOverdose=True cleanWater=True
+     concentrate=True` (or `SELFTEST exception: …` on failure).
+
+   Because it runs inside `PlayerStore.LoadGame` (immediately after
+   `ModHook.FireOnGameLoadedInit()`), a verifier only has to get one save loaded — no gameplay needed.
+
+2. **Throwaway UI-automation mod (`tools/verify/autoload-mod/`, NOT shipped).** Reaches gameplay
+   without manual clicks:
+   - Harmony-postfix on `MainMenuUIController.Update`; after ~150 frames it calls the game's own
+     private `LoadGameUI.LoadSlot(slot, file)` via reflection (same code path as the "Load game"
+     button: sets `NewGameData.saveSlot/saveFile`, starts the black-screen transition, loads
+     `InventoryScene`).
+   - loads **a scratch copy** of a save (e.g. copy `save_43.es3` → `save_98.es3`, then
+     `LoadSlot(98, "save_98.es3")`) — never the user's real slot; never saves in-game.
+   - subscribes `ModHook.OnGameLoadedInit` and probes `DirectoryMaster.Has<GameItem>(id)`,
+     `ItemSpawner.Spawn(id)` + `ModHelper.MoveItemToFrontCounter`, and the Wild Network registry
+     (`NetworkUpgrade.GetDefinitionsInOrder()` filtered by `tab=="precision_lab"`,
+     `GetDefinition(id)`, `PlayerStore.Instance.networkUpgrade`).
+
+   Build: Roslyn `csc` against `<game>\Probably Stolen_Data\Managed\{mscorlib,netstandard,
+   Assembly-CSharp,UnityEngine.CoreModule,UnityEngine,0Harmony}.dll` (see the .cs header/commands in
+   `tools/verify/autoload-mod/`). Install into `<game>\Mods\zz_verify_autoload`, seed its trust with
+   `-DeveloperMode`, remove afterwards.
+
+Observed Wild Network evidence for the frozen build:
+
+```
+scene=InventoryScene networkUpgrade dict count=2
+WILDNET def id='PRECISION_LAB_EXTRACTOR' tab='precision_lab' cost=1200 inRunDict=True
+WILDNET def id='PRECISION_LAB_PURIFIER' tab='precision_lab' cost=2400 inRunDict=True
+WILDNET precision_lab defs in registry=2 GetTabLabel=精密实验室设备
+GetDefinition('PRECISION_LAB_EXTRACTOR')!=True  GetDefinition('PRECISION_LAB_PURIFIER')!=True
+```
+
+Hard-won detail: `ModHelper.AddNetworkUpgrade` (and anything touching `PlayerStore.Instance`) throws
+`NullReferenceException` when called from `IMod.Init` — `PlayerStore.get_Instance` runs `new
+PlayerStore()` before the game state exists. Register upgrades from `OnGameLoadedInit` /
+`OnNewGameStarted` instead (the frozen build does this: logs *"network upgrades deferred until a run
+is loaded"* at Init and *"network upgrades registered (tab precision_lab)"* after load).
+
+---
+
+## 8. Verification protocol / checklist
+
+Run from `<workspace>\tools\verify`.
+
+**A. Before any launch/test (always):**
+1. No `Probably Stolen` process already running (`run-game.ps1` enforces this).
+2. `.\snapshot.ps1 -Label before-<test>` — backs up `Player*.log`, `GameLog_*.txt`, all `*.es3`
+   (saves, index, `SaveFile.es3`), `mod-trust-list.json`, `ModConfigs\`. Never delete/save over the
+   user's slots; copy a slot to a scratch file for load tests (`save_98.es3`) and remove the copy
+   afterwards.
+3. Know the current mod folder + hashes (see `dist\PrecisionLab`); seed trust with
+   `seed-local-mod.ps1` if the folder/hash changed.
+
+**B. Static load verification (main-menu only, fastest):**
+1. Copy `dist\<Mod>` → `<game>\Mods\<Mod>`, seed trust, set `SaveFile.es3` read-only, launch with
+   `run-game.ps1 -LogPath … -WaitForMod precision_lab`, clear read-only after ~10 s.
+2. `.\check-modlog.ps1 -LogPath <log> -RequireMod precision_lab` → exit code 0 + `RESULT: PASS`.
+   Look for `Loading: <Mod>.dll`, `Initialized`, `3 item sprite(s)`, `2 locale(s)`, `1 loot file(s)`,
+   `audit: … running=True trust=Match caps=none`.
+3. Quit gracefully (WM_CLOSE), then confirm `SaveFile.modOrder` still contains the mod and
+   `save_43.es3`/`saves_index.es3` hashes are unchanged vs the snapshot.
+
+**C. In-game / gameplay verification (needs a loaded save):**
+1. Install the throwaway `zz_verify_autoload` mod (seed with `-DeveloperMode`), copy a save to
+   `save_98.es3`, launch (read-only trick), wait ~40 s.
+2. `.\check-modlog.ps1 -LogPath <log> -RequireMod precision_lab -RequireSelfTestOk` → PASS requires
+   `items registered in mod item directory`, `network upgrades registered (tab precision_lab)`, the
+   `SELFTEST … OK` line, and item-spawn evidence. Any `NullReferenceException`/`Exception:` in the
+   log fails the run.
+3. Optional visual/dev check: with `dev.txt` present, F9 → Spawn shows the mod buttons; screenshot it.
+4. Quit without saving; remove helper mod + its `modOrder`/`modTrust` entries; remove scratch save.
+
+**D. Ship-clean state:**
+- `<game>\Mods` contains only the real mod folder(s); no `dev.txt` unless intentionally left;
+  `SaveFile.es3` writable with `modOrder = ["item_details","precision_lab"]` and matching trust
+  records (`precision_lab` source `Local`, `workshopId "0"`, combinedHash of the shipped DLL,
+  `developerMode=false`); user save slots byte-identical to the pre-test snapshot.
+- Final clean-boot log (`tools/verify/logs/final-clean-boot.log`) shows precision_lab
+  `running=True trust=Match`, `[DevTools] Developer tools disabled`, and no exceptions.
+
+---
+
+## 9. Harness files (all under `probably-stolen-mod/tools/verify/`)
+
+| File | Purpose |
+|---|---|
+| `run-game.ps1` | Launch with isolated `-logFile`, wait for boot/mod sentinels, optional graceful quit; refuses double launches; reports PID/log path. |
+| `check-modlog.ps1` | Parse a log: loader ran, per-mod audit (`running/trust`), exceptions, `SELFTEST OK`, required markers; exit code 0/1/2 (also `-Json`). |
+| `snapshot.ps1` | Back up logs/saves/configs with sha256 manifest into `snapshots/`; read-only w.r.t. game files. |
+| `seed-local-mod.ps1` | Pre-seed `modOrder` + exact-hash `modTrust` record into `SaveFile.es3` (auto-backup, idempotent, `-DeveloperMode`, `-Restore`). |
+| `hello-mod/` | Minimal hand-built `IMod` mod (source + compiled `build/zz_verify_hello.dll`) used to prove local mods load; throwaway. |
+| `autoload-mod/` | Throwaway UI-automation mod (`zz_verify_autoload`) that loads a scratch save and probes items/Wild Network; not shipped. |
+| `logs/` | Captured logs: `launch-test-*.log`, `hello-mod-boot.log`, `final3.log`…`final12.log` (final build: `final12.log` = Harmony 1 + SELFTEST OK + visible CustomUI window layer overlay + tag tests 3333/250), `final-clean-boot5.log` (shipped state), `cloud-purge*.log`. |
+| `evidence/` | Screenshots: main menu, F8 panel at menu, in-game store, F9 Debug Panel with mod spawn buttons, F8 in store, `ingame-03-extractor-window.png` (old machinery window), `ingame-05a`/`ingame-05` (meta-layer attempt), `ingame-07`/`ingame-08` (prefab-override invisible attempt), `ingame-09-default-overlay-test.png` (control window proves overlay renders), **`ingame-10-customui-visible-window.png` (FINAL: visible 精确取液器 · 量程设置 window with input+slider+presets+Apply)**, `ingame-11-customui-visible-window2.png`. |
+| `snapshots/` | Save/log backups + full `.es3` backup taken before any save load (`presaveload-20261030-022841`); `SaveFile_*_preseed.es3` pre-seed copies. |
+
+Rebuild the throwaway helper mods (optional, for a future re-run):
+
+```powershell
+$csc='C:\Program Files\dotnet\sdk\9.0.318\Roslyn\bincore\csc.dll'
+$m='<game>\Probably Stolen_Data\Managed'
+& dotnet $csc -nologo -nostdlib -target:library -out .\autoload-mod\build\zz_verify_autoload.dll `
+  -r:"$m\mscorlib.dll" -r:"$m\netstandard.dll" -r:"$m\Assembly-CSharp.dll" `
+  -r:"$m\UnityEngine.CoreModule.dll" -r:"$m\UnityEngine.dll" -r:"$m\0Harmony.dll" `
+  .\autoload-mod\src\AutoLoadMod.cs
+```
+
+---
+
+## 10. Final shipped state (2026-10-30)
+
+- `<game>\Mods\`: **only** `PrecisionLab\` (manifest.xml, final build **PrecisionLab.dll 50688 B
+  sha256 `77f2720b4308928ec60f3e0ea7f6bea1279646c7515f5e3f08d2d6996f31c847`**, localization
+  47 keys/locale = 94 entries, loot table, textures, README).
+- `dev.txt`: **removed** (dev tools disabled; log line `[DevTools] Developer tools disabled`).
+- `SaveFile.es3` (writable): `modOrder = ["item_details","precision_lab"]`; `modTrust` records:
+  `item_details` (Workshop, workshopId `3828868413`, combinedHash `9af2d05a…`, dev false) and
+  `precision_lab` (source `Local`, workshopId `"0"`, combinedHash
+  `35687f61f5bfed9faa9380cc7861d329eda875899baca56043398ab3db6b0a0f`, dev false).
+  Final boot (`final-clean-boot6.log`): `Loading: PrecisionLab.dll`, `Harmony: 1 method(s) patched`,
+  `running=True trust=Match caps=none hash=35687f61…`, 3 item sprites, 94 locale entries,
+  `[DevTools] Developer tools disabled`.
+- Final window verification (`final13.log`/`final14.log`, screenshot
+  `evidence/ingame-12-customui-meta-window.png`): visible 精确取液器 · 量程设置 window with real
+  slider (`dose_slider` root alive, rect 300×24), slider→input sync (2000→"2000"), input→slider sync
+  via a real edit commit (onEndEdit 1500→slider 1500; plain `SetString(notify)` alone does not fire
+  TMP onEndEdit), real preset-button clicks ("1 mL"→1000 both, "5 mL"→5000 both), Apply → tag 5000 +
+  window closes; SELFTEST OK, no exceptions.
+- User saves untouched: `save_43.es3` (2873771 B, mtime 2026-10-30 01:35:27, sha256 `D55FD86A…`) and
+  `saves_index.es3` byte-identical to `snapshots/presaveload-20261030-022841`; no in-game save was
+  performed. The scratch test save (`save_98.es3`, byte copy of slot 43) was loaded only via the
+  helper; Steam Cloud re-restored it during the final boot and it was deleted while the game was
+  running so the deletion syncs (verified absent after quit).
+- Delivery status: **PASS / delivery-ready** — loader/Harmony/trust/self-test, both items
+  spawnable, Wild Network tab+upgrades, and the visible CustomUI metering window with working slider,
+  sync, preset buttons and Apply→tag pipeline. Cosmetic only: window centre sits slightly right of
+  the viewport centre (right border near the screen edge; no content cut).

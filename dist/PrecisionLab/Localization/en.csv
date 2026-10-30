@@ -1,0 +1,59 @@
+# 精密实验室设备 / Precision Lab Equipment — English (en)
+# Format: <key>,<value>; the first comma separates key and value; '#' = comment line;
+# wrap a value in double quotes when it contains a comma. File name = locale code.
+item.extractor.name,Precision Liquid Extractor
+item.extractor.desc,Pipette-style metering tool with a 1 µL dial (1-10000 µL). Double-click it to open the metering window - changes apply immediately, there is no Apply button. Direction modes: Auto (empty draws / filled injects), Always draw, Always inject; use "Always draw" to top a half-full pipette back up. Empty: draws exactly N µL; filled: injects exactly N µL; if less than N µL is available nothing moves.
+item.extractor.flavor,A lab-grade pipette rebuilt from three broken ones. Every microlitre counts.
+item.purifier.name,Purification Machine
+item.purifier.desc,Removes physical, chemical (including heavy metals) and biological contaminants from liquid containers during the night cycle (or an extra cycle from a turbo booster). Valuable ingredients are never removed, and the removed contamination is discarded. Performance modules process more per cycle, efficiency modules reduce power draw, quality modules raise the purity cap (purity +x%, shown in the machine purity panel and tooltip).
+item.purifier.flavor,Industrial filter stack bolted to a stolen centrifuge. It does not care where the fluid came from — only what is floating in it.
+machine.purifier.module,Modules
+machine.purifier.container,Liquid Container
+ui.extractor.range,Metering range (µL)
+ui.extractor.value,Value
+ui.extractor.fine,Fine tune (µL)
+ui.extractor.presets,Presets
+ui.extractor.contents,Contents
+ui.extractor.status,Status
+tooltip.extractor.dose,Metering: {0} µL (double-click to open the metering window)
+tooltip.extractor.content,Contents: {0} / {1} µL
+tooltip.extractor.hint,Double-click to open the metering window (dose and mode apply immediately). Auto: empty -> draws exactly N µL, filled -> injects exactly N µL; switch the mode to draw/inject to force a direction. If less than N µL is available the attempt is refused.
+tooltip.purifier.cats,Removes physical / chemical (including heavy metals) / biological contamination only.
+tooltip.purifier.removed,Contaminants removed this cycle: {0:0.###} mL
+tooltip.purifier.empty,Insert a liquid container into the machine to start a purification cycle.
+tooltip.purifier.container,Container: {0}% water purity, {1} mL
+tooltip.purifier.classes,Contamination: physical {0} mL / chemical {1} mL / heavy metals {2} mL / biological {3} mL
+tooltip.purifier.mode_clean,Mode: clean water (removed contamination becomes water, volume unchanged).
+tooltip.purifier.mode_conc,Mode: concentrate (removed contamination is discarded, valuable liquids are kept).
+config.dose.label,Default extractor metering (µL, 1-10000)
+config.dose.tooltip,How many microlitres a newly created Precision Liquid Extractor draws or injects per use. You can also change it in-game by double-clicking the item.
+upgrade.tab,Precision Lab
+upgrade.cardtitle,Precision Lab
+upgrade.extractor.title,Precision Liquid Extractor
+upgrade.extractor.desc,A pipette-style metering tool with a 1 µL dial: double-click it to set the metering volume. Draws or injects exactly N µL. Delivered to your inventory.
+upgrade.extractor.bought,Delivered. Check your store inventory.
+upgrade.purifier.title,Purification Machine
+upgrade.purifier.desc,Removes physical, chemical (including heavy metals) and biological contamination from liquid containers while the store is closed, without destroying valuable ingredients. Quality modules raise the purity cap; unlocking it also makes Dr. Jackson stock additional machines. Delivered to your store inventory.
+upgrade.purifier.bought,Delivered. Check your store inventory.
+extractor.last.draw,Last operation: drew exactly {0} µL.
+extractor.last.inject,Last operation: injected exactly {0} µL.
+extractor.last.fail,Last attempt: FAILED — only {0} µL transferable of the requested {1} µL.
+extractor.last.error,Last attempt: FAILED (internal error, nothing transferred).
+extractor.last.dose,Metering set to {0} µL.
+ui.extractor.title,Precision Liquid Extractor · Metering
+ui.extractor.dose_input,Metering (µL)
+ui.extractor.input_hint,1 - 10000
+ui.extractor.slider,Slider
+ui.extractor.close,Close
+ui.extractor.contents_line,Contents: {0} / {1}
+tooltip.extractor.mode,Mode: {0}
+ui.extractor.mode,Mode
+ui.extractor.mode_auto,Auto (empty draws / filled injects)
+ui.extractor.mode_draw,Always draw
+ui.extractor.mode_inject,Always inject
+tooltip.purifier.cap_detail,Purity cap: {0:0.00}% (quality modules +{1}% -> +{2:0.00}%)
+tooltip.purifier.modules,Module bonuses: performance +{0}% (more per cycle) / power +{1}% / quality +{2}% (purity cap)
+ui.purifier.cap_label,Purity cap
+item.purifier.manual.name,Purification Machine Notes
+item.purifier.manual.flavor,Someone scribbled the important parts on a sticky note and taped it to the filter stack.
+item.purifier.manual.desc,"[Module effects]:\n- Efficiency: power draw\n- Performance: amount processed per night\n- Quality: purity cap (purity +x%, up to 100%)\n\nProvide power and a liquid container and the machine runs at night. Removes physical, chemical (including heavy metals) and biological contamination; valuable ingredients are kept."

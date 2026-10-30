@@ -1,0 +1,58 @@
+# 精密实验室设备 / Precision Lab Equipment — 简体中文 (zh)
+# 格式：<键>,<值>；第一个逗号分隔键与值；# 开头为注释行；值中含逗号时用双引号包裹。
+item.extractor.name,精确取液器
+item.extractor.desc,移液枪式定量工具，1 µL 步进、量程 1–10000 µL。双击打开量程设置窗口，改动即时生效（无需点应用）。方向模式：自动（空枪取液 / 有液注液）、强制取液、强制注液——想给半满的枪补液时切到“强制取液”。可转移量不足 N µL 时整体拒绝、一滴不移。
+item.extractor.flavor,用三支报废移液器拼出来的实验室级取液器。每一微升都算数。
+item.purifier.name,提纯机器
+item.purifier.desc,夜间运转（或用涡轮增压器追加一次周期）时，去除液体容器中的物理、化学（含重金属）与生物污染物。有效成分一律保留，被去除的污染物直接销毁。性能模块提高每周期处理量（清得更快），效率模块降低耗电，质量模块提高提纯上限（纯度 +x%，在机器“提纯上限”面板和工具提示中显示）。
+item.purifier.flavor,用偷来的离心机加装工业滤芯堆成的台面设备。它不关心液体从哪来——只关心里面漂着什么。
+machine.purifier.module,模块
+machine.purifier.container,液体容器
+ui.extractor.range,量程（µL）
+ui.extractor.value,当前值
+ui.extractor.fine,微调（µL）
+ui.extractor.presets,预设量程
+ui.extractor.contents,内容物
+ui.extractor.status,状态
+tooltip.extractor.dose,当前量程：{0} µL（双击打开量程设置）
+tooltip.extractor.content,内容物：{0} / {1} µL
+tooltip.extractor.hint,双击打开量程设置（量程与模式改动即时生效）。自动模式：空枪→精确抽取 N µL；有液→精确注入 N µL；切换模式可强制方向（如给半满的枪补液）。可转移量不足 N µL 时整体拒绝。
+tooltip.purifier.cats,仅去除物理 / 化学（含重金属）/ 生物污染物。
+tooltip.purifier.removed,本周期已去除污染物：{0:0.###} 毫升
+tooltip.purifier.empty,把液体容器放入机器后才能开始净化周期。
+tooltip.purifier.container,容器：水纯度 {0}%，共 {1} 毫升
+tooltip.purifier.classes,污染量：物理 {0} 毫升 / 化学 {1} 毫升 / 重金属 {2} 毫升 / 生物 {3} 毫升
+tooltip.purifier.mode_clean,模式：净水（去除的污染物转化为清水，总体积不变）。
+tooltip.purifier.mode_conc,模式：浓缩（去除的污染物直接销毁，有效成分保留）。
+config.dose.label,取液器默认量程（µL，1-10000）
+config.dose.tooltip,新建的精确取液器每次抽取/注入多少微升。游戏内双击物品即可随时调整量程。
+upgrade.tab,精密实验室
+upgrade.cardtitle,精密实验室
+upgrade.extractor.title,精确取液器
+upgrade.extractor.desc,移液枪式定量工具，1 µL 步进、量程可调；双击物品即可设置每次抽取/注入的微升数。购买后直接送达店内库存。
+upgrade.extractor.bought,已送达，请查看店内库存。
+upgrade.purifier.title,提纯机器
+upgrade.purifier.desc,夜间去除液体容器中的物理、化学（含重金属）与生物污染物，保留有效成分。质量模块可提高提纯上限；解锁后还可在杰克逊博士处购买更多提纯机器。购买后直接送达店内库存。
+upgrade.purifier.bought,已送达，请查看店内库存。
+extractor.last.draw,上次操作：精确抽取 {0} µL。
+extractor.last.inject,上次操作：精确注入 {0} µL。
+extractor.last.fail,上次操作：失败——只能转移 {0} µL，请求 {1} µL。
+extractor.last.error,上次操作：失败（内部错误，未转移任何液体）。
+extractor.last.dose,量程已设为 {0} µL。
+ui.extractor.title,精确取液器 · 量程设置
+ui.extractor.dose_input,量程（µL）
+ui.extractor.input_hint,1 - 10000
+ui.extractor.slider,滑条
+ui.extractor.close,关闭
+ui.extractor.contents_line,内容物：{0} / {1}
+tooltip.extractor.mode,模式：{0}
+ui.extractor.mode,模式
+ui.extractor.mode_auto,自动（空枪取液 / 有液注液）
+ui.extractor.mode_draw,强制取液
+ui.extractor.mode_inject,强制注液
+tooltip.purifier.cap_detail,提纯上限：{0:0.00}%（质量模块 +{1}% → +{2:0.00}%）
+tooltip.purifier.modules,模块加成：性能 +{0}%（每周期处理量）/ 耗电 +{1}% / 质量 +{2}%（提纯上限）
+ui.purifier.cap_label,提纯上限
+item.purifier.manual.name,提纯机器说明
+item.purifier.manual.flavor,有人把要点草草写在便签上，又贴到了滤芯堆上。
+item.purifier.manual.desc,"[模组影响]:\n效率影响功耗\n性能影响每晚处理量\n质量影响提纯上限（纯度 +x%，最高 100%）\n\n提供电力和液体容器后，机器会在夜间运作。\n物理、化学（含重金属）与生物污染物会被去除，有效成分保留。"
