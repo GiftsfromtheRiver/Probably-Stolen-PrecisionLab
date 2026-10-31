@@ -524,3 +524,11 @@ base/acid 各 1500/1500 µL），水位显示 100%、提示写明“满瓶…正
 玩家指出肾上腺素注射笔单支 1200+ 信用点，应视为奢侈品。修复：注射笔同时拥有 `MEDICAL` 与 `LUXURY_ITEM`
 物品类型/tag（原版大型注射器等也有此分类），可被上层奢侈品客户（upperLowerVisitorLuxury，购买 tag LUXURY_ITEM）
 与展示台系统识别；提示与物品描述改为“医疗物 / 奢侈品”，价值不变。自检新增奢侈品类型/tag 断言。
+## v1.2.9 涡轮增压提示（2026-11-01）
+
+玩家反馈“高级涡轮增压机不能对提纯机用”。诊断结论：机器侧无问题——提纯机具备 STANDARD_MACHINE_TAG，
+`IsTurboBoostEligible/CanBoostNow=true`，高级/超级涡轮增压器 `MayTarget/CanTarget=true`，真实 Target 路径
+可正常触发额外周期（电池 100→94、污染物 microbe 1000→38，日志 "purifier removed 1732 µL"）；与净水器行为一致。
+常见原因是增压器自身未充能到 READY（`IsTurboReady` 读 modifiedState，需 15/15 就绪）时拖拽无目标高亮。
+v1.2.9 增加：提纯机/培养机显式 EnableTag("TURBO_BOOST_ELIGIBLE_TAG")（冗余保险），机器提示新增
+“涡轮加速：拖涡轮增压器到本机器，增压器需显示就绪”说明。

@@ -514,6 +514,10 @@ namespace PrecisionLab
                             RenderHandler.ColorPalette.LightGreen);
                     }
                     AppendPurifierSlotInfo(builder, item);
+                    builder.AddLine(
+                        Loc.Get("tooltip.purifier.turbo", "Turbo boost: drag a turbo booster (advanced/hypertech) onto this machine while it is READY to run one extra cycle."),
+                        true,
+                        RenderHandler.ColorPalette.Gray);
                 }
                 else if (item.identifier == ItemIds.Cultivator)
                 {
@@ -556,6 +560,10 @@ namespace PrecisionLab
                             RenderHandler.ColorPalette.LightGreen);
                     }
                     AppendCultivatorSlotInfo(builder, item);
+                    builder.AddLine(
+                        Loc.Get("tooltip.cultivator.turbo", "Turbo boost: drag a turbo booster (advanced/hypertech) onto this machine while it is READY to run one extra cycle."),
+                        true,
+                        RenderHandler.ColorPalette.Gray);
                 }
                 else if (item.identifier == ItemIds.SupplyBox)
                 {

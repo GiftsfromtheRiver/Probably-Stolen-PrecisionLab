@@ -239,6 +239,7 @@ namespace PrecisionLab
             machine.EnableTag("CONTAINER_TAG");
             machine.EnableTag("manufacture");
             machine.EnableTag(MachineHelper.STANDARD_MACHINE_TAG);
+            machine.EnableTag("TURBO_BOOST_ELIGIBLE_TAG");
             MachineryHelper.InitMachinery(machine, PurifierPowerPerCycle);
             machine.ModifyTag("MACHINE_QUALITY_RATIO_INT", delegate (TagState state)
             {
@@ -481,6 +482,7 @@ namespace PrecisionLab
             machine.EnableTag("CONTAINER_TAG");
             machine.EnableTag("manufacture");
             machine.EnableTag(MachineHelper.STANDARD_MACHINE_TAG);
+            machine.EnableTag("TURBO_BOOST_ELIGIBLE_TAG");
             MachineryHelper.InitMachinery(machine, CultivatorPowerPerCycle);
             machine.ModifyTag(Tags.CultivatorActivity, delegate (TagState state)
             {
