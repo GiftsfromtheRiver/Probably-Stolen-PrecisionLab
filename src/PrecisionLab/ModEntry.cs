@@ -460,6 +460,14 @@ namespace PrecisionLab
             }
             try
             {
+                if ((item.identifier == "kotton_fabric" || item.identifier == "scrap_metal" || item.identifier == "metal_ingot")
+                    && ModEntry.IsUpgradeUnlocked("PRECISION_LAB_MEDS"))
+                {
+                    builder.AddLine(
+                        Loc.Get("tooltip.tourniquet.hint", "Makeshift tourniquet: drag tough cotton fabric onto scrap metal or a metal ingot."),
+                        true,
+                        RenderHandler.ColorPalette.LightOrange);
+                }
                 if (item.identifier == ItemIds.Extractor)
                 {
                     int dose = LiquidTools.GetDose(item);

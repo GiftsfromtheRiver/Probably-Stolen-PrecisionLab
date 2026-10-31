@@ -15,6 +15,7 @@ namespace PrecisionLab
     {
         internal const string FabricId = "kotton_fabric";
         internal const string ScrapId = "scrap_metal";
+        internal const string IngotId = "metal_ingot";
         internal const string MedsUpgradeId = "PRECISION_LAB_MEDS";
 
         private static readonly HashSet<GameItem> attachedItems = new HashSet<GameItem>();
@@ -138,7 +139,7 @@ namespace PrecisionLab
                 return source != null
                     && target != null
                     && source.identifier == FabricId
-                    && target.identifier == ScrapId
+                    && (target.identifier == ScrapId || target.identifier == IngotId)
                     && IsUnlocked()
                     && GeneralHelper.IsItemOwned(source)
                     && GeneralHelper.IsItemOwned(target)
@@ -165,22 +166,38 @@ namespace PrecisionLab
                     return;
                 }
                 GeneralHelper.SetItemOwned(result, true);
-                GameInventory destination = target.parentInventory ?? source.parentInventory;
-                if (destination == null)
+                // Try the inventories the player is looking at first, then let the game find any
+                // other free store inventory (fragmented/full counters otherwise made the craft
+                // silently do nothing when the 2x2 result did not fit).
+                bool placed = false;
+                GameInventory[] inventories = { target.parentInventory, source.parentInventory };
+                for (int i = 0; i < inventories.Length; i++)
                 {
-                    result.Destroy();
-                    return;
+                    if (inventories[i] == null)
+                    {
+                        continue;
+                    }
+                    // GraphUtils.TryAcceptAll returns the amount that was NOT accepted (0 = placed).
+                    if (GraphUtils.TryAcceptAll(inventories[i], result) == 0)
+                    {
+                        placed = true;
+                        break;
+                    }
                 }
-                // GraphUtils.TryAcceptAll returns the amount that was NOT accepted (0 = fully placed).
-                int remaining = GraphUtils.TryAcceptAll(destination, result);
-                if (remaining != 0)
+                if (!placed)
+                {
+                    GraphUtils.EmporiumTryAdd(inventories[0], result);
+                    placed = result.parentInventory != null;
+                }
+                if (!placed)
                 {
                     result.Destroy();
+                    NotifyNoSpace();
                     return;
                 }
                 ConsumeOne(source);
                 ConsumeOne(target);
-                Debug.Log("[PrecisionLab] crafted a makeshift tourniquet from fabric + scrap metal");
+                Debug.Log("[PrecisionLab] crafted a makeshift tourniquet from fabric + " + target.identifier);
             }
             catch (Exception e)
             {
@@ -199,6 +216,23 @@ namespace PrecisionLab
             }
         }
 
+        private static void NotifyNoSpace()
+        {
+            try
+            {
+                if (PlayerStore.HasInstance && PlayerStore.Instance != null)
+                {
+                    PlayerStore.Instance.AddNightLog(
+                        Loc.Get("mech.tourniquet.no_space", "Not enough room to place the makeshift tourniquet; the fabric and metal were not consumed."),
+                        "9c3738");
+                }
+            }
+            catch (Exception)
+            {
+                // Night log is cosmetic; never let it break crafting.
+            }
+            Debug.LogWarning("[PrecisionLab] no room to place the crafted makeshift tourniquet");
+        }
         private static void ConsumeOne(GameItem item)
         {
             if (item == null)
@@ -347,6 +381,16 @@ namespace PrecisionLab
                 {
                     GeneralHelper.SetItemOwned(note, true);
                     GraphUtils.EmporiumTryAdd(note);
+                    try
+                    {
+                        PlayerStore.Instance.AddNightLog(
+                            Loc.Get("mech.tourniquet.note_delivered", "A makeshift tourniquet recipe note was added to your store inventory."),
+                            "5c6f46");
+                    }
+                    catch (Exception)
+                    {
+                        // Cosmetic only.
+                    }
                     Debug.Log("[PrecisionLab] makeshift tourniquet recipe note delivered");
                 }
             }

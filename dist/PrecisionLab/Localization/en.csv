@@ -132,7 +132,10 @@ item.adrenaline_recipe.body,"ADRENALINE INJECTION PEN - six steps.\n\nSTEP 1 Ami
 tooltip.purifier.turbo,Turbo boost: drag a turbo booster (advanced / hypertech) onto this machine while the booster is READY to run one extra cycle.
 tooltip.cultivator.turbo,Turbo boost: drag a turbo booster (advanced / hypertech) onto this machine while the booster is READY to run one extra cycle.
 item.makeshift_tourniquet.name,Makeshift Tourniquet
-item.makeshift_tourniquet.desc,A strip of tough cotton fabric with a scrap-metal buckle. Medical item: use it while wounded to stabilise the wound and lower the wound level by one (like a hemostatic bandage).
+item.makeshift_tourniquet.desc,A strip of tough cotton fabric with a scrap-metal (or metal-ingot) buckle. Medical item: use it while wounded to stabilise the wound and lower the wound level by one (like a hemostatic bandage).
 item.tourniquet_recipe.name,Makeshift Tourniquet Recipe
 item.tourniquet_recipe.title,Makeshift Tourniquet
-item.tourniquet_recipe.body,"MAKESHIFT TOURNIQUET - emergency medical recipe.\n\nDrag a piece of tough cotton fabric (kotton_fabric) onto a piece of scrap metal (scrap_metal): this consumes 1 fabric + 1 scrap metal and crafts 1 makeshift tourniquet.\n\nThe tourniquet is a medical item: use it while wounded to stabilise the wound and lower the wound level by one (like a hemostatic bandage).\n\nThis recipe only works after unlocking More Medicines: Adrenaline."
+item.tourniquet_recipe.body,"MAKESHIFT TOURNIQUET - emergency medical recipe.\n\nDrag a piece of tough cotton fabric (kotton_fabric) onto a piece of scrap metal (scrap_metal) OR a metal ingot (metal_ingot): this consumes 1 fabric + 1 metal and crafts 1 makeshift tourniquet.\n\nThe tourniquet is a medical item: use it while wounded to stabilise the wound and lower the wound level by one (like a hemostatic bandage).\n\nThis recipe only works after unlocking More Medicines: Adrenaline."
+tooltip.tourniquet.hint,Makeshift tourniquet: drag tough cotton fabric onto scrap metal or a metal ingot (requires the More Medicines unlock).
+mech.tourniquet.no_space,No room to place the crafted makeshift tourniquet: the fabric and metal were NOT consumed. Free up a 2x2 spot and try again.
+mech.tourniquet.note_delivered,A "Makeshift Tourniquet Recipe" note was added to your store inventory.
