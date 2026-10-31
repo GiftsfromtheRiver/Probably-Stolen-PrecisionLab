@@ -507,3 +507,15 @@ $m='F:\SteamLibrary\steamapps\common\Probably Stolen\Probably Stolen_Data\Manage
   游戏内实测：1000+1000 @70°C → 消旋 1000；再 +拆分剂 1000 +酸 1000 @50°C → 左旋 500 / 右旋 500，重新进入拆分。
 - v1.2.5：按用户要求去掉面向玩家的“方案B/plan B”字样（纸条、物品描述、README），机制不变；
   旧纸条读档自动刷新为新文案。
+## v1.2.6 试剂瓶满瓶显示（2026-10-31）
+
+玩家反馈原料盒里的试剂瓶只装了几毫升、看起来几乎空瓶。修复：`TryAddBottle` 在加液前把瓶子的
+`LIQUID_CONTAINER_CAPACITY` 覆盖为该批用量，使每个瓶子正好装满（catechol/hmb/lipobond/reducing/resolving 各 3000/3000，
+base/acid 各 1500/1500 µL），水位显示 100%、提示写明“满瓶…正好一份配比量”；纸条补充“每瓶试剂都是满瓶”一句。
+配方/数值不变（一盒=一份配比）。
+## v1.2.7 等比例放大耗材（2026-10-31）
+
+玩家要求“一支肾上腺素注射笔消耗 5 毫升”并等比例增加原料盒耗材：
+试剂瓶改为满瓶 20 mL/20 mL/20 mL/20 mL/20 mL/10 mL/10 mL（catechol/hmb/lipobond/reducing/resolving/base/acid）；
+成型机两条配方 requiredVolume 750 → 5000 µL；一盒原料仍然产出 2 支注射笔（每支 5000 µL 药液）。
+纸条配比、物品描述同步更新；旧纸条读档自动刷新。

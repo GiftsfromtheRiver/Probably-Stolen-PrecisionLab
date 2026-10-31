@@ -18,8 +18,8 @@ namespace PrecisionLab
     /// </summary>
     internal static class AdrenalineContent
     {
-        internal const int ApiRequiredVolume = 750;
-        internal const int PenRequiredVolume = 750;
+        internal const int ApiRequiredVolume = 5000;   // 5 mL per API press
+        internal const int PenRequiredVolume = 5000;   // 5 mL of solution per injection pen
 
         private static bool _recipesAdded;
 
@@ -53,13 +53,13 @@ namespace PrecisionLab
 
         private static void UnpackReagents(GameInventory inventory)
         {
-            TryAddBottle(inventory, "med_bottle_red", CustomLiquids.Catechol, 3000, "item.catechol_bottle.name", "Catechol Reagent Bottle");
-            TryAddBottle(inventory, "med_bottle_violet", CustomLiquids.HydroxymethylBase, 3000, "item.hydroxymethyl_bottle.name", "N-Hydroxymethyl Base Solution");
-            TryAddBottle(inventory, "med_bottle_small_pink", "lipobond_agent", 3000, "item.lipobond_bottle.name", "Lipobond Agent Bottle");
-            TryAddBottle(inventory, "med_bottle_orange", "reducing_agent", 3000, "item.reducing_bottle.name", "Reducing Agent Bottle");
-            TryAddBottle(inventory, "med_bottle_blue", CustomLiquids.ResolvingAgent, 3000, "item.resolving_bottle.name", "Chiral Resolving Agent Bottle");
-            TryAddBottle(inventory, "med_bottle_blue", "base", 1500, "item.base_bottle.name", "Base Reagent Bottle");
-            TryAddBottle(inventory, "med_bottle_red", "acid", 1500, "item.acid_bottle.name", "Acid Reagent Bottle");
+            TryAddBottle(inventory, "med_bottle_red", CustomLiquids.Catechol, 20000, "item.catechol_bottle.name", "Catechol Reagent Bottle");
+            TryAddBottle(inventory, "med_bottle_violet", CustomLiquids.HydroxymethylBase, 20000, "item.hydroxymethyl_bottle.name", "N-Hydroxymethyl Base Solution");
+            TryAddBottle(inventory, "med_bottle_small_pink", "lipobond_agent", 20000, "item.lipobond_bottle.name", "Lipobond Agent Bottle");
+            TryAddBottle(inventory, "med_bottle_orange", "reducing_agent", 20000, "item.reducing_bottle.name", "Reducing Agent Bottle");
+            TryAddBottle(inventory, "med_bottle_blue", CustomLiquids.ResolvingAgent, 20000, "item.resolving_bottle.name", "Chiral Resolving Agent Bottle");
+            TryAddBottle(inventory, "med_bottle_blue", "base", 10000, "item.base_bottle.name", "Base Reagent Bottle");
+            TryAddBottle(inventory, "med_bottle_red", "acid", 10000, "item.acid_bottle.name", "Acid Reagent Bottle");
             Debug.Log("[PrecisionLab] adrenaline precursor kit unpacked");
         }
 
@@ -77,9 +77,15 @@ namespace PrecisionLab
                 Liquid liquid = Liquid.GetLiquidFromId(liquidId);
                 bottle.shortDescription = Loc.Fmt(
                     "tooltip.reagent_bottle.desc",
-                    "Contains {0} mL of {1}.",
+                    "A full vial containing {0} mL of {1} (exactly one batch).",
                     LiquidTools.FormatUl(amount),
                     liquid != null ? liquid.displayName : liquidId);
+                // Make the vial exactly as large as its one-batch content so the water level
+                // renders 100% full instead of looking like a nearly empty 250 mL bottle.
+                bottle.ModifyTag(Tags.LiquidCapacity, delegate (TagState state)
+                {
+                    state.Enable().SetInt(amount);
+                }, skipValidate: true);
                 WaterHelper.AddLiquid(bottle, liquidId, amount);
                 GeneralHelper.SetItemOwned(bottle, true);
                 GraphUtils.EmporiumTryAdd(inventory, bottle);
@@ -282,7 +288,7 @@ namespace PrecisionLab
             {
                 GameItem note = PreBuiltItemHelper.CreateHandnote(
                     Loc.Get("item.adrenaline_recipe.body",
-                        "ADRENALINE INJECTION PEN - six steps.\n\nSTEP 1 Amination (26-60 C): catechol + N-hydroxymethyl base solution + lipobond agent gives amination intermediate\nSTEP 2 Reduction (60-80 C): amination intermediate + reducing agent gives racemic adrenaline\nSTEP 3 Resolution (40-60 C acid catalyst): racemic adrenaline + resolving agent + acid gives levo-adrenaline salt + dextro waste. Remove the waste with the purifier waste slot.\nSTEP 4 Salt formation (26-60 C): levo salt + base gives free base; free base + acid gives adrenaline HCl. Evaporate water then press the dry liquid in the Chem Finisher to get the API\nSTEP 5 Solution: dissolve the API in an equal amount of water gives adrenaline solution (evaporate excess water)\nSTEP 6 Filling: press the dry adrenaline solution in the Chem Finisher gives the injection pen\n\nPer precursor kit: catechol 3000 / base sol 3000 / lipobond 3000 / reducing 3000 / resolving 3000 / base 1500 / acid 1500 uL. Stir and heat each step.\n\nRECYCLING: dissolve the dextro waste back into a container, add reducing agent and heat to 60-80 C so it racemises into racemic adrenaline, which can be resolved again in step 3."),
+                        "ADRENALINE INJECTION PEN - six steps.\n\nSTEP 1 Amination (26-60 C): catechol + N-hydroxymethyl base solution + lipobond agent gives amination intermediate\nSTEP 2 Reduction (60-80 C): amination intermediate + reducing agent gives racemic adrenaline\nSTEP 3 Resolution (40-60 C acid catalyst): racemic adrenaline + resolving agent + acid gives levo-adrenaline salt + dextro waste. Remove the waste with the purifier waste slot.\nSTEP 4 Salt formation (26-60 C): levo salt + base gives free base; free base + acid gives adrenaline HCl. Evaporate water then press the dry liquid in the Chem Finisher to get the API\nSTEP 5 Solution: dissolve the API in an equal amount of water gives adrenaline solution (evaporate excess water)\nSTEP 6 Filling: press the dry adrenaline solution in the Chem Finisher gives the injection pen\n\nPer precursor kit: catechol 20000 / base sol 20000 / lipobond 20000 / reducing 20000 / resolving 20000 / base 10000 / acid 10000 uL. Stir and heat each step. One injection pen needs 5000 uL (5 mL) of solution; one kit yields two pens. Each reagent vial is full and holds exactly one batch, so pour in the listed ratios.\n\nRECYCLING: dissolve the dextro waste back into a container, add reducing agent and heat to 60-80 C so it racemises into racemic adrenaline, which can be resolved again in step 3."),
                     Loc.Get("item.adrenaline_recipe.title", "Adrenaline Injection Pen"),
                     "",
                     1);

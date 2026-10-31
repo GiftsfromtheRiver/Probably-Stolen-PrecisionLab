@@ -287,7 +287,9 @@ namespace PrecisionLab
                     + " dextroLeft=" + recycleDextroLeft + "µL reducingLeft=" + recycleReducingLeft + "µL");
                 AdrenalineContent.EnsureRecipes();
                 bool recipesOk = ChemFinisherRecipe.GetRecipeById(ItemIds.Api) != null
-                    && ChemFinisherRecipe.GetRecipeById(ItemIds.Pen) != null;
+                    && ChemFinisherRecipe.GetRecipeById(ItemIds.Pen) != null
+                    && ChemFinisherRecipe.GetRecipeById(ItemIds.Api).requiredVolume == AdrenalineContent.ApiRequiredVolume
+                    && ChemFinisherRecipe.GetRecipeById(ItemIds.Pen).requiredVolume == AdrenalineContent.PenRequiredVolume;
 
                 apiItem = AdrenalineContent.CreateApi();
                 penItem = AdrenalineContent.CreatePen();
