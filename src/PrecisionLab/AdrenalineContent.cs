@@ -129,6 +129,9 @@ namespace PrecisionLab
                 "A combat stim auto-injector: sharp, short burst of accuracy and critical chance. Medical item. Quality is graded from the active fraction of the solution it was pressed from.");
             ModSprites.Apply(item, SpriteKeys.Pen, "Items/items_medical", "injector_blue");
             item.SetGameItemType("MEDICAL");
+            // 1k+ credits per pen: treat it as a luxury item as well, so upper-class luxury
+            // clients and the showcase system recognise it (vanilla high-end injectors do this too).
+            item.SetGameItemType("LUXURY_ITEM");
             item.EnableTag("injector");
             item.EnableTag("ITEM_MEDICAL_TAG");
             item.EnableProficiency("MEDICAL_PROFICIENCY");

@@ -299,6 +299,8 @@ namespace PrecisionLab
                     && penItem != null
                     && penItem.IsTag("ITEM_MEDICAL_TAG")
                     && penItem.IsGameItemType("MEDICAL")
+                    && penItem.IsGameItemType("LUXURY_ITEM")
+                    && penItem.IsTag("LUXURY_ITEM")
                     && penItem.effects.Count >= 2
                     && penItem.effects[0].abilityEffectType == CombatAbilityEffect.EffectType.buff
                     && penItem.effects[0].affectedStat == CombatEntity.EffectType.accuracyPercentage

@@ -519,3 +519,8 @@ base/acid 各 1500/1500 µL），水位显示 100%、提示写明“满瓶…正
 试剂瓶改为满瓶 20 mL/20 mL/20 mL/20 mL/20 mL/10 mL/10 mL（catechol/hmb/lipobond/reducing/resolving/base/acid）；
 成型机两条配方 requiredVolume 750 → 5000 µL；一盒原料仍然产出 2 支注射笔（每支 5000 µL 药液）。
 纸条配比、物品描述同步更新；旧纸条读档自动刷新。
+## v1.2.8 注射笔奢侈品分类（2026-10-31）
+
+玩家指出肾上腺素注射笔单支 1200+ 信用点，应视为奢侈品。修复：注射笔同时拥有 `MEDICAL` 与 `LUXURY_ITEM`
+物品类型/tag（原版大型注射器等也有此分类），可被上层奢侈品客户（upperLowerVisitorLuxury，购买 tag LUXURY_ITEM）
+与展示台系统识别；提示与物品描述改为“医疗物 / 奢侈品”，价值不变。自检新增奢侈品类型/tag 断言。

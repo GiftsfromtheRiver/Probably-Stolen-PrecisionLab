@@ -108,7 +108,7 @@ item.adrenaline_api.flavor,Pharmaceutical-grade adrenaline hydrochloride. Handle
 item.adrenaline_api.desc,Active pharmaceutical ingredient pressed by the Chem Finisher from 5000 uL of dry adrenaline HCl liquid. Quality is graded from the active fraction. Dissolve one API in an equal amount of water to prepare the solution for one injection pen.
 item.adrenaline_pen.name,Adrenaline Injection Pen
 item.adrenaline_pen.flavor,"A single-use auto-injector. The label says EPINEPHRINE in blue letters then a smaller warning nobody reads."
-item.adrenaline_pen.desc,A combat stim auto-injector: sharp short burst of accuracy and critical chance. Medical item. Each pen is pressed from 5000 uL (5 mL) of adrenaline solution; quality is graded from the active fraction.
+item.adrenaline_pen.desc,A combat stim auto-injector: sharp short burst of accuracy and critical chance. Medical item and luxury item. Each pen is pressed from 5000 uL (5 mL) of adrenaline solution; quality is graded from the active fraction.
 item.dextro_waste.name,Dextro Waste
 item.dextro_waste.flavor,"The useless half of the resolution. Sticky bitter and best not handled bare-handed."
 item.dextro_waste.desc,Waste collected by the purification machine waste output slot when a liquid contains dextro waste from the chiral resolution step. Dissolve it back into a container, add reducing agent and heat to 60-80 C to racemise it back into racemic adrenaline (improves total yield).
@@ -117,7 +117,7 @@ tooltip.adrenaline_box.hint,Activate to unpack. Follow the adrenaline injection 
 tooltip.adrenaline_api.purity,Active ingredient purity: {0:0.#}%
 tooltip.adrenaline_api.hint,Dissolve the API in an equal amount of water then press the dry solution in the Chem Finisher to fill an injection pen.
 tooltip.adrenaline_pen.effect,"Combat stim: +20% accuracy and +33% critical chance for 3 turns."
-tooltip.adrenaline_pen.tag,"Medical item - single use usable in combat."
+tooltip.adrenaline_pen.tag,Medical item / luxury item - single use, usable in combat.
 tooltip.dextro_waste.hint,Waste from the chiral resolution step. The purifier waste output slot collects it; dissolve it back into a container + reducing agent at 60-80 C to recycle it into racemic adrenaline.
 upgrade.meds.title,More Medicines: Adrenaline
 upgrade.meds.desc,"Unlocks the adrenaline injection pen production line: a recipe note in your store plus precursor kits sold by the retired chemist."
