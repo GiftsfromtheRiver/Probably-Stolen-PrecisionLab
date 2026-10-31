@@ -72,6 +72,9 @@
 **注射笔**是医疗物（`ITEM_MEDICAL_TAG` / `MEDICAL` 类型），战斗中使用：3 回合内命中 +20%、暴击率 +33%（蓝色自动注射笔外观）。
 原料药/注射笔也支持溶解回收（可重新溶入容器继续加工）。
 
+**右旋废料回收**：把提纯机收集到的右旋废料溶回容器，加入还原剂并加热到 **60–80 °C**，会生成消旋肾上腺素，
+可以回到第 3 步再次拆分——提高总收率（配方纸条里也写了这条回收路线）。
+
 ![注射笔](docs/images/adrenaline-pen.png) ![原料盒](docs/images/adrenaline-kit.png) ![原料药](docs/images/adrenaline-api.png) ![右旋废料](docs/images/dextro-waste.png)
 
 ---

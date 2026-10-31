@@ -499,3 +499,11 @@ $m='F:\SteamLibrary\steamapps\common\Probably Stolen\Probably Stolen_Data\Manage
 为避免误读，纸条措辞改为“压制成盐酸肾上腺素成品”“把盐酸肾上腺素成品溶于等量水”“每盒试剂配比”；
 物品名（普通 UI 字体）仍为“盐酸肾上腺素原料药”（规范术语）。另加 `RefreshRecipeNotesInStore()`：
 读档时若“更多药品”已解锁，会把旧版本生成的手写便签正文刷新为新措辞并清空署名。
+## v1.2.4 / v1.2.5 右旋废料回收（2026-10-31）
+
+- v1.2.4：新增回收反应 `StepDextroRecycle`——右旋废料 + 还原剂，60–80°C，按 1:1 再消旋成消旋肾上腺素，
+  可回到第 3 步重新拆分；配方纸条追加“回收再消旋”段落；右旋废料描述提示回收路线；
+  自检新增 `adrenaline recycle: racemic=1000µL dextroLeft=0µL reducingLeft=0µL` 与 `recycle=True`。
+  游戏内实测：1000+1000 @70°C → 消旋 1000；再 +拆分剂 1000 +酸 1000 @50°C → 左旋 500 / 右旋 500，重新进入拆分。
+- v1.2.5：按用户要求去掉面向玩家的“方案B/plan B”字样（纸条、物品描述、README），机制不变；
+  旧纸条读档自动刷新为新文案。

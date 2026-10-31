@@ -162,7 +162,7 @@ namespace PrecisionLab
                 "The useless half of the resolution. Sticky, bitter and best not handled bare-handed.");
             item.shortDescription = Loc.Get(
                 "item.dextro_waste.desc",
-                "Waste collected by the purification machine's waste output slot when a liquid contains dextro waste from the chiral resolution step. Can be sold, discarded or dissolved back into a container.");
+                "Waste collected by the purification machine's waste output slot when a liquid contains dextro waste from the chiral resolution step. Can be sold, discarded or dissolved back into a container. Dissolve it back into a container with reducing agent and heat to 60-80 C to racemise it into racemic adrenaline (improves total yield).");
             ModSprites.Apply(item, SpriteKeys.DextroWaste, "Items/items_material", "chemical2");
             item.SetGameItemType("CHEMICAL_SUPPLIES");
             item.unitValue = 0L;
@@ -282,7 +282,7 @@ namespace PrecisionLab
             {
                 GameItem note = PreBuiltItemHelper.CreateHandnote(
                     Loc.Get("item.adrenaline_recipe.body",
-                        "ADRENALINE INJECTION PEN - six steps.\n\nSTEP 1 Amination (26-60 C): catechol + N-hydroxymethyl base solution + lipobond agent gives amination intermediate\nSTEP 2 Reduction (60-80 C): amination intermediate + reducing agent gives racemic adrenaline\nSTEP 3 Resolution (40-60 C acid catalyst): racemic adrenaline + resolving agent + acid gives levo-adrenaline salt + dextro waste. Remove the waste with the purifier waste slot.\nSTEP 4 Salt formation (26-60 C): levo salt + base gives free base; free base + acid gives adrenaline HCl. Evaporate water then press the dry liquid in the Chem Finisher to get the API\nSTEP 5 Solution: dissolve the API in an equal amount of water gives adrenaline solution (evaporate excess water)\nSTEP 6 Filling: press the dry adrenaline solution in the Chem Finisher gives the injection pen\n\nPer precursor kit: catechol 3000 / base sol 3000 / lipobond 3000 / reducing 3000 / resolving 3000 / base 1500 / acid 1500 uL. Stir and heat each step."),
+                        "ADRENALINE INJECTION PEN - six steps.\n\nSTEP 1 Amination (26-60 C): catechol + N-hydroxymethyl base solution + lipobond agent gives amination intermediate\nSTEP 2 Reduction (60-80 C): amination intermediate + reducing agent gives racemic adrenaline\nSTEP 3 Resolution (40-60 C acid catalyst): racemic adrenaline + resolving agent + acid gives levo-adrenaline salt + dextro waste. Remove the waste with the purifier waste slot.\nSTEP 4 Salt formation (26-60 C): levo salt + base gives free base; free base + acid gives adrenaline HCl. Evaporate water then press the dry liquid in the Chem Finisher to get the API\nSTEP 5 Solution: dissolve the API in an equal amount of water gives adrenaline solution (evaporate excess water)\nSTEP 6 Filling: press the dry adrenaline solution in the Chem Finisher gives the injection pen\n\nPer precursor kit: catechol 3000 / base sol 3000 / lipobond 3000 / reducing 3000 / resolving 3000 / base 1500 / acid 1500 uL. Stir and heat each step.\n\nRECYCLING: dissolve the dextro waste back into a container, add reducing agent and heat to 60-80 C so it racemises into racemic adrenaline, which can be resolved again in step 3."),
                     Loc.Get("item.adrenaline_recipe.title", "Adrenaline Injection Pen"),
                     "",
                     1);

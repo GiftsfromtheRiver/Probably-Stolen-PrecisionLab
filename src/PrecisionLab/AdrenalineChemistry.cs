@@ -42,6 +42,7 @@ namespace PrecisionLab
                 steps += StepAmination(container);
                 steps += StepReduction(container);
                 steps += StepResolution(container);
+                steps += StepDextroRecycle(container);
                 steps += StepFreebase(container);
                 steps += StepHcl(container);
                 steps += StepSolution(container);
@@ -149,6 +150,29 @@ namespace PrecisionLab
             return 1;
         }
 
+        /// <summary>
+        /// Optional recycling route (the user's "plan B"): dextro waste + reducing agent at
+        /// 60-80 °C racemises back into racemic adrenaline, which can be resolved again.
+        /// </summary>
+        internal static int StepDextroRecycle(GameItem container)
+        {
+            double temp = Temp(container);
+            if (temp < 60.0 || temp > 80.0)
+            {
+                return 0;
+            }
+            int dextro = Amount(container, CustomLiquids.DextroWaste);
+            int reducing = Amount(container, "reducing_agent");
+            int x = Step(Math.Min(dextro, reducing));
+            if (x <= 0)
+            {
+                return 0;
+            }
+            Add(container, CustomLiquids.DextroWaste, -x);
+            Add(container, "reducing_agent", -x);
+            Add(container, CustomLiquids.RacemicAdrenaline, x);
+            return 1;
+        }
         internal static int StepFreebase(GameItem container)
         {
             double temp = Temp(container);

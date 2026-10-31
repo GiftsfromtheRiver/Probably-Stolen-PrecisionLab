@@ -30,6 +30,7 @@ namespace PrecisionLab
             GameItem penItem = null;
             GameItem boxItem = null;
             GameItem noteItem = null;
+            GameItem recycleCup = null;
             try
             {
                 if (ItemMouseDragHandler.current == null)
@@ -269,6 +270,21 @@ namespace PrecisionLab
                 int hclLeft = LiquidTools.GetLiquidAmount(adrenalineCup, CustomLiquids.AdrenalineHcl);
                 int waterLeft = LiquidTools.GetLiquidAmount(adrenalineCup, "water");
 
+                // --- 8. Plan B: recycle dextro waste back into racemic adrenaline ---------
+                recycleCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(recycleCup, true);
+                LiquidTools.SetLiquidRaw(recycleCup, CustomLiquids.DextroWaste, 1000);
+                LiquidTools.SetLiquidRaw(recycleCup, "reducing_agent", 1000);
+                SetTemperature(recycleCup, 70.0);
+                PulseStep(recycleCup, AdrenalineChemistry.StepDextroRecycle);
+                int recycledRacemic = LiquidTools.GetLiquidAmount(recycleCup, CustomLiquids.RacemicAdrenaline);
+                int recycleDextroLeft = LiquidTools.GetLiquidAmount(recycleCup, CustomLiquids.DextroWaste);
+                int recycleReducingLeft = LiquidTools.GetLiquidAmount(recycleCup, "reducing_agent");
+                bool recycleOk = recycledRacemic == 1000
+                    && recycleDextroLeft == 0
+                    && recycleReducingLeft == 0;
+                log.Log(Prefix + "adrenaline recycle: racemic=" + recycledRacemic + "µL (expect 1000)"
+                    + " dextroLeft=" + recycleDextroLeft + "µL reducingLeft=" + recycleReducingLeft + "µL");
                 AdrenalineContent.EnsureRecipes();
                 bool recipesOk = ChemFinisherRecipe.GetRecipeById(ItemIds.Api) != null
                     && ChemFinisherRecipe.GetRecipeById(ItemIds.Pen) != null;
@@ -380,12 +396,13 @@ namespace PrecisionLab
                 bool modes = modesEmpty && modesDraw && modesInject && autoFilledInjects;
                 log.Log(Prefix + (exact && refuseOverdose && hasWindow && sliderWorks && modes && manualOk
                         && clean && conc && hydrolysis && digestion && cultivatorOk
-                        && adrenalineOk && adrenalineItemsOk ? "OK" : "FAILED")
+                        && adrenalineOk && adrenalineItemsOk && recycleOk ? "OK" : "FAILED")
                     + " exact=" + exact + " refuseOverdose=" + refuseOverdose + " window=" + hasWindow
                     + " slider=" + sliderWorks + " modes=" + modes + " manual=" + manualOk
                     + " cleanWater=" + clean + " concentrate=" + conc
                     + " hydrolysis=" + hydrolysis + " digestion=" + digestion + " cultivator=" + cultivatorOk
-                    + " adrenaline=" + adrenalineOk + " adrenalineItems=" + adrenalineItemsOk);
+                    + " adrenaline=" + adrenalineOk + " adrenalineItems=" + adrenalineItemsOk
+                    + " recycle=" + recycleOk);
             }
             catch (Exception e)
             {
@@ -407,6 +424,7 @@ namespace PrecisionLab
                 DestroyQuietly(penItem);
                 DestroyQuietly(boxItem);
                 DestroyQuietly(noteItem);
+                DestroyQuietly(recycleCup);
             }
         }
 
