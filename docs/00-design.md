@@ -271,3 +271,7 @@ adrenaline_hcl、adrenaline_solution。全部 `canBeRemovedByPurifier=false`（�
 
 - 最终构建（v1.2.0）：见 docs/04-verification.md；自检 `SELFTEST OK ... adrenaline=True adrenalineItems=True`，
   链式数值 amination/racemic/hcl/solution 全 3000/1500 对齐，拆分 1500/1500。
+
+### v1.2.1 小修
+
+提纯机废料输出空槽位的背景图标（原版 chemical2，看起来像纸条）已移除，空槽显示为普通暗色槽位；非功能变更。

@@ -485,3 +485,8 @@ $m='F:\SteamLibrary\steamapps\common\Probably Stolen\Probably Stolen_Data\Manage
 - 最终交付状态：`Mods` 仅 PrecisionLab（manifest v1.2.0 + DLL），SaveFile.es3 可写且信任匹配、dev=false；
   无 dev.txt/helper/scratch；slot 43 用户存档未被测试写入。
   日志：`tools/verify/logs/final39.log`、`final-clean-boot20.log`。
+## v1.2.1 小修（2026-10-31）
+
+用户反馈提纯机“废料输出”空槽位看起来像塞了一张纸条。原因：该槽位空背景使用了原版 chemical2
+化学品图标（外形像橙色纸条），并非真的插入了物品（说明便签仍在 note 槽位）。修复：移除该槽位背景图标，
+空槽显示为普通暗色槽位；面板标题“废料输出”不变。版本号 1.2.1。

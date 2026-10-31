@@ -256,7 +256,9 @@ namespace PrecisionLab
             // step here as an item instead of destroying it.
             wasteSlot.mayInventoryAddItemFunc = (candidate, inventory) =>
                 GeneralHelper.IsItemOwned(candidate) && candidate.identifier == ItemIds.DextroWaste;
-            wasteSlot.SetBackgroundFadeSprite("Items/items_material", "chemical2");
+            // Deliberately no background fade sprite: the vanilla chemical2 icon looked like a
+            // paper note inside the empty waste slot and confused players. The panel label already
+            // says "Waste Output"; an empty slot renders as a plain dark slot now.
             wasteSlot.SetTooltipName(Loc.Get("machine.purifier.waste", "Waste Output"));
 
             containerSlot.mayInventoryAddItemFunc = (candidate, inventory) =>
