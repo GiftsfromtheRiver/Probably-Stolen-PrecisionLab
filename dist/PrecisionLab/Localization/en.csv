@@ -56,7 +56,7 @@ tooltip.purifier.modules,Module bonuses: performance +{0}% (more per cycle) / po
 ui.purifier.cap_label,Purity cap
 item.purifier.manual.name,Purification Machine Notes
 item.purifier.manual.flavor,Someone scribbled the important parts on a sticky note and taped it to the filter stack.
-item.purifier.manual.desc,"[Module effects]:\n- Efficiency: power draw\n- Performance: amount processed per night\n- Quality: purity cap (purity +x%, up to 100%)\n\nProvide power and a liquid container and the machine runs at night. Removes physical, chemical (including heavy metals) and biological contamination; valuable ingredients are kept."
+item.purifier.manual.desc,"[Module effects]:\n- Efficiency: power draw\n- Performance: amount processed per night\n- Quality: purity cap (purity +x%, up to 100%)\n\nProvide power and a liquid container and the machine runs at night. Removes physical, chemical (including heavy metals) and biological contamination; valuable ingredients are kept.\nWaste output: collects dextro waste from the liquid; several batches accumulate in the same waste bottle."
 item.cultivator.name,Microbial Cultivator
 item.cultivator.flavor,A sealed fermenter humming with something that eats sugar. Do not open the lid during a night shift.
 item.cultivator.desc,Cultures sugar-eating microbes in a sealed vat. Put a sugary liquid container in the liquid slot and nutrifruit (small / normal / large / huge) in the nutrient slot: the machine presses the fruit into juice that keeps the culture active, and each night the culture digests sugar into a little organic waste (the rest is burned off). When the liquid runs low on sugar the culture goes dormant until it is fed nutrifruit again. Performance modules digest more sugar per night, quality modules reduce the waste, efficiency modules reduce power draw.
@@ -111,7 +111,7 @@ item.adrenaline_pen.flavor,"A single-use auto-injector. The label says EPINEPHRI
 item.adrenaline_pen.desc,A combat stim auto-injector: sharp short burst of accuracy and critical chance. Medical item and luxury item. Each pen is pressed from 5000 uL (5 mL) of adrenaline solution; quality is graded from the active fraction.
 item.dextro_waste.name,Dextro Waste
 item.dextro_waste.flavor,"The useless half of the resolution. Sticky bitter and best not handled bare-handed."
-item.dextro_waste.desc,Waste collected by the purification machine waste output slot when a liquid contains dextro waste from the chiral resolution step. Dissolve it back into a container, add reducing agent and heat to 60-80 C to racemise it back into racemic adrenaline (improves total yield).
+item.dextro_waste.desc,Waste collected by the purification machine waste output slot when a liquid contains dextro waste from the chiral resolution step; several batches accumulate in the same waste bottle. Dissolve it back into a container, add reducing agent and heat to 60-80 C to racemise it back into racemic adrenaline (improves total yield).
 tooltip.adrenaline_box.contents,"Contains one batch of reagents: catechol N-hydroxymethyl base solution lipobond agent reducing agent resolving agent base and acid."
 tooltip.adrenaline_box.hint,Activate to unpack. Follow the adrenaline injection pen recipe note (granted by the More Medicines unlock) for the six production steps.
 tooltip.adrenaline_api.purity,Active ingredient purity: {0:0.#}%

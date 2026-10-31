@@ -396,21 +396,46 @@ namespace PrecisionLab
             try
             {
                 int waste = LiquidTools.GetLiquidAmount(container, CustomLiquids.DextroWaste);
-                if (waste <= 0 || wasteSlot.childItem != null)
+                if (waste <= 0)
                 {
                     return 0;
                 }
-                GameItem item = ItemSpawner.Spawn(ItemIds.DextroWaste);
-                if (item == null)
+                if (wasteSlot.childItem != null)
                 {
-                    return 0;
+                    // The output holds one waste bottle, but it accumulates across cycles: more
+                    // batches add their dextro waste into the same bottle instead of the
+                    // collection silently doing nothing until the player empties the slot.
+                    GameItem existing = wasteSlot.childItem;
+                    if (existing == null || !existing.identifier.Equals(ItemIds.DextroWaste))
+                    {
+                        return 0;
+                    }
+                    ChemicalHelper.AddChemContentUL(existing, CustomLiquids.DextroWaste, waste);
+                    ChemicalProductHelper.GradeProduct(existing);
+                    try
+                    {
+                        ItemFeature existingFeature = WaterFeatureHelper.GetWaterFeature(existing);
+                        WaterFeatureHelper.OnLiquidChanged(existing, existingFeature.IsExposed());
+                    }
+                    catch (Exception)
+                    {
+                        // Not attached to a live UI yet.
+                    }
                 }
-                ChemicalHelper.SetChemContentUL(item, CustomLiquids.DextroWaste, waste);
-                GraphUtils.TryAcceptAll(wasteSlot, item);
-                if (wasteSlot.childItem == null)
+                else
                 {
-                    item.Destroy();
-                    return 0;
+                    GameItem item = ItemSpawner.Spawn(ItemIds.DextroWaste);
+                    if (item == null)
+                    {
+                        return 0;
+                    }
+                    ChemicalHelper.SetChemContentUL(item, CustomLiquids.DextroWaste, waste);
+                    GraphUtils.TryAcceptAll(wasteSlot, item);
+                    if (wasteSlot.childItem == null)
+                    {
+                        item.Destroy();
+                        return 0;
+                    }
                 }
                 string part = Liquid.GetCurrentPartFromId(CustomLiquids.DextroWaste);
                 if (part != null)
