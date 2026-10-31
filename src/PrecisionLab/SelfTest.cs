@@ -331,7 +331,7 @@ namespace PrecisionLab
                     && tourniquetItem.mayActivateSlotItemFunc != null
                     && tourniquetItem.canActivateSlotItemFunc != null
                     && tourniquetItem.shape != null
-                    && tourniquetItem.shape.width == 3
+                    && tourniquetItem.shape.width == 2
                     && tourniquetItem.shape.height == 2
                     && fabricSample != null;
                 if (fabricSample != null)

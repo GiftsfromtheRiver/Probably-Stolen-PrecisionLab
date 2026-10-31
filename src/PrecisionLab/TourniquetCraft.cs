@@ -74,7 +74,7 @@ namespace PrecisionLab
             return item;
         }
 
-        /// <summary>Applies the 48x32 mod art and forces a rectangular 3x2 footprint (3 cells wide, 2 tall).</summary>
+        /// <summary>Applies the 32x32 mod art and forces a rectangular 2x2 footprint.</summary>
         internal static void ApplySpriteAndShape(GameItem item)
         {
             if (item == null)
@@ -88,7 +88,7 @@ namespace PrecisionLab
                     item.SetSpriteAndShapeFromMod(Loc.ModId, SpriteKeys.Tourniquet);
                     // The alpha cut-out has transparent corners, so derive-from-alpha would give a
                     // ragged shape; the item is meant to occupy a clean 3x2 rectangle.
-                    item.SetShape(new GridShapeBuilder(3, 2).SetDataFill(3, 2, 1).Build());
+                    item.SetShape(new GridShapeBuilder(2, 2).SetDataFill(2, 2, 1).Build());
                 }
                 else
                 {
@@ -291,7 +291,7 @@ namespace PrecisionLab
                 GameItem item = items[i];
                 Attach(item);
                 if (item != null && item.identifier == ItemIds.Tourniquet
-                    && (item.shape == null || item.shape.width != 3 || item.shape.height != 2))
+                    && (item.shape == null || item.shape.width != 2 || item.shape.height != 2))
                 {
                     try
                     {
