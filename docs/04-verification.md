@@ -538,3 +538,15 @@ v1.2.9 增加：提纯机/培养机显式 EnableTag("TURBO_BOOST_ELIGIBLE_TAG")�
 后续周期（含涡轮加速）会静默跳过。修复：`CollectDextroWaste` 在槽内已有废料瓶时，用
 `ChemicalHelper.AddChemContentUL` 把新废料累加进同一瓶，并 `GradeProduct` 刷新品质；液体中的废料照常清空；
 移除瓶子后下一轮会新建一瓶。说明文案补充“多批废料会累积在同一个废料瓶里”。
+## v1.3.0 简易止血带（2026-11-01）
+
+玩家提出：用「韧棉织物」+「废金属」拖拽合成「简易止血带」，并要求在购买「更多药品」升级后才收到配方纸条、解锁前不能合成。
+
+实现：
+- 新物品 `makeshift_tourniquet`（简易止血带）：MEDICAL + ITEM_MEDICAL_TAG + 医疗熟练度，价值 24；
+  使用效果镜像止血绷带（稳定伤势 + 伤势 -1，单次消耗）；16x16 程序生成像素贴图。
+- 合成：把 `kotton_fabric`（韧棉织物）拖到 `scrap_metal`（废金属）上 → 消耗各 1、在目标所在库存生成 1 条止血带；
+  放置失败则不消耗；通过 `DirectoryMaster.Item` postfix 给织物实例挂接目标委托（幂等防重复），存档加载时同样生效。
+- 解锁门控：`CanCraft` 检查 `PRECISION_LAB_MEDS`，未解锁时 may/can 返回 false（无拖拽高亮），无法合成。
+- 配方纸条：解锁时/读档时额外发放「简易止血带配方」手写便签（署名空、正文含合成方式与解锁条件），旧存档自动补发。
+- 自检新增：物品类型/激活委托/挂接检查，日志 `tourniquet=True`。

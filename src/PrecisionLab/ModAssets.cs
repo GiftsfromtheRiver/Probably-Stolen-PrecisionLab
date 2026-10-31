@@ -12,6 +12,7 @@ namespace PrecisionLab
         internal const string Api = "adrenaline_api";
         internal const string Pen = "adrenaline_pen";
         internal const string DextroWaste = "dextro_waste_item";
+        internal const string Tourniquet = "makeshift_tourniquet";
     }
 
     internal static class SpriteKeys
@@ -25,6 +26,7 @@ namespace PrecisionLab
         internal const string Api = "adrenaline_api";
         internal const string Pen = "adrenaline_pen";
         internal const string DextroWaste = "dextro_waste";
+        internal const string Tourniquet = "makeshift_tourniquet";
     }
 
     internal static class Tags

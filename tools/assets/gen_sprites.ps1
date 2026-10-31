@@ -375,4 +375,21 @@ Fill-Rect $waste 6 5 1 2 'metalHi2'
 Test-CellCenters $waste 'dextro_waste'
 Save-Sprite $waste 'dextro_waste'
 
+
+# ---------------------------------------------------------------------------
+# 简易止血带 / Makeshift tourniquet — 16x16 rolled fabric with a metal buckle
+# ---------------------------------------------------------------------------
+$tourniquet = New-Canvas 16 16
+Fill-Rect $tourniquet 3 3 10 10 'wasteTan'
+Frame-Rect $tourniquet 3 3 10 10 'border'
+Fill-Rect $tourniquet 4 4 8 2 'wasteTanHi'
+Fill-Rect $tourniquet 4 9 8 3 'wasteTanHi'
+Fill-Rect $tourniquet 6 4 1 8 'wasteTanHi'
+Fill-Rect $tourniquet 9 4 1 8 'border'
+Fill-Rect $tourniquet 11 6 3 4 'metal'
+Fill-Rect $tourniquet 12 7 1 2 'metalHi2'
+Fill-Rect $tourniquet 13 10 2 2 'wasteTan'
+Frame-Rect $tourniquet 13 10 2 2 'border'
+Test-CellCenters $tourniquet 'makeshift_tourniquet'
+Save-Sprite $tourniquet 'makeshift_tourniquet'
 Write-Host "[sprites] done -> $OutDir"

@@ -31,6 +31,8 @@ namespace PrecisionLab
             GameItem boxItem = null;
             GameItem noteItem = null;
             GameItem recycleCup = null;
+            GameItem tourniquetItem = null;
+            GameItem fabricSample = null;
             try
             {
                 if (ItemMouseDragHandler.current == null)
@@ -295,6 +297,8 @@ namespace PrecisionLab
                 penItem = AdrenalineContent.CreatePen();
                 boxItem = AdrenalineContent.CreateSupplyBox();
                 noteItem = AdrenalineContent.CreateRecipeNote();
+                tourniquetItem = ItemSpawner.Spawn(ItemIds.Tourniquet);
+                fabricSample = ItemSpawner.Spawn(TourniquetCraft.FabricId);
                 bool itemsOk = apiItem != null
                     && penItem != null
                     && penItem.IsTag("ITEM_MEDICAL_TAG")
@@ -319,6 +323,22 @@ namespace PrecisionLab
                     + "µL wasteItem='" + (wasteItem != null ? wasteItem.name : "-")
                     + "' | solution=" + solution + "µL hclLeft=" + hclLeft + "µL waterLeft=" + waterLeft + "µL"
                     + " | recipes=" + recipesOk + " items=" + itemsOk);
+
+                bool tourniquetOk = tourniquetItem != null
+                    && tourniquetItem.IsGameItemType("MEDICAL")
+                    && tourniquetItem.IsTag("ITEM_MEDICAL_TAG")
+                    && tourniquetItem.unitValue > 0
+                    && tourniquetItem.mayActivateSlotItemFunc != null
+                    && tourniquetItem.canActivateSlotItemFunc != null
+                    && fabricSample != null;
+                if (fabricSample != null)
+                {
+                    TourniquetCraft.Attach(fabricSample);
+                    tourniquetOk = tourniquetOk && fabricSample.mayThisTargetItemFunc != null;
+                }
+                log.Log(Prefix + "makeshift tourniquet: item=" + (tourniquetItem != null)
+                    + " medical=" + (tourniquetItem != null && tourniquetItem.IsGameItemType("MEDICAL"))
+                    + " attach=" + (fabricSample != null && fabricSample.mayThisTargetItemFunc != null));
 
                 bool exact = moved == 1234 && targetTotal == 1234 && sourceTotal == totalBefore - moved;
                 bool refuseOverdose = overRequest == 0 && afterOverRequest == targetTotal;
@@ -364,7 +384,7 @@ namespace PrecisionLab
                     && solution == hcl
                     && hclLeft == 0
                     && waterLeft == 0;
-                bool adrenalineItemsOk = recipesOk && itemsOk;
+                bool adrenalineItemsOk = recipesOk && itemsOk && tourniquetOk;
 
                 // Verify the pipette dial: moving the in-window slider must write the per-item
                 // dose tag through the real UI callback.
@@ -406,6 +426,7 @@ namespace PrecisionLab
                     + " cleanWater=" + clean + " concentrate=" + conc
                     + " hydrolysis=" + hydrolysis + " digestion=" + digestion + " cultivator=" + cultivatorOk
                     + " adrenaline=" + adrenalineOk + " adrenalineItems=" + adrenalineItemsOk
+                    + " tourniquet=" + tourniquetOk
                     + " recycle=" + recycleOk);
             }
             catch (Exception e)
@@ -428,6 +449,8 @@ namespace PrecisionLab
                 DestroyQuietly(penItem);
                 DestroyQuietly(boxItem);
                 DestroyQuietly(noteItem);
+                DestroyQuietly(tourniquetItem);
+                DestroyQuietly(fabricSample);
                 DestroyQuietly(recycleCup);
             }
         }

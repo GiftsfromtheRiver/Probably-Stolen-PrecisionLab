@@ -120,7 +120,7 @@ tooltip.adrenaline_pen.effect,"Combat stim: +20% accuracy and +33% critical chan
 tooltip.adrenaline_pen.tag,Medical item / luxury item - single use, usable in combat.
 tooltip.dextro_waste.hint,Waste from the chiral resolution step. The purifier waste output slot collects it; dissolve it back into a container + reducing agent at 60-80 C to recycle it into racemic adrenaline.
 upgrade.meds.title,More Medicines: Adrenaline
-upgrade.meds.desc,"Unlocks the adrenaline injection pen production line: a recipe note in your store plus precursor kits sold by the retired chemist."
+upgrade.meds.desc,Unlocks the adrenaline injection pen production line plus two recipe notes (adrenaline pen + makeshift tourniquet), and makes the retired chemist sell adrenaline precursor kits.
 upgrade.meds.bought,Ordered. Check your store inventory for the recipe note.
 machine.purifier.waste,Waste Output
 tooltip.purifier.dextro,"Contains {0} mL dextro waste: the waste output slot collects it as a waste item during the cycle."
@@ -131,3 +131,8 @@ item.adrenaline_recipe.sign,Li Beven
 item.adrenaline_recipe.body,"ADRENALINE INJECTION PEN - six steps.\n\nSTEP 1 Amination (26-60 C): catechol + N-hydroxymethyl base solution + lipobond agent gives amination intermediate\nSTEP 2 Reduction (60-80 C): amination intermediate + reducing agent gives racemic adrenaline\nSTEP 3 Resolution (40-60 C acid catalyst): racemic adrenaline + resolving agent + acid gives levo-adrenaline salt + dextro waste. Remove the waste with the purifier waste slot.\nSTEP 4 Salt formation (26-60 C): levo salt + base gives free base; free base + acid gives adrenaline HCl. Evaporate water then press the dry liquid in the Chem Finisher to get the API\nSTEP 5 Solution: dissolve the API in an equal amount of water gives adrenaline solution (evaporate excess water)\nSTEP 6 Filling: press the dry adrenaline solution in the Chem Finisher gives the injection pen\n\nPer precursor kit: catechol 20000 / base sol 20000 / lipobond 20000 / reducing 20000 / resolving 20000 / base 10000 / acid 10000 uL. Stir and heat each step. Each reagent vial is full and holds exactly one batch, so pour in the listed ratios. One injection pen needs 5000 uL (5 mL) of solution; one kit yields two pens.\n\nRECYCLING: dissolve the dextro waste back into a container, add reducing agent and heat to 60-80 C so it racemises into racemic adrenaline, which can be resolved again in step 3."
 tooltip.purifier.turbo,Turbo boost: drag a turbo booster (advanced / hypertech) onto this machine while the booster is READY to run one extra cycle.
 tooltip.cultivator.turbo,Turbo boost: drag a turbo booster (advanced / hypertech) onto this machine while the booster is READY to run one extra cycle.
+item.makeshift_tourniquet.name,Makeshift Tourniquet
+item.makeshift_tourniquet.desc,A strip of tough cotton fabric with a scrap-metal buckle. Medical item: use it while wounded to stabilise the wound and lower the wound level by one (like a hemostatic bandage).
+item.tourniquet_recipe.name,Makeshift Tourniquet Recipe
+item.tourniquet_recipe.title,Makeshift Tourniquet
+item.tourniquet_recipe.body,"MAKESHIFT TOURNIQUET - emergency medical recipe.\n\nDrag a piece of tough cotton fabric (kotton_fabric) onto a piece of scrap metal (scrap_metal): this consumes 1 fabric + 1 scrap metal and crafts 1 makeshift tourniquet.\n\nThe tourniquet is a medical item: use it while wounded to stabilise the wound and lower the wound level by one (like a hemostatic bandage).\n\nThis recipe only works after unlocking More Medicines: Adrenaline."

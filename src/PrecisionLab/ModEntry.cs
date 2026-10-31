@@ -155,11 +155,13 @@ namespace PrecisionLab
                 bool api = directory.Has(ItemIds.Api) || directory.Add(ItemIds.Api, AdrenalineContent.CreateApi);
                 bool pen = directory.Has(ItemIds.Pen) || directory.Add(ItemIds.Pen, AdrenalineContent.CreatePen);
                 bool waste = directory.Has(ItemIds.DextroWaste) || directory.Add(ItemIds.DextroWaste, AdrenalineContent.CreateWasteItem);
-                if (extractor || purifier || cultivator || supplyBox || api || pen || waste)
+                bool tourniquet = directory.Has(ItemIds.Tourniquet) || directory.Add(ItemIds.Tourniquet, TourniquetCraft.CreateTourniquet);
+                if (extractor || purifier || cultivator || supplyBox || api || pen || waste || tourniquet)
                 {
                     _log.Log("items registered in mod item directory: extractor=" + extractor
                         + " purifier=" + purifier + " cultivator=" + cultivator
-                        + " supplyBox=" + supplyBox + " api=" + api + " pen=" + pen + " waste=" + waste);
+                        + " supplyBox=" + supplyBox + " api=" + api + " pen=" + pen
+                        + " waste=" + waste + " tourniquet=" + tourniquet);
                 }
             }
             catch (Exception e)
@@ -337,6 +339,7 @@ namespace PrecisionLab
                     GraphUtils.EmporiumTryAdd(note);
                     _log.Log("adrenaline recipe note delivered");
                 }
+                TourniquetCraft.OnUnlocked();
             }
             catch (Exception e)
             {
@@ -344,7 +347,7 @@ namespace PrecisionLab
             }
         }
 
-        private static bool IsUpgradeUnlocked(string upgradeId)
+        internal static bool IsUpgradeUnlocked(string upgradeId)
         {
             if (!PlayerStore.HasInstance)
             {
@@ -764,6 +767,7 @@ namespace PrecisionLab
                 {
                     AdrenalineContent.EnsureRecipes();
                     AdrenalineContent.RefreshRecipeNotesInStore();
+                    TourniquetCraft.OnGameLoaded();
                 }
             }
             catch (Exception e)

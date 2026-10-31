@@ -95,7 +95,12 @@ namespace PrecisionLab
     {
         private static void Postfix(string identifier, GameItem __result)
         {
-            if (__result != null && (identifier == ItemIds.Purifier || identifier == ItemIds.Cultivator))
+            if (__result == null)
+            {
+                return;
+            }
+            TourniquetCraft.Attach(__result);
+            if (identifier == ItemIds.Purifier || identifier == ItemIds.Cultivator)
             {
                 PurifierManualHelper.TryEnsure(__result);
             }
