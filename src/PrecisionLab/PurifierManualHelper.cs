@@ -5,7 +5,8 @@ using UnityEngine;
 namespace PrecisionLab
 {
     /// <summary>
-    /// Ensures every spawned Precision Purifier carries its instruction note in the note panel.
+    /// Ensures every spawned Precision machine (purifier / microbial cultivator) carries its
+    /// instruction note in the note panel.
     ///
     /// The note must be inserted AFTER DirectoryMaster/ItemDirectory has finished creating the
     /// item: DirectoryMaster.Item explicitly destroys any child items found on a freshly created
@@ -15,23 +16,33 @@ namespace PrecisionLab
     /// </summary>
     internal static class PurifierManualHelper
     {
+        private static bool IsGuidedMachine(GameItem machine)
+        {
+            return machine != null
+                && (machine.identifier == ItemIds.Purifier || machine.identifier == ItemIds.Cultivator);
+        }
+
         /// <summary>Adds the instruction paper to the machine's note slot (storage index 3) if missing.</summary>
         internal static void TryEnsure(GameItem machine)
         {
-            if (machine == null || machine.identifier != ItemIds.Purifier)
+            if (!IsGuidedMachine(machine))
             {
                 return;
             }
             try
             {
-                // Storage indices (MachineryPanelRow.CollectStorage): power=0, module=1,
-                // container=2, note=3 — the display-only purity panel adds no storage entry.
-                GameSlotInventory noteSlot = MachineHelper.GetSlot(machine, 3) as GameSlotInventory;
+                // Storage indices (MachineryPanelRow.CollectStorage):
+                //   purifier : power=0, module=1, container=2, note=3
+                //   cultivator: power=0, module=1, container=2, nutrient=3, note=4
+                int noteIndex = machine.identifier == ItemIds.Purifier ? 3 : 4;
+                GameSlotInventory noteSlot = MachineHelper.GetSlot(machine, noteIndex) as GameSlotInventory;
                 if (noteSlot == null || noteSlot.childItem != null)
                 {
                     return;
                 }
-                GameItem manual = ItemFactory.CreatePurifierManual();
+                GameItem manual = machine.identifier == ItemIds.Purifier
+                    ? ItemFactory.CreatePurifierManual()
+                    : ItemFactory.CreateCultivatorManual();
                 if (manual == null)
                 {
                     return;
@@ -43,20 +54,20 @@ namespace PrecisionLab
                 }
                 if (noteSlot.childItem != null)
                 {
-                    Debug.Log("[PrecisionLab] instruction note added to the purifier's note slot");
+                    Debug.Log("[PrecisionLab] instruction note added to '" + machine.identifier + "' note slot");
                 }
                 else
                 {
-                    Debug.LogWarning("[PrecisionLab] purifier instruction note could not be inserted into the note slot");
+                    Debug.LogWarning("[PrecisionLab] instruction note could not be inserted into '" + machine.identifier + "'");
                 }
             }
             catch (Exception e)
             {
-                Debug.LogWarning("[PrecisionLab] ensuring the purifier manual failed: " + e.Message);
+                Debug.LogWarning("[PrecisionLab] ensuring the instruction manual failed: " + e.Message);
             }
         }
 
-        /// <summary>Scans the store for purifier machines without a manual (load / morning catch-up).</summary>
+        /// <summary>Scans the store for mod machines without a manual (load / morning catch-up).</summary>
         internal static void EnsureAllInStore()
         {
             try
@@ -73,7 +84,7 @@ namespace PrecisionLab
             }
             catch (Exception e)
             {
-                Debug.LogWarning("[PrecisionLab] purifier manual scan failed: " + e.Message);
+                Debug.LogWarning("[PrecisionLab] machine manual scan failed: " + e.Message);
             }
         }
     }
@@ -84,7 +95,7 @@ namespace PrecisionLab
     {
         private static void Postfix(string identifier, GameItem __result)
         {
-            if (__result != null && identifier == ItemIds.Purifier)
+            if (__result != null && (identifier == ItemIds.Purifier || identifier == ItemIds.Cultivator))
             {
                 PurifierManualHelper.TryEnsure(__result);
             }

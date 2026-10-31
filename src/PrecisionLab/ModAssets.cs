@@ -7,6 +7,7 @@ namespace PrecisionLab
     {
         internal const string Extractor = "precision_liquid_extractor";
         internal const string Purifier = "precision_purifier";
+        internal const string Cultivator = "precision_microbe_cultivator";
     }
 
     internal static class SpriteKeys
@@ -14,6 +15,8 @@ namespace PrecisionLab
         internal const string Extractor = "precision_extractor";
         internal const string Purifier = "precision_purifier";
         internal const string PurifierActive = "precision_purifier_active";
+        internal const string Cultivator = "precision_cultivator";
+        internal const string CultivatorActive = "precision_cultivator_active";
     }
 
     internal static class Tags
@@ -22,6 +25,8 @@ namespace PrecisionLab
         internal const string ExtractorMode = "PRECISION_EXTRACTOR_MODE";
         internal const string ExtractorLastResult = "PRECISION_EXTRACTOR_LAST_RESULT";
         internal const string PurifierRemoved = "PRECISION_PURIFIER_REMOVED_TAG";
+        internal const string CultivatorActivity = "PRECISION_CULTIVATOR_ACTIVITY_INT";
+        internal const string CultivatorProcessed = "PRECISION_CULTIVATOR_PROCESSED_INT";
         internal const string LiquidContainer = "LIQUID_CONTAINER_TAG";
         internal const string LiquidCapacity = "LIQUID_CONTAINER_CAPACITY";
         internal const string LiquidBasePrice = "LIQUID_CONTAINER_BASE_PRICE_TAG";

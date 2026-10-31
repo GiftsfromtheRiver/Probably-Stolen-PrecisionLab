@@ -25,7 +25,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <Deterministic>true</Deterministic>
 
-    <!-- Game install root. Pass -p:GameDir=&quot;...&quot; or set the GameDir environment variable. -->
+    <GameDir Condition="'$(GameDir)' == ''">F:\SteamLibrary\steamapps\common\Probably Stolen</GameDir>
     <ManagedDir>$(GameDir)\Probably Stolen_Data\Managed</ManagedDir>
 
     <OutputPath>..\..\dist\PrecisionLab\</OutputPath>

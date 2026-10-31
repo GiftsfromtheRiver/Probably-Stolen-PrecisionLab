@@ -21,6 +21,10 @@ namespace PrecisionLab
             GameItem target = null;
             GameItem product = null;
             GameItem machine = null;
+            GameItem cultivator = null;
+            GameItem hydro = null;
+            GameItem sugarCup = null;
+            GameItem fruit = null;
             try
             {
                 if (ItemMouseDragHandler.current == null)
@@ -133,9 +137,108 @@ namespace PrecisionLab
                     + " purity=" + concPurityBefore + "->" + concPurityAfter + "bp"
                     + " contaminants=" + concContaminantBefore + "->" + concContaminantAfter + "µL");
 
+                // --- 4. Starch hydrolysis (starch + acid at 40-60 C -> sugar) ---------
+                hydro = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(hydro, true);
+                LiquidTools.SetLiquidRaw(hydro, "water", 3000);
+                LiquidTools.SetLiquidRaw(hydro, "starch", 1000);
+                LiquidTools.SetLiquidRaw(hydro, "acid", 200);
+                int hydroTotalBefore = WaterHelper.GetTotalVolume(hydro);
+                SetTemperature(hydro, 50.0);
+                int hydrolyzed = StarchHydrolysis.React(hydro, false);
+                int starchAfter = LiquidTools.GetLiquidAmount(hydro, "starch");
+                int sugarAfter = LiquidTools.GetLiquidAmount(hydro, "sugar");
+                int acidAfter = LiquidTools.GetLiquidAmount(hydro, "acid");
+                int hydroTotalAfter = WaterHelper.GetTotalVolume(hydro);
+                SetTemperature(hydro, 30.0);
+                int coldTick = StarchHydrolysis.React(hydro, false);
+                log.Log(Prefix + "starch hydrolysis: converted=" + hydrolyzed + "µL starch=" + 1000 + "->" + starchAfter
+                    + "µL sugar=" + sugarAfter + "µL acid=" + acidAfter + "µL (expect unchanged 200)"
+                    + " total=" + hydroTotalBefore + "->" + hydroTotalAfter + "µL (expect unchanged)"
+                    + " coldTick=" + coldTick + "µL (expect 0)");
+
+                // --- 5. Microbial cultivator: sugar -> organic waste ------------------
+                sugarCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(sugarCup, true);
+                LiquidTools.SetLiquidRaw(sugarCup, "water", 2000);
+                LiquidTools.SetLiquidRaw(sugarCup, "sugar", 5000);
+                int sugarTotalBefore = WaterHelper.GetTotalVolume(sugarCup);
+                int digested = LiquidTools.DigestSugar(sugarCup, 0, 0, 100);
+                int sugarLeft = LiquidTools.GetLiquidAmount(sugarCup, "sugar");
+                int wasteAfter = LiquidTools.GetLiquidAmount(sugarCup, "organic_waste");
+                int sugarTotalAfter = WaterHelper.GetTotalVolume(sugarCup);
+                int dormantDigest = LiquidTools.DigestSugar(sugarCup, 0, 0, 0);
+                int sugarAfterDormant = LiquidTools.GetLiquidAmount(sugarCup, "sugar");
+                log.Log(Prefix + "cultivator digest: digested=" + digested + "µL (expect 2000)"
+                    + " sugar=" + 5000 + "->" + sugarLeft + "µL"
+                    + " organicWaste=" + wasteAfter + "µL (expect 400)"
+                    + " total=" + sugarTotalBefore + "->" + sugarTotalAfter + "µL (expect -1600)"
+                    + " dormantDigest=" + dormantDigest + "µL (expect 0) sugarWhileDormant=" + sugarAfterDormant + "µL");
+
+                // --- 6. Cultivator machine factory + instruction manual ---------------
+                cultivator = ItemFactory.CreateCultivator();
+                cultivator.identifier = ItemIds.Cultivator;
+                GeneralHelper.SetItemOwned(cultivator, true);
+                PurifierManualHelper.TryEnsure(cultivator);
+                // Storage indices with the nutrient slot: power=0, module=1, container=2,
+                // nutrient=3, note=4 (the culture text panel is display-only).
+                GameSlotInventory cultivatorNoteSlot = MachineHelper.GetSlot(cultivator, 4) as GameSlotInventory;
+                GameItem cultivatorManual = cultivatorNoteSlot != null ? cultivatorNoteSlot.childItem : null;
+                bool cultivatorManualOk = cultivatorManual != null && cultivatorManual.IsTag("MACHINE_MANUAL_TAG");
+                int cultivatorActivity = ItemFactory.GetCultivatorActivity(cultivator);
+
+                // The nutrient slot only accepts nutrifruit; pressing a huge fruit (+60) wakes a
+                // dormant culture (activity 0 -> 60) and consumes it.
+                fruit = DirectoryMaster.Item("nutrifruit");
+                if (fruit != null)
+                {
+                    GeneralHelper.SetItemOwned(fruit, true);
+                    fruit.unitValue = 32L; // huge nutrifruit
+                }
+                GameSlotInventory nutrientSlot = MachineHelper.GetSlot(cultivator, 3) as GameSlotInventory;
+                if (nutrientSlot != null && fruit != null)
+                {
+                    GraphUtils.TryAcceptAll(nutrientSlot, fruit);
+                }
+                bool fruitAccepted = nutrientSlot != null && nutrientSlot.childItem == fruit;
+                cultivator.ModifyTag(Tags.CultivatorActivity, delegate (TagState state)
+                {
+                    state.Enable().SetInt(0);
+                });
+                int pressed = ItemFactory.PressNutrientFruit(cultivator, nutrientSlot);
+                int activityAfterFeed = ItemFactory.GetCultivatorActivity(cultivator);
+                bool fruitConsumed = nutrientSlot != null && nutrientSlot.childItem == null;
+                log.Log(Prefix + "cultivator machine: window=" + (cultivator.contentWindow != null)
+                    + " power=" + MachineryHelper.GetMachinePowerUsage(cultivator)
+                    + " activity=" + cultivatorActivity + "% manual=" + cultivatorManualOk
+                    + " manualName='" + (cultivatorManual != null ? cultivatorManual.name : "-") + "'"
+                    + " nutrientSlot=" + (nutrientSlot != null) + " fruitAccepted=" + fruitAccepted
+                    + " pressed=+" + pressed + "% activityAfterFeed=" + activityAfterFeed + "%"
+                    + " fruitConsumed=" + fruitConsumed);
+
                 bool exact = moved == 1234 && targetTotal == 1234 && sourceTotal == totalBefore - moved;
                 bool refuseOverdose = overRequest == 0 && afterOverRequest == targetTotal;
                 bool hasWindow = extractor.contentWindow != null;
+                bool hydrolysis = hydrolyzed > 0
+                    && starchAfter == 1000 - hydrolyzed
+                    && sugarAfter == hydrolyzed
+                    && acidAfter == 200
+                    && hydroTotalAfter == hydroTotalBefore
+                    && coldTick == 0;
+                bool digestion = digested == 2000
+                    && sugarLeft == 3000
+                    && wasteAfter == 400
+                    && sugarTotalAfter == sugarTotalBefore - 1600
+                    && dormantDigest == 0
+                    && sugarAfterDormant == 3000;
+                bool cultivatorOk = cultivator.contentWindow != null
+                    && cultivatorManualOk
+                    && cultivatorActivity == 100
+                    && fruitAccepted
+                    && pressed == 60
+                    && activityAfterFeed == 60
+                    && fruitConsumed
+                    && LiquidTools.GetCultivatorThroughput(0, 100) == LiquidTools.CultivatorBaseThroughput;
 
                 // Verify the pipette dial: moving the in-window slider must write the per-item
                 // dose tag through the real UI callback.
@@ -169,10 +272,12 @@ namespace PrecisionLab
                     && concPurityAfter > concPurityBefore
                     && concContaminantAfter < concContaminantBefore;
                 bool modes = modesEmpty && modesDraw && modesInject && autoFilledInjects;
-                log.Log(Prefix + (exact && refuseOverdose && hasWindow && sliderWorks && modes && manualOk && clean && conc ? "OK" : "FAILED")
+                log.Log(Prefix + (exact && refuseOverdose && hasWindow && sliderWorks && modes && manualOk
+                        && clean && conc && hydrolysis && digestion && cultivatorOk ? "OK" : "FAILED")
                     + " exact=" + exact + " refuseOverdose=" + refuseOverdose + " window=" + hasWindow
                     + " slider=" + sliderWorks + " modes=" + modes + " manual=" + manualOk
-                    + " cleanWater=" + clean + " concentrate=" + conc);
+                    + " cleanWater=" + clean + " concentrate=" + conc
+                    + " hydrolysis=" + hydrolysis + " digestion=" + digestion + " cultivator=" + cultivatorOk);
             }
             catch (Exception e)
             {
@@ -185,7 +290,19 @@ namespace PrecisionLab
                 DestroyQuietly(target);
                 DestroyQuietly(product);
                 DestroyQuietly(machine);
+                DestroyQuietly(cultivator);
+                DestroyQuietly(hydro);
+                DestroyQuietly(sugarCup);
+                DestroyQuietly(fruit);
             }
+        }
+
+        private static void SetTemperature(GameItem container, double temperature)
+        {
+            container.ModifyTag("CONTAINER_TEMP_TAG", delegate (TagState state)
+            {
+                state.Enable().SetDouble(temperature);
+            }, skipValidate: true);
         }
 
         private static int Purity(GameItem container)

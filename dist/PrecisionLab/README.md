@@ -1,6 +1,6 @@
 # 精密实验室设备 / Precision Lab Equipment
 
-《深空当铺：可能是偷的》/ *Probably Stolen* 0.46D 的 mod。新增两件可获取、可正常使用的实验设备。
+《深空当铺：可能是偷的》/ *Probably Stolen* 0.46D 的 mod。新增 3 台可获取、可正常使用的实验设备，以及 1 个淀粉水解化学反应。
 
 ---
 
@@ -55,20 +55,47 @@
 
 ---
 
-## 获取方式
+### 3. 淀粉水解（新增化学反应） / Starch hydrolysis
 
+游戏原本无法处理淀粉。现在新增真实反应：
+
+```
+淀粉 --(酸催化, 40–60 °C)--> 糖
+```
+
+- 把含 **淀粉 + 酸** 的液体容器放在 **加热板** 上，把目标温度调到 40–60 °C 并保温；
+- 每秒会把一部分淀粉转化为等量糖（酸是催化剂、不消耗，总体积不变）；
+- 提示：加热板需要至少 2 个化学模块才能自由调节温度区间（0/1 个模块时固定 99/160 °C）。
+
+### 4. 微生物培养机 / Microbial Cultivator
+
+培养“吃糖”微生物的机器：机器窗口单行六格：电源｜模块｜液体容器｜**营养果**｜**菌群活性**｜便签。
+
+- 把含糖液体容器放进液体槽，把 **营养果**（小 / 正常 / 大 / 巨型）放进营养果槽；
+- 每夜机器会**压榨一个营养果成汁水**喂菌群（小 +15 / 正常 +25 / 大 +40 / 巨型 +60 活性），
+  然后分解糖：约 20% 的糖变成有机废物（其余被微生物消耗掉），总体积下降；
+- **低糖分 → 休眠**：容器里没有糖时菌群会进入休眠（活性掉到 0，面板显示“休眠 · 需要营养果”），
+  不再分解；重新放入营养果并补充糖即可唤醒；
+- **性能模块**：提高每夜糖分解量；**质量模块**：减少残留的有机废物（20% → 最低约 5%）；**效率模块**：降低耗电；
+- 菌群活性面板实时显示 `xx% · y mL/夜`，休眠时显示提示；
+- 耗电 8/周期，需要电池；机器右侧便签槽自带「微生物培养机说明」；
+- 解锁后杰克逊博士处也会供货（普通来访 +1、特殊库存夜 +2）。
+
+## 获取方式
 1. **黑市/暗网（游戏内手机 → Wild Network）新增“精密实验室”页签**：
    - 精确取液器：1200 信用点
+   - 微生物培养机：1800 信用点
    - 提纯机器：2400 信用点
-   - 购买后物品直接进入**店内库存**。老存档也会自动出现这两件商品。
-2. **杰克逊博士（Dr. Jackson）**：解锁黑网的提纯机器后，他每次来访的柜台上会多出 1 台提纯机器（“特殊库存”夜晚为 2 台），可重复购买更多。
-3. **战利品**：低概率出现在医疗 / 废品战利品池中，可以随进货或拾取获得。
-3. **调试生成**（仅测试用）：游戏根目录放一个空的 `dev.txt` 后启动，F9 调试面板 → “Spawn” 分类里有两个生成按钮。
+   - 购买后物品直接进入**店内库存**。老存档也会自动出现这些商品。
+2. **杰克逊博士（Dr. Jackson）**：解锁对应机器后，他每次来访柜台上会多出 1 台（“特殊库存”夜晚为 2 台），可重复购买更多。
+3. **退休化学家**（来店里的供应商客人）：解锁取液器后，如果你当前**不拥有**取液器（丢了），他柜台会卖一把替补充；最多同时拥有一把。
+4. **战利品**：低概率出现在医疗 / 废品战利品池中，可以随进货或拾取获得。
+5. **调试生成**（仅测试用）：游戏根目录放一个空的 `dev.txt` 后启动，F9 调试面板 → “Spawn” 分类里有三个生成按钮。
 
 ## 安装 / 卸载
 
 - 安装：把整个 `PrecisionLab` 文件夹复制到
-  `<游戏安装目录>\Mods\`（例如 `<游戏安装目录>\Mods\PrecisionLab`），
+  `<游戏安装目录>\Mods\`（例如 `F:\SteamLibrary\steamapps\common\Probably Stolen\Mods\PrecisionLab`），
   然后启动游戏，在 **Mods 菜单**中启用并信任本 mod（游戏会显示一次确认）。
 - 卸载：从 `Mods` 文件夹删除 `PrecisionLab` 文件夹即可。已存在于存档中的本 mod 物品会变成
   普通无效物品（建议卸载前先卖掉/丢弃）。
@@ -79,14 +106,19 @@
 
 - 机器与原版机器一样在夜间结算时工作，白天可用涡轮增压器追加速度。
 - 精确取液器不会经过滤网（保证计量精确），如需过滤请使用原版过滤器后再计量。
+- 提纯机器只去除污染物，不会去除糖/淀粉/酒精等有效成分；糖请用微生物培养机处理，淀粉请先酸水解成糖。
 - 本 mod 的数值是为单机娱乐平衡的：取液器价格低、提纯机器价格约为原版净水器的 10 倍但功能更强。
 
 ---
 
 ## English quick reference
 
-**Precision Liquid Extractor** — handheld metering tool (10 mL tank). Drag onto a liquid container: empty → draws exactly N µL; filled → injects exactly N µL. N is shown in the tooltip; activate the item to cycle presets (1–10000 µL) or set the default in the mod options. 1 µL resolution, no loss, composition preserved.
+**Precision Liquid Extractor** — handheld metering tool (10 mL tank, 1 µL resolution). Double-click to open the metering window: exact number input, slider and presets; changes apply immediately. Direction modes: auto (empty draws / filled injects), force draw, force inject. Refuses when less than the requested volume is available. The first one comes with the Wild Network upgrade; the retired chemist sells a single replacement after you lose yours.
 
-**Purification Machine** — placeable machine with battery/module/container/note slots. Runs one cycle per night (or via turbo booster), removes physical (physical contaminant, microplastic, debris, mineral), chemical (chemical contaminant, heavy metal) and biological (microbe, organic waste) contamination from **any** liquid container (wine containers excluded), and never touches valuable ingredients. Accounting is automatic: water-only vessels are cleaned into water (volume unchanged), vessels with valuable liquids are concentrated by discarding the removed contamination (volume drops). Purity cap 99.00% base, up to 100.00% with quality modules. Uses 6 power per cycle.
+**Purification Machine** — placeable machine with battery/module/container/note slots. Runs one cycle per night (or via turbo booster), removes physical (physical contaminant, microplastic, debris, mineral), chemical (chemical contaminant, heavy metals) and biological (microbe, organic waste) contamination from any liquid container (wine containers excluded), never touches valuable ingredients. Water-only vessels are cleaned into water (volume unchanged); vessels with valuable liquids are concentrated (volume drops). Purity cap 99.00% base, higher with quality modules; live purity panel + instruction note in the machine window. Uses 6 power per cycle.
 
-**Obtaining** — Wild Network (in-game phone) → "Precision Lab" tab: extractor 1200 credits, purifier 2400 credits, delivered to your store inventory. Also low chance in medical/junk loot. Mod id: `precision_lab`.
+**Microbial Cultivator** — placeable machine that runs sugar-eating microbes. Six panels in one row: power | modules | liquid container | **nutrifruit** | culture | note. Put a sugary container in the liquid slot and nutrifruit (small/normal/large/huge) in the nutrient slot: each night the machine presses one fruit into juice (+15/+25/+40/+60 activity) and digests sugar into a little organic waste (about 20%, down to ~5% with quality modules). When the liquid runs out of sugar the culture goes **dormant** (activity 0, panel shows "Dormant · needs nutrifruit") and stops until fed nutrifruit and given more sugar. Performance modules digest more per night, efficiency modules cut power draw. Uses 8 power per cycle.
+
+**Starch hydrolysis** — new chemistry: starch in an acidic liquid hydrolyses into sugar at 40–60 °C. Heat the container on a heating plate (needs 2+ chem modules to reach the low temperature range). Acid is a catalyst and is not consumed.
+
+**Obtaining** — Wild Network (in-game phone) → "Precision Lab" tab: extractor 1200, cultivator 1800, purifier 2400 credits, delivered to your store inventory. Dr. Jackson stocks extra machines after the corresponding unlock (1 per regular visit, 2 during special stock nights). The retired chemist sells a replacement extractor only when you own none. Low chance in medical/junk loot. Mod id: `precision_lab`.

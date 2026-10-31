@@ -25,6 +25,7 @@ namespace PrecisionLab
 
         internal const int ExtractorUpgradeCost = 1200;
         internal const int PurifierUpgradeCost = 2400;
+        internal const int CultivatorUpgradeCost = 1800;
         internal const string UpgradeTab = "precision_lab";
 
         private static ModManifest _manifest;
@@ -139,15 +140,19 @@ namespace PrecisionLab
             {
                 // If another directory instance already carries the factories, keep them there
                 // instead of registering a second factory set.
-                if (DirectoryMaster.Has<GameItem>(ItemIds.Extractor) && DirectoryMaster.Has<GameItem>(ItemIds.Purifier))
+                if (DirectoryMaster.Has<GameItem>(ItemIds.Extractor)
+                    && DirectoryMaster.Has<GameItem>(ItemIds.Purifier)
+                    && DirectoryMaster.Has<GameItem>(ItemIds.Cultivator))
                 {
                     return;
                 }
                 bool extractor = directory.Has(ItemIds.Extractor) || directory.Add(ItemIds.Extractor, ItemFactory.CreateExtractor);
                 bool purifier = directory.Has(ItemIds.Purifier) || directory.Add(ItemIds.Purifier, ItemFactory.CreatePurifier);
-                if (extractor || purifier)
+                bool cultivator = directory.Has(ItemIds.Cultivator) || directory.Add(ItemIds.Cultivator, ItemFactory.CreateCultivator);
+                if (extractor || purifier || cultivator)
                 {
-                    _log.Log("items registered in mod item directory: extractor=" + extractor + " purifier=" + purifier);
+                    _log.Log("items registered in mod item directory: extractor=" + extractor
+                        + " purifier=" + purifier + " cultivator=" + cultivator);
                 }
             }
             catch (Exception e)
@@ -174,6 +179,8 @@ namespace PrecisionLab
                     () => GiveItem(ItemIds.Extractor));
                 ModHelper.AddDebugFunction(ModId, ModHelper.DEBUG_CATEGORY_SPAWN, "PrecisionLab: spawn purifier",
                     () => GiveItem(ItemIds.Purifier));
+                ModHelper.AddDebugFunction(ModId, ModHelper.DEBUG_CATEGORY_SPAWN, "PrecisionLab: spawn microbial cultivator",
+                    () => GiveItem(ItemIds.Cultivator));
             }
             catch (Exception e)
             {
@@ -248,6 +255,22 @@ namespace PrecisionLab
                 0,
                 () => Loc.Get("upgrade.cardtitle", "Precision Lab"),
                 () => Loc.Get("upgrade.purifier.bought", "Ordered. Check your store inventory."),
+                false);
+
+            ModHelper.AddNetworkUpgrade(
+                ModId,
+                "PRECISION_LAB_CULTIVATOR",
+                CultivatorUpgradeCost,
+                "Precision Lab",
+                () => Loc.Get("upgrade.cultivator.title", "Microbial Cultivator"),
+                () => Loc.Get("upgrade.cultivator.desc", "A bioreactor that cultures sugar-eating microbes. Insert a sugary liquid container and it digests the sugar into a little organic waste every night. Delivered to your inventory."),
+                () => GiveItem(ItemIds.Cultivator),
+                UpgradeTab,
+                null,
+                null,
+                0,
+                () => Loc.Get("upgrade.cardtitle", "Precision Lab"),
+                () => Loc.Get("upgrade.cultivator.bought", "Ordered. Check your store inventory."),
                 false);
 
             _log.Log("network upgrades registered (tab " + UpgradeTab + ")");
@@ -405,11 +428,100 @@ namespace PrecisionLab
                     }
                     AppendPurifierSlotInfo(builder, item);
                 }
+                else if (item.identifier == ItemIds.Cultivator)
+                {
+                    int activity = ItemFactory.GetCultivatorActivity(item);
+                    int performance = MachineryHelper.GetCurrentPerformanceBonus(item);
+                    int throughput = LiquidTools.GetCultivatorThroughput(performance, activity);
+                    builder.AddLine(
+                        activity <= 0
+                            ? Loc.Get("tooltip.cultivator.dormant", "Culture: DORMANT (0%) — add nutrifruit to wake it up and sugar to feed it.")
+                            : Loc.Fmt("tooltip.cultivator.activity", "Culture activity: {0}% (digests {1} mL sugar per night)", activity, LiquidTools.FormatUl(throughput)),
+                        false,
+                        activity <= 0 ? RenderHandler.ColorPalette.Orange : RenderHandler.ColorPalette.LightCyan);
+                    builder.AddLine(
+                        Loc.Get("tooltip.cultivator.rule", "Eats sugar: the sugar is consumed and a little organic waste is left behind. Quality modules reduce the waste. Nutrifruit keeps the culture active; without sugar it goes dormant."),
+                        true,
+                        RenderHandler.ColorPalette.LightGreen);
+                    GameSlotInventory nutrientSlot = MachineHelper.GetSlot(item, 3) as GameSlotInventory;
+                    GameItem fruit = nutrientSlot != null ? nutrientSlot.childItem : null;
+                    if (fruit != null)
+                    {
+                        builder.AddLine(
+                            Loc.Fmt("tooltip.cultivator.fruit", "Nutrient slot: {0} (pressing it feeds the culture +{1}% activity)",
+                                fruit.name, ItemFactory.GetNutrifruitNutrition(fruit)),
+                            true,
+                            RenderHandler.ColorPalette.LightGreen);
+                    }
+                    else
+                    {
+                        builder.AddLine(
+                            Loc.Get("tooltip.cultivator.nofruit", "Nutrient slot: empty (add nutrifruit to keep the culture active)"),
+                            true,
+                            RenderHandler.ColorPalette.Gray);
+                    }
+                    int processed = item.GetTagReadonly(Tags.CultivatorProcessed).GetInt();
+                    if (processed > 0)
+                    {
+                        builder.AddLine(
+                            Loc.Fmt("tooltip.cultivator.processed", "Sugar digested last night: {0:0.###} mL", processed / 1000.0),
+                            true,
+                            RenderHandler.ColorPalette.LightGreen);
+                    }
+                    AppendCultivatorSlotInfo(builder, item);
+                }
+                else if (item.IsTag(Tags.LiquidContainer))
+                {
+                    int starch = LiquidTools.GetLiquidAmount(item, "starch");
+                    int acid = LiquidTools.GetLiquidAmount(item, "acid");
+                    int sugar = LiquidTools.GetLiquidAmount(item, "sugar");
+                    if (starch > 0 && acid > 0)
+                    {
+                        builder.AddLine(
+                            Loc.Get("tooltip.hydrolysis.hint", "Tip: starch in an acidic liquid hydrolyses into sugar at 40-60 °C (heating plate)."),
+                            true,
+                            RenderHandler.ColorPalette.Gray);
+                    }
+                    else if (sugar > 0)
+                    {
+                        builder.AddLine(
+                            Loc.Get("tooltip.sugar.hint", "Tip: the Microbial Cultivator eats sugar and leaves a little organic waste."),
+                            true,
+                            RenderHandler.ColorPalette.Gray);
+                    }
+                }
             }
             catch (Exception e)
             {
                 Debug.LogWarning("[PrecisionLab] tooltip hook failed: " + e.Message);
             }
+        }
+
+        private static void AppendCultivatorSlotInfo(RichTextBuilder builder, GameItem machine)
+        {
+            GameSlotInventory slot = MachineHelper.GetSlot(machine, 2) as GameSlotInventory;
+            GameItem container = slot != null ? slot.childItem : null;
+            if (container == null)
+            {
+                builder.AddLine(
+                    Loc.Get("tooltip.cultivator.empty", "Insert a liquid container with sugar into the machine. The culture runs every night as long as the battery has charge."),
+                    true,
+                    RenderHandler.ColorPalette.Gray);
+                return;
+            }
+            int sugar = LiquidTools.GetLiquidAmount(container, "sugar");
+            if (sugar <= 0)
+            {
+                builder.AddLine(
+                    Loc.Get("tooltip.cultivator.nosugar", "The container has no sugar: the culture is going dormant until it gets sugar again."),
+                    true,
+                    RenderHandler.ColorPalette.Gray);
+                return;
+            }
+            builder.AddLine(
+                Loc.Fmt("tooltip.cultivator.container", "Container sugar: {0} mL", LiquidTools.FormatUl(sugar)),
+                true,
+                RenderHandler.ColorPalette.LightBlue);
         }
 
         private static void AppendPurifierSlotInfo(RichTextBuilder builder, GameItem machine)
@@ -520,7 +632,9 @@ namespace PrecisionLab
         /// </summary>
         private static void EnsureItemsRegisteredForGameplay()
         {
-            if (DirectoryMaster.Has<GameItem>(ItemIds.Extractor) && DirectoryMaster.Has<GameItem>(ItemIds.Purifier))
+            if (DirectoryMaster.Has<GameItem>(ItemIds.Extractor)
+                && DirectoryMaster.Has<GameItem>(ItemIds.Purifier)
+                && DirectoryMaster.Has<GameItem>(ItemIds.Cultivator))
             {
                 return;
             }

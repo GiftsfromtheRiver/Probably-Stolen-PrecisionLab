@@ -1,7 +1,7 @@
 # 04 — Verification: launching, logging, mod loading, trust and item spawning
 
 Status: **PASS (2026-10-30, game 0.46D / Unity 2021.3.45f2, Windows, Steam running)**
-Verifier: agent "verifier". Game install: `<game>`, Steam appid **4348910**.
+Verifier: agent "verifier". Game install: `F:\SteamLibrary\steamapps\common\Probably Stolen`, Steam appid **4348910**.
 Final frozen mod build verified: `PrecisionLab.dll` 50688 B, sha256
 `77f2720b4308928ec60f3e0ea7f6bea1279646c7515f5e3f08d2d6996f31c847`, combinedHash
 `35687f61f5bfed9faa9380cc7861d329eda875899baca56043398ab3db6b0a0f` (input-box CustomUI
@@ -68,7 +68,7 @@ file first (see §8).
 ## 3. Exact launch recipe (PowerShell 5.1, proven)
 
 ```powershell
-$game = '<game>'
+$game = 'F:\SteamLibrary\steamapps\common\Probably Stolen'
 $log  = 'C:\Temp\psmod\run.log'                 # no-space path is safest
 $argsString = '-logFile "' + $log + '"'         # ONE string, quoted path
 $p = Start-Process -FilePath "$game\Probably Stolen.exe" -ArgumentList $argsString `
@@ -335,7 +335,7 @@ is loaded"* at Init and *"network upgrades registered (tab precision_lab)"* afte
 
 ## 8. Verification protocol / checklist
 
-Run from `<workspace>\tools\verify`.
+Run from `F:\deepseek harness workbench\probably-stolen-mod\tools\verify`.
 
 **A. Before any launch/test (always):**
 1. No `Probably Stolen` process already running (`run-game.ps1` enforces this).
@@ -393,7 +393,7 @@ Rebuild the throwaway helper mods (optional, for a future re-run):
 
 ```powershell
 $csc='C:\Program Files\dotnet\sdk\9.0.318\Roslyn\bincore\csc.dll'
-$m='<game>\Probably Stolen_Data\Managed'
+$m='F:\SteamLibrary\steamapps\common\Probably Stolen\Probably Stolen_Data\Managed'
 & dotnet $csc -nologo -nostdlib -target:library -out .\autoload-mod\build\zz_verify_autoload.dll `
   -r:"$m\mscorlib.dll" -r:"$m\netstandard.dll" -r:"$m\Assembly-CSharp.dll" `
   -r:"$m\UnityEngine.CoreModule.dll" -r:"$m\UnityEngine.dll" -r:"$m\0Harmony.dll" `
@@ -430,3 +430,34 @@ $m='<game>\Probably Stolen_Data\Managed'
   spawnable, Wild Network tab+upgrades, and the visible CustomUI metering window with working slider,
   sync, preset buttons and Apply→tag pipeline. Cosmetic only: window centre sits slightly right of
   the viewport centre (right border near the screen edge; no content cut).
+
+## v1.1.0 功能验证（2026-10-31）
+
+新增：淀粉水解反应、微生物培养机（含营养果/休眠机制）、退休化学家补购移液枪。
+构建：`PrecisionLab.dll` 79,360 B，sha256 `601dbc48…`，combinedHash `c41955a8…`（manifest 1.0.0 时）。
+
+- **加载/信任**：`Harmony: 6 method(s) patched`（双击 + Jackson×2 + DirectoryMaster.Item + 淀粉水解 + 退休化学家）；
+  5 个物品贴图；2 语言 162 条本地化（81 键/语言）；`running=True trust=Match`。
+- **SELFTEST**：`OK ... hydrolysis=True digestion=True cultivator=True`；
+  `starch hydrolysis converted=20µL（50°C）/ coldTick=0`；`digest digested=2000µL organicWaste=400µL total -1600`；
+  `cultivator machine window=True power=8 manual=True nutrientSlot=True fruitAccepted=True pressed=+60% activityAfterFeed=60% fruitConsumed=True`。
+- **真实化学 tick**：50 °C 淀粉 1000→980、糖 0→20、酸不变、总体积 4200 不变；70 °C 不反应；回到 50 °C 继续 → 960/40。
+- **培养机实测**：6 面板单行（电源｜模块｜容器｜营养果｜菌群活性｜便签）；便签索引 4 有“微生物培养机说明”；
+  营养果槽拒绝非营养果；巨型营养果压榨 +60%（0→60）并被消耗；
+  活性 60 时消化 1400 µL 糖、+280 有机废物、总体积 −1120、耗电 8、面板 `65% · 1.475 mL/night`；
+  无糖 3 夜：活性 65→40→15→0，面板 `休眠 · 需要营养果`；补充营养果+糖后恢复 0→60→65 并继续消化。
+- **杰克逊博士**：培养机解锁后 `stocks 1 microbial cultivator`（特殊库存 2）；未解锁无供货。
+- **退休化学家（数值验证）**：用 instrumented 计数探针确认——解锁且不拥有取液器 → 恰好 1 次添加尝试
+  （原版 endAction 的 blender/heating_plate/evaporator/chem_finisher 库存同时保留）；已拥有一把 → 0 次；
+  未解锁 → 0 次。临时存档前柜台处于引擎“不可接收”状态，物品被原版 “front counter full” 流程丢弃，
+  因此只验证了尝试次数；正常柜台会出现在他的柜台上。
+- **回归**：提纯机器便签索引 3、单行窗口、提纯上限面板；取液器窗口/即时生效/方向模式；旧存档加载正常。
+- 截图：`tools/verify/evidence/ingame-28-cultivator-window.png`、`ingame-29-cultivator-dormant.png`。
+### v1.1.0 最终门禁（2026-10-31）
+
+- manifest 升级到 **1.1.0**（DLL 不变）：manifestHash `eeecb49f…`，combinedHash `2aba4619…`；
+- 最终启动日志：`Initialized: Precision Lab Equipment v1.1.0`、`Harmony: 6`、5 贴图、2 语言 162 条、
+  `running=True trust=Match hash=2aba4619…`、`SELFTEST OK ... hydrolysis=True digestion=True cultivator=True`；
+- 最终交付状态：`Mods` 仅 PrecisionLab（manifest 1.1.0 + DLL 79,360 B），SaveFile.es3 可写且信任匹配、
+  dev=false；无 dev.txt/helper/scratch；slot 43 用户存档未被测试写入；
+- 日志：`tools/verify/logs/final-gate-v110.log`、`final-clean-boot16.log`。

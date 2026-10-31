@@ -631,5 +631,78 @@ namespace PrecisionLab
         {
             return (volumeUl / 1000.0).ToString("0.###");
         }
+
+        // ------------------------------------------------------------------
+        // 微生物培养机 / Microbial cultivator (sugar -> organic waste)
+        // ------------------------------------------------------------------
+
+        /// <summary>Base sugar processed per night at 100% culture activity (µL).</summary>
+        internal const int CultivatorBaseThroughput = 2000;
+
+        /// <summary>How much sugar one nightly cycle can digest (µL), given modules + activity.</summary>
+        internal static int GetCultivatorThroughput(int performanceBonus, int activity)
+        {
+            double activityFactor = 0.25 + 0.75 * (Mathf.Clamp(activity, 0, 100) / 100.0);
+            double performanceFactor = 1.0 + Mathf.Clamp(performanceBonus, 0, 300) / 100.0;
+            return Math.Max(1, (int)Math.Round(CultivatorBaseThroughput * performanceFactor * activityFactor));
+        }
+
+        /// <summary>
+        /// Digests sugar in the container: the sugar is consumed and a fraction of it becomes
+        /// organic waste (the rest of the volume disappears — the microbes burn it). Quality
+        /// modules reduce the leftover waste fraction. Returns the amount of sugar processed (µL).
+        /// </summary>
+        internal static int DigestSugar(GameItem container, int performanceBonus, int qualityBonus, int activity)
+        {
+            if (activity <= 0)
+            {
+                // Dormant culture: nothing is digested until it is fed nutrifruit again.
+                return 0;
+            }
+            int sugar = GetLiquidAmount(container, "sugar");
+            if (sugar <= 0)
+            {
+                return 0;
+            }
+            int capacity = GetCultivatorThroughput(performanceBonus, activity);
+            int processed = Math.Min(sugar, capacity);
+            if (processed <= 0)
+            {
+                return 0;
+            }
+            // 20% waste byproduct at quality 0, down to ~5% at high quality.
+            double wasteRatio = Math.Max(0.05, 0.20 - 0.0015 * Mathf.Clamp(qualityBonus, 0, 200));
+            int waste = (int)Math.Round(processed * wasteRatio);
+            int existingWaste = GetLiquidAmount(container, "organic_waste");
+            container.ModifyTag(Liquid.GetCurrentPartFromId("sugar"), delegate (TagState state)
+            {
+                state.Enable().SetInt(sugar - processed);
+            }, skipValidate: true);
+            container.ModifyTag(Liquid.GetCurrentPartFromId("organic_waste"), delegate (TagState state)
+            {
+                state.Enable().SetInt(existingWaste + waste);
+            }, skipValidate: true);
+            if (!ItemFactory.SuppressUiRefresh)
+            {
+                try
+                {
+                    ItemFeature feature = WaterFeatureHelper.GetWaterFeature(container);
+                    WaterFeatureHelper.OnLiquidChanged(container, feature.IsExposed());
+                }
+                catch (Exception e)
+                {
+                    Debug.LogWarning("[PrecisionLab] cultivator liquid refresh failed: " + e.Message);
+                }
+                try
+                {
+                    WaterHelper.SetLastScanResult(container);
+                }
+                catch (Exception)
+                {
+                    // Item not attached to a live UI yet.
+                }
+            }
+            return processed;
+        }
     }
 }

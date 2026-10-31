@@ -57,3 +57,28 @@ ui.purifier.cap_label,Purity cap
 item.purifier.manual.name,Purification Machine Notes
 item.purifier.manual.flavor,Someone scribbled the important parts on a sticky note and taped it to the filter stack.
 item.purifier.manual.desc,"[Module effects]:\n- Efficiency: power draw\n- Performance: amount processed per night\n- Quality: purity cap (purity +x%, up to 100%)\n\nProvide power and a liquid container and the machine runs at night. Removes physical, chemical (including heavy metals) and biological contamination; valuable ingredients are kept."
+item.cultivator.name,Microbial Cultivator
+item.cultivator.flavor,A sealed fermenter humming with something that eats sugar. Do not open the lid during a night shift.
+item.cultivator.desc,Cultures sugar-eating microbes in a sealed vat. Put a sugary liquid container in the liquid slot and nutrifruit (small / normal / large / huge) in the nutrient slot: the machine presses the fruit into juice that keeps the culture active, and each night the culture digests sugar into a little organic waste (the rest is burned off). When the liquid runs low on sugar the culture goes dormant until it is fed nutrifruit again. Performance modules digest more sugar per night, quality modules reduce the waste, efficiency modules reduce power draw.
+item.cultivator.manual.name,Microbial Cultivator Notes
+item.cultivator.manual.flavor,A lab note covered in coffee rings and a warning about not licking the culture.
+item.cultivator.manual.desc,"[Module effects]:\n- Efficiency: power draw\n- Performance: more sugar digested per night\n- Quality: less organic waste left behind\n\nPut a sugary liquid container in the liquid slot and nutrifruit (small / normal / large / huge) in the nutrient slot. Each night the machine presses one nutrifruit into juice to feed the culture (+15 / +25 / +40 / +60 activity) and digests sugar into a little organic waste. When the liquid runs out of sugar the culture goes dormant (activity 0) and stops until it is fed nutrifruit and given more sugar."
+machine.cultivator.module,Modules
+machine.cultivator.container,Liquid Container
+ui.cultivator.culture_label,Culture
+upgrade.cultivator.title,Microbial Cultivator
+upgrade.cultivator.desc,A bioreactor that cultures sugar-eating microbes. Keep it fed with nutrifruit (small / normal / large / huge) and insert a sugary liquid container; each night it presses one fruit into culture juice and digests sugar into a little organic waste. Without sugar the culture goes dormant. Delivered to your inventory.
+upgrade.cultivator.bought,Ordered. Check your store inventory.
+tooltip.cultivator.activity,Culture activity: {0}% (digests {1} mL sugar per night)
+tooltip.cultivator.rule,Eats sugar: the sugar is consumed and a little organic waste is left behind. Quality modules reduce the waste. Nutrifruit keeps the culture active; without sugar it goes dormant.
+tooltip.cultivator.processed,Sugar digested last night: {0:0.###} mL
+tooltip.cultivator.empty,Insert a liquid container with sugar into the machine. The culture runs every night as long as the battery has charge.
+tooltip.cultivator.nosugar,The container has no sugar: the culture is going dormant until it gets sugar again.
+tooltip.cultivator.container,Container sugar: {0} mL
+tooltip.hydrolysis.hint,Tip: starch in an acidic liquid hydrolyses into sugar at 40-60 °C (heating plate).
+tooltip.sugar.hint,Tip: the Microbial Cultivator eats sugar and leaves a little organic waste.
+tooltip.cultivator.dormant,Culture: DORMANT (0%) — add nutrifruit to wake it up and sugar to feed it.
+tooltip.cultivator.dormant_panel,Dormant · needs nutrifruit
+tooltip.cultivator.fruit,Nutrient slot: {0} (pressing it feeds the culture +{1}% activity)
+tooltip.cultivator.nofruit,Nutrient slot: empty (add nutrifruit to keep the culture active)
+machine.cultivator.nutrient,Nutrifruit

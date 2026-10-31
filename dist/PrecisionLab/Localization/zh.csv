@@ -56,3 +56,28 @@ ui.purifier.cap_label,提纯上限
 item.purifier.manual.name,提纯机器说明
 item.purifier.manual.flavor,有人把要点草草写在便签上，又贴到了滤芯堆上。
 item.purifier.manual.desc,"[模组影响]:\n效率影响功耗\n性能影响每晚处理量\n质量影响提纯上限（纯度 +x%，最高 100%）\n\n提供电力和液体容器后，机器会在夜间运作。\n物理、化学（含重金属）与生物污染物会被去除，有效成分保留。"
+item.cultivator.name,微生物培养机
+item.cultivator.flavor,一个密封的发酵罐，里面养着某种会吃掉糖的东西。夜班时别开盖。
+item.cultivator.desc,培养分解糖的微生物。把含糖液体容器放进液体槽，把营养果（小/正常/大/巨型）放进营养果槽：机器会把果子压榨成汁水来维持菌群活性，每夜分解糖并留下少量有机废物（其余被微生物消耗掉）。液体里糖分不足时菌群会进入休眠，直到重新喂入营养果和糖。性能模块提高每夜分解量，质量模块减少残留有机废物，效率模块降低耗电。
+item.cultivator.manual.name,微生物培养机说明
+item.cultivator.manual.flavor,一张沾满咖啡渍的实验室便签，还写着“不要舔培养物”。
+item.cultivator.manual.desc,"[模组影响]:\n效率影响功耗\n性能影响每夜分解的糖量\n质量影响残留有机废物（质量越高残留越少）\n\n把含糖液体容器放进液体槽，营养果（小/正常/大/巨型）放进营养果槽。每夜机器压榨一个营养果成汁水喂养菌群（活性 +15 / +25 / +40 / +60），并分解糖、留下少量有机废物。液体里没有糖时菌群会休眠（活性 0），直到重新喂营养果并补充糖才恢复。"
+machine.cultivator.module,模块
+machine.cultivator.container,液体容器
+ui.cultivator.culture_label,菌群活性
+upgrade.cultivator.title,微生物培养机
+upgrade.cultivator.desc,用于培养分解糖的微生物。用营养果（小/正常/大/巨型）喂养菌群，并放入含糖液体容器；每夜压榨一个果子成菌液并分解一部分糖，留下少量有机废物。没有糖时菌群会休眠。购买后直接送达店内库存。
+upgrade.cultivator.bought,已下单，请在店内库存查收。
+tooltip.cultivator.activity,菌群活性：{0}%（每夜可分解 {1} mL 糖）
+tooltip.cultivator.rule,吃糖：糖被消耗，并留下少量有机废物。质量模块可减少残留。营养果维持菌群活性；没有糖时菌群会休眠。
+tooltip.cultivator.processed,昨夜分解糖：{0:0.###} 毫升
+tooltip.cultivator.empty,把含糖液体容器放进槽位；只要电池有电，菌群每夜都会工作。
+tooltip.cultivator.nosugar,容器里没有糖：菌群会休眠，直到重新获得糖。
+tooltip.cultivator.container,容器内糖：{0} 毫升
+tooltip.hydrolysis.hint,提示：含酸的淀粉液在 40–60°C 下会水解成糖（用加热板保温）。
+tooltip.sugar.hint,提示：微生物培养机可以分解糖，并留下少量有机废物。
+tooltip.cultivator.dormant,菌群：休眠（0%）——加入营养果可唤醒，并需要糖来喂养。
+tooltip.cultivator.dormant_panel,休眠 · 需要营养果
+tooltip.cultivator.fruit,营养果槽：{0}（压榨后菌群活性 +{1}%）
+tooltip.cultivator.nofruit,营养果槽：空（加入营养果可维持菌群活性）
+machine.cultivator.nutrient,营养果
