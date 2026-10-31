@@ -227,3 +227,47 @@ Mod ID：`precision_lab`　名称：精密实验室设备 / Precision Lab Equipm
   糖消化（2000 µL 处理、400 µL 有机废物、总体积 −1600）、培养机工厂 + 说明纸条 + 活性 100；
 - 静态检查：ModScanner methods=204、capabilities=none；本地化键集一致；战利品表 junkTable 新增培养机；
 - 构建：`PrecisionLab.dll` 75,264 B / sha256 `4d06f67b…` / combinedHash `94f41094…`（待游戏内最终验证）。
+
+## 肾上腺素注射笔生产线（2026-10-31，v1.2.0）
+
+### 自定义液体（10 种）
+
+`Liquid.Liquids` / `LiquidDict` 是 public static 容器，可在运行期追加；但 `Liquid.InitLiquid` 会读取
+游戏本地化，所以注册**不能**放在 `IMod.Init`（ModLoader.Awake 阶段），改为在
+`OnGameLoadedInit` / `OnNewGameStarted` / `OnGameLoadedNormal` 首次触发时调用
+`CustomLiquids.EnsureRegistered()` + `RefreshLocalizedNames()`（幂等）。
+注册的液体：catechol（邻苯二酚）、hydroxymethyl_base（N-羟甲基碱溶液）、resolving_agent（拆分剂）、
+amination_intermediate、racemic_adrenaline、levo_adrenaline_salt、dextro_waste、adrenaline_freebase、
+adrenaline_hcl、adrenaline_solution。全部 `canBeRemovedByPurifier=false`（避免被过滤器/提纯机当污染物处理）。
+
+### 六步反应（复用 `ChemicalHelper.HandleTemperatureReaction` tick）
+
+在已有 starch 水解的 Harmony postfix 里追加 `AdrenalineChemistry.React(container)`，每秒结算：
+1. 胺化 26–60 °C：catechol + hydroxymethyl_base + lipobond_agent → amination_intermediate（1:1:1 消耗）
+2. 还原 60–80 °C：amination_intermediate + reducing_agent → racemic_adrenaline（1:1）
+3. 拆分 40–60 °C + 酸催化：racemic_adrenaline + resolving_agent → levo_adrenaline_salt + dextro_waste；
+   对映体分配按“累计产量四舍五入”保证 50/50（误差 ≤1 µL），酸不消耗
+4. 成盐 26–60 °C：levo_salt + base → adrenaline_freebase（1:1）；freebase + acid → adrenaline_hcl（1:1）
+5. 配液：adrenaline_hcl + water → adrenaline_solution（1:1）
+6. 化学制剂成型机：两条 `ChemFinisherRecipe`（dry，750 µL）：
+   `adrenaline_api`（active=adrenaline_hcl）→ 盐酸肾上腺素原料药；
+   `adrenaline_pen`（active=adrenaline_solution）→ 肾上腺素注射笔
+   配方只在“更多药品”解锁后追加到 `chemFinisherRecipes`。
+转化速率：每 tick 2%，剩余 ≤50 µL 时一次性转化（避免整数余数残留）。
+
+### 物品与获取
+
+- 原料盒 `adrenaline_supply_box`（退休化学家出售，MEDS 解锁后每次来访 1 盒；激活拆成 7 瓶试剂：
+  catechol 3000 / hmb 3000 / lipobond 3000 / reducing 3000 / resolving 3000 / base 1500 / acid 1500 µL）
+- `adrenaline_api`（CHEMICAL_SUPPLIES，可溶解回收）、`adrenaline_pen`（MEDICAL / ITEM_MEDICAL_TAG /
+  injector 熟练度；战斗兴奋剂：命中 +20%、暴击 +33%，持续 3 回合；效果对象直接 new，避免目录未就绪时变 dummy）
+- `dextro_waste_item`（右旋废料）
+- 黑网升级 `PRECISION_LAB_MEDS`（1600 信用点）：追加两条成型机配方 + 发放配方纸条（vanilla handnote 文档，
+  无署名）+ 解锁退休化学家原料盒
+- 提纯机新增**废料输出位**（第 6 面板）：周期结束时把容器内 dextro_waste 收集成右旋废料物品
+  （存储索引：power0/manule1/container2/waste3/note4；便签辅助器改为两种机器都用 4）
+
+### 验证
+
+- 最终构建（v1.2.0）：见 docs/04-verification.md；自检 `SELFTEST OK ... adrenaline=True adrenalineItems=True`，
+  链式数值 amination/racemic/hcl/solution 全 3000/1500 对齐，拆分 1500/1500。

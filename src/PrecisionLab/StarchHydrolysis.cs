@@ -22,6 +22,8 @@ namespace PrecisionLab
         private static void Postfix(GameItem container)
         {
             StarchHydrolysis.React(container);
+            // The adrenaline production chain uses the same per-container chemistry tick.
+            AdrenalineChemistry.React(container);
         }
     }
 

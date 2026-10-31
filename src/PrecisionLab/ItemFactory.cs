@@ -206,21 +206,22 @@ namespace PrecisionLab
             GameSlotInventory powerSlot = new GameSlotInventory();
             GameGridInventory moduleGrid = new GameGridInventory(MachineHelper.DEFAULT_MODULE_BAY_CONFIG, MachineHelper.DEFAULT_MODULE_BAY_WIDTH);
             GameSlotInventory containerSlot = new GameSlotInventory();
+            GameSlotInventory wasteSlot = new GameSlotInventory();
             GameSlotInventory noteSlot = new GameSlotInventory();
 
             MachineryText purityText = new MachineryText();
             MachineryPanel purityPanel = MachineHelper.Panel(
                 Loc.Get("ui.purifier.cap_label", "Purity cap"), purityText, "purity");
 
-            // Panel order: power, module, container, purity, note — one horizontal row like the
-            // vanilla machines (user preference). Storage indices returned by GetSlot only count
-            // panels that actually contain a storage element: power=0, module=1, container=2,
-            // note=3; the purity panel is display-only and contributes no storage index.
+            // Panel order (single row): power, module, container, waste output, purity, note.
+            // Storage indices: power=0, module=1, container=2, waste=3, note=4 — the purity panel
+            // is display-only and contributes no storage index.
             PixelWindow window = MachineHelper.CreateMachineryWindow(
                 true,
                 MachineHelper.PowerPanel(powerSlot),
                 MachineHelper.Panel(Loc.Get("machine.purifier.module", "Modules"), moduleGrid, "module"),
                 MachineHelper.Panel(Loc.Get("machine.purifier.container", "Liquid Container"), containerSlot, "container"),
+                MachineHelper.Panel(Loc.Get("machine.purifier.waste", "Waste Output"), wasteSlot, "waste"),
                 purityPanel,
                 MachineHelper.NotePanel(noteSlot));
 
@@ -251,6 +252,13 @@ namespace PrecisionLab
             });
             MachineHelper.SetupManualSlot(noteSlot);
 
+            // Waste output slot: the purifier collects dextro waste from the chiral resolution
+            // step here as an item instead of destroying it.
+            wasteSlot.mayInventoryAddItemFunc = (candidate, inventory) =>
+                GeneralHelper.IsItemOwned(candidate) && candidate.identifier == ItemIds.DextroWaste;
+            wasteSlot.SetBackgroundFadeSprite("Items/items_material", "chemical2");
+            wasteSlot.SetTooltipName(Loc.Get("machine.purifier.waste", "Waste Output"));
+
             containerSlot.mayInventoryAddItemFunc = (candidate, inventory) =>
                 GeneralHelper.IsItemOwned(candidate)
                 && candidate.IsTag(Tags.LiquidContainer)
@@ -271,7 +279,7 @@ namespace PrecisionLab
 
             machine.onCycleEndSlotItemFunc = delegate (GameItem self, GameInventory parentInventory, SlotMarker slot)
             {
-                RunPurifierCycle(self, powerSlot, moduleGrid, containerSlot);
+                RunPurifierCycle(self, powerSlot, moduleGrid, containerSlot, wasteSlot);
             };
 
             // NOTE: the instruction note is NOT inserted here. DirectoryMaster.Item strips all
@@ -327,7 +335,7 @@ namespace PrecisionLab
             }
         }
 
-        private static void RunPurifierCycle(GameItem machine, GameSlotInventory powerSlot, GameGridInventory moduleGrid, GameSlotInventory containerSlot)
+        private static void RunPurifierCycle(GameItem machine, GameSlotInventory powerSlot, GameGridInventory moduleGrid, GameSlotInventory containerSlot, GameSlotInventory wasteSlot)
         {
             try
             {
@@ -339,6 +347,13 @@ namespace PrecisionLab
                 if (container == null || WaterHelper.IsEmpty(container))
                 {
                     return;
+                }
+                // The purifier's waste output slot collects dextro waste from the chiral
+                // resolution step; this separation does not need a charged battery.
+                int wasteCollected = CollectDextroWaste(container, wasteSlot);
+                if (wasteCollected > 0)
+                {
+                    Debug.Log("[PrecisionLab] purifier collected " + wasteCollected + " µL of dextro waste");
                 }
                 int powerUsage = MachineryHelper.GetMachinePowerUsage(machine);
                 if (powerSlot.childItem == null || !PowerHelper.CanDrawPowerSource(powerSlot.childItem, powerUsage))
@@ -362,6 +377,64 @@ namespace PrecisionLab
             catch (Exception e)
             {
                 Debug.LogError("[PrecisionLab] purifier cycle failed: " + e);
+            }
+        }
+
+        /// <summary>
+        /// Moves up to all dextro waste from the container into the purifier's waste output slot
+        /// as a waste item. Returns the collected amount (0 when there is no room / nothing).
+        /// </summary>
+        internal static int CollectDextroWaste(GameItem container, GameSlotInventory wasteSlot)
+        {
+            if (container == null || wasteSlot == null)
+            {
+                return 0;
+            }
+            try
+            {
+                int waste = LiquidTools.GetLiquidAmount(container, CustomLiquids.DextroWaste);
+                if (waste <= 0 || wasteSlot.childItem != null)
+                {
+                    return 0;
+                }
+                GameItem item = ItemSpawner.Spawn(ItemIds.DextroWaste);
+                if (item == null)
+                {
+                    return 0;
+                }
+                ChemicalHelper.SetChemContentUL(item, CustomLiquids.DextroWaste, waste);
+                GraphUtils.TryAcceptAll(wasteSlot, item);
+                if (wasteSlot.childItem == null)
+                {
+                    item.Destroy();
+                    return 0;
+                }
+                string part = Liquid.GetCurrentPartFromId(CustomLiquids.DextroWaste);
+                if (part != null)
+                {
+                    container.ModifyTag(part, delegate (TagState state)
+                    {
+                        state.Enable().SetInt(0);
+                    }, skipValidate: true);
+                }
+                if (!SuppressUiRefresh)
+                {
+                    try
+                    {
+                        ItemFeature feature = WaterFeatureHelper.GetWaterFeature(container);
+                        WaterFeatureHelper.OnLiquidChanged(container, feature.IsExposed());
+                    }
+                    catch (Exception)
+                    {
+                        // Not attached to a live UI yet.
+                    }
+                }
+                return waste;
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] collecting dextro waste failed: " + e.Message);
+                return 0;
             }
         }
 
@@ -598,8 +671,7 @@ namespace PrecisionLab
                     if (powerSlot.childItem != null && PowerHelper.CanDrawPowerSource(powerSlot.childItem, powerUsage))
                     {
                         int performance = MachineryHelper.GetCurrentPerformanceBonus(machine);
-                        int quality = MachineryHelper.GetCurrentQualityBonus(machine);
-                        processed = LiquidTools.DigestSugar(container, performance, quality, activity);
+                        int quality = MachineryHelper.GetCurrentQualityBonus(machine);                        processed = LiquidTools.DigestSugar(container, performance, quality, activity);
                         if (processed > 0)
                         {
                             PowerHelper.DrawPowerSource(powerSlot.childItem, powerUsage);

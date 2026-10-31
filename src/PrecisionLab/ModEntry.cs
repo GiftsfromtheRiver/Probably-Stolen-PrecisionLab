@@ -26,6 +26,7 @@ namespace PrecisionLab
         internal const int ExtractorUpgradeCost = 1200;
         internal const int PurifierUpgradeCost = 2400;
         internal const int CultivatorUpgradeCost = 1800;
+        internal const int MedsUpgradeCost = 1600;
         internal const string UpgradeTab = "precision_lab";
 
         private static ModManifest _manifest;
@@ -142,17 +143,23 @@ namespace PrecisionLab
                 // instead of registering a second factory set.
                 if (DirectoryMaster.Has<GameItem>(ItemIds.Extractor)
                     && DirectoryMaster.Has<GameItem>(ItemIds.Purifier)
-                    && DirectoryMaster.Has<GameItem>(ItemIds.Cultivator))
+                    && DirectoryMaster.Has<GameItem>(ItemIds.Cultivator)
+                    && DirectoryMaster.Has<GameItem>(ItemIds.SupplyBox))
                 {
                     return;
                 }
                 bool extractor = directory.Has(ItemIds.Extractor) || directory.Add(ItemIds.Extractor, ItemFactory.CreateExtractor);
                 bool purifier = directory.Has(ItemIds.Purifier) || directory.Add(ItemIds.Purifier, ItemFactory.CreatePurifier);
                 bool cultivator = directory.Has(ItemIds.Cultivator) || directory.Add(ItemIds.Cultivator, ItemFactory.CreateCultivator);
-                if (extractor || purifier || cultivator)
+                bool supplyBox = directory.Has(ItemIds.SupplyBox) || directory.Add(ItemIds.SupplyBox, AdrenalineContent.CreateSupplyBox);
+                bool api = directory.Has(ItemIds.Api) || directory.Add(ItemIds.Api, AdrenalineContent.CreateApi);
+                bool pen = directory.Has(ItemIds.Pen) || directory.Add(ItemIds.Pen, AdrenalineContent.CreatePen);
+                bool waste = directory.Has(ItemIds.DextroWaste) || directory.Add(ItemIds.DextroWaste, AdrenalineContent.CreateWasteItem);
+                if (extractor || purifier || cultivator || supplyBox || api || pen || waste)
                 {
                     _log.Log("items registered in mod item directory: extractor=" + extractor
-                        + " purifier=" + purifier + " cultivator=" + cultivator);
+                        + " purifier=" + purifier + " cultivator=" + cultivator
+                        + " supplyBox=" + supplyBox + " api=" + api + " pen=" + pen + " waste=" + waste);
                 }
             }
             catch (Exception e)
@@ -181,6 +188,14 @@ namespace PrecisionLab
                     () => GiveItem(ItemIds.Purifier));
                 ModHelper.AddDebugFunction(ModId, ModHelper.DEBUG_CATEGORY_SPAWN, "PrecisionLab: spawn microbial cultivator",
                     () => GiveItem(ItemIds.Cultivator));
+                ModHelper.AddDebugFunction(ModId, ModHelper.DEBUG_CATEGORY_SPAWN, "PrecisionLab: spawn adrenaline kit",
+                    () => GiveItem(ItemIds.SupplyBox));
+                ModHelper.AddDebugFunction(ModId, ModHelper.DEBUG_CATEGORY_SPAWN, "PrecisionLab: spawn adrenaline API",
+                    () => GiveItem(ItemIds.Api));
+                ModHelper.AddDebugFunction(ModId, ModHelper.DEBUG_CATEGORY_SPAWN, "PrecisionLab: spawn adrenaline pen",
+                    () => GiveItem(ItemIds.Pen));
+                ModHelper.AddDebugFunction(ModId, ModHelper.DEBUG_CATEGORY_SPAWN, "PrecisionLab: spawn dextro waste",
+                    () => GiveItem(ItemIds.DextroWaste));
             }
             catch (Exception e)
             {
@@ -192,6 +207,24 @@ namespace PrecisionLab
         // Acquisition
         // ------------------------------------------------------------------
         private static bool _upgradesRegistered;
+
+        /// <summary>
+        /// Registers the custom liquids and localized liquid names. Called once a real run is
+        /// being loaded: Liquid.InitLiquid (which runs on the first Liquid access) uses the game
+        /// localization tables, so it must not be triggered from IMod.Init during ModLoader.Awake.
+        /// </summary>
+        private static void EnsureCustomContentRegistered()
+        {
+            try
+            {
+                CustomLiquids.EnsureRegistered();
+                CustomLiquids.RefreshLocalizedNames();
+            }
+            catch (Exception e)
+            {
+                _log.Warning("custom chemistry content registration failed: " + e.Message);
+            }
+        }
 
         /// <summary>
         /// Registers the two black-market upgrades. MUST only run once a real PlayerStore
@@ -273,13 +306,66 @@ namespace PrecisionLab
                 () => Loc.Get("upgrade.cultivator.bought", "Ordered. Check your store inventory."),
                 false);
 
-            _log.Log("network upgrades registered (tab " + UpgradeTab + ")");
+            ModHelper.AddNetworkUpgrade(
+                ModId,
+                "PRECISION_LAB_MEDS",
+                MedsUpgradeCost,
+                "Precision Lab",
+                () => Loc.Get("upgrade.meds.title", "More Medicines: Adrenaline"),
+                () => Loc.Get("upgrade.meds.desc", "Unlocks the adrenaline injection pen production line: a recipe note in your store plus precursor kits sold by the retired chemist."),
+                () => GrantMedsUnlock(),
+                UpgradeTab,
+                null,
+                null,
+                0,
+                () => Loc.Get("upgrade.cardtitle", "Precision Lab"),
+                () => Loc.Get("upgrade.meds.bought", "Ordered. Check your store inventory for the recipe note."),
+                false);
+
+            _log.Log("network upgrades registered (tab " + UpgradeTab + "): extractor, purifier, cultivator, meds");
+        }
+
+        private static void GrantMedsUnlock()
+        {
+            try
+            {
+                AdrenalineContent.EnsureRecipes();
+                GameItem note = AdrenalineContent.CreateRecipeNote();
+                if (note != null)
+                {
+                    GeneralHelper.SetItemOwned(note, true);
+                    GraphUtils.EmporiumTryAdd(note);
+                    _log.Log("adrenaline recipe note delivered");
+                }
+            }
+            catch (Exception e)
+            {
+                _log.Warning("granting the adrenaline unlock failed: " + e.Message);
+            }
+        }
+
+        private static bool IsUpgradeUnlocked(string upgradeId)
+        {
+            if (!PlayerStore.HasInstance)
+            {
+                return false;
+            }
+            PlayerStore store = PlayerStore.Instance;
+            if (store == null || store.networkUpgrade == null)
+            {
+                return false;
+            }
+            NetworkUpgrade upgrade;
+            return store.networkUpgrade.TryGetValue(upgradeId, out upgrade)
+                && upgrade != null
+                && upgrade.IsUnlocked();
         }
 
         private void OnGameLoadedInit()
         {
             try
             {
+                EnsureCustomContentRegistered();
                 // Fires inside PlayerStore.LoadGame before NetworkUpgrade.AddMissingAfterLoad,
                 // so anything registered here ends up in the loaded run's upgrade dictionary.
                 TryRegisterUpgrades();
@@ -294,6 +380,7 @@ namespace PrecisionLab
         {
             try
             {
+                EnsureCustomContentRegistered();
                 TryRegisterUpgrades();
                 EnsureItemsRegisteredForGameplay();
             }
@@ -470,6 +557,47 @@ namespace PrecisionLab
                     }
                     AppendCultivatorSlotInfo(builder, item);
                 }
+                else if (item.identifier == ItemIds.SupplyBox)
+                {
+                    builder.AddLine(
+                        Loc.Get("tooltip.adrenaline_box.contents", "Contains one batch of reagents: catechol, N-hydroxymethyl base solution, lipobond agent, reducing agent, resolving agent and acid."),
+                        true,
+                        RenderHandler.ColorPalette.LightCyan);
+                    builder.AddLine(
+                        Loc.Get("tooltip.adrenaline_box.hint", "Activate to unpack. Follow the adrenaline injection pen recipe note (granted by the 'More Medicines' unlock) for the six production steps."),
+                        true,
+                        RenderHandler.ColorPalette.Gray);
+                }
+                else if (item.identifier == ItemIds.Api)
+                {
+                    double purity = ChemicalProductHelper.GetPurity(item);
+                    builder.AddLine(
+                        Loc.Fmt("tooltip.adrenaline_api.purity", "Active ingredient purity: {0:0.#}%", purity),
+                        false,
+                        RenderHandler.ColorPalette.LightCyan);
+                    builder.AddLine(
+                        Loc.Get("tooltip.adrenaline_api.hint", "Dissolve the API in an equal amount of water, then press the dry solution in the Chem Finisher to fill an injection pen."),
+                        true,
+                        RenderHandler.ColorPalette.Gray);
+                }
+                else if (item.identifier == ItemIds.Pen)
+                {
+                    builder.AddLine(
+                        Loc.Get("tooltip.adrenaline_pen.effect", "Combat stim: +20% accuracy and +33% critical chance for 3 turns."),
+                        false,
+                        RenderHandler.ColorPalette.LightGreen);
+                    builder.AddLine(
+                        Loc.Get("tooltip.adrenaline_pen.tag", "Medical item — single use, usable in combat."),
+                        true,
+                        RenderHandler.ColorPalette.LightCyan);
+                }
+                else if (item.identifier == ItemIds.DextroWaste)
+                {
+                    builder.AddLine(
+                        Loc.Get("tooltip.dextro_waste.hint", "Waste from the chiral resolution step. The purifier's waste output slot collects this; sell/discard it or dissolve it back into a container."),
+                        true,
+                        RenderHandler.ColorPalette.Gray);
+                }
                 else if (item.IsTag(Tags.LiquidContainer))
                 {
                     int starch = LiquidTools.GetLiquidAmount(item, "starch");
@@ -586,6 +714,24 @@ namespace PrecisionLab
                     : Loc.Get("tooltip.purifier.mode_conc", "Mode: concentrate (removed contamination is discarded, valuable liquids are kept)."),
                 true,
                 RenderHandler.ColorPalette.LightGreen);
+            int dextro = LiquidTools.GetLiquidAmount(container, CustomLiquids.DextroWaste);
+            if (dextro > 0)
+            {
+                builder.AddLine(
+                    Loc.Fmt("tooltip.purifier.dextro", "Contains {0} mL dextro waste: the waste output slot collects it as a waste item during the cycle.",
+                        LiquidTools.FormatUl(dextro)),
+                    true,
+                    RenderHandler.ColorPalette.Orange);
+            }
+            GameSlotInventory wasteSlot = MachineHelper.GetSlot(machine, 3) as GameSlotInventory;
+            GameItem wasteItem = wasteSlot != null ? wasteSlot.childItem : null;
+            if (wasteItem != null)
+            {
+                builder.AddLine(
+                    Loc.Get("tooltip.purifier.waste_full", "Waste output slot is occupied — empty it to collect more dextro waste."),
+                    true,
+                    RenderHandler.ColorPalette.Gray);
+            }
         }
 
         private void OnModConfigApplied(string modId)
@@ -603,8 +749,13 @@ namespace PrecisionLab
         {
             try
             {
+                EnsureCustomContentRegistered();
                 TryRegisterUpgrades();
                 EnsureItemsRegisteredForGameplay();
+                if (IsUpgradeUnlocked("PRECISION_LAB_MEDS"))
+                {
+                    AdrenalineContent.EnsureRecipes();
+                }
             }
             catch (Exception e)
             {

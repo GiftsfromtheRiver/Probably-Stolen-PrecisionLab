@@ -8,6 +8,10 @@ namespace PrecisionLab
         internal const string Extractor = "precision_liquid_extractor";
         internal const string Purifier = "precision_purifier";
         internal const string Cultivator = "precision_microbe_cultivator";
+        internal const string SupplyBox = "adrenaline_supply_box";
+        internal const string Api = "adrenaline_api";
+        internal const string Pen = "adrenaline_pen";
+        internal const string DextroWaste = "dextro_waste_item";
     }
 
     internal static class SpriteKeys
@@ -17,6 +21,10 @@ namespace PrecisionLab
         internal const string PurifierActive = "precision_purifier_active";
         internal const string Cultivator = "precision_cultivator";
         internal const string CultivatorActive = "precision_cultivator_active";
+        internal const string SupplyBox = "adrenaline_supply_box";
+        internal const string Api = "adrenaline_api";
+        internal const string Pen = "adrenaline_pen";
+        internal const string DextroWaste = "dextro_waste";
     }
 
     internal static class Tags

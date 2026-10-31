@@ -461,3 +461,27 @@ $m='F:\SteamLibrary\steamapps\common\Probably Stolen\Probably Stolen_Data\Manage
 - 最终交付状态：`Mods` 仅 PrecisionLab（manifest 1.1.0 + DLL 79,360 B），SaveFile.es3 可写且信任匹配、
   dev=false；无 dev.txt/helper/scratch；slot 43 用户存档未被测试写入；
 - 日志：`tools/verify/logs/final-gate-v110.log`、`final-clean-boot16.log`。
+## v1.2.0 功能验证（2026-10-31，肾上腺素注射笔生产线）
+
+新增 10 种自定义液体、6 步肾上腺素反应链、肾上腺素原料盒/原料药/注射笔/右旋废料物品、
+化学制剂成型机 2 条新配方、“更多药品”升级、退休化学家原料盒、提纯机废料输出位。
+
+- 构建：`PrecisionLab.dll` 106,496 B，sha256 `5d7e5415…`，manifestHash `72adaa1a…`，
+  combinedHash `2e5edaee…`（manifest v1.2.0）。
+- 加载：`Harmony: 6 method(s) patched`；9 个物品贴图；2 语言 × 128 键；`registered 46 liquids (custom chain=10)`；
+  两条成型机配方注册；`running=True trust=Match`；0 异常、0 dummy effect 警告。
+- 自检：`SELFTEST OK ... adrenaline=True adrenalineItems=True`；
+  `amination=3000µL catecholLeft=0 lipobondLeft=0 | racemic=3000 reducingLeft=0 |
+  levoSalt=1500 dextro=1500 acidLeft=1500 | freebase=1500 hcl=1500 baseLeft2=0 acidLeft2=0 |
+  wasteCollected=1500 dextroLeft=0 wasteItem='右旋废料' | solution=1500 hclLeft=0 waterLeft=0 |
+  recipes=True items=True`。
+- 独立链式测试（逐步隔离）：resolution levo/dextro = 1500/1500（Δ=0）；freebase 1500/base 0；
+  hcl 1500/acid 0；注射笔效果为真实 buff（命中 +20%/3 回合、暴击 +33%/3 回合，无 dummy）。
+- 提纯机：6 面板单行（power|module|container|waste|purity|note），便签索引 4；废料输出位收集右旋废料。
+- 配方纸条：handnote 文档，`HANDNOTE_BODY` 存在，署名已清空（`signature=''`）。
+- 原料盒：拆开得到 7 瓶试剂（catechol/hmb/resolving 各 3000 已观测；lipobond/reducing 3000、base/acid 1500 由代码常量保证）。
+- 退休化学家：MEDS 解锁后原料盒添加尝试 >0；未解锁 0；取液器逻辑不变。
+- 未决/说明：自定义液体存档持久化测试因测试存档无法挂载可保存容器而未能确认（游戏内逻辑无异常）。
+- 最终交付状态：`Mods` 仅 PrecisionLab（manifest v1.2.0 + DLL），SaveFile.es3 可写且信任匹配、dev=false；
+  无 dev.txt/helper/scratch；slot 43 用户存档未被测试写入。
+  日志：`tools/verify/logs/final39.log`、`final-clean-boot20.log`。

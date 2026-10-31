@@ -25,6 +25,11 @@ namespace PrecisionLab
             GameItem hydro = null;
             GameItem sugarCup = null;
             GameItem fruit = null;
+            GameItem adrenalineCup = null;
+            GameItem apiItem = null;
+            GameItem penItem = null;
+            GameItem boxItem = null;
+            GameItem noteItem = null;
             try
             {
                 if (ItemMouseDragHandler.current == null)
@@ -52,8 +57,8 @@ namespace PrecisionLab
                 // NOTE: the note is added by PurifierManualHelper (post-DirectoryMaster); the
                 // selftest creates the machine directly, so emulate that post-create step here.
                 PurifierManualHelper.TryEnsure(machine);
-                // Storage indices: power=0, module=1, container=2, note=3 (purity panel is display-only).
-                GameSlotInventory noteSlotInv = MachineHelper.GetSlot(machine, 3) as GameSlotInventory;
+                // Storage indices: power=0, module=1, container=2, waste=3, note=4.
+                GameSlotInventory noteSlotInv = MachineHelper.GetSlot(machine, 4) as GameSlotInventory;
                 GameItem manual = noteSlotInv != null ? noteSlotInv.childItem : null;
                 bool manualOk = manual != null && manual.IsTag("MACHINE_MANUAL_TAG");
 
@@ -216,6 +221,85 @@ namespace PrecisionLab
                     + " pressed=+" + pressed + "% activityAfterFeed=" + activityAfterFeed + "%"
                     + " fruitConsumed=" + fruitConsumed);
 
+                // --- 7. Adrenaline production chain (six reaction steps) ---------------
+                adrenalineCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(adrenalineCup, true);
+                LiquidTools.SetLiquidRaw(adrenalineCup, CustomLiquids.Catechol, 3000);
+                LiquidTools.SetLiquidRaw(adrenalineCup, CustomLiquids.HydroxymethylBase, 3000);
+                LiquidTools.SetLiquidRaw(adrenalineCup, "lipobond_agent", 3000);
+                SetTemperature(adrenalineCup, 40.0);
+                PulseStep(adrenalineCup, AdrenalineChemistry.StepAmination);
+                int amination = LiquidTools.GetLiquidAmount(adrenalineCup, CustomLiquids.AminationIntermediate);
+                int catecholLeft = LiquidTools.GetLiquidAmount(adrenalineCup, CustomLiquids.Catechol);
+                int lipobondLeft = LiquidTools.GetLiquidAmount(adrenalineCup, "lipobond_agent");
+
+                LiquidTools.SetLiquidRaw(adrenalineCup, "reducing_agent", 3000);
+                SetTemperature(adrenalineCup, 70.0);
+                PulseStep(adrenalineCup, AdrenalineChemistry.StepReduction);
+                int racemic = LiquidTools.GetLiquidAmount(adrenalineCup, CustomLiquids.RacemicAdrenaline);
+                int reducingLeft = LiquidTools.GetLiquidAmount(adrenalineCup, "reducing_agent");
+
+                LiquidTools.SetLiquidRaw(adrenalineCup, CustomLiquids.ResolvingAgent, 3000);
+                LiquidTools.SetLiquidRaw(adrenalineCup, "acid", 1500);
+                SetTemperature(adrenalineCup, 50.0);
+                PulseStep(adrenalineCup, AdrenalineChemistry.StepResolution);
+                int levoSalt = LiquidTools.GetLiquidAmount(adrenalineCup, CustomLiquids.LevoAdrenalineSalt);
+                int dextro = LiquidTools.GetLiquidAmount(adrenalineCup, CustomLiquids.DextroWaste);
+                int acidLeftAfterResolution = LiquidTools.GetLiquidAmount(adrenalineCup, "acid");
+
+                SetTemperature(adrenalineCup, 40.0);
+                LiquidTools.SetLiquidRaw(adrenalineCup, "base", levoSalt);
+                PulseStep(adrenalineCup, AdrenalineChemistry.StepFreebase);
+                int freebase = LiquidTools.GetLiquidAmount(adrenalineCup, CustomLiquids.AdrenalineFreebase);
+                int baseLeftAfterFreebase = LiquidTools.GetLiquidAmount(adrenalineCup, "base");
+
+                LiquidTools.SetLiquidRaw(adrenalineCup, "acid", freebase);
+                PulseStep(adrenalineCup, AdrenalineChemistry.StepHcl);
+                int hcl = LiquidTools.GetLiquidAmount(adrenalineCup, CustomLiquids.AdrenalineHcl);
+                int acidLeftAfterSalt = LiquidTools.GetLiquidAmount(adrenalineCup, "acid");
+
+                GameSlotInventory wasteSlot = MachineHelper.GetSlot(machine, 3) as GameSlotInventory;
+                int wasteCollected = ItemFactory.CollectDextroWaste(adrenalineCup, wasteSlot);
+                GameItem wasteItem = wasteSlot != null ? wasteSlot.childItem : null;
+                int dextroAfterCollect = LiquidTools.GetLiquidAmount(adrenalineCup, CustomLiquids.DextroWaste);
+
+                LiquidTools.SetLiquidRaw(adrenalineCup, "water", hcl);
+                PulseStep(adrenalineCup, AdrenalineChemistry.StepSolution);
+                int solution = LiquidTools.GetLiquidAmount(adrenalineCup, CustomLiquids.AdrenalineSolution);
+                int hclLeft = LiquidTools.GetLiquidAmount(adrenalineCup, CustomLiquids.AdrenalineHcl);
+                int waterLeft = LiquidTools.GetLiquidAmount(adrenalineCup, "water");
+
+                AdrenalineContent.EnsureRecipes();
+                bool recipesOk = ChemFinisherRecipe.GetRecipeById(ItemIds.Api) != null
+                    && ChemFinisherRecipe.GetRecipeById(ItemIds.Pen) != null;
+
+                apiItem = AdrenalineContent.CreateApi();
+                penItem = AdrenalineContent.CreatePen();
+                boxItem = AdrenalineContent.CreateSupplyBox();
+                noteItem = AdrenalineContent.CreateRecipeNote();
+                bool itemsOk = apiItem != null
+                    && penItem != null
+                    && penItem.IsTag("ITEM_MEDICAL_TAG")
+                    && penItem.IsGameItemType("MEDICAL")
+                    && penItem.effects.Count >= 2
+                    && penItem.effects[0].abilityEffectType == CombatAbilityEffect.EffectType.buff
+                    && penItem.effects[0].affectedStat == CombatEntity.EffectType.accuracyPercentage
+                    && penItem.effects[1].affectedStat == CombatEntity.EffectType.criticalChanceDealing
+                    && boxItem != null
+                    && boxItem.canActivateSlotItemFunc != null
+                    && noteItem != null
+                    && noteItem.IsTag("HANDNOTE_BODY");
+
+                log.Log(Prefix + "adrenaline chain: amination=" + amination + "µL catecholLeft=" + catecholLeft
+                    + "µL lipobondLeft=" + lipobondLeft + "µL | racemic=" + racemic
+                    + "µL reducingLeft=" + reducingLeft + "µL | levoSalt=" + levoSalt + "µL dextro=" + dextro
+                    + "µL acidLeft=" + acidLeftAfterResolution + "µL | freebase=" + freebase + "µL hcl=" + hcl
+                    + "µL baseLeft2=" + baseLeftAfterFreebase + "µL acidLeft2=" + acidLeftAfterSalt
+                    + "µL | wasteCollected=" + wasteCollected + "µL dextroLeft=" + dextroAfterCollect
+                    + "µL wasteItem='" + (wasteItem != null ? wasteItem.name : "-")
+                    + "' | solution=" + solution + "µL hclLeft=" + hclLeft + "µL waterLeft=" + waterLeft + "µL"
+                    + " | recipes=" + recipesOk + " items=" + itemsOk);
+
                 bool exact = moved == 1234 && targetTotal == 1234 && sourceTotal == totalBefore - moved;
                 bool refuseOverdose = overRequest == 0 && afterOverRequest == targetTotal;
                 bool hasWindow = extractor.contentWindow != null;
@@ -239,6 +323,28 @@ namespace PrecisionLab
                     && activityAfterFeed == 60
                     && fruitConsumed
                     && LiquidTools.GetCultivatorThroughput(0, 100) == LiquidTools.CultivatorBaseThroughput;
+                bool adrenalineOk = amination == 3000
+                    && catecholLeft == 0
+                    && lipobondLeft == 0
+                    && racemic == 3000
+                    && reducingLeft == 0
+                    && levoSalt + dextro >= 2999
+                    && levoSalt > 0
+                    && dextro > 0
+                    && Math.Abs(levoSalt - dextro) <= 1
+                    && acidLeftAfterResolution == 1500
+                    && freebase == levoSalt
+                    && baseLeftAfterFreebase == 0
+                    && hcl == freebase
+                    && acidLeftAfterSalt == 0
+                    && wasteCollected == dextro
+                    && dextroAfterCollect == 0
+                    && wasteItem != null
+                    && wasteItem.identifier == ItemIds.DextroWaste
+                    && solution == hcl
+                    && hclLeft == 0
+                    && waterLeft == 0;
+                bool adrenalineItemsOk = recipesOk && itemsOk;
 
                 // Verify the pipette dial: moving the in-window slider must write the per-item
                 // dose tag through the real UI callback.
@@ -273,11 +379,13 @@ namespace PrecisionLab
                     && concContaminantAfter < concContaminantBefore;
                 bool modes = modesEmpty && modesDraw && modesInject && autoFilledInjects;
                 log.Log(Prefix + (exact && refuseOverdose && hasWindow && sliderWorks && modes && manualOk
-                        && clean && conc && hydrolysis && digestion && cultivatorOk ? "OK" : "FAILED")
+                        && clean && conc && hydrolysis && digestion && cultivatorOk
+                        && adrenalineOk && adrenalineItemsOk ? "OK" : "FAILED")
                     + " exact=" + exact + " refuseOverdose=" + refuseOverdose + " window=" + hasWindow
                     + " slider=" + sliderWorks + " modes=" + modes + " manual=" + manualOk
                     + " cleanWater=" + clean + " concentrate=" + conc
-                    + " hydrolysis=" + hydrolysis + " digestion=" + digestion + " cultivator=" + cultivatorOk);
+                    + " hydrolysis=" + hydrolysis + " digestion=" + digestion + " cultivator=" + cultivatorOk
+                    + " adrenaline=" + adrenalineOk + " adrenalineItems=" + adrenalineItemsOk);
             }
             catch (Exception e)
             {
@@ -294,6 +402,22 @@ namespace PrecisionLab
                 DestroyQuietly(hydro);
                 DestroyQuietly(sugarCup);
                 DestroyQuietly(fruit);
+                DestroyQuietly(adrenalineCup);
+                DestroyQuietly(apiItem);
+                DestroyQuietly(penItem);
+                DestroyQuietly(boxItem);
+                DestroyQuietly(noteItem);
+            }
+        }
+
+        private static void PulseStep(GameItem container, Func<GameItem, int> step)
+        {
+            for (int i = 0; i < 5000; i++)
+            {
+                if (step(container) <= 0)
+                {
+                    return;
+                }
             }
         }
 

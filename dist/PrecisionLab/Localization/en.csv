@@ -82,3 +82,50 @@ tooltip.cultivator.dormant_panel,Dormant · needs nutrifruit
 tooltip.cultivator.fruit,Nutrient slot: {0} (pressing it feeds the culture +{1}% activity)
 tooltip.cultivator.nofruit,Nutrient slot: empty (add nutrifruit to keep the culture active)
 machine.cultivator.nutrient,Nutrifruit
+liquid.catechol,Catechol
+liquid.hydroxymethyl_base,N-Hydroxymethyl Base Solution
+liquid.resolving_agent,Chiral Resolving Agent
+liquid.amination_intermediate,Amination Intermediate
+liquid.racemic_adrenaline,Racemic Adrenaline
+liquid.levo_adrenaline_salt,Levo-Adrenaline Salt
+liquid.dextro_waste,Dextro Waste
+liquid.adrenaline_freebase,Adrenaline Free Base
+liquid.adrenaline_hcl,Adrenaline HCl
+liquid.adrenaline_solution,Adrenaline Solution
+item.catechol_bottle.name,Catechol Reagent Bottle
+item.hydroxymethyl_bottle.name,N-Hydroxymethyl Base Solution Bottle
+item.lipobond_bottle.name,Lipobond Agent Bottle
+item.reducing_bottle.name,Reducing Agent Bottle
+item.resolving_bottle.name,Chiral Resolving Agent Bottle
+item.base_bottle.name,Base Reagent Bottle
+item.acid_bottle.name,Acid Reagent Bottle
+tooltip.reagent_bottle.desc,Contains {0} mL of {1}.
+item.adrenaline_box.name,Adrenaline Precursor Kit
+item.adrenaline_box.flavor,"A pharmacist's sealed reagent kit. The label is deliberately vague."
+item.adrenaline_box.desc,Activate to unpack: catechol N-hydroxymethyl base solution lipobond agent reducing agent chiral resolving agent base and acid. All intermediates are produced by the recipes themselves - only the starting reagents are supplied.
+item.adrenaline_api.name,Adrenaline HCl API
+item.adrenaline_api.flavor,Pharmaceutical-grade adrenaline hydrochloride. Handle with gloves and a steady hand.
+item.adrenaline_api.desc,Active pharmaceutical ingredient pressed by the Chem Finisher from a dry filtered adrenaline HCl solution. Quality is graded from the active fraction. Dissolve it in water to prepare the injectable solution.
+item.adrenaline_pen.name,Adrenaline Injection Pen
+item.adrenaline_pen.flavor,"A single-use auto-injector. The label says EPINEPHRINE in blue letters then a smaller warning nobody reads."
+item.adrenaline_pen.desc,A combat stim auto-injector: sharp short burst of accuracy and critical chance. Medical item. Quality is graded from the active fraction of the solution it was pressed from.
+item.dextro_waste.name,Dextro Waste
+item.dextro_waste.flavor,"The useless half of the resolution. Sticky bitter and best not handled bare-handed."
+item.dextro_waste.desc,Waste collected by the purification machine waste output slot when a liquid contains dextro waste from the chiral resolution step.
+tooltip.adrenaline_box.contents,"Contains one batch of reagents: catechol N-hydroxymethyl base solution lipobond agent reducing agent resolving agent base and acid."
+tooltip.adrenaline_box.hint,Activate to unpack. Follow the adrenaline injection pen recipe note (granted by the More Medicines unlock) for the six production steps.
+tooltip.adrenaline_api.purity,Active ingredient purity: {0:0.#}%
+tooltip.adrenaline_api.hint,Dissolve the API in an equal amount of water then press the dry solution in the Chem Finisher to fill an injection pen.
+tooltip.adrenaline_pen.effect,"Combat stim: +20% accuracy and +33% critical chance for 3 turns."
+tooltip.adrenaline_pen.tag,"Medical item - single use usable in combat."
+tooltip.dextro_waste.hint,Waste from the chiral resolution step. The purifier waste output slot collects this; sell it or dissolve it back into a container.
+upgrade.meds.title,More Medicines: Adrenaline
+upgrade.meds.desc,"Unlocks the adrenaline injection pen production line: a recipe note in your store plus precursor kits sold by the retired chemist."
+upgrade.meds.bought,Ordered. Check your store inventory for the recipe note.
+machine.purifier.waste,Waste Output
+tooltip.purifier.dextro,"Contains {0} mL dextro waste: the waste output slot collects it as a waste item during the cycle."
+tooltip.purifier.waste_full,Waste output slot is occupied - empty it to collect more dextro waste.
+item.adrenaline_recipe.name,Adrenaline Injection Pen Recipe
+item.adrenaline_recipe.title,Adrenaline Injection Pen
+item.adrenaline_recipe.sign,Li Beven
+item.adrenaline_recipe.body,"ADRENALINE INJECTION PEN - six steps.\n\nSTEP 1 Amination (26-60 C): catechol + N-hydroxymethyl base solution + lipobond agent -> amination intermediate\nSTEP 2 Reduction (60-80 C): amination intermediate + reducing agent -> racemic adrenaline\nSTEP 3 Resolution (40-60 C acid catalyst): racemic adrenaline + resolving agent + acid -> levo-adrenaline salt + dextro waste. Remove the waste with the purifier waste slot.\nSTEP 4 Salt formation (26-60 C): levo salt + base -> free base; free base + acid -> adrenaline HCl. Evaporate water then press the dry liquid in the Chem Finisher -> API\nSTEP 5 Solution: dissolve the API in an equal amount of water -> adrenaline solution (evaporate excess water)\nSTEP 6 Filling: press the dry adrenaline solution in the Chem Finisher -> injection pen\n\nPer precursor kit: catechol 3000 / base sol 3000 / lipobond 3000 / reducing 3000 / resolving 3000 / base 1500 / acid 1500 uL. Stir and heat each step."

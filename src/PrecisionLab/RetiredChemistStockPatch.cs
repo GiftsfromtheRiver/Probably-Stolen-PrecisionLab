@@ -33,6 +33,7 @@ namespace PrecisionLab
                         original();
                     }
                     RetiredChemistStock.TryAddExtractor();
+                    RetiredChemistStock.TryAddAdrenalineKit();
                 };
             }
             catch (Exception e)
@@ -79,6 +80,32 @@ namespace PrecisionLab
             return store.networkUpgrade.TryGetValue(ExtractorUpgradeId, out upgrade)
                 && upgrade != null
                 && upgrade.IsUnlocked();
+        }
+
+        /// <summary>After the "更多药品" unlock the retired chemist sells adrenaline precursor kits.</summary>
+        internal static void TryAddAdrenalineKit()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.SupplyBox);
+                Debug.Log("[PrecisionLab] retired chemist offers an adrenaline precursor kit");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist adrenaline kit stock failed: " + e);
+            }
         }
 
         /// <summary>True when the player currently owns no extractor (used by diagnostics).</summary>

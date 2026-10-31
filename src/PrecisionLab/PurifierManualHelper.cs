@@ -32,9 +32,9 @@ namespace PrecisionLab
             try
             {
                 // Storage indices (MachineryPanelRow.CollectStorage):
-                //   purifier : power=0, module=1, container=2, note=3
+                //   purifier : power=0, module=1, container=2, waste=3, note=4
                 //   cultivator: power=0, module=1, container=2, nutrient=3, note=4
-                int noteIndex = machine.identifier == ItemIds.Purifier ? 3 : 4;
+                int noteIndex = 4;
                 GameSlotInventory noteSlot = MachineHelper.GetSlot(machine, noteIndex) as GameSlotInventory;
                 if (noteSlot == null || noteSlot.childItem != null)
                 {

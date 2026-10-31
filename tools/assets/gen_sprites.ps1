@@ -45,6 +45,14 @@ $Palette = @{
     liquid   = '#3fc6d8'
     liquidHi = '#a5f3fc'
     glass    = '#cfe8ee'
+    blueBody = '#3b6ea5'
+    blueHi   = '#7fb3e0'
+    blueDark = '#24405e'
+    wasteRed = '#7a2f2f'
+    wasteHi  = '#b45a5a'
+    wasteTan = '#a8916a'
+    wasteTanHi = '#c9b487'
+    paper    = '#e8e2cc'
 }
 
 function New-Canvas([int]$w, [int]$h) {
@@ -287,5 +295,84 @@ Fill-Rect $cultivatorActive 20 54 1 1 'green'
 Fill-Rect $cultivatorActive 30 56 2 2 'glowCyan'
 Test-CellCenters $cultivatorActive 'precision_cultivator_active'
 Save-Sprite $cultivatorActive 'precision_cultivator_active'
+
+# ---------------------------------------------------------------------------
+# 肾上腺素注射笔 / Adrenaline injection pen — 48x16, 3x1 blue auto-injector
+# ---------------------------------------------------------------------------
+$pen = New-Canvas 48 16
+# tip / needle cap (left)
+Fill-Rect $pen 1 5 3 6 'metal'
+Frame-Rect $pen 1 5 3 6 'border'
+Fill-Rect $pen 2 6 1 4 'metalHi'
+# barrel
+Fill-Rect $pen 4 4 32 8 'blueBody'
+Frame-Rect $pen 4 4 32 8 'border'
+Fill-Rect $pen 5 5 30 2 'blueHi'
+Fill-Rect $pen 5 10 30 1 'blueDark'
+# dose window + label stripe
+Fill-Rect $pen 10 6 12 4 'glass'
+Fill-Rect $pen 11 7 10 2 'blueHi'
+Fill-Rect $pen 14 8 4 1 'blueDark'
+# plunger (right)
+Fill-Rect $pen 36 5 7 6 'metal'
+Frame-Rect $pen 36 5 7 6 'border'
+Fill-Rect $pen 43 6 3 4 'metalHi'
+Frame-Rect $pen 43 6 3 4 'border'
+# end cap
+Fill-Rect $pen 46 7 1 2 'dark'
+Test-CellCenters $pen 'adrenaline_pen'
+Save-Sprite $pen 'adrenaline_pen'
+
+# ---------------------------------------------------------------------------
+# 肾上腺素原料盒 / Adrenaline precursor kit — 16x16 box with two vials
+# ---------------------------------------------------------------------------
+$kit = New-Canvas 16 16
+Fill-Rect $kit 1 3 14 12 'wasteTan'
+Frame-Rect $kit 1 3 14 12 'border'
+Fill-Rect $kit 2 4 12 2 'wasteTanHi'
+Fill-Rect $kit 2 6 12 1 'border'
+# vials
+Fill-Rect $kit 4 7 2 6 'glass'
+Frame-Rect $kit 4 7 2 6 'border'
+Fill-Rect $kit 4 10 2 3 'wasteRed'
+Fill-Rect $kit 10 7 2 6 'glass'
+Frame-Rect $kit 10 7 2 6 'border'
+Fill-Rect $kit 10 9 2 4 'blueBody'
+# label
+Fill-Rect $kit 6 12 5 2 'paper'
+Fill-Rect $kit 7 13 3 1 'border'
+Test-CellCenters $kit 'adrenaline_supply_box'
+Save-Sprite $kit 'adrenaline_supply_box'
+
+# ---------------------------------------------------------------------------
+# 盐酸肾上腺素原料药 / Adrenaline HCl API — 16x16 powder vial
+# ---------------------------------------------------------------------------
+$api = New-Canvas 16 16
+Fill-Rect $api 5 1 6 2 'border'
+Fill-Rect $api 6 3 4 2 'glass'
+Fill-Rect $api 4 5 8 10 'glass'
+Frame-Rect $api 4 5 8 10 'border'
+Fill-Rect $api 5 9 6 5 'paper'
+Fill-Rect $api 6 10 4 3 'blueHi'
+Fill-Rect $api 5 5 6 2 'glass'
+Fill-Rect $api 4 12 8 1 'wasteTanHi'
+# shine
+Fill-Rect $api 5 6 1 3 'metalHi2'
+Test-CellCenters $api 'adrenaline_api'
+Save-Sprite $api 'adrenaline_api'
+
+# ---------------------------------------------------------------------------
+# 右旋废料 / Dextro waste — 16x16 vial with dark red waste
+# ---------------------------------------------------------------------------
+$waste = New-Canvas 16 16
+Fill-Rect $waste 6 1 4 2 'border'
+Fill-Rect $waste 7 3 2 1 'glass'
+Fill-Rect $waste 5 4 6 11 'glass'
+Frame-Rect $waste 5 4 6 11 'border'
+Fill-Rect $waste 6 8 4 6 'wasteRed'
+Fill-Rect $waste 6 9 4 1 'wasteHi'
+Fill-Rect $waste 6 5 1 2 'metalHi2'
+Test-CellCenters $waste 'dextro_waste'
+Save-Sprite $waste 'dextro_waste'
 
 Write-Host "[sprites] done -> $OutDir"
