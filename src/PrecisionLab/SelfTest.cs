@@ -330,6 +330,9 @@ namespace PrecisionLab
                     && tourniquetItem.unitValue > 0
                     && tourniquetItem.mayActivateSlotItemFunc != null
                     && tourniquetItem.canActivateSlotItemFunc != null
+                    && tourniquetItem.shape != null
+                    && tourniquetItem.shape.width == 3
+                    && tourniquetItem.shape.height == 2
                     && fabricSample != null;
                 if (fabricSample != null)
                 {
@@ -338,6 +341,8 @@ namespace PrecisionLab
                 }
                 log.Log(Prefix + "makeshift tourniquet: item=" + (tourniquetItem != null)
                     + " medical=" + (tourniquetItem != null && tourniquetItem.IsGameItemType("MEDICAL"))
+                    + " shape=" + (tourniquetItem != null && tourniquetItem.shape != null ? tourniquetItem.shape.width + "x" + tourniquetItem.shape.height : "-")
+                    + " sprite=" + (tourniquetItem != null && tourniquetItem.useSpriteFromMod)
                     + " attach=" + (fabricSample != null && fabricSample.mayThisTargetItemFunc != null));
 
                 bool exact = moved == 1234 && targetTotal == 1234 && sourceTotal == totalBefore - moved;
