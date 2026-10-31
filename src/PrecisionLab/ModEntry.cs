@@ -755,6 +755,7 @@ namespace PrecisionLab
                 if (IsUpgradeUnlocked("PRECISION_LAB_MEDS"))
                 {
                     AdrenalineContent.EnsureRecipes();
+                    AdrenalineContent.RefreshRecipeNotesInStore();
                 }
             }
             catch (Exception e)

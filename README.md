@@ -5,7 +5,7 @@
 ![肾上腺素注射笔与原料盒](docs/images/adrenaline-pen.png)
 
 > 适配游戏版本：**0.46D**（Unity 2021.3.45f2，Mono）。纯本地 mod，不修改游戏文件，不依赖第三方 mod 框架。
-> Mod ID：`precision_lab` · 当前版本：**1.2.2**
+> Mod ID：`precision_lab` · 当前版本：**1.2.3**
 
 ---
 

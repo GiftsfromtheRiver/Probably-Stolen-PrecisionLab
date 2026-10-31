@@ -220,6 +220,58 @@ namespace PrecisionLab
                 && ChemFinisherRecipe.GetRecipeById(ItemIds.Pen) != null;
         }
 
+        /// <summary>
+        /// Rewrites the body of any already-existing adrenaline recipe note (handnote items keep
+        /// the body text in a tag from the moment they were created, so notes delivered by older
+        /// mod versions would otherwise keep the stale wording).
+        /// </summary>
+        internal static void RefreshRecipeNotesInStore()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null)
+                {
+                    return;
+                }
+                string title = Loc.Get("item.adrenaline_recipe.title", "Adrenaline Injection Pen");
+                string body = Loc.Get("item.adrenaline_recipe.body", "");
+                if (string.IsNullOrEmpty(body))
+                {
+                    return;
+                }
+                int refreshed = 0;
+                for (int i = 0; i < store.FindAllItem().Count; i++)
+                {
+                    GameItem item = store.FindAllItem()[i];
+                    if (item == null || !item.IsTag("HANDNOTE_TITLE"))
+                    {
+                        continue;
+                    }
+                    if (item.GetTagReadonly("HANDNOTE_TITLE").GetString() != title)
+                    {
+                        continue;
+                    }
+                    item.ModifyTag("HANDNOTE_BODY", delegate (TagState state)
+                    {
+                        state.Enable().SetString(body);
+                    });
+                    item.ModifyTag("HANDNOTE_SIGN", delegate (TagState state)
+                    {
+                        state.Enable().SetString("");
+                    });
+                    refreshed++;
+                }
+                if (refreshed > 0)
+                {
+                    Debug.Log("[PrecisionLab] refreshed " + refreshed + " adrenaline recipe note(s)");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] refreshing recipe notes failed: " + e.Message);
+            }
+        }
         // ------------------------------------------------------------------
         // Recipe note document (vanilla handnote page)
         // ------------------------------------------------------------------
