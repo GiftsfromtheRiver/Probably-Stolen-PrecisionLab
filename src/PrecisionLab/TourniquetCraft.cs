@@ -16,6 +16,8 @@ namespace PrecisionLab
         internal const string FabricId = "kotton_fabric";
         internal const string ScrapId = "scrap_metal";
         internal const string IngotId = "metal_ingot";
+        internal const string ConditionCategory = "CATEGORY_TOURNIQUET_CONDITION";
+        internal const int IngotFairPurityLevel = 7; // INGOT_PURITY_FAIR and above counts as "medium or better"
         internal const string MedsUpgradeId = "PRECISION_LAB_MEDS";
 
         private static readonly HashSet<GameItem> attachedItems = new HashSet<GameItem>();
@@ -195,6 +197,7 @@ namespace PrecisionLab
                     NotifyNoSpace();
                     return;
                 }
+                ApplyMaterialCondition(result, target);
                 ConsumeOne(source);
                 ConsumeOne(target);
                 Debug.Log("[PrecisionLab] crafted a makeshift tourniquet from fabric + " + target.identifier);
@@ -232,6 +235,88 @@ namespace PrecisionLab
                 // Night log is cosmetic; never let it break crafting.
             }
             Debug.LogWarning("[PrecisionLab] no room to place the crafted makeshift tourniquet");
+        }
+        /// <summary>
+        /// Labels the crafted tourniquet by the buckle material:
+        ///   scrap metal                       -> 破旧 / worn (value -50%)
+        ///   metal ingot, fair purity or better-> 极佳 / excellent (value +25%)
+        ///   metal ingot, below fair purity    -> 陈旧 / aged (value -25%)
+        /// The label is an ItemFeature condition, which the game's own value pipeline applies
+        /// as a percentage modifier and the negotiation UI shows as the item condition.
+        /// </summary>
+        internal static void ApplyMaterialCondition(GameItem item, GameItem material)
+        {
+            if (item == null)
+            {
+                return;
+            }
+            try
+            {
+                string displayKey;
+                string fallback;
+                string conditionId;
+                int modValue;
+                if (material != null && material.identifier == IngotId)
+                {
+                    int level = GetIngotPurityLevel(material);
+                    if (level >= IngotFairPurityLevel)
+                    {
+                        displayKey = "condition.tourniquet.excellent";
+                        fallback = "Excellent";
+                        conditionId = "tourniquet_excellent";
+                        modValue = 25;
+                    }
+                    else
+                    {
+                        displayKey = "condition.tourniquet.aged";
+                        fallback = "Aged";
+                        conditionId = "tourniquet_aged";
+                        modValue = -25;
+                    }
+                }
+                else
+                {
+                    displayKey = "condition.tourniquet.worn";
+                    fallback = "Worn";
+                    conditionId = "tourniquet_worn";
+                    modValue = -50;
+                }
+                ItemCondition condition = new ItemCondition
+                {
+                    category = ConditionCategory,
+                    display = Loc.Get(displayKey, fallback),
+                    modValue = modValue,
+                    identifier = conditionId
+                };
+                ItemFeature feature = new ItemFeature(ConditionCategory);
+                feature.identifier = "tourniquet_condition";
+                feature.useCondition = true;
+                feature.fakeCondition = condition;
+                feature.realCondition = condition;
+                feature.isFeatureMatch = true;
+                item.AddItemFeature(feature);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] labeling the tourniquet condition failed: " + e.Message);
+            }
+        }
+
+        private static int GetIngotPurityLevel(GameItem ingot)
+        {
+            try
+            {
+                string purity = IngotPurityHelper.GetPurity(ingot);
+                if (!string.IsNullOrEmpty(purity) && IngotPurityHelper.ingotPurities.ContainsKey(purity))
+                {
+                    return IngotPurityHelper.ingotPurities[purity].PurityLevel;
+                }
+            }
+            catch (Exception)
+            {
+                // Fall through to the safe default.
+            }
+            return 0;
         }
         private static void ConsumeOne(GameItem item)
         {

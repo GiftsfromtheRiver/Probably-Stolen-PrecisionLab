@@ -131,10 +131,14 @@ item.adrenaline_recipe.body,"肾上腺素注射笔——六步流程。\n\n第1�
 tooltip.purifier.turbo,涡轮加速：把“涡轮增压器 / 高级涡轮增压机”拖到本机器上（增压器需显示“就绪”）可以额外运转一个周期。
 tooltip.cultivator.turbo,涡轮加速：把“涡轮增压器 / 高级涡轮增压机”拖到本机器上（增压器需显示“就绪”）可以额外运转一个周期。
 item.makeshift_tourniquet.name,简易止血带
-item.makeshift_tourniquet.desc,用韧棉织物和废金属（或金属锭）拼成的应急止血带。医疗物：受伤（伤势未稳定）时使用，会稳定伤势并把伤势等级 -1（相当于止血绷带）。
+item.makeshift_tourniquet.desc,用韧棉织物和废金属（或金属锭）拼成的应急止血带。医疗物：受伤（伤势未稳定）时使用，会稳定伤势并把伤势等级 -1（相当于止血绷带）。材料决定标签与价值：废金属=破旧(-50%)；金属锭纯度中等以上=极佳(+25%)；低于中等=陈旧(-25%)。
 item.tourniquet_recipe.name,简易止血带配方
 item.tourniquet_recipe.title,简易止血带
-item.tourniquet_recipe.body,"简易止血带——应急医疗配方。\n\n把「韧棉织物」拖到「废金属」或「金属锭」上：会消耗 1 份韧棉织物 + 1 块废金属/金属锭，合成为 1 条简易止血带。\n\n简易止血带是医疗物：受伤（伤势未稳定）时使用，会稳定伤势并把伤势等级 -1，相当于一条止血绷带。\n\n只有解锁「更多药品：肾上腺素」之后才能合成。"
+item.tourniquet_recipe.body,"简易止血带——应急医疗配方。\n\n把「韧棉织物」拖到「废金属」或「金属锭」上：会消耗 1 份韧棉织物 + 1 块金属，合成为 1 条简易止血带。\n\n材料决定成品标签与价值：\n- 废金属做的：破旧（价值 -50%）\n- 金属锭做的，纯度中等及以上：极佳（价值 +25%）\n- 金属锭做的，纯度低于中等：陈旧（价值 -25%）\n\n简易止血带是医疗物：受伤（伤势未稳定）时使用，会稳定伤势并把伤势等级 -1，相当于一条止血绷带。\n\n只有解锁「更多药品：肾上腺素」之后才能合成。"
 tooltip.tourniquet.hint,简易止血带：把「韧棉织物」拖到「废金属」或「金属锭」上即可合成（需解锁“更多药品”）。
 mech.tourniquet.no_space,没有空间放置做好的简易止血带：韧棉织物和金属都没有被消耗，请先腾出 2×2 的空位再试。
 mech.tourniquet.note_delivered,“简易止血带配方”纸条已放进店内库存（可翻页阅读）。
+condition.tourniquet.worn,破旧
+condition.tourniquet.aged,陈旧
+condition.tourniquet.excellent,极佳
+tooltip.tourniquet.condition,标签：{0}（价值 {2}{1}%）

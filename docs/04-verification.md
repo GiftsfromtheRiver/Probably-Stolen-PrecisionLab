@@ -571,3 +571,12 @@ v1.2.9 增加：提纯机/培养机显式 EnableTag("TURBO_BOOST_ELIGIBLE_TAG")�
   且**不消耗材料**，并写入夜间报告提示。
 - 新增金属锭 `metal_ingot` 作为替代目标（织物侧检查，金属锭自身委托不动）。
 - 织物/废金属/金属锭在解锁后显示合成提示 tooltip；纸条发放时写夜间报告提示避免错过。
+## v1.3.4 止血带材料品质标签（2026-11-01）
+
+按玩家设计：材料决定成品标签与价值。
+- 废金属 → 破旧（value −50%）；金属锭纯度 ≥ 中等（INGOT_PURITY_FAIR，level 7）→ 极佳（+25%）；
+  金属锭低于中等（LOW 6 / VERY_LOW 5 / 未知）→ 陈旧（−25%）。
+- 实现：合成时给产物加自定义 `ItemFeature`（CATEGORY_TOURNIQUET_CONDITION，useCondition=true，
+  fake=real 自定义 ItemCondition，modValue -50/-25/+25，isFeatureMatch=true），由游戏价格管线按百分比修正；
+  协商界面显示条件，物品提示新增“标签：破旧（价值 -50%）”行。
+- 纸条正文/物品描述/README 补充材料-标签-价值对照表；自检断言 worn=-50、excellent=25、aged=-25。

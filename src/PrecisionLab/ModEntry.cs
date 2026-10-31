@@ -460,6 +460,19 @@ namespace PrecisionLab
             }
             try
             {
+                if (item.identifier == ItemIds.Tourniquet)
+                {
+                    ItemFeature condition = item.FindItemFeatureByCategory("CATEGORY_TOURNIQUET_CONDITION");
+                    if (condition != null && condition.realCondition != null)
+                    {
+                        int mod = condition.realCondition.modValue;
+                        string sign = mod > 0 ? "+" : "";
+                        builder.AddLine(
+                            Loc.Fmt("tooltip.tourniquet.condition", "Condition: {0} ({2}{1}% value)", condition.realCondition.display, mod, sign),
+                            true,
+                            mod >= 0 ? RenderHandler.ColorPalette.LightGreen : RenderHandler.ColorPalette.LightOrange);
+                    }
+                }
                 if ((item.identifier == "kotton_fabric" || item.identifier == "scrap_metal" || item.identifier == "metal_ingot")
                     && ModEntry.IsUpgradeUnlocked("PRECISION_LAB_MEDS"))
                 {

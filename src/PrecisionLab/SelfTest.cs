@@ -33,6 +33,11 @@ namespace PrecisionLab
             GameItem recycleCup = null;
             GameItem tourniquetItem = null;
             GameItem fabricSample = null;
+            GameItem scrapForCondition = null;
+            GameItem ingotForCondition = null;
+            GameItem tqWorn = null;
+            GameItem tqExcellent = null;
+            GameItem tqAged = null;
             try
             {
                 if (ItemMouseDragHandler.current == null)
@@ -339,6 +344,39 @@ namespace PrecisionLab
                     TourniquetCraft.Attach(fabricSample);
                     tourniquetOk = tourniquetOk && fabricSample.mayThisTargetItemFunc != null;
                 }
+                scrapForCondition = null;
+                ingotForCondition = null;
+                tqWorn = null;
+                tqExcellent = null;
+                tqAged = null;
+                bool conditionOk = false;
+                try
+                {
+                    scrapForCondition = ItemSpawner.Spawn(TourniquetCraft.ScrapId);
+                    ingotForCondition = ItemSpawner.Spawn(TourniquetCraft.IngotId);
+                    tqWorn = ItemSpawner.Spawn(ItemIds.Tourniquet);
+                    TourniquetCraft.ApplyMaterialCondition(tqWorn, scrapForCondition);
+                    conditionOk = GetTourniquetConditionMod(tqWorn) == -50;
+                    if (ingotForCondition != null)
+                    {
+                        IngotPurityHelper.SetPurity(ingotForCondition, "INGOT_PURITY_HIGH");
+                        tqExcellent = ItemSpawner.Spawn(ItemIds.Tourniquet);
+                        TourniquetCraft.ApplyMaterialCondition(tqExcellent, ingotForCondition);
+                        conditionOk = conditionOk && GetTourniquetConditionMod(tqExcellent) == 25;
+                        IngotPurityHelper.SetPurity(ingotForCondition, "INGOT_PURITY_LOW");
+                        tqAged = ItemSpawner.Spawn(ItemIds.Tourniquet);
+                        TourniquetCraft.ApplyMaterialCondition(tqAged, ingotForCondition);
+                        conditionOk = conditionOk && GetTourniquetConditionMod(tqAged) == -25;
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.Log(Prefix + "tourniquet condition test failed: " + e.Message);
+                }
+                tourniquetOk = tourniquetOk && conditionOk;
+                log.Log(Prefix + "makeshift tourniquet condition: worn=" + (tqWorn != null ? GetTourniquetConditionMod(tqWorn) : -999)
+                    + " excellent=" + (tqExcellent != null ? GetTourniquetConditionMod(tqExcellent) : -999)
+                    + " aged=" + (tqAged != null ? GetTourniquetConditionMod(tqAged) : -999));
                 log.Log(Prefix + "makeshift tourniquet: item=" + (tourniquetItem != null)
                     + " medical=" + (tourniquetItem != null && tourniquetItem.IsGameItemType("MEDICAL"))
                     + " shape=" + (tourniquetItem != null && tourniquetItem.shape != null ? tourniquetItem.shape.width + "x" + tourniquetItem.shape.height : "-")
@@ -456,6 +494,11 @@ namespace PrecisionLab
                 DestroyQuietly(noteItem);
                 DestroyQuietly(tourniquetItem);
                 DestroyQuietly(fabricSample);
+                DestroyQuietly(scrapForCondition);
+                DestroyQuietly(ingotForCondition);
+                DestroyQuietly(tqWorn);
+                DestroyQuietly(tqExcellent);
+                DestroyQuietly(tqAged);
                 DestroyQuietly(recycleCup);
             }
         }
@@ -487,6 +530,16 @@ namespace PrecisionLab
                 return 0;
             }
             return (int)((long)LiquidTools.GetLiquidAmount(container, "water") * 10000L / total);
+        }
+
+        private static int GetTourniquetConditionMod(GameItem item)
+        {
+            if (item == null)
+            {
+                return -999;
+            }
+            ItemFeature feature = item.FindItemFeatureByCategory("CATEGORY_TOURNIQUET_CONDITION");
+            return feature != null && feature.realCondition != null ? feature.realCondition.modValue : -999;
         }
 
         private static void DestroyQuietly(GameItem item)
