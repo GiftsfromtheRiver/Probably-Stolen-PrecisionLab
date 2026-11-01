@@ -109,6 +109,7 @@ namespace PrecisionLab
             ModHook.OnModAssetsLoaded += OnModAssetsLoaded;
             ModHook.OnGameLoadedInit += OnGameLoadedInit;
             ModHook.OnGameLoadedNormal += OnGameLoadedNormal;
+            ModHook.OnGameLoadedLate += OnGameLoadedLate;
             ModHook.OnNewGameStarted += OnNewGameStarted;
             ModHook.OnWakingUpLate += OnWakingUpLate;
             ModHook.OnCreateTooltipLate += OnCreateTooltipLate;
@@ -122,6 +123,7 @@ namespace PrecisionLab
             ModHook.OnModAssetsLoaded -= OnModAssetsLoaded;
             ModHook.OnGameLoadedInit -= OnGameLoadedInit;
             ModHook.OnGameLoadedNormal -= OnGameLoadedNormal;
+            ModHook.OnGameLoadedLate -= OnGameLoadedLate;
             ModHook.OnNewGameStarted -= OnNewGameStarted;
             ModHook.OnWakingUpLate -= OnWakingUpLate;
             ModHook.OnCreateTooltipLate -= OnCreateTooltipLate;
@@ -335,9 +337,15 @@ namespace PrecisionLab
                 GameItem note = AdrenalineContent.CreateRecipeNote();
                 if (note != null)
                 {
-                    GeneralHelper.SetItemOwned(note, true);
-                    GraphUtils.EmporiumTryAdd(note);
-                    _log.Log("adrenaline recipe note delivered");
+                    NoteDelivery.Placement placement = NoteDelivery.TryPlaceNote(note);
+                    if (placement == NoteDelivery.Placement.None)
+                    {
+                        _log.Warning("adrenaline recipe note could not be placed; will retry on the next day/load");
+                    }
+                    else
+                    {
+                        _log.Log("adrenaline recipe note delivered (placement=" + placement + ")");
+                    }
                 }
                 TourniquetCraft.OnUnlocked();
             }
@@ -379,6 +387,30 @@ namespace PrecisionLab
             }
         }
 
+        /// <summary>
+        /// Runs after the save inventories have been decoded (OnGameLoadedNormal fires before
+        /// DecodeSaveItem). Recipe notes are delivered/refreshed here so existing notes are
+        /// found first and never duplicated by a pre-decode delivery.
+        /// </summary>
+        private static void OnGameLoadedLate()
+        {
+            try
+            {
+                TourniquetCraft.AttachToStoreItems();
+                if (!IsUpgradeUnlocked("PRECISION_LAB_MEDS"))
+                {
+                    return;
+                }
+                AdrenalineContent.EnsureRecipes();
+                AdrenalineContent.RefreshRecipeNotesInStore();
+                AdrenalineContent.EnsureRecipeNote();
+                TourniquetCraft.EnsureRecipeNote();
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] post-load note delivery failed: " + e.Message);
+            }
+        }
         private void OnNewGameStarted(string scenarioId)
         {
             try
@@ -397,6 +429,8 @@ namespace PrecisionLab
         {
             // Catch-up for purifiers that were loaded/created without their instruction note.
             PurifierManualHelper.EnsureAllInStore();
+            // Retry recipe-note deliveries that had no free inventory space earlier.
+            NoteDelivery.EnsureAll();
         }
 
         private static void GiveItem(string itemId)
@@ -787,8 +821,6 @@ namespace PrecisionLab
                 if (IsUpgradeUnlocked("PRECISION_LAB_MEDS"))
                 {
                     AdrenalineContent.EnsureRecipes();
-                    AdrenalineContent.RefreshRecipeNotesInStore();
-                    TourniquetCraft.OnGameLoaded();
                 }
             }
             catch (Exception e)

@@ -464,8 +464,12 @@ namespace PrecisionLab
                 GameItem note = CreateRecipeNote();
                 if (note != null)
                 {
-                    GeneralHelper.SetItemOwned(note, true);
-                    GraphUtils.EmporiumTryAdd(note);
+                    NoteDelivery.Placement placement = NoteDelivery.TryPlaceNote(note);
+                    if (placement == NoteDelivery.Placement.None)
+                    {
+                        Debug.LogWarning("[PrecisionLab] no room for the makeshift tourniquet recipe note; will retry on the next day/load");
+                        return;
+                    }
                     try
                     {
                         PlayerStore.Instance.AddNightLog(
@@ -476,7 +480,7 @@ namespace PrecisionLab
                     {
                         // Cosmetic only.
                     }
-                    Debug.Log("[PrecisionLab] makeshift tourniquet recipe note delivered");
+                    Debug.Log("[PrecisionLab] makeshift tourniquet recipe note delivered (placement=" + placement + ")");
                 }
             }
         }

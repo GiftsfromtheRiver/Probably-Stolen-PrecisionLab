@@ -229,6 +229,50 @@ namespace PrecisionLab
                 && ChemFinisherRecipe.GetRecipeById(ItemIds.Pen) != null;
         }
 
+        /// <summary>Finds the adrenaline recipe note, or creates and places a new one.</summary>
+        internal static void EnsureRecipeNote()
+        {
+            try
+            {
+                if (!PlayerStore.HasInstance || PlayerStore.Instance == null)
+                {
+                    return;
+                }
+                string title = Loc.Get("item.adrenaline_recipe.title", "Adrenaline Injection Pen");
+                var items = PlayerStore.Instance.FindAllItem();
+                if (items != null)
+                {
+                    for (int i = 0; i < items.Count; i++)
+                    {
+                        GameItem item = items[i];
+                        if (item == null || !item.IsTag("HANDNOTE_TITLE"))
+                        {
+                            continue;
+                        }
+                        if (item.GetTagReadonly("HANDNOTE_TITLE").GetString() == title)
+                        {
+                            return;
+                        }
+                    }
+                }
+                GameItem note = CreateRecipeNote();
+                if (note == null)
+                {
+                    return;
+                }
+                NoteDelivery.Placement placement = NoteDelivery.TryPlaceNote(note);
+                if (placement == NoteDelivery.Placement.None)
+                {
+                    Debug.LogWarning("[PrecisionLab] adrenaline recipe note could not be placed; will retry");
+                    return;
+                }
+                Debug.Log("[PrecisionLab] adrenaline recipe note delivered (placement=" + placement + ")");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] delivering the adrenaline recipe note failed: " + e.Message);
+            }
+        }
         /// <summary>
         /// Rewrites the body of any already-existing adrenaline recipe note (handnote items keep
         /// the body text in a tag from the moment they were created, so notes delivered by older
