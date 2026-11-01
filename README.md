@@ -5,7 +5,7 @@
 ![肾上腺素注射笔与原料盒](docs/images/adrenaline-pen.png)
 
 > 适配游戏版本：**0.46D**（Unity 2021.3.45f2，Mono）。纯本地 mod，不修改游戏文件，不依赖第三方 mod 框架。
-> Mod ID：`precision_lab` · 当前版本：**1.5.0**
+> Mod ID：`precision_lab` · 当前版本：**1.5.0** · [Steam 创意工坊](https://steamcommunity.com/sharedfiles/filedetails/?id=3831705578)
 
 ---
 
@@ -113,7 +113,10 @@
 
 需要游戏目录（包含 `Probably Stolen.exe`）下的 `Mods` 文件夹。
 
-**方式 A：脚本（推荐）**
+**方式 A：Steam 创意工坊（推荐给玩家）**：在创意工坊订阅本 mod
+（https://steamcommunity.com/sharedfiles/filedetails/?id=3831705578），启动游戏后在 Mods 菜单启用并信任。
+
+**方式 B：脚本（本地安装）**
 
 ```powershell
 # 仅安装
@@ -123,7 +126,7 @@ powershell -ExecutionPolicy Bypass -File tools\install-mod.ps1 -GameDir "<游戏
 powershell -ExecutionPolicy Bypass -File tools\install-mod.ps1 -GameDir "<游戏安装目录>" -Enable
 ```
 
-**方式 B：手动**
+**方式 C：手动**
 
 把 `dist\PrecisionLab` 整个文件夹复制到 `<游戏安装目录>\Mods\PrecisionLab`，启动游戏后在 Mods 菜单启用并信任。
 

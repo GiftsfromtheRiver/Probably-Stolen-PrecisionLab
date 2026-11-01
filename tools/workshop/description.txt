@@ -1,0 +1,24 @@
+﻿[b]Precision Lab / 精密实验室[/b]
+《深空当铺：可能是偷的》/ Probably Stolen 0.46D 的本地 mod。
+
+[b]内容[/b]
+- 精确取液器：1 µL 精度、双击设置量程、即时生效、三种方向模式
+- 提纯机器：物理/化学/重金属/生物污染物，单行六格（含废料输出位与提纯上限）、说明便签
+- 微生物培养机：营养果养菌、糖→有机废物、低糖休眠、活性实时显示
+- 淀粉水解：淀粉 + 酸 40–60°C → 糖（酸为催化剂）
+- 肾上腺素注射笔生产线：六步化学链、原料盒、右旋废料回收、蓝注射笔（医疗+奢侈品）
+- 纳洛酮（纳洛通）生产线：蒂巴因原料盒、5 步链、成型机压成纳洛通注射剂
+- 简易止血带：韧棉织物 + 废金属/金属锭拖拽合成，材料决定品质价值
+- 避孕药 & 山奈德片生产线：甾体/山奈原料盒、成型机压片
+- 《精密实验室配方手册》：一本游戏内书籍，每页一份配方
+
+[b]获取[/b]
+黑网（游戏内手机）→「精密实验室」页签购买升级；之后杰克逊博士/退休化学家会供应机器与原料盒。
+
+[b]安装[/b]
+通过 Steam 创意工坊订阅后，在游戏内 Mods 菜单启用并信任；需要游戏版本 0.46D。
+
+[b]English[/b]
+A local content mod for Probably Stolen 0.46D: precision liquid extractor, purification machine, microbial cultivator, starch hydrolysis, adrenaline injection pen production line, naloxone (Naloxgone) line, makeshift tourniquet, birth-control and Sannai pill lines, plus an in-game recipe book. Subscribe, then enable + trust it in the in-game Mods menu.
+
+Version 1.5.0 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab
