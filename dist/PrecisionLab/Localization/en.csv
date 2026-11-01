@@ -166,3 +166,21 @@ item.naloxone_api.flavor,The opioid antidote, pressed into a dry pellet. Do not 
 item.naloxone_injector.name,Naloxgone Injector
 item.thebaine_bottle.name,Thebaine Reagent Bottle (20 mL)
 item.alcohol_bottle.name,Alcohol Reagent Bottle (20 mL)
+liquid.steroid_raw,Steroid Raw Material
+liquid.steroid_hydrolysate,Steroid Hydrolysate
+liquid.steroid_intermediate,Steroid Intermediate
+liquid.contraceptive_api,Contraceptive API Solution
+liquid.sannai_raw,Sannai Raw Material
+liquid.sannai_extract,Sannai Extract
+liquid.sannai_api,Sannai API Solution
+item.birth_control_box.name,Birth Control Precursor Kit
+item.birth_control_box.desc,Activate to unpack one contraceptive batch: steroid raw material, acid, water, alcohol, reducing agent and lipobond agent (20 mL each).
+item.birth_control_box.flavor,A sealed precursor kit for the contraceptive line.
+item.sannai_box.name,Sannai Precursor Kit
+item.sannai_box.desc,Activate to unpack one Sannai batch: Sannai raw material (20 mL), alcohol (2 x 20 mL) and a small acid bottle (10 mL).
+item.sannai_box.flavor,A sealed precursor kit for the Sannai line. Handle with gloves.
+item.steroid_bottle.name,Steroid Raw Material Bottle (20 mL)
+item.sannai_bottle.name,Sannai Raw Material Bottle (20 mL)
+item.water_bottle.name,Water (20 mL)
+item.birth_control_pill.recipe_name,Birth Control Pill
+item.sannai_pill.recipe_name,Zyanide Pill (Sannai)

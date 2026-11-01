@@ -165,3 +165,21 @@ item.naloxone_api.flavor,阿片类解毒剂，压成干燥药片；别和派对�
 item.naloxone_injector.name,纳洛通注射剂
 item.thebaine_bottle.name,蒂巴因瓶（20 毫升）
 item.alcohol_bottle.name,酒精瓶（20 毫升）
+liquid.steroid_raw,甾体原料
+liquid.steroid_hydrolysate,甾体水解物
+liquid.steroid_intermediate,甾体中间体
+liquid.contraceptive_api,避孕药原料药溶液
+liquid.sannai_raw,山奈原料
+liquid.sannai_extract,山奈提取液
+liquid.sannai_api,山奈德原料药溶液
+item.birth_control_box.name,避孕药原料盒
+item.birth_control_box.desc,激活拆开得到一批避孕药原料：甾体原料、酸、水、酒精、还原剂、脂合剂各 20 毫升。
+item.birth_control_box.flavor,密封的避孕药原料盒，标签上是一串缩写。
+item.sannai_box.name,山奈原料盒
+item.sannai_box.desc,激活拆开得到一批山奈原料：山奈原料 20 毫升、酒精 2 瓶（共 40 毫升）、酸 10 毫升。
+item.sannai_box.flavor,密封的山奈原料盒。请戴手套处理。
+item.steroid_bottle.name,甾体原料瓶（20 毫升）
+item.sannai_bottle.name,山奈原料瓶（20 毫升）
+item.water_bottle.name,水（20 毫升）
+item.birth_control_pill.recipe_name,避孕药片
+item.sannai_pill.recipe_name,山奈德片

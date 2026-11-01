@@ -33,7 +33,14 @@ namespace PrecisionLab
         internal const string NaloxoneHydrolysisIntermediate = "naloxone_hydrolysis_intermediate";
         internal const string NaloxoneCrude = "naloxone_crude";
         internal const string NaloxoneHcl = "naloxone_hcl";
-        internal const string NaloxoneSolution = "naloxone_solution"; // 肾上腺素药液
+        internal const string NaloxoneSolution = "naloxone_solution";
+        internal const string SteroidRaw = "steroid_raw";
+        internal const string SteroidHydrolysate = "steroid_hydrolysate";
+        internal const string SteroidIntermediate = "steroid_intermediate";
+        internal const string ContraceptiveApi = "contraceptive_api";
+        internal const string SannaiRaw = "sannai_raw";
+        internal const string SannaiExtract = "sannai_extract";
+        internal const string SannaiApi = "sannai_api"; // 肾上腺素药液
 
         private static bool _registered;
 
@@ -62,7 +69,14 @@ namespace PrecisionLab
                 AddLiquid(NaloxoneCrude, "liquid.naloxone_crude", "Naloxone Crude", "c8a8d8", false);
                 AddLiquid(NaloxoneHcl, "liquid.naloxone_hcl", "Naloxone HCl", "dfeef5", false);
                 AddLiquid(NaloxoneSolution, "liquid.naloxone_solution", "Naloxone Solution", "9be7f0", false);
-                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 16 + ")");
+                AddLiquid(SteroidRaw, "liquid.steroid_raw", "Steroid Raw Material", "e8d8c0", false);
+                AddLiquid(SteroidHydrolysate, "liquid.steroid_hydrolysate", "Steroid Hydrolysate", "d8c8a8", false);
+                AddLiquid(SteroidIntermediate, "liquid.steroid_intermediate", "Steroid Intermediate", "c8d8b8", false);
+                AddLiquid(ContraceptiveApi, "liquid.contraceptive_api", "Contraceptive API Solution", "dfeef5", false);
+                AddLiquid(SannaiRaw, "liquid.sannai_raw", "Sannai Raw Material", "e8d8c0", false);
+                AddLiquid(SannaiExtract, "liquid.sannai_extract", "Sannai Extract", "d8b8d8", false);
+                AddLiquid(SannaiApi, "liquid.sannai_api", "Sannai API Solution", "dfeef5", false);
+                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 23 + ")");
             }
             catch (Exception e)
             {
@@ -91,6 +105,13 @@ namespace PrecisionLab
                 SetName(NaloxoneCrude, "liquid.naloxone_crude", "Naloxone Crude");
                 SetName(NaloxoneHcl, "liquid.naloxone_hcl", "Naloxone HCl");
                 SetName(NaloxoneSolution, "liquid.naloxone_solution", "Naloxone Solution");
+                SetName(SteroidRaw, "liquid.steroid_raw", "Steroid Raw Material");
+                SetName(SteroidHydrolysate, "liquid.steroid_hydrolysate", "Steroid Hydrolysate");
+                SetName(SteroidIntermediate, "liquid.steroid_intermediate", "Steroid Intermediate");
+                SetName(ContraceptiveApi, "liquid.contraceptive_api", "Contraceptive API Solution");
+                SetName(SannaiRaw, "liquid.sannai_raw", "Sannai Raw Material");
+                SetName(SannaiExtract, "liquid.sannai_extract", "Sannai Extract");
+                SetName(SannaiApi, "liquid.sannai_api", "Sannai API Solution");
             }
             catch (Exception e)
             {
@@ -106,7 +127,9 @@ namespace PrecisionLab
                 || liquidId == LevoAdrenalineSalt || liquidId == DextroWaste
                 || liquidId == AdrenalineFreebase || liquidId == AdrenalineHcl
                 || liquidId.StartsWith("naloxone_", StringComparison.Ordinal)
-                || liquidId == Thebaine;
+                || liquidId.StartsWith("steroid_", StringComparison.Ordinal)
+                || liquidId.StartsWith("sannai_", StringComparison.Ordinal)
+                || liquidId == Thebaine || liquidId == ContraceptiveApi || liquidId == SannaiApi;
         }
 
         private static void SetName(string id, string locKey, string fallback)

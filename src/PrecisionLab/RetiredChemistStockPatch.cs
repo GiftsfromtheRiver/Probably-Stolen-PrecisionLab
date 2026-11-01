@@ -35,6 +35,7 @@ namespace PrecisionLab
                     RetiredChemistStock.TryAddExtractor();
                     RetiredChemistStock.TryAddAdrenalineKit();
                     RetiredChemistStock.TryAddNaloxoneKit();
+                    RetiredChemistStock.TryAddPillKits();
                 };
             }
             catch (Exception e)
@@ -133,6 +134,33 @@ namespace PrecisionLab
             catch (Exception e)
             {
                 Debug.LogWarning("[PrecisionLab] retired chemist naloxone kit stock failed: " + e);
+            }
+        }
+
+        /// <summary>After the "More Medicines" unlock the retired chemist also sells the two pill precursor kits.</summary>
+        internal static void TryAddPillKits()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.BirthControlBox);
+                store.AddDirectSellingItemToTable(ItemIds.SannaiBox);
+                Debug.Log("[PrecisionLab] retired chemist offers birth control and sannai precursor kits");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist pill kit stock failed: " + e);
             }
         }
 

@@ -17,6 +17,8 @@ namespace PrecisionLab
         internal const string ResolvingRefill = "resolving_agent_refill";
         internal const string NaloxoneBox = "naloxone_supply_box";
         internal const string NaloxoneApi = "naloxone_hcl_api";
+        internal const string BirthControlBox = "birth_control_supply_box";
+        internal const string SannaiBox = "sannai_supply_box";
     }
 
     internal static class SpriteKeys
@@ -35,6 +37,8 @@ namespace PrecisionLab
         internal const string ResolvingRefill = "resolving_agent_refill";
         internal const string NaloxoneBox = "naloxone_supply_box";
         internal const string NaloxoneApi = "naloxone_hcl_api";
+        internal const string BirthControlBox = "birth_control_supply_box";
+        internal const string SannaiBox = "sannai_supply_box";
     }
 
     internal static class Tags

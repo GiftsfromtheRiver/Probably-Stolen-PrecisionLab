@@ -25,6 +25,7 @@ namespace PrecisionLab
             // The adrenaline and naloxone production chains use the same per-container chemistry tick.
             AdrenalineChemistry.React(container);
             NaloxoneChemistry.React(container);
+            PillChemistry.React(container);
         }
     }
 

@@ -35,6 +35,10 @@ namespace PrecisionLab
             GameItem naloxoneAlcoholCup = null;
             GameItem naloxoneApiItem = null;
             GameItem naloxoneBoxItem = null;
+            GameItem pillCup = null;
+            GameItem sannaiCup = null;
+            GameItem birthControlBoxItem = null;
+            GameItem sannaiBoxItem = null;
             GameItem resolvingBottleItem = null;
             GameItem resolvingRefillItem = null;
             GameItem recipeBookItem = null;
@@ -386,6 +390,65 @@ namespace PrecisionLab
                     + "µL alcoholCrude=" + nalAlcoholCrude + "µL alcoholLeft=" + nalAlcoholLeft
                     + "µL recipes=" + naloxoneRecipesOk + " api=" + (naloxoneApiItem != null)
                     + " box=" + (naloxoneBoxItem != null));
+                // --- 8d. Contraceptive + Sannai pill chains ---------------------------------
+                pillCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(pillCup, true);
+                LiquidTools.SetLiquidRaw(pillCup, CustomLiquids.SteroidRaw, 1000);
+                LiquidTools.SetLiquidRaw(pillCup, "acid", 1000);
+                LiquidTools.SetLiquidRaw(pillCup, "water", 1000);
+                LiquidTools.SetLiquidRaw(pillCup, "alcohol", 1000);
+                SetTemperature(pillCup, 70.0);
+                PulseStep(pillCup, PillChemistry.StepHydrolysis);
+                int birthHydro = LiquidTools.GetLiquidAmount(pillCup, CustomLiquids.SteroidHydrolysate);
+                LiquidTools.SetLiquidRaw(pillCup, "reducing_agent", 1000);
+                LiquidTools.SetLiquidRaw(pillCup, "lipobond_agent", 1000);
+                SetTemperature(pillCup, 60.0);
+                PulseStep(pillCup, PillChemistry.StepReduction);
+                int birthIntermediate = LiquidTools.GetLiquidAmount(pillCup, CustomLiquids.SteroidIntermediate);
+                SetTemperature(pillCup, 40.0);
+                PulseStep(pillCup, PillChemistry.StepContraceptiveApi);
+                int birthApi = LiquidTools.GetLiquidAmount(pillCup, CustomLiquids.ContraceptiveApi);
+
+                sannaiCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(sannaiCup, true);
+                LiquidTools.SetLiquidRaw(sannaiCup, CustomLiquids.SannaiRaw, 1000);
+                LiquidTools.SetLiquidRaw(sannaiCup, "alcohol", 5000);
+                SetTemperature(sannaiCup, 60.0);
+                PulseStep(sannaiCup, PillChemistry.StepExtraction);
+                int sannaiExtract = LiquidTools.GetLiquidAmount(sannaiCup, CustomLiquids.SannaiExtract);
+                int sannaiAlcoholLeft = LiquidTools.GetLiquidAmount(sannaiCup, "alcohol");
+                LiquidTools.SetLiquidRaw(sannaiCup, "acid", 1000);
+                SetTemperature(sannaiCup, 40.0);
+                PulseStep(sannaiCup, PillChemistry.StepSannaiApi);
+                int sannaiApi = LiquidTools.GetLiquidAmount(sannaiCup, CustomLiquids.SannaiApi);
+                int sannaiAcidLeft = LiquidTools.GetLiquidAmount(sannaiCup, "acid");
+
+                PillContent.EnsureRecipes();
+                bool pillRecipesOk = ChemFinisherRecipe.GetRecipeById(PillContent.BirthControlPillId) != null
+                    && ChemFinisherRecipe.GetRecipeById(PillContent.SannaiPillId) != null
+                    && ChemFinisherRecipe.GetRecipeById(PillContent.BirthControlPillId).activeIngredientId == CustomLiquids.ContraceptiveApi
+                    && ChemFinisherRecipe.GetRecipeById(PillContent.SannaiPillId).activeIngredientId == CustomLiquids.SannaiApi
+                    && ChemFinisherRecipe.GetRecipeById(PillContent.BirthControlPillId).requiredVolume == PillContent.PressVolume
+                    && ChemFinisherRecipe.GetRecipeById(PillContent.SannaiPillId).requiredVolume == PillContent.PressVolume;
+                birthControlBoxItem = PillContent.CreateBirthControlBox();
+                sannaiBoxItem = PillContent.CreateSannaiBox();
+                bool pillOk = birthHydro == 1000
+                    && birthIntermediate == 1000
+                    && birthApi == 1000
+                    && sannaiExtract == 1000
+                    && sannaiAlcoholLeft == 5000
+                    && sannaiApi == 1000
+                    && sannaiAcidLeft == 1000
+                    && pillRecipesOk
+                    && birthControlBoxItem != null
+                    && birthControlBoxItem.onActivateSlotItemFunc != null
+                    && sannaiBoxItem != null
+                    && sannaiBoxItem.onActivateSlotItemFunc != null;
+                log.Log(Prefix + "pill chains: birthHydro=" + birthHydro + "µL birthIntermediate=" + birthIntermediate
+                    + "µL birthApi=" + birthApi + "µL sannaiExtract=" + sannaiExtract
+                    + "µL sannaiAlcoholLeft=" + sannaiAlcoholLeft + "µL sannaiApi=" + sannaiApi
+                    + "µL sannaiAcidLeft=" + sannaiAcidLeft + "µL recipes=" + pillRecipesOk
+                    + " boxes=" + (birthControlBoxItem != null && sannaiBoxItem != null));
 
                 apiItem = AdrenalineContent.CreateApi();
                 penItem = AdrenalineContent.CreatePen();
@@ -583,7 +646,7 @@ namespace PrecisionLab
                     + " hydrolysis=" + hydrolysis + " digestion=" + digestion + " cultivator=" + cultivatorOk
                     + " adrenaline=" + adrenalineOk + " adrenalineItems=" + adrenalineItemsOk
                     + " tourniquet=" + tourniquetOk
-                    + " recycle=" + recycleOk + " naloxone=" + naloxoneOk);
+                    + " recycle=" + recycleOk + " naloxone=" + naloxoneOk + " pills=" + pillOk);
             }
             catch (Exception e)
             {
@@ -620,6 +683,10 @@ namespace PrecisionLab
                 DestroyQuietly(naloxoneAlcoholCup);
                 DestroyQuietly(naloxoneApiItem);
                 DestroyQuietly(naloxoneBoxItem);
+                DestroyQuietly(pillCup);
+                DestroyQuietly(sannaiCup);
+                DestroyQuietly(birthControlBoxItem);
+                DestroyQuietly(sannaiBoxItem);
             }
         }
 
