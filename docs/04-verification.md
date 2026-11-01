@@ -615,3 +615,10 @@ v1.2.9 增加：提纯机/培养机显式 EnableTag("TURBO_BOOST_ELIGIBLE_TAG")�
   书籍 item `precision_lab_recipe_book`（精密实验室配方手册，DOCUMENT/IMPORTANT，激活打开 PaperUI 翻阅）；
 - 解锁「更多药品」/读档/次日重试时发放一册到前台柜台（按 item id 去重）；旧存档里的旧纸条不销毁不移动，只是不再新发；
 - 以后新增药品（如纳洛酮）只需在 JSON 里加一页，不占额外纸条物品位置；自检新增 recipeBook 断言。
+## v1.4.0 纳洛酮（纳洛通）生产线（2026-11-02）
+
+并入「更多药品」解锁。新增 6 种液体（thebaine/还原中间体/水解中间体/粗品/盐酸纳洛酮/药液）、5 步反应、
+纳洛酮原料盒（蒂巴因/酸/还原剂/脂合剂/N-羟甲基碱/酒精各 20 mL，蒂巴因为唯一采购原料）、
+盐酸纳洛酮原料药物品 + 成型机配方（API 5000 与最终 `pure_white_injector` 5000，active=naloxone_solution）、
+退休化学家上架原料盒、配方手册第 3 页。酒精作可回收溶剂不被消耗；脂合剂被消耗；一盒 4 支纳洛通。
+自检新增 naloxone 链式断言与 naloxone 标志。

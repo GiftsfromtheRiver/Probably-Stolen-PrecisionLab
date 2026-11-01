@@ -150,3 +150,18 @@ mech.resolving_refill.no_space,没有空间拆开拆分剂补充装：补充装�
 item.recipe_book.name,精密实验室配方手册
 item.recipe_book.desc,精密实验室的配方合集：每一页是一份配方（肾上腺素注射笔、简易止血带等），以后新增药品只需增加页数。激活可翻阅。
 mech.recipe_book.delivered,一本《精密实验室配方手册》已放进店内（优先前台柜台）。
+liquid.thebaine,蒂巴因
+liquid.naloxone_reduction_intermediate,纳洛酮还原中间体
+liquid.naloxone_hydrolysis_intermediate,纳洛酮水解中间体
+liquid.naloxone_crude,纳洛酮粗品
+liquid.naloxone_hcl,盐酸纳洛酮
+liquid.naloxone_solution,纳洛酮药液
+item.naloxone_box.name,纳洛酮原料盒
+item.naloxone_box.desc,激活拆开得到一批纳洛酮原料：蒂巴因 20 毫升、酸 3 瓶共 60 毫升、还原剂 20 毫升、脂合剂 20 毫升、N-羟甲基碱溶液 20 毫升、酒精 20 毫升。蒂巴因是唯一无法从别处获得的原料。
+item.naloxone_box.flavor,退休化学家给的密封原料盒；标签上只写了一半试剂名。
+item.naloxone_api.name,盐酸纳洛酮原料药
+item.naloxone_api.desc,化学制剂成型机从 5000 微升干燥的盐酸纳洛酮液体中压制出的原料药。把一份原料药溶于等量水即可配成一支纳洛通注射剂所需的药液。
+item.naloxone_api.flavor,阿片类解毒剂，压成干燥药片；别和派对药物搞混。
+item.naloxone_injector.name,纳洛通注射剂
+item.thebaine_bottle.name,蒂巴因瓶（20 毫升）
+item.alcohol_bottle.name,酒精瓶（20 毫升）

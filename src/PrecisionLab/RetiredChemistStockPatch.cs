@@ -34,6 +34,7 @@ namespace PrecisionLab
                     }
                     RetiredChemistStock.TryAddExtractor();
                     RetiredChemistStock.TryAddAdrenalineKit();
+                    RetiredChemistStock.TryAddNaloxoneKit();
                 };
             }
             catch (Exception e)
@@ -106,6 +107,32 @@ namespace PrecisionLab
             catch (Exception e)
             {
                 Debug.LogWarning("[PrecisionLab] retired chemist adrenaline kit stock failed: " + e);
+            }
+        }
+
+        /// <summary>After the "More Medicines" unlock the retired chemist also sells naloxone precursor kits.</summary>
+        internal static void TryAddNaloxoneKit()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.NaloxoneBox);
+                Debug.Log("[PrecisionLab] retired chemist offers a naloxone precursor kit");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist naloxone kit stock failed: " + e);
             }
         }
 

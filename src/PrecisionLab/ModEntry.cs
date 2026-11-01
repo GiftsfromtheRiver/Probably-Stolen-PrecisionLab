@@ -160,14 +160,18 @@ namespace PrecisionLab
                 bool tourniquet = directory.Has(ItemIds.Tourniquet) || directory.Add(ItemIds.Tourniquet, TourniquetCraft.CreateTourniquet);
                 bool resolvingBottle = directory.Has(ItemIds.ResolvingBottle) || directory.Add(ItemIds.ResolvingBottle, AdrenalineContent.CreateResolvingAgentBottle);
                 bool resolvingRefill = directory.Has(ItemIds.ResolvingRefill) || directory.Add(ItemIds.ResolvingRefill, AdrenalineContent.CreateResolvingAgentRefillPack);
-                if (extractor || purifier || cultivator || supplyBox || api || pen || waste || tourniquet || resolvingBottle || resolvingRefill)
+                bool naloxoneBox = directory.Has(ItemIds.NaloxoneBox) || directory.Add(ItemIds.NaloxoneBox, NaloxoneContent.CreateSupplyBox);
+                bool naloxoneApi = directory.Has(ItemIds.NaloxoneApi) || directory.Add(ItemIds.NaloxoneApi, NaloxoneContent.CreateApi);
+                if (extractor || purifier || cultivator || supplyBox || api || pen || waste || tourniquet || resolvingBottle || resolvingRefill
+                    || naloxoneBox || naloxoneApi)
                 {
                     _log.Log("items registered in mod item directory: extractor=" + extractor
                         + " purifier=" + purifier + " cultivator=" + cultivator
                         + " supplyBox=" + supplyBox + " api=" + api + " pen=" + pen
                         + " waste=" + waste + " tourniquet=" + tourniquet
                         + " resolvingBottle=" + resolvingBottle
-                        + " resolvingRefill=" + resolvingRefill);
+                        + " resolvingRefill=" + resolvingRefill
+                        + " naloxoneBox=" + naloxoneBox + " naloxoneApi=" + naloxoneApi);
                 }
             }
             catch (Exception e)
@@ -338,6 +342,7 @@ namespace PrecisionLab
             try
             {
                 AdrenalineContent.EnsureRecipes();
+                NaloxoneContent.EnsureRecipes();
                 TourniquetCraft.OnUnlocked();
                 RecipeBook.EnsureDelivered();
             }
@@ -394,6 +399,7 @@ namespace PrecisionLab
                     return;
                 }
                 AdrenalineContent.EnsureRecipes();
+                NaloxoneContent.EnsureRecipes();
                 RecipeBook.EnsureDelivered();
             }
             catch (Exception e)

@@ -151,3 +151,18 @@ mech.resolving_refill.no_space,No room to unpack the resolving agent refill; the
 item.recipe_book.name,Precision Lab Recipe Book
 item.recipe_book.desc,A collection of Precision Lab recipes: one page per recipe (adrenaline pen, makeshift tourniquet, ...). Future medicines only add pages. Activate to read.
 mech.recipe_book.delivered,A Precision Lab recipe book was added to your store (front counter first).
+liquid.thebaine,Thebaine
+liquid.naloxone_reduction_intermediate,Naloxone Reduction Intermediate
+liquid.naloxone_hydrolysis_intermediate,Naloxone Hydrolysis Intermediate
+liquid.naloxone_crude,Naloxone Crude
+liquid.naloxone_hcl,Naloxone HCl
+liquid.naloxone_solution,Naloxone Solution
+item.naloxone_box.name,Naloxone Precursor Kit
+item.naloxone_box.desc,Activate to unpack one naloxone batch: thebaine 20 mL, acid 3 bottles (60 mL total), reducing agent 20 mL, lipobond agent 20 mL, N-hydroxymethyl base solution 20 mL and alcohol 20 mL. Thebaine is the only ingredient you cannot obtain elsewhere.
+item.naloxone_box.flavor,A sealed kit from the retired chemist; the label only lists half of the reagents.
+item.naloxone_api.name,Naloxone HCl API
+item.naloxone_api.desc,Active pharmaceutical ingredient pressed by the Chem Finisher from 5000 uL of dry naloxone HCl liquid. Dissolve one API in an equal amount of water to prepare the solution for one Naloxgone injector.
+item.naloxone_api.flavor,The opioid antidote, pressed into a dry pellet. Do not confuse it with the party drugs.
+item.naloxone_injector.name,Naloxgone Injector
+item.thebaine_bottle.name,Thebaine Reagent Bottle (20 mL)
+item.alcohol_bottle.name,Alcohol Reagent Bottle (20 mL)

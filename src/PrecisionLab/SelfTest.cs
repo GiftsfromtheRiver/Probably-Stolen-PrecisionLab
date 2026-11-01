@@ -31,6 +31,10 @@ namespace PrecisionLab
             GameItem boxItem = null;
             GameItem noteItem = null;
             GameItem recycleCup = null;
+            GameItem naloxoneCup = null;
+            GameItem naloxoneAlcoholCup = null;
+            GameItem naloxoneApiItem = null;
+            GameItem naloxoneBoxItem = null;
             GameItem resolvingBottleItem = null;
             GameItem resolvingRefillItem = null;
             GameItem recipeBookItem = null;
@@ -313,6 +317,75 @@ namespace PrecisionLab
                     && ChemFinisherRecipe.GetRecipeById(ItemIds.Pen) != null
                     && ChemFinisherRecipe.GetRecipeById(ItemIds.Api).requiredVolume == AdrenalineContent.ApiRequiredVolume
                     && ChemFinisherRecipe.GetRecipeById(ItemIds.Pen).requiredVolume == AdrenalineContent.PenRequiredVolume;
+                // --- 8c. Naloxone chain (thebaine -> reduction -> hydrolysis -> crude -> HCl -> solution)
+                naloxoneCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(naloxoneCup, true);
+                LiquidTools.SetLiquidRaw(naloxoneCup, CustomLiquids.Thebaine, 2000);
+                LiquidTools.SetLiquidRaw(naloxoneCup, "acid", 2000);
+                LiquidTools.SetLiquidRaw(naloxoneCup, "reducing_agent", 2000);
+                LiquidTools.SetLiquidRaw(naloxoneCup, "lipobond_agent", 2000);
+                SetTemperature(naloxoneCup, 50.0);
+                PulseStep(naloxoneCup, NaloxoneChemistry.StepReduction);
+                int nalReduction = LiquidTools.GetLiquidAmount(naloxoneCup, CustomLiquids.NaloxoneReductionIntermediate);
+                int nalThebaineLeft = LiquidTools.GetLiquidAmount(naloxoneCup, CustomLiquids.Thebaine);
+                int nalLipobondLeft = LiquidTools.GetLiquidAmount(naloxoneCup, "lipobond_agent");
+                LiquidTools.SetLiquidRaw(naloxoneCup, "acid", 2000);
+                LiquidTools.SetLiquidRaw(naloxoneCup, "water", 2000);
+                SetTemperature(naloxoneCup, 90.0);
+                PulseStep(naloxoneCup, NaloxoneChemistry.StepHydrolysis);
+                int nalHydrolysis = LiquidTools.GetLiquidAmount(naloxoneCup, CustomLiquids.NaloxoneHydrolysisIntermediate);
+                LiquidTools.SetLiquidRaw(naloxoneCup, CustomLiquids.HydroxymethylBase, 2000);
+                LiquidTools.SetLiquidRaw(naloxoneCup, "lipobond_agent", 2000);
+                SetTemperature(naloxoneCup, 65.0);
+                PulseStep(naloxoneCup, NaloxoneChemistry.StepAllylation);
+                int nalCrude = LiquidTools.GetLiquidAmount(naloxoneCup, CustomLiquids.NaloxoneCrude);
+                LiquidTools.SetLiquidRaw(naloxoneCup, "acid", 2000);
+                LiquidTools.SetLiquidRaw(naloxoneCup, "water", 2000);
+                SetTemperature(naloxoneCup, 40.0);
+                PulseStep(naloxoneCup, NaloxoneChemistry.StepSalt);
+                int nalHcl = LiquidTools.GetLiquidAmount(naloxoneCup, CustomLiquids.NaloxoneHcl);
+                LiquidTools.SetLiquidRaw(naloxoneCup, "water", 2000);
+                PulseStep(naloxoneCup, NaloxoneChemistry.StepSolution);
+                int nalSolution = LiquidTools.GetLiquidAmount(naloxoneCup, CustomLiquids.NaloxoneSolution);
+
+                // Alcohol is a recoverable solvent: it must not be consumed in N1/N3.
+                naloxoneAlcoholCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(naloxoneAlcoholCup, true);
+                LiquidTools.SetLiquidRaw(naloxoneAlcoholCup, CustomLiquids.NaloxoneHydrolysisIntermediate, 1000);
+                LiquidTools.SetLiquidRaw(naloxoneAlcoholCup, CustomLiquids.HydroxymethylBase, 1000);
+                LiquidTools.SetLiquidRaw(naloxoneAlcoholCup, "alcohol", 5000);
+                SetTemperature(naloxoneAlcoholCup, 65.0);
+                PulseStep(naloxoneAlcoholCup, NaloxoneChemistry.StepAllylation);
+                int nalAlcoholCrude = LiquidTools.GetLiquidAmount(naloxoneAlcoholCup, CustomLiquids.NaloxoneCrude);
+                int nalAlcoholLeft = LiquidTools.GetLiquidAmount(naloxoneAlcoholCup, "alcohol");
+
+                NaloxoneContent.EnsureRecipes();
+                bool naloxoneRecipesOk = ChemFinisherRecipe.GetRecipeById(ItemIds.NaloxoneApi) != null
+                    && ChemFinisherRecipe.GetRecipeById(NaloxoneContent.VanillaInjectorId) != null
+                    && ChemFinisherRecipe.GetRecipeById(ItemIds.NaloxoneApi).requiredVolume == NaloxoneContent.ApiRequiredVolume
+                    && ChemFinisherRecipe.GetRecipeById(NaloxoneContent.VanillaInjectorId).requiredVolume == NaloxoneContent.InjectorRequiredVolume;
+                naloxoneApiItem = NaloxoneContent.CreateApi();
+                naloxoneBoxItem = NaloxoneContent.CreateSupplyBox();
+                bool naloxoneOk = nalReduction == 2000
+                    && nalThebaineLeft == 0
+                    && nalLipobondLeft == 0
+                    && nalHydrolysis == 2000
+                    && nalCrude == 2000
+                    && nalHcl == 2000
+                    && nalSolution == 2000
+                    && nalAlcoholCrude == 1000
+                    && nalAlcoholLeft == 5000
+                    && naloxoneRecipesOk
+                    && naloxoneApiItem != null
+                    && naloxoneApiItem.IsTag("CHEM_ITEM_TAG")
+                    && naloxoneApiItem.unitValue == 50
+                    && naloxoneBoxItem != null
+                    && naloxoneBoxItem.onActivateSlotItemFunc != null;
+                log.Log(Prefix + "naloxone chain: reduction=" + nalReduction + "µL hydrolysis=" + nalHydrolysis
+                    + "µL crude=" + nalCrude + "µL hcl=" + nalHcl + "µL solution=" + nalSolution
+                    + "µL alcoholCrude=" + nalAlcoholCrude + "µL alcoholLeft=" + nalAlcoholLeft
+                    + "µL recipes=" + naloxoneRecipesOk + " api=" + (naloxoneApiItem != null)
+                    + " box=" + (naloxoneBoxItem != null));
 
                 apiItem = AdrenalineContent.CreateApi();
                 penItem = AdrenalineContent.CreatePen();
@@ -510,7 +583,7 @@ namespace PrecisionLab
                     + " hydrolysis=" + hydrolysis + " digestion=" + digestion + " cultivator=" + cultivatorOk
                     + " adrenaline=" + adrenalineOk + " adrenalineItems=" + adrenalineItemsOk
                     + " tourniquet=" + tourniquetOk
-                    + " recycle=" + recycleOk);
+                    + " recycle=" + recycleOk + " naloxone=" + naloxoneOk);
             }
             catch (Exception e)
             {
@@ -543,6 +616,10 @@ namespace PrecisionLab
                 DestroyQuietly(tqExcellent);
                 DestroyQuietly(tqAged);
                 DestroyQuietly(recycleCup);
+                DestroyQuietly(naloxoneCup);
+                DestroyQuietly(naloxoneAlcoholCup);
+                DestroyQuietly(naloxoneApiItem);
+                DestroyQuietly(naloxoneBoxItem);
             }
         }
 

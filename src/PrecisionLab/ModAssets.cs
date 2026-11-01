@@ -15,6 +15,8 @@ namespace PrecisionLab
         internal const string Tourniquet = "makeshift_tourniquet";
         internal const string ResolvingBottle = "resolving_agent_bottle";
         internal const string ResolvingRefill = "resolving_agent_refill";
+        internal const string NaloxoneBox = "naloxone_supply_box";
+        internal const string NaloxoneApi = "naloxone_hcl_api";
     }
 
     internal static class SpriteKeys
@@ -31,6 +33,8 @@ namespace PrecisionLab
         internal const string Tourniquet = "makeshift_tourniquet";
         internal const string ResolvingBottle = "resolving_agent_bottle";
         internal const string ResolvingRefill = "resolving_agent_refill";
+        internal const string NaloxoneBox = "naloxone_supply_box";
+        internal const string NaloxoneApi = "naloxone_hcl_api";
     }
 
     internal static class Tags

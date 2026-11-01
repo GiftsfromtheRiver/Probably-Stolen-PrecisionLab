@@ -27,7 +27,13 @@ namespace PrecisionLab
         internal const string DextroWaste = "dextro_waste";             // 右旋废料
         internal const string AdrenalineFreebase = "adrenaline_freebase"; // 游离肾上腺素碱
         internal const string AdrenalineHcl = "adrenaline_hcl";         // 盐酸肾上腺素（原料药成分）
-        internal const string AdrenalineSolution = "adrenaline_solution"; // 肾上腺素药液
+        internal const string AdrenalineSolution = "adrenaline_solution";
+        internal const string Thebaine = "thebaine";
+        internal const string NaloxoneReductionIntermediate = "naloxone_reduction_intermediate";
+        internal const string NaloxoneHydrolysisIntermediate = "naloxone_hydrolysis_intermediate";
+        internal const string NaloxoneCrude = "naloxone_crude";
+        internal const string NaloxoneHcl = "naloxone_hcl";
+        internal const string NaloxoneSolution = "naloxone_solution"; // 肾上腺素药液
 
         private static bool _registered;
 
@@ -50,7 +56,13 @@ namespace PrecisionLab
                 AddLiquid(AdrenalineFreebase, "liquid.adrenaline_freebase", "Adrenaline Free Base", "e8b46a", false);
                 AddLiquid(AdrenalineHcl, "liquid.adrenaline_hcl", "Adrenaline HCl", "dfeef5", false);
                 AddLiquid(AdrenalineSolution, "liquid.adrenaline_solution", "Adrenaline Solution", "9be7f0", false);
-                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 10 + ")");
+                AddLiquid(Thebaine, "liquid.thebaine", "Thebaine", "e8d2a0", false);
+                AddLiquid(NaloxoneReductionIntermediate, "liquid.naloxone_reduction_intermediate", "Naloxone Reduction Intermediate", "b8c8e8", false);
+                AddLiquid(NaloxoneHydrolysisIntermediate, "liquid.naloxone_hydrolysis_intermediate", "Naloxone Hydrolysis Intermediate", "a8d8d0", false);
+                AddLiquid(NaloxoneCrude, "liquid.naloxone_crude", "Naloxone Crude", "c8a8d8", false);
+                AddLiquid(NaloxoneHcl, "liquid.naloxone_hcl", "Naloxone HCl", "dfeef5", false);
+                AddLiquid(NaloxoneSolution, "liquid.naloxone_solution", "Naloxone Solution", "9be7f0", false);
+                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 16 + ")");
             }
             catch (Exception e)
             {
@@ -73,6 +85,12 @@ namespace PrecisionLab
                 SetName(AdrenalineFreebase, "liquid.adrenaline_freebase", "Adrenaline Free Base");
                 SetName(AdrenalineHcl, "liquid.adrenaline_hcl", "Adrenaline HCl");
                 SetName(AdrenalineSolution, "liquid.adrenaline_solution", "Adrenaline Solution");
+                SetName(Thebaine, "liquid.thebaine", "Thebaine");
+                SetName(NaloxoneReductionIntermediate, "liquid.naloxone_reduction_intermediate", "Naloxone Reduction Intermediate");
+                SetName(NaloxoneHydrolysisIntermediate, "liquid.naloxone_hydrolysis_intermediate", "Naloxone Hydrolysis Intermediate");
+                SetName(NaloxoneCrude, "liquid.naloxone_crude", "Naloxone Crude");
+                SetName(NaloxoneHcl, "liquid.naloxone_hcl", "Naloxone HCl");
+                SetName(NaloxoneSolution, "liquid.naloxone_solution", "Naloxone Solution");
             }
             catch (Exception e)
             {
@@ -86,7 +104,9 @@ namespace PrecisionLab
                 || liquidId == Catechol || liquidId == HydroxymethylBase || liquidId == ResolvingAgent
                 || liquidId == AminationIntermediate || liquidId == RacemicAdrenaline
                 || liquidId == LevoAdrenalineSalt || liquidId == DextroWaste
-                || liquidId == AdrenalineFreebase || liquidId == AdrenalineHcl;
+                || liquidId == AdrenalineFreebase || liquidId == AdrenalineHcl
+                || liquidId.StartsWith("naloxone_", StringComparison.Ordinal)
+                || liquidId == Thebaine;
         }
 
         private static void SetName(string id, string locKey, string fallback)

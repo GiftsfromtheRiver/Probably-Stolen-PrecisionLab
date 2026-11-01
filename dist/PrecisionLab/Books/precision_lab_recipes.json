@@ -1,52 +1,132 @@
-{
-  "id": "precision_lab_recipes",
-  "title": "精密实验室配方手册",
-  "background": "notebook_manual",
-  "width": 628,
-  "height": 804,
-  "designWidth": 314,
-  "designHeight": 402,
-  "chrome": [
-    { "type": "button", "id": "close", "action": "close", "x": 297, "y": 2.5, "w": 14, "h": 15 },
-    { "type": "button", "id": "zoom", "action": "zoom", "x": 273.5, "y": 3.5, "w": 14, "h": 15 },
-    { "type": "button", "id": "flip_left", "action": "flip_left", "x": 124, "y": 380, "w": 16, "h": 16 },
-    { "type": "button", "id": "flip_right", "action": "flip_right", "x": 176, "y": 380.5, "w": 14, "h": 15 },
-    { "type": "text", "id": "page_indicator", "action": "page_indicator", "style": "page_number", "align": "center", "valign": "middle", "wrap": false, "x": 140.5, "y": 374, "w": 33, "h": 25 }
-  ],
-  "templates": [
-    {
-      "id": "recipe_page",
-      "elements": [
-        { "type": "text", "id": "title", "slot": "title", "style": "title", "align": "center", "wrap": false, "x": 18, "y": 18, "w": 278, "h": 22 },
-        { "type": "flow", "id": "body_flow", "x": 22, "y": 48, "w": 270, "h": 300, "spacing": 4 },
-        { "type": "text", "id": "body", "slot": "body", "flow": "body_flow", "style": "body", "autoHeight": true, "w": 0, "h": 0 }
-      ]
-    }
-  ],
-  "pages": [
-    {
-      "name": "肾上腺素注射笔",
-      "template": "recipe_page",
-      "slots": {
-        "title": "肾上腺素注射笔",
-        "body": "六步流程（每秒按容器温度结算，中间体自动生成）\n\n第1步 胺化（26–60°C）：邻苯二酚 + N-羟甲基碱溶液 + 脂合剂，会生成胺化中间体\n第2步 还原（60–80°C）：胺化中间体 + 还原剂，会生成消旋肾上腺素\n第3步 拆分（40–60°C，酸催化）：消旋肾上腺素 + 拆分剂 + 酸，会生成左旋肾上腺素盐 + 右旋废料（用提纯机废料输出位收集）\n第4步 成盐（26–60°C）：左旋盐 + 碱会生成游离碱；游离碱 + 酸会生成盐酸肾上腺素。蒸发水分后放进化学制剂成型机，压制成盐酸肾上腺素成品\n第5步 配液：把成品溶于等量水，会生成肾上腺素药液（多余水分用蒸发器除去）\n第6步 灌装：把干燥的药液放进化学制剂成型机，压制成注射笔\n\n每盒试剂配比：邻苯二酚 / 碱溶液 / 脂合剂 / 还原剂 / 拆分剂 各 20000，碱液 / 酸液 各 10000（微升）。每瓶都是满瓶的一份配比。\n\n一支注射笔需要 5000 微升（5 毫升）药液，一盒原料可做 2 支。\n\n回收再消旋：把右旋废料溶回容器，加入还原剂，60–80°C，会生成消旋肾上腺素，可回到第 3 步再次拆分。拆分剂不够时，退休化学家出售拆分剂补充装（20 毫升）。"
-      }
-    },
-    {
-      "name": "简易止血带",
-      "template": "recipe_page",
-      "slots": {
-        "title": "简易止血带",
-        "body": "应急医疗配方（需要先解锁“更多药品：肾上腺素”）\n\n把「韧棉织物」拖到「废金属」或「金属锭」上：会消耗 1 份韧棉织物 + 1 块金属，合成为 1 条简易止血带。\n\n材料决定标签与价值：\n- 废金属做的：破旧（价值 -50%）\n- 金属锭做的，纯度中等及以上：极佳（价值 +25%）\n- 金属锭做的，纯度低于中等：陈旧（价值 -25%）\n\n简易止血带是医疗物：受伤（伤势未稳定）时使用，会稳定伤势并把伤势等级 -1，相当于一条止血绷带。"
-      }
-    }
-  ],
-  "item": {
-    "id": "precision_lab_recipe_book",
-    "nameLoc": "item.recipe_book.name",
-    "descriptionLoc": "item.recipe_book.desc",
-    "sprite": "items_misc/manual1",
-    "value": 0,
-    "important": true
-  }
+﻿{
+    "id":  "precision_lab_recipes",
+    "title":  "精密实验室配方手册",
+    "background":  "notebook_manual",
+    "width":  628,
+    "height":  804,
+    "designWidth":  314,
+    "designHeight":  402,
+    "chrome":  [
+                   {
+                       "type":  "button",
+                       "id":  "close",
+                       "action":  "close",
+                       "x":  297,
+                       "y":  2.5,
+                       "w":  14,
+                       "h":  15
+                   },
+                   {
+                       "type":  "button",
+                       "id":  "zoom",
+                       "action":  "zoom",
+                       "x":  273.5,
+                       "y":  3.5,
+                       "w":  14,
+                       "h":  15
+                   },
+                   {
+                       "type":  "button",
+                       "id":  "flip_left",
+                       "action":  "flip_left",
+                       "x":  124,
+                       "y":  380,
+                       "w":  16,
+                       "h":  16
+                   },
+                   {
+                       "type":  "button",
+                       "id":  "flip_right",
+                       "action":  "flip_right",
+                       "x":  176,
+                       "y":  380.5,
+                       "w":  14,
+                       "h":  15
+                   },
+                   {
+                       "type":  "text",
+                       "id":  "page_indicator",
+                       "action":  "page_indicator",
+                       "style":  "page_number",
+                       "align":  "center",
+                       "valign":  "middle",
+                       "wrap":  false,
+                       "x":  140.5,
+                       "y":  374,
+                       "w":  33,
+                       "h":  25
+                   }
+               ],
+    "templates":  [
+                      {
+                          "id":  "recipe_page",
+                          "elements":  [
+                                           {
+                                               "type":  "text",
+                                               "id":  "title",
+                                               "slot":  "title",
+                                               "style":  "title",
+                                               "align":  "center",
+                                               "wrap":  false,
+                                               "x":  18,
+                                               "y":  18,
+                                               "w":  278,
+                                               "h":  22
+                                           },
+                                           {
+                                               "type":  "flow",
+                                               "id":  "body_flow",
+                                               "x":  22,
+                                               "y":  48,
+                                               "w":  270,
+                                               "h":  300,
+                                               "spacing":  4
+                                           },
+                                           {
+                                               "type":  "text",
+                                               "id":  "body",
+                                               "slot":  "body",
+                                               "flow":  "body_flow",
+                                               "style":  "body",
+                                               "autoHeight":  true,
+                                               "w":  0,
+                                               "h":  0
+                                           }
+                                       ]
+                      }
+                  ],
+    "pages":  [
+                  {
+                      "name":  "肾上腺素注射笔",
+                      "template":  "recipe_page",
+                      "slots":  {
+                                    "title":  "肾上腺素注射笔",
+                                    "body":  "六步流程（每秒按容器温度结算，中间体自动生成）\n\n第1步 胺化（26–60°C）：邻苯二酚 + N-羟甲基碱溶液 + 脂合剂，会生成胺化中间体\n第2步 还原（60–80°C）：胺化中间体 + 还原剂，会生成消旋肾上腺素\n第3步 拆分（40–60°C，酸催化）：消旋肾上腺素 + 拆分剂 + 酸，会生成左旋肾上腺素盐 + 右旋废料（用提纯机废料输出位收集）\n第4步 成盐（26–60°C）：左旋盐 + 碱会生成游离碱；游离碱 + 酸会生成盐酸肾上腺素。蒸发水分后放进化学制剂成型机，压制成盐酸肾上腺素成品\n第5步 配液：把成品溶于等量水，会生成肾上腺素药液（多余水分用蒸发器除去）\n第6步 灌装：把干燥的药液放进化学制剂成型机，压制成注射笔\n\n每盒试剂配比：邻苯二酚 / 碱溶液 / 脂合剂 / 还原剂 / 拆分剂 各 20000，碱液 / 酸液 各 10000（微升）。每瓶都是满瓶的一份配比。\n\n一支注射笔需要 5000 微升（5 毫升）药液，一盒原料可做 2 支。\n\n回收再消旋：把右旋废料溶回容器，加入还原剂，60–80°C，会生成消旋肾上腺素，可回到第 3 步再次拆分。拆分剂不够时，退休化学家出售拆分剂补充装（20 毫升）。"
+                                }
+                  },
+                  {
+                      "name":  "简易止血带",
+                      "template":  "recipe_page",
+                      "slots":  {
+                                    "title":  "简易止血带",
+                                    "body":  "应急医疗配方（需要先解锁“更多药品：肾上腺素”）\n\n把「韧棉织物」拖到「废金属」或「金属锭」上：会消耗 1 份韧棉织物 + 1 块金属，合成为 1 条简易止血带。\n\n材料决定标签与价值：\n- 废金属做的：破旧（价值 -50%）\n- 金属锭做的，纯度中等及以上：极佳（价值 +25%）\n- 金属锭做的，纯度低于中等：陈旧（价值 -25%）\n\n简易止血带是医疗物：受伤（伤势未稳定）时使用，会稳定伤势并把伤势等级 -1，相当于一条止血绷带。"
+                                }
+                  },
+                  {
+                      "name":  "纳洛酮（纳洛通）",
+                      "template":  "recipe_page",
+                      "slots":  {
+                                    "title":  "纳洛酮（纳洛通）",
+                                    "body":  "5 步 + 配液 + 灌装（需要先解锁“更多药品：肾上腺素”）。蒂巴因是唯一采购原料，中间体自动生成。\n\nN1 氧化还原（40–60°C）：蒂巴因 + 酸 + 还原剂 + 脂合剂或酒精，会生成还原中间体\nN2 水解（80–100°C）：还原中间体 + 酸 + 水，会生成水解中间体\nN3 N-烯丙基化（50–80°C）：水解中间体 + N-羟甲基碱溶液 + 脂合剂或酒精，会生成纳洛酮粗品\nN4 成盐（26–60°C）：纳洛酮粗品 + 酸 + 水，会生成盐酸纳洛酮；可用提纯机去杂质，再在化学制剂成型机压成盐酸纳洛酮原料药\nN5 配液（26–60°C）：盐酸纳洛酮原料药溶于等量水，会生成纳洛酮药液；多余水用蒸发器除去，禁止加酒精\nN6 灌装：把干燥的药液放进化学制剂成型机，压制成纳洛通注射剂\n\n原料盒（退休化学家出售）：蒂巴因 20 毫升、酸 3 瓶（共 60 毫升）、还原剂 20 毫升、脂合剂 20 毫升、N-羟甲基碱溶液 20 毫升、酒精 20 毫升。\n酒精是可回收溶剂（留在液体里，用蒸发器回收）；脂合剂会被消耗。一盒原料可做 4 支纳洛通注射剂。"
+                                }
+                  }
+              ],
+    "item":  {
+                 "id":  "precision_lab_recipe_book",
+                 "nameLoc":  "item.recipe_book.name",
+                 "descriptionLoc":  "item.recipe_book.desc",
+                 "sprite":  "items_misc/manual1",
+                 "value":  0,
+                 "important":  true
+             }
 }
