@@ -100,19 +100,13 @@ namespace PrecisionLab
             try
             {
                 HealthData health = PlayerStore.Instance != null ? PlayerStore.Instance.healthData : null;
+                // Match the vanilla Synaprest injector: remove ONE random addiction, not all.
+                int before = CountAddictions();
                 int cured = 0;
-                string[] addictions = { "nicotine_addiction", "alcohol_addiction", "narcotic_addiction", "gambling_addiction" };
-                for (int i = 0; i < addictions.Length; i++)
+                if (before > 0 && health != null)
                 {
-                    if (StartingPerk.IsPerkActive(addictions[i]))
-                    {
-                        StartingPerk.RemovePerk(addictions[i]);
-                        cured++;
-                    }
-                }
-                if (health != null)
-                {
-                    health.RefreshAddictionPenaltyFeatures();
+                    health.RemoveOneRandomAddiction();
+                    cured = Math.Max(0, before - CountAddictions());
                 }
                 AddOrRefreshPerk(AnhedoniaPerk, AnhedoniaDays);
                 int uses = GetPerkCost(UseCountPerk) + 1;
@@ -123,7 +117,7 @@ namespace PrecisionLab
                 }
                 string msg = Loc.Get(
                     "mech.synaprest.use",
-                    "赛普那斯注射器：清除了 {0} 项成瘾，但奖励机制被抑制（快感缺失 3 天，好运 -15）。");
+                    "赛普那斯注射器：随机清除了 {0} 项成瘾（原版效果），但奖励机制被抑制（快感缺失 3 天，好运 -15）。");
                 string text = string.Format(msg, cured);
                 AddNightLog(text, "b45cff");
                 Debug.Log("[PrecisionLab] synaprest used: cured=" + cured + " uses=" + uses);
@@ -167,6 +161,16 @@ namespace PrecisionLab
         // ------------------------------------------------------------------
         // Perk helpers
         // ------------------------------------------------------------------
+
+        private static int CountAddictions()
+        {
+            int count = 0;
+            if (StartingPerk.IsPerkActive("nicotine_addiction")) count++;
+            if (StartingPerk.IsPerkActive("alcohol_addiction")) count++;
+            if (StartingPerk.IsPerkActive("narcotic_addiction")) count++;
+            if (StartingPerk.IsPerkActive("gambling_addiction")) count++;
+            return count;
+        }
 
         private static void AddOrRefreshPerk(string perkId, int cost)
         {

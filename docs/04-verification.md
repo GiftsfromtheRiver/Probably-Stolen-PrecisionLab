@@ -633,7 +633,7 @@ v1.2.9 增加：提纯机/培养机显式 EnableTag("TURBO_BOOST_ELIGIBLE_TAG")�
 ## v1.6.0 赛普那斯链 + 反应速度（2026-11-02）
 
 新增 4 种液体（neural_ligand/activated_ligand/synaprest_crude/synaprest_api）、C1–C4 反应、
-赛普那斯原料盒（500c，6 瓶）、赛普那斯注射器（350，MEDICAL+LUXURY）：一次性清除全部成瘾，
+赛普那斯原料盒（500c，6 瓶）、赛普那斯注射器（350，MEDICAL+LUXURY）：随机清除一项成瘾（与原版一致），
 附 3 天「快感缺失」perk（好运 -15，逐日递减/移除），3 次使用后形成依赖 perk（每天 10% 概率
 重新获得药物成瘾）。mod perk 通过 StartingPerkList.RegisterModPerk 注册；GetLuck Harmony postfix。
 所有链每 tick 转化率由 2% 提升至 20%（最后 100 µL 收尾）。

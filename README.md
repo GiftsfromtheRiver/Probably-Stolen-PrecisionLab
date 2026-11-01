@@ -5,7 +5,7 @@
 ![肾上腺素注射笔与原料盒](docs/images/adrenaline-pen.png)
 
 > 适配游戏版本：**0.46D**（Unity 2021.3.45f2，Mono）。纯本地 mod，不修改游戏文件，不依赖第三方 mod 框架。
-> Mod ID：`precision_lab` · 当前版本：**1.6.0** · [Steam 创意工坊](https://steamcommunity.com/sharedfiles/filedetails/?id=3831705578)
+> Mod ID：`precision_lab` · 当前版本：**1.6.1** · [Steam 创意工坊](https://steamcommunity.com/sharedfiles/filedetails/?id=3831705578)
 
 ---
 
@@ -99,7 +99,7 @@
 ### 9. 赛普那斯注射器生产线（v1.6.0）
 并入「更多药品」：退休化学家出售赛普那斯原料盒（500 信用点）。
 神经受体配体 → 结构修饰 60–80°C → 靶向合成 50–70°C（复用甾体原料）→ 酒精洗脱提纯 → 成型机压成赛普那斯注射器。
-一次性清除所有成瘾，但会获得 3 天「快感缺失」（好运 -15）；连续使用 3 次形成依赖。一盒 4 支，配方在手册第 6 页。
+随机清除一项成瘾（与原版一致），但会获得 3 天「快感缺失」（好运 -15）；连续使用 3 次形成依赖。一盒 4 支，配方在手册第 6 页。
 所有反应速度提升至每 tick 20%（原来 2%）。
 
 ## 获取方式 / How to obtain
