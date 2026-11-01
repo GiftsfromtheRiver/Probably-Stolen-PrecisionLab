@@ -40,7 +40,11 @@ namespace PrecisionLab
         internal const string ContraceptiveApi = "contraceptive_api";
         internal const string SannaiRaw = "sannai_raw";
         internal const string SannaiExtract = "sannai_extract";
-        internal const string SannaiApi = "sannai_api"; // 肾上腺素药液
+        internal const string SannaiApi = "sannai_api";
+        internal const string NeuralLigand = "neural_ligand";
+        internal const string ActivatedLigand = "activated_ligand";
+        internal const string SynaprestCrude = "synaprest_crude";
+        internal const string SynaprestApi = "synaprest_api"; // 肾上腺素药液
 
         private static bool _registered;
 
@@ -76,7 +80,11 @@ namespace PrecisionLab
                 AddLiquid(SannaiRaw, "liquid.sannai_raw", "Sannai Raw Material", "e8d8c0", false);
                 AddLiquid(SannaiExtract, "liquid.sannai_extract", "Sannai Extract", "d8b8d8", false);
                 AddLiquid(SannaiApi, "liquid.sannai_api", "Sannai API Solution", "dfeef5", false);
-                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 23 + ")");
+                AddLiquid(NeuralLigand, "liquid.neural_ligand", "Neural Receptor Ligand", "e8d2a0", false);
+                AddLiquid(ActivatedLigand, "liquid.activated_ligand", "Activated Ligand", "c8d8f8", false);
+                AddLiquid(SynaprestCrude, "liquid.synaprest_crude", "Synaprest Crude", "b8a8c8", false);
+                AddLiquid(SynaprestApi, "liquid.synaprest_api", "Synaprest API Solution", "dfeef5", false);
+                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 27 + ")");
             }
             catch (Exception e)
             {
@@ -112,6 +120,10 @@ namespace PrecisionLab
                 SetName(SannaiRaw, "liquid.sannai_raw", "Sannai Raw Material");
                 SetName(SannaiExtract, "liquid.sannai_extract", "Sannai Extract");
                 SetName(SannaiApi, "liquid.sannai_api", "Sannai API Solution");
+                SetName(NeuralLigand, "liquid.neural_ligand", "Neural Receptor Ligand");
+                SetName(ActivatedLigand, "liquid.activated_ligand", "Activated Ligand");
+                SetName(SynaprestCrude, "liquid.synaprest_crude", "Synaprest Crude");
+                SetName(SynaprestApi, "liquid.synaprest_api", "Synaprest API Solution");
             }
             catch (Exception e)
             {
@@ -129,6 +141,8 @@ namespace PrecisionLab
                 || liquidId.StartsWith("naloxone_", StringComparison.Ordinal)
                 || liquidId.StartsWith("steroid_", StringComparison.Ordinal)
                 || liquidId.StartsWith("sannai_", StringComparison.Ordinal)
+                || liquidId == NeuralLigand || liquidId == ActivatedLigand
+                || liquidId == SynaprestCrude || liquidId == SynaprestApi
                 || liquidId == Thebaine || liquidId == ContraceptiveApi || liquidId == SannaiApi;
         }
 

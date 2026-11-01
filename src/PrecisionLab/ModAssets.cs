@@ -19,6 +19,8 @@ namespace PrecisionLab
         internal const string NaloxoneApi = "naloxone_hcl_api";
         internal const string BirthControlBox = "birth_control_supply_box";
         internal const string SannaiBox = "sannai_supply_box";
+        internal const string SynaprestBox = "synaprest_supply_box";
+        internal const string SynaprestInjector = "synaprest_injector";
     }
 
     internal static class SpriteKeys
@@ -39,6 +41,8 @@ namespace PrecisionLab
         internal const string NaloxoneApi = "naloxone_hcl_api";
         internal const string BirthControlBox = "birth_control_supply_box";
         internal const string SannaiBox = "sannai_supply_box";
+        internal const string SynaprestBox = "synaprest_supply_box";
+        internal const string SynaprestInjector = "synaprest_injector";
     }
 
     internal static class Tags

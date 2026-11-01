@@ -26,6 +26,7 @@ namespace PrecisionLab
             AdrenalineChemistry.React(container);
             NaloxoneChemistry.React(container);
             PillChemistry.React(container);
+            SynaprestChemistry.React(container);
         }
     }
 
@@ -67,9 +68,7 @@ namespace PrecisionLab
                 {
                     return 0;
                 }
-                int converted = (int)Math.Round(starch * TickConversion);
-                converted = Math.Max(converted, 5);
-                converted = Math.Min(converted, MaxPerTick);
+                int converted = ReactionMath.Step(starch);
                 converted = Math.Min(converted, starch);
                 if (converted <= 0)
                 {

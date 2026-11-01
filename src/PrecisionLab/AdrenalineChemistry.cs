@@ -245,18 +245,7 @@ namespace PrecisionLab
         /// <summary>2% of the limiting reagent per one-second tick, clamped to a sane range.</summary>
         private static int Step(int limiting)
         {
-            if (limiting <= 0)
-            {
-                return 0;
-            }
-            // Convert everything in one final chunk once the remainder is small: this keeps the
-            // integer round-off from leaving 1 µL tails of expensive reagents behind.
-            if (limiting <= 50)
-            {
-                return limiting;
-            }
-            int amount = Math.Max(1, limiting / 50);
-            return Math.Min(Math.Min(amount, 5000), limiting);
+            return ReactionMath.Step(limiting);
         }
 
         private static void Add(GameItem container, string liquidId, int delta)

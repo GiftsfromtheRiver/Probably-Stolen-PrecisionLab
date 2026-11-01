@@ -36,6 +36,7 @@ namespace PrecisionLab
                     RetiredChemistStock.TryAddAdrenalineKit();
                     RetiredChemistStock.TryAddNaloxoneKit();
                     RetiredChemistStock.TryAddPillKits();
+                    RetiredChemistStock.TryAddSynaprestKit();
                 };
             }
             catch (Exception e)
@@ -161,6 +162,32 @@ namespace PrecisionLab
             catch (Exception e)
             {
                 Debug.LogWarning("[PrecisionLab] retired chemist pill kit stock failed: " + e);
+            }
+        }
+
+        /// <summary>After the "More Medicines" unlock the retired chemist also sells Synaprest precursor kits.</summary>
+        internal static void TryAddSynaprestKit()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.SynaprestBox);
+                Debug.Log("[PrecisionLab] retired chemist offers a Synaprest precursor kit");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist synaprest kit stock failed: " + e);
             }
         }
 

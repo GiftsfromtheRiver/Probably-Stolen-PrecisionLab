@@ -184,3 +184,23 @@ item.sannai_bottle.name,Sannai Raw Material Bottle (20 mL)
 item.water_bottle.name,Water (20 mL)
 item.birth_control_pill.recipe_name,Birth Control Pill
 item.sannai_pill.recipe_name,Zyanide Pill (Sannai)
+liquid.neural_ligand,Neural Receptor Ligand
+liquid.activated_ligand,Activated Ligand
+liquid.synaprest_crude,Synaprest Crude
+liquid.synaprest_api,Synaprest API Solution
+item.synaprest_box.name,Synaprest Precursor Kit
+item.synaprest_box.desc,Activate to unpack one Synaprest batch: neural receptor ligand, steroid raw material, acid, water, reducing agent and alcohol (20 mL each).
+item.synaprest_box.flavor,A sealed high-value precursor kit. The label reads: suppress the reward, suppress yourself.
+item.neural_ligand_bottle.name,Neural Receptor Ligand Bottle (20 mL)
+item.synaprest_injector.name,Synaprest Injector
+item.synaprest_injector.desc,Next-generation addiction treatment: instantly clears every drug/alcohol/nicotine/gambling addiction. The price is suppressed reward circuitry - anhedonia for 3 days (Luck -15), and dependency after 3 uses.
+item.synaprest_injector.flavor,A next-generation therapy for drug addiction that suppresses the brains reward mechanism, easing withdrawal and supporting long-term recovery.
+perk.synaprest_anhedonia.name,Anhedonia / 快感缺失
+perk.synaprest_anhedonia.desc,Synaprest suppressed the reward system: Luck -15 for 3 days.
+perk.synaprest_dependency.name,Synaprest Dependency
+perk.synaprest_dependency.desc,Mild dependency after more than 3 consecutive uses; each morning may bring back narcotic addiction.
+perk.synaprest_use_count.name,Synaprest Uses
+perk.synaprest_use_count.desc,Total Synaprest uses; reaching 3 forms a dependency.
+mech.synaprest.use,Synaprest injector: cleared {0} addiction(s), but the reward system is suppressed (anhedonia for 3 days, Luck -15).
+mech.synaprest.anhedonia_over,The Synaprest effect fades: anhedonia ends.
+mech.synaprest.craving,Synaprest dependency kicks in: the craving returns (gained narcotic addiction).

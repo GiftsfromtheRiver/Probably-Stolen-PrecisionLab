@@ -183,3 +183,23 @@ item.sannai_bottle.name,山奈原料瓶（20 毫升）
 item.water_bottle.name,水（20 毫升）
 item.birth_control_pill.recipe_name,避孕药片
 item.sannai_pill.recipe_name,山奈德片
+liquid.neural_ligand,神经受体配体
+liquid.activated_ligand,活化配体
+liquid.synaprest_crude,赛普那斯粗品
+liquid.synaprest_api,赛普那斯原料药溶液
+item.synaprest_box.name,赛普那斯原料盒
+item.synaprest_box.desc,激活拆开得到一批赛普那斯原料：神经受体配体、甾体原料、酸、水、还原剂、酒精各 20 毫升。
+item.synaprest_box.flavor,密封的高价值原料盒。标签上写着：抑制奖励，也抑制你自己。
+item.neural_ligand_bottle.name,神经受体配体瓶（20 毫升）
+item.synaprest_injector.name,赛普那斯注射器
+item.synaprest_injector.desc,次世代成瘾治疗注射器：瞬间清除所有药物/酒精/尼古丁/赌博成瘾。代价是奖励机制被抑制——快感缺失 3 天（好运 -15），连续使用 3 次会形成依赖。
+item.synaprest_injector.flavor,治疗药物成瘾的次世代疗法，抑制大脑奖励机制，减轻药瘾，辅助长期康复。
+perk.synaprest_anhedonia.name,快感缺失 / Anhedonia
+perk.synaprest_anhedonia.desc,赛普那斯抑制了大脑奖励机制：好运 -15，持续 3 天。
+perk.synaprest_dependency.name,赛普那斯依赖 / Synaprest Dependency
+perk.synaprest_dependency.desc,连续使用赛普那斯超过 3 次形成的轻度依赖；每天醒来有概率重新出现药物成瘾。
+perk.synaprest_use_count.name,赛普那斯使用次数 / Synaprest Uses
+perk.synaprest_use_count.desc,累计使用赛普那斯的次数；达到 3 次会形成依赖。
+mech.synaprest.use,赛普那斯注射器：清除了 {0} 项成瘾，但奖励机制被抑制（快感缺失 3 天，好运 -15）。
+mech.synaprest.anhedonia_over,赛普那斯的影响消退了：快感缺失结束。
+mech.synaprest.craving,赛普那斯依赖发作：你又对药物产生了渴望（获得药物成瘾）。

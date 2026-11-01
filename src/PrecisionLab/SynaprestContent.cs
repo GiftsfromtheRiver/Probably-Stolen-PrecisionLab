@@ -1,0 +1,150 @@
+using System;
+using UnityEngine;
+
+namespace PrecisionLab
+{
+    /// <summary>
+    /// Items for the Synaprest line: the precursor kit sold by the retired chemist and the
+    /// crafted black injector ("赛普那斯注射器"). The injector removes all addictions but applies
+    /// the anhedonia/dependency side effects from <see cref="SynaprestEffects"/>.
+    /// </summary>
+    internal static class SynaprestContent
+    {
+        internal const int PressVolume = 5000;
+
+        internal static void EnsureRecipes()
+        {
+            try
+            {
+                ChemFinisherRecipe recipe = ChemFinisherRecipe.GetRecipeById(ItemIds.SynaprestInjector);
+                if (recipe == null)
+                {
+                    recipe = new ChemFinisherRecipe { identifier = ItemIds.SynaprestInjector };
+                    ChemFinisherRecipe.chemFinisherRecipes.Add(recipe);
+                }
+                recipe.displayName = Loc.Get("item.synaprest_injector.name", "赛普那斯注射器");
+                recipe.requiredVolume = PressVolume;
+                recipe.isRequireDry = true;
+                recipe.activeIngredientId = CustomLiquids.SynaprestApi;
+                Debug.Log("[PrecisionLab] synaprest chem finisher recipe registered");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] registering synaprest recipe failed: " + e.Message);
+            }
+        }
+
+        internal static GameItem CreateSupplyBox()
+        {
+            GameItem item = ItemDirectory.CreateEmptyItem();
+            ModSprites.Apply(item, SpriteKeys.SupplyBox, "Items/items_material", "chemical2");
+            item.name = Loc.Get("item.synaprest_box.name", "赛普那斯原料盒");
+            item.shortDescription = Loc.Get(
+                "item.synaprest_box.desc",
+                "激活拆开得到一批赛普那斯原料：神经受体配体、甾体原料、酸、水、还原剂、酒精各 20 毫升。");
+            item.flavorText = Loc.Get(
+                "item.synaprest_box.flavor",
+                "密封的高价值原料盒。标签上写着：抑制奖励，也抑制你自己。");
+            item.SetGameItemType("CHEMICAL_SUPPLIES");
+            item.unitValue = 500L;
+            item.canActivateSlotItemFunc = delegate (GameItem self, GameInventory inventory, SlotMarker slot)
+            {
+                return GeneralHelper.IsItemOwned(self);
+            };
+            item.mayActivateSlotItemFunc = delegate (GameItem self, GameInventory inventory, SlotMarker slot)
+            {
+                return GeneralHelper.IsItemOwned(self);
+            };
+            item.onActivateSlotItemFunc = delegate (GameItem self, GameInventory inventory, SlotMarker slot)
+            {
+                Unpack(self, inventory);
+            };
+            AudioHelper.InitPlasticContainer(item);
+            ModHelper.SetSource(item, Loc.ModId, ModEntry.ModDisplayName);
+            return item;
+        }
+
+        private static void Unpack(GameItem box, GameInventory inventory)
+        {
+            try
+            {
+                GameItem[] bottles =
+                {
+                    AdrenalineContent.CreateBottle("med_bottle_violet", CustomLiquids.NeuralLigand, 20000, "item.neural_ligand_bottle.name", "Neural Receptor Ligand Bottle"),
+                    AdrenalineContent.CreateBottle("med_bottle_violet", CustomLiquids.SteroidRaw, 20000, "item.steroid_bottle.name", "Steroid Raw Material Bottle"),
+                    AdrenalineContent.CreateBottle("med_bottle_red", "acid", 20000, "item.acid_bottle.name", "Acid Reagent Bottle"),
+                    AdrenalineContent.CreateBottle("med_bottle_blue", "water", 20000, "item.water_bottle.name", "Water Bottle"),
+                    AdrenalineContent.CreateBottle("med_bottle_orange", "reducing_agent", 20000, "item.reducing_bottle.name", "Reducing Agent Bottle"),
+                    AdrenalineContent.CreateBottle("med_bottle_blue", "alcohol", 20000, "item.alcohol_bottle.name", "Alcohol Reagent Bottle")
+                };
+                int placed = 0;
+                for (int i = 0; i < bottles.Length; i++)
+                {
+                    GameItem bottle = bottles[i];
+                    if (bottle == null)
+                    {
+                        continue;
+                    }
+                    GeneralHelper.SetItemOwned(bottle, true);
+                    if (inventory != null)
+                    {
+                        GraphUtils.EmporiumTryAdd(inventory, bottle);
+                    }
+                    else
+                    {
+                        GraphUtils.EmporiumTryAdd(bottle);
+                    }
+                    if (bottle.parentInventory != null)
+                    {
+                        placed++;
+                    }
+                }
+                box.Destroy();
+                Debug.Log("[PrecisionLab] synaprest kit unpacked (" + placed + "/" + bottles.Length + " bottles)");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] unpacking the synaprest kit failed: " + e.Message);
+            }
+        }
+
+        internal static GameItem CreateInjector()
+        {
+            GameItem item = ItemDirectory.CreateEmptyItem();
+            item.SetSpriteAndShape("Items/items_medical", "injector_black");
+            item.name = Loc.Get("item.synaprest_injector.name", "赛普那斯注射器");
+            item.shortDescription = Loc.Get(
+                "item.synaprest_injector.desc",
+                "次世代成瘾治疗注射器：瞬间清除所有药物/酒精/尼古丁/赌博成瘾。代价是奖励机制被抑制——快感缺失 3 天（好运 -15），连续使用 3 次会形成依赖。");
+            item.flavorText = Loc.Get(
+                "item.synaprest_injector.flavor",
+                "治疗药物成瘾的次世代疗法，抑制大脑奖励机制，减轻药瘾，辅助长期康复。");
+            item.unitValue = 350L;
+            item.SetGameItemType("MEDICAL");
+            item.SetGameItemType("LUXURY_ITEM");
+            item.EnableManufacturer("pastel");
+            AudioHelper.InitInjectorAudio(item);
+            item.canActivateSlotItemFunc = delegate (GameItem self, GameInventory inventory, SlotMarker slot)
+            {
+                return GeneralHelper.IsItemOwned(self) && HealthData.HasAnyAddiction();
+            };
+            item.mayActivateSlotItemFunc = delegate (GameItem self, GameInventory inventory, SlotMarker slot)
+            {
+                return GeneralHelper.IsItemOwned(self) && HealthData.HasAnyAddiction();
+            };
+            item.onActivateSlotItemFunc = delegate (GameItem self, GameInventory inventory, SlotMarker slot)
+            {
+                try
+                {
+                    SynaprestEffects.ApplyOnUse(self);
+                }
+                finally
+                {
+                    self.Destroy();
+                }
+            };
+            ModHelper.SetSource(item, Loc.ModId, ModEntry.ModDisplayName);
+            return item;
+        }
+    }
+}

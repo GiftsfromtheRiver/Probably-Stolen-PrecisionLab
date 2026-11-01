@@ -39,6 +39,9 @@ namespace PrecisionLab
             GameItem sannaiCup = null;
             GameItem birthControlBoxItem = null;
             GameItem sannaiBoxItem = null;
+            GameItem synaprestCup = null;
+            GameItem synaprestBoxItem = null;
+            GameItem synaprestInjectorItem = null;
             GameItem resolvingBottleItem = null;
             GameItem resolvingRefillItem = null;
             GameItem recipeBookItem = null;
@@ -449,6 +452,52 @@ namespace PrecisionLab
                     + "µL sannaiAlcoholLeft=" + sannaiAlcoholLeft + "µL sannaiApi=" + sannaiApi
                     + "µL sannaiAcidLeft=" + sannaiAcidLeft + "µL recipes=" + pillRecipesOk
                     + " boxes=" + (birthControlBoxItem != null && sannaiBoxItem != null));
+                // --- 8e. Synaprest chain (ligand -> activated -> crude -> API) -----------------
+                synaprestCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(synaprestCup, true);
+                LiquidTools.SetLiquidRaw(synaprestCup, CustomLiquids.NeuralLigand, 1000);
+                LiquidTools.SetLiquidRaw(synaprestCup, "acid", 1000);
+                LiquidTools.SetLiquidRaw(synaprestCup, "water", 1000);
+                SetTemperature(synaprestCup, 70.0);
+                PulseStep(synaprestCup, SynaprestChemistry.StepActivation);
+                int synActivated = LiquidTools.GetLiquidAmount(synaprestCup, CustomLiquids.ActivatedLigand);
+                LiquidTools.SetLiquidRaw(synaprestCup, CustomLiquids.SteroidRaw, 1000);
+                LiquidTools.SetLiquidRaw(synaprestCup, "reducing_agent", 1000);
+                SetTemperature(synaprestCup, 60.0);
+                PulseStep(synaprestCup, SynaprestChemistry.StepSynthesis);
+                int synCrude = LiquidTools.GetLiquidAmount(synaprestCup, CustomLiquids.SynaprestCrude);
+                LiquidTools.SetLiquidRaw(synaprestCup, "alcohol", 5000);
+                SetTemperature(synaprestCup, 40.0);
+                PulseStep(synaprestCup, SynaprestChemistry.StepRefinement);
+                int synApi = LiquidTools.GetLiquidAmount(synaprestCup, CustomLiquids.SynaprestApi);
+                int synAlcoholLeft = LiquidTools.GetLiquidAmount(synaprestCup, "alcohol");
+                SynaprestContent.EnsureRecipes();
+                bool synRecipesOk = ChemFinisherRecipe.GetRecipeById(ItemIds.SynaprestInjector) != null
+                    && ChemFinisherRecipe.GetRecipeById(ItemIds.SynaprestInjector).activeIngredientId == CustomLiquids.SynaprestApi
+                    && ChemFinisherRecipe.GetRecipeById(ItemIds.SynaprestInjector).requiredVolume == SynaprestContent.PressVolume;
+                synaprestBoxItem = SynaprestContent.CreateSupplyBox();
+                synaprestInjectorItem = SynaprestContent.CreateInjector();
+                SynaprestEffects.RegisterPerks();
+                bool synPerksOk = StartingPerkList.GetModPerk(SynaprestEffects.AnhedoniaPerk) != null
+                    && StartingPerkList.GetModPerk(SynaprestEffects.DependencyPerk) != null
+                    && StartingPerkList.GetModPerk(SynaprestEffects.UseCountPerk) != null;
+                bool speedOk = ReactionMath.Step(20000) >= 4000;
+                bool synaprestOk = synActivated == 1000
+                    && synCrude == 1000
+                    && synApi == 1000
+                    && synAlcoholLeft == 5000
+                    && synRecipesOk
+                    && synPerksOk
+                    && synaprestBoxItem != null
+                    && synaprestBoxItem.unitValue == 500
+                    && synaprestInjectorItem != null
+                    && synaprestInjectorItem.unitValue == 350
+                    && speedOk;
+                log.Log(Prefix + "synaprest chain: activated=" + synActivated + "µL crude=" + synCrude
+                    + "µL api=" + synApi + "µL alcoholLeft=" + synAlcoholLeft
+                    + "µL recipes=" + synRecipesOk + " perks=" + synPerksOk
+                    + " box=" + (synaprestBoxItem != null) + " injector=" + (synaprestInjectorItem != null)
+                    + " speedOk=" + speedOk);
 
                 apiItem = AdrenalineContent.CreateApi();
                 penItem = AdrenalineContent.CreatePen();
@@ -646,7 +695,7 @@ namespace PrecisionLab
                     + " hydrolysis=" + hydrolysis + " digestion=" + digestion + " cultivator=" + cultivatorOk
                     + " adrenaline=" + adrenalineOk + " adrenalineItems=" + adrenalineItemsOk
                     + " tourniquet=" + tourniquetOk
-                    + " recycle=" + recycleOk + " naloxone=" + naloxoneOk + " pills=" + pillOk);
+                    + " recycle=" + recycleOk + " naloxone=" + naloxoneOk + " pills=" + pillOk + " synaprest=" + synaprestOk);
             }
             catch (Exception e)
             {
@@ -687,6 +736,9 @@ namespace PrecisionLab
                 DestroyQuietly(sannaiCup);
                 DestroyQuietly(birthControlBoxItem);
                 DestroyQuietly(sannaiBoxItem);
+                DestroyQuietly(synaprestCup);
+                DestroyQuietly(synaprestBoxItem);
+                DestroyQuietly(synaprestInjectorItem);
             }
         }
 

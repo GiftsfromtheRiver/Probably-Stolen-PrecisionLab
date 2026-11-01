@@ -164,8 +164,11 @@ namespace PrecisionLab
                 bool naloxoneApi = directory.Has(ItemIds.NaloxoneApi) || directory.Add(ItemIds.NaloxoneApi, NaloxoneContent.CreateApi);
                 bool birthControlBox = directory.Has(ItemIds.BirthControlBox) || directory.Add(ItemIds.BirthControlBox, PillContent.CreateBirthControlBox);
                 bool sannaiBox = directory.Has(ItemIds.SannaiBox) || directory.Add(ItemIds.SannaiBox, PillContent.CreateSannaiBox);
+                bool synaprestBox = directory.Has(ItemIds.SynaprestBox) || directory.Add(ItemIds.SynaprestBox, SynaprestContent.CreateSupplyBox);
+                bool synaprestInjector = directory.Has(ItemIds.SynaprestInjector) || directory.Add(ItemIds.SynaprestInjector, SynaprestContent.CreateInjector);
                 if (extractor || purifier || cultivator || supplyBox || api || pen || waste || tourniquet || resolvingBottle || resolvingRefill
-                    || naloxoneBox || naloxoneApi || birthControlBox || sannaiBox)
+                    || naloxoneBox || naloxoneApi || birthControlBox || sannaiBox
+                    || synaprestBox || synaprestInjector)
                 {
                     _log.Log("items registered in mod item directory: extractor=" + extractor
                         + " purifier=" + purifier + " cultivator=" + cultivator
@@ -174,7 +177,8 @@ namespace PrecisionLab
                         + " resolvingBottle=" + resolvingBottle
                         + " resolvingRefill=" + resolvingRefill
                         + " naloxoneBox=" + naloxoneBox + " naloxoneApi=" + naloxoneApi
-                        + " birthControlBox=" + birthControlBox + " sannaiBox=" + sannaiBox);
+                        + " birthControlBox=" + birthControlBox + " sannaiBox=" + sannaiBox
+                        + " synaprestBox=" + synaprestBox + " synaprestInjector=" + synaprestInjector);
                 }
             }
             catch (Exception e)
@@ -233,6 +237,7 @@ namespace PrecisionLab
             try
             {
                 CustomLiquids.EnsureRegistered();
+                SynaprestEffects.RegisterPerks();
                 CustomLiquids.RefreshLocalizedNames();
             }
             catch (Exception e)
@@ -347,6 +352,7 @@ namespace PrecisionLab
                 AdrenalineContent.EnsureRecipes();
                 NaloxoneContent.EnsureRecipes();
                 PillContent.EnsureRecipes();
+                SynaprestContent.EnsureRecipes();
                 TourniquetCraft.OnUnlocked();
                 RecipeBook.EnsureDelivered();
             }
@@ -405,6 +411,7 @@ namespace PrecisionLab
                 AdrenalineContent.EnsureRecipes();
                 NaloxoneContent.EnsureRecipes();
                 PillContent.EnsureRecipes();
+                SynaprestContent.EnsureRecipes();
                 RecipeBook.EnsureDelivered();
             }
             catch (Exception e)
@@ -432,6 +439,8 @@ namespace PrecisionLab
             PurifierManualHelper.EnsureAllInStore();
             // Retry recipe-note deliveries that had no free inventory space earlier.
             NoteDelivery.EnsureAll();
+            // Expire anhedonia / trigger Synaprest dependency cravings at the start of the day.
+            SynaprestEffects.OnWakingUpLate();
         }
 
         private static void GiveItem(string itemId)

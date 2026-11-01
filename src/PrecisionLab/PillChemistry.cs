@@ -194,16 +194,7 @@ namespace PrecisionLab
 
         private static int Step(int limiting)
         {
-            if (limiting <= 0)
-            {
-                return 0;
-            }
-            if (limiting <= 50)
-            {
-                return limiting;
-            }
-            int amount = Math.Max(1, limiting / 50);
-            return Math.Min(Math.Min(amount, 5000), limiting);
+            return ReactionMath.Step(limiting);
         }
 
         private static void Add(GameItem container, string liquidId, int delta)
