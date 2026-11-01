@@ -39,7 +39,7 @@ namespace PrecisionLab
                 "Activate to unpack: catechol, N-hydroxymethyl base solution, lipobond agent, reducing agent, chiral resolving agent, base and acid. All intermediates are produced by the recipes themselves — only the starting reagents are supplied.");
             ModSprites.Apply(item, SpriteKeys.SupplyBox, "Items/items_material", "chemical2");
             item.SetGameItemType("CHEMICAL_SUPPLIES");
-            item.unitValue = 1500L;
+            item.unitValue = 150L;
             item.canActivateSlotItemFunc = (GameItem s, GameInventory _, SlotMarker _) => GeneralHelper.IsItemOwned(s);
             item.mayActivateSlotItemFunc = (GameItem s, GameInventory _, SlotMarker _) => GeneralHelper.IsItemOwned(s);
             item.onActivateSlotItemFunc = delegate (GameItem curItem, GameInventory curInv, SlotMarker marker)
@@ -67,10 +67,29 @@ namespace PrecisionLab
         {
             try
             {
+                GameItem bottle = CreateBottle(containerId, liquidId, amount, locKey, fallback);
+                if (bottle == null)
+                {
+                    return;
+                }
+                GeneralHelper.SetItemOwned(bottle, true);
+                GraphUtils.EmporiumTryAdd(inventory, bottle);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] unpacking reagent '" + liquidId + "' failed: " + e.Message);
+            }
+        }
+
+        /// <summary>Builds a full one-batch reagent bottle (used by the kit and by the chemist refill).</summary>
+        internal static GameItem CreateBottle(string containerId, string liquidId, int amount, string locKey, string fallback)
+        {
+            try
+            {
                 if (!DirectoryMaster.Has<GameItem>(containerId))
                 {
                     Debug.LogWarning("[PrecisionLab] reagent bottle template missing: " + containerId);
-                    return;
+                    return null;
                 }
                 GameItem bottle = DirectoryMaster.Item(containerId);
                 bottle.name = Loc.Get(locKey, fallback);
@@ -80,20 +99,140 @@ namespace PrecisionLab
                     "A full vial containing {0} mL of {1} (exactly one batch).",
                     LiquidTools.FormatUl(amount),
                     liquid != null ? liquid.displayName : liquidId);
-                // Make the vial exactly as large as its one-batch content so the water level
-                // renders 100% full instead of looking like a nearly empty 250 mL bottle.
+                // Make the vial exactly as large as its content so the water level renders full.
                 bottle.ModifyTag(Tags.LiquidCapacity, delegate (TagState state)
                 {
                     state.Enable().SetInt(amount);
                 }, skipValidate: true);
                 WaterHelper.AddLiquid(bottle, liquidId, amount);
-                GeneralHelper.SetItemOwned(bottle, true);
-                GraphUtils.EmporiumTryAdd(inventory, bottle);
+                ModHelper.SetSource(bottle, Loc.ModId, ModEntry.ModDisplayName);
+                return bottle;
             }
             catch (Exception e)
             {
-                Debug.LogWarning("[PrecisionLab] unpacking reagent '" + liquidId + "' failed: " + e.Message);
+                Debug.LogWarning("[PrecisionLab] creating reagent bottle '" + liquidId + "' failed: " + e.Message);
+                return null;
             }
+        }
+
+        /// <summary>
+        /// Sealed 20 mL resolving-agent refill pack sold by the retired chemist. Sold as a normal
+        /// (non-liquid) supply item so its counter value is stable; activating it unpacks one full
+        /// resolving-agent bottle, like vanilla chemical supply boxes.
+        /// </summary>
+        internal static GameItem CreateResolvingAgentRefillPack()
+        {
+            GameItem item = ItemDirectory.CreateEmptyItem();
+            item.name = Loc.Get("item.resolving_refill.name", "Resolving Agent Refill Pack (20 mL)");
+            item.shortDescription = Loc.Get(
+                "item.resolving_refill.desc",
+                "A sealed refill pack containing one full 20 mL vial of chiral resolving agent. Activate it to unpack the vial; useful when recycling dextro waste back into racemic adrenaline.");
+            item.flavorText = Loc.Get(
+                "item.resolving_refill.flavor",
+                "The retired chemist keeps a crate of these behind the counter for people who keep recycling their dextro waste.");
+            item.SetSpriteAndShape("Items/items_material", "chemical2");
+            item.SetGameItemType("CHEMICAL_SUPPLIES");
+            item.unitValue = 32L;
+            item.canActivateSlotItemFunc = delegate (GameItem self, GameInventory inventory, SlotMarker slot)
+            {
+                return GeneralHelper.IsItemOwned(self);
+            };
+            item.mayActivateSlotItemFunc = delegate (GameItem self, GameInventory inventory, SlotMarker slot)
+            {
+                return GeneralHelper.IsItemOwned(self);
+            };
+            item.onActivateSlotItemFunc = delegate (GameItem self, GameInventory inventory, SlotMarker slot)
+            {
+                try
+                {
+                    GameItem bottle = CreateResolvingAgentBottle();
+                    if (bottle == null)
+                    {
+                        Debug.LogWarning("[PrecisionLab] resolving agent refill: bottle factory returned null; pack kept");
+                        return;
+                    }
+                    GeneralHelper.SetItemOwned(bottle, true);
+                    bool placed = false;
+                    // 1) the inventory the pack was activated in, 2) every other store inventory,
+                    // 3) the game's own store-wide fallback. Only consume the pack once the
+                    // bottle is really placed - otherwise keep the pack so nothing is lost.
+                    if (inventory != null && GraphUtils.TryAcceptAll(inventory, bottle) == 0)
+                    {
+                        placed = true;
+                    }
+                    EmporiumEntry entry = EmporiumEntry.Instance;
+                    if (!placed && entry != null)
+                    {
+                        GameInventory[] candidates =
+                        {
+                            entry.frontInvinvElement,
+                            entry.backInvinvElement,
+                            entry.invElement,
+                            entry.showcaseElement
+                        };
+                        for (int i = 0; i < candidates.Length; i++)
+                        {
+                            if (candidates[i] == null)
+                            {
+                                continue;
+                            }
+                            if (GraphUtils.TryAcceptAll(candidates[i], bottle) == 0)
+                            {
+                                placed = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!placed)
+                    {
+                        GraphUtils.EmporiumTryAdd(inventory, bottle);
+                        placed = bottle.parentInventory != null;
+                    }
+                    if (!placed)
+                    {
+                        Debug.LogWarning("[PrecisionLab] resolving agent refill: no room for the bottle; pack kept");
+                        try
+                        {
+                            PlayerStore.Instance.AddNightLog(
+                                Loc.Get("mech.resolving_refill.no_space", "No room to unpack the resolving agent refill; the pack was not used."),
+                                "9c3738");
+                        }
+                        catch (Exception)
+                        {
+                            // Cosmetic only.
+                        }
+                        return;
+                    }
+                    AudioHelper.InitPlasticContainer(bottle);
+                    self.Destroy();
+                    Debug.Log("[PrecisionLab] resolving agent refill unpacked");
+                }
+                catch (Exception e)
+                {
+                    Debug.LogWarning("[PrecisionLab] unpacking the resolving agent refill failed: " + e.Message);
+                }
+            };
+            AudioHelper.InitPlasticContainer(item);
+            ModHelper.SetSource(item, Loc.ModId, ModEntry.ModDisplayName);
+            return item;
+        }
+        /// <summary>Standalone 20 mL resolving-agent refill sold by the retired chemist.</summary>
+        internal static GameItem CreateResolvingAgentBottle()
+        {
+            GameItem bottle = CreateBottle(
+                "med_bottle_blue",
+                CustomLiquids.ResolvingAgent,
+                20000,
+                "item.resolving_bottle.name",
+                "Chiral Resolving Agent Bottle");
+            if (bottle != null)
+            {
+                bottle.unitValue = 12L;
+                bottle.flavorText = Loc.Get(
+                    "item.resolving_bottle.flavor",
+                    "A fresh vial of resolving agent. The retired chemist keeps these behind the counter for people who recycle their dextro waste.");
+            }
+            return bottle;
         }
 
         internal static GameItem CreateApi()
@@ -108,7 +247,7 @@ namespace PrecisionLab
                 "Active pharmaceutical ingredient pressed by the Chem Finisher from a dry, filtered adrenaline HCl solution. Quality (lab pure / pharma grade / street standard / ...) is graded from the active fraction. Dissolve it in water to prepare the injectable solution.");
             ModSprites.Apply(item, SpriteKeys.Api, "Items/items_material", "chemical2");
             item.SetGameItemType("CHEMICAL_SUPPLIES");
-            item.unitValue = 500L;
+            item.unitValue = 50L;
             ChemicalHelper.InitChemItem(item, isBlendable: true, isSoluble: true);
             ChemicalProductHelper.InitChemicalProduct(item, CustomLiquids.AdrenalineHcl);
             ChemicalFeedbackHelper.InitChemicalIntentItem(item, ChemicalFeedbackHelper.ChemicalIntent.MEDICAL);
@@ -136,7 +275,7 @@ namespace PrecisionLab
             item.EnableTag("ITEM_MEDICAL_TAG");
             item.EnableProficiency("MEDICAL_PROFICIENCY");
             item.bonusAccuracy = 1000;
-            item.unitValue = 1200L;
+            item.unitValue = 120L;
             // Built directly instead of via DirectoryMaster: the effect directories may not be
             // ready when the mod creates the very first pen (e.g. from the self-test), and a
             // failed lookup silently becomes a dummy effect. These match the vanilla combat

@@ -31,6 +31,8 @@ namespace PrecisionLab
             GameItem boxItem = null;
             GameItem noteItem = null;
             GameItem recycleCup = null;
+            GameItem resolvingBottleItem = null;
+            GameItem resolvingRefillItem = null;
             GameItem tourniquetItem = null;
             GameItem fabricSample = null;
             GameItem scrapForCondition = null;
@@ -314,21 +316,36 @@ namespace PrecisionLab
                 apiItem = AdrenalineContent.CreateApi();
                 penItem = AdrenalineContent.CreatePen();
                 boxItem = AdrenalineContent.CreateSupplyBox();
+                resolvingBottleItem = AdrenalineContent.CreateResolvingAgentBottle();
+                resolvingRefillItem = AdrenalineContent.CreateResolvingAgentRefillPack();
                 noteItem = AdrenalineContent.CreateRecipeNote();
                 tourniquetItem = ItemSpawner.Spawn(ItemIds.Tourniquet);
                 fabricSample = ItemSpawner.Spawn(TourniquetCraft.FabricId);
+                bool resolvingBottleOk = resolvingBottleItem != null
+                    && LiquidTools.GetLiquidAmount(resolvingBottleItem, CustomLiquids.ResolvingAgent) == 20000
+                    && WaterHelper.GetTotalCapacity(resolvingBottleItem) == 20000
+                    && resolvingBottleItem.unitValue > 0;
+                bool resolvingRefillOk = resolvingRefillItem != null
+                    && resolvingRefillItem.unitValue >= 30
+                    && resolvingRefillItem.canActivateSlotItemFunc != null
+                    && resolvingRefillItem.mayActivateSlotItemFunc != null;
                 bool itemsOk = apiItem != null
                     && penItem != null
                     && penItem.IsTag("ITEM_MEDICAL_TAG")
                     && penItem.IsGameItemType("MEDICAL")
                     && penItem.IsGameItemType("LUXURY_ITEM")
                     && penItem.IsTag("LUXURY_ITEM")
+                    && penItem.unitValue == 120
+                    && boxItem != null
+                    && boxItem.unitValue == 150
                     && penItem.effects.Count >= 2
                     && penItem.effects[0].abilityEffectType == CombatAbilityEffect.EffectType.buff
                     && penItem.effects[0].affectedStat == CombatEntity.EffectType.accuracyPercentage
                     && penItem.effects[1].affectedStat == CombatEntity.EffectType.criticalChanceDealing
                     && boxItem != null
                     && boxItem.canActivateSlotItemFunc != null
+                    && resolvingBottleOk
+                    && resolvingRefillOk
                     && noteItem != null
                     && noteItem.IsTag("HANDNOTE_BODY");
 
@@ -340,7 +357,9 @@ namespace PrecisionLab
                     + "µL | wasteCollected=" + wasteCollected + "µL dextroLeft=" + dextroAfterCollect
                     + "µL wasteItem='" + (wasteItem != null ? wasteItem.name : "-")
                     + "' | solution=" + solution + "µL hclLeft=" + hclLeft + "µL waterLeft=" + waterLeft + "µL"
-                    + " | recipes=" + recipesOk + " items=" + itemsOk);
+                    + " | recipes=" + recipesOk + " items=" + itemsOk
+                    + " resolvingBottle=" + resolvingBottleOk
+                    + " resolvingRefill=" + resolvingRefillOk);
 
                 bool tourniquetOk = tourniquetItem != null
                     && tourniquetItem.IsGameItemType("MEDICAL")
@@ -507,6 +526,8 @@ namespace PrecisionLab
                 DestroyQuietly(boxItem);
                 DestroyQuietly(noteItem);
                 DestroyQuietly(tourniquetItem);
+                DestroyQuietly(resolvingBottleItem);
+                DestroyQuietly(resolvingRefillItem);
                 DestroyQuietly(fabricSample);
                 DestroyQuietly(scrapForCondition);
                 DestroyQuietly(ingotForCondition);

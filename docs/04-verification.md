@@ -600,3 +600,11 @@ v1.2.9 增加：提纯机/培养机显式 EnableTag("TURBO_BOOST_ELIGIBLE_TAG")�
 原因：活性 tag 每夜会衰减，但面板文本只在槽位添加/夜间循环末尾用捕获的 MachineryText 更新，从未被玩家触碰的机器显示会一直停在旧字符串。
 修复：给培养机挂 `onOneSecondItemFunc`，每秒用 `FormatCulturePanel` 生成实时文本并仅在变化时 SetText（避免布局抖动）；
 新增自检断言：onOneSecondItemFunc 存在、喂食后显示 60%、活性 0 时显示休眠文本（cultureDisplay=True）。
+## v1.3.8 拆分剂补充装 + 肾上腺素价格 ×0.1（2026-11-02）
+
+玩家指出右旋废料回收循环会持续消耗拆分剂，一盒原料的拆分剂不足；并希望原料与产品价格都缩到 0.1。
+- 新增 **`resolving_agent_refill`（拆分剂补充装（20 毫升））**：密封的非液体 CHEMICAL_SUPPLIES 物品，
+  unitValue 32；激活后在可用库存中生成一瓶满瓶 `resolving_agent_bottle`（20000 µL），放不下时**不消耗补充装**并夜间提示。
+- 退休化学家在「更多药品」解锁后每次来访：原料盒 + 拆分剂补充装各 1 个到前台柜台。
+- 价格整体 ×0.1：原料盒 150、拆分剂补充装 32、拆分剂瓶 12、盐酸肾上腺素原料药 50、肾上腺素注射笔 120（保留奢侈品标签）。
+- 自检：resolvingBottle / resolvingRefill / box 150 / api 50 / pen 120 断言。

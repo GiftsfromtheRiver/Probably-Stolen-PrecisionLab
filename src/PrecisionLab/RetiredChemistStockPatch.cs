@@ -100,7 +100,8 @@ namespace PrecisionLab
                     return;
                 }
                 store.AddDirectSellingItemToTable(ItemIds.SupplyBox);
-                Debug.Log("[PrecisionLab] retired chemist offers an adrenaline precursor kit");
+                store.AddDirectSellingItemToTable(ItemIds.ResolvingRefill);
+                Debug.Log("[PrecisionLab] retired chemist offers an adrenaline precursor kit and a resolving agent refill");
             }
             catch (Exception e)
             {

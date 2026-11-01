@@ -13,6 +13,8 @@ namespace PrecisionLab
         internal const string Pen = "adrenaline_pen";
         internal const string DextroWaste = "dextro_waste_item";
         internal const string Tourniquet = "makeshift_tourniquet";
+        internal const string ResolvingBottle = "resolving_agent_bottle";
+        internal const string ResolvingRefill = "resolving_agent_refill";
     }
 
     internal static class SpriteKeys
@@ -27,6 +29,8 @@ namespace PrecisionLab
         internal const string Pen = "adrenaline_pen";
         internal const string DextroWaste = "dextro_waste";
         internal const string Tourniquet = "makeshift_tourniquet";
+        internal const string ResolvingBottle = "resolving_agent_bottle";
+        internal const string ResolvingRefill = "resolving_agent_refill";
     }
 
     internal static class Tags

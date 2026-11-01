@@ -158,12 +158,16 @@ namespace PrecisionLab
                 bool pen = directory.Has(ItemIds.Pen) || directory.Add(ItemIds.Pen, AdrenalineContent.CreatePen);
                 bool waste = directory.Has(ItemIds.DextroWaste) || directory.Add(ItemIds.DextroWaste, AdrenalineContent.CreateWasteItem);
                 bool tourniquet = directory.Has(ItemIds.Tourniquet) || directory.Add(ItemIds.Tourniquet, TourniquetCraft.CreateTourniquet);
-                if (extractor || purifier || cultivator || supplyBox || api || pen || waste || tourniquet)
+                bool resolvingBottle = directory.Has(ItemIds.ResolvingBottle) || directory.Add(ItemIds.ResolvingBottle, AdrenalineContent.CreateResolvingAgentBottle);
+                bool resolvingRefill = directory.Has(ItemIds.ResolvingRefill) || directory.Add(ItemIds.ResolvingRefill, AdrenalineContent.CreateResolvingAgentRefillPack);
+                if (extractor || purifier || cultivator || supplyBox || api || pen || waste || tourniquet || resolvingBottle || resolvingRefill)
                 {
                     _log.Log("items registered in mod item directory: extractor=" + extractor
                         + " purifier=" + purifier + " cultivator=" + cultivator
                         + " supplyBox=" + supplyBox + " api=" + api + " pen=" + pen
-                        + " waste=" + waste + " tourniquet=" + tourniquet);
+                        + " waste=" + waste + " tourniquet=" + tourniquet
+                        + " resolvingBottle=" + resolvingBottle
+                        + " resolvingRefill=" + resolvingRefill);
                 }
             }
             catch (Exception e)

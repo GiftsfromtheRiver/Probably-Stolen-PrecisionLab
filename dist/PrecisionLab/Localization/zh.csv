@@ -95,7 +95,7 @@ item.catechol_bottle.name,邻苯二酚试剂瓶
 item.hydroxymethyl_bottle.name,N-羟甲基碱溶液瓶
 item.lipobond_bottle.name,脂合剂瓶
 item.reducing_bottle.name,还原剂瓶
-item.resolving_bottle.name,拆分剂瓶
+item.resolving_bottle.name,拆分剂瓶（20 毫升）
 item.base_bottle.name,碱液瓶
 item.acid_bottle.name,酸液瓶
 tooltip.reagent_bottle.desc,满瓶试剂，含 {0} 毫升{1}（正好一份配比量）。
@@ -142,3 +142,8 @@ condition.tourniquet.worn,破旧
 condition.tourniquet.aged,陈旧
 condition.tourniquet.excellent,极佳
 tooltip.tourniquet.condition,标签：{0}（价值 {2}{1}%）
+item.resolving_bottle.flavor,退休化学家私藏的拆分剂补充瓶；他把这些放在柜台后面，专门卖给需要反复拆分/回收右旋废料的人。
+item.resolving_refill.name,拆分剂补充装（20 毫升）
+item.resolving_refill.desc,未拆封的拆分剂补充装，内含一瓶 20 毫升满瓶拆分剂。激活拆开后可得到拆分剂瓶；适合反复回收右旋废料时补充消耗。
+item.resolving_refill.flavor,退休化学家在柜台后面囤了一箱，专门卖给需要反复拆分/回收右旋废料的人。
+mech.resolving_refill.no_space,没有空间拆开拆分剂补充装：补充装不会被消耗，请先腾出空位再试。
