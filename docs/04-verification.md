@@ -608,3 +608,10 @@ v1.2.9 增加：提纯机/培养机显式 EnableTag("TURBO_BOOST_ELIGIBLE_TAG")�
 - 退休化学家在「更多药品」解锁后每次来访：原料盒 + 拆分剂补充装各 1 个到前台柜台。
 - 价格整体 ×0.1：原料盒 150、拆分剂补充装 32、拆分剂瓶 12、盐酸肾上腺素原料药 50、肾上腺素注射笔 120（保留奢侈品标签）。
 - 自检：resolvingBottle / resolvingRefill / box 150 / api 50 / pen 120 断言。
+## v1.3.9 配方改为手册（2026-11-02）
+
+按玩家建议：配方不再用散装纸条，改为游戏原版纸张书籍框架（Mod 的 `Books/*.json` + `PaperBookRegistry`）：
+- 新增 `Books/precision_lab_recipes.json`（notebook_manual 背景，2 页：肾上腺素注射笔 / 简易止血带），
+  书籍 item `precision_lab_recipe_book`（精密实验室配方手册，DOCUMENT/IMPORTANT，激活打开 PaperUI 翻阅）；
+- 解锁「更多药品」/读档/次日重试时发放一册到前台柜台（按 item id 去重）；旧存档里的旧纸条不销毁不移动，只是不再新发；
+- 以后新增药品（如纳洛酮）只需在 JSON 里加一页，不占额外纸条物品位置；自检新增 recipeBook 断言。

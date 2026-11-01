@@ -338,20 +338,8 @@ namespace PrecisionLab
             try
             {
                 AdrenalineContent.EnsureRecipes();
-                GameItem note = AdrenalineContent.CreateRecipeNote();
-                if (note != null)
-                {
-                    NoteDelivery.Placement placement = NoteDelivery.TryPlaceNote(note);
-                    if (placement == NoteDelivery.Placement.None)
-                    {
-                        _log.Warning("adrenaline recipe note could not be placed; will retry on the next day/load");
-                    }
-                    else
-                    {
-                        _log.Log("adrenaline recipe note delivered (placement=" + placement + ")");
-                    }
-                }
                 TourniquetCraft.OnUnlocked();
+                RecipeBook.EnsureDelivered();
             }
             catch (Exception e)
             {
@@ -406,9 +394,7 @@ namespace PrecisionLab
                     return;
                 }
                 AdrenalineContent.EnsureRecipes();
-                AdrenalineContent.RefreshRecipeNotesInStore();
-                AdrenalineContent.EnsureRecipeNote();
-                TourniquetCraft.EnsureRecipeNote();
+                RecipeBook.EnsureDelivered();
             }
             catch (Exception e)
             {

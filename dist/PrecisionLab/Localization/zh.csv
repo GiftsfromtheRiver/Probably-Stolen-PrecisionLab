@@ -147,3 +147,6 @@ item.resolving_refill.name,拆分剂补充装（20 毫升）
 item.resolving_refill.desc,未拆封的拆分剂补充装，内含一瓶 20 毫升满瓶拆分剂。激活拆开后可得到拆分剂瓶；适合反复回收右旋废料时补充消耗。
 item.resolving_refill.flavor,退休化学家在柜台后面囤了一箱，专门卖给需要反复拆分/回收右旋废料的人。
 mech.resolving_refill.no_space,没有空间拆开拆分剂补充装：补充装不会被消耗，请先腾出空位再试。
+item.recipe_book.name,精密实验室配方手册
+item.recipe_book.desc,精密实验室的配方合集：每一页是一份配方（肾上腺素注射笔、简易止血带等），以后新增药品只需增加页数。激活可翻阅。
+mech.recipe_book.delivered,一本《精密实验室配方手册》已放进店内（优先前台柜台）。

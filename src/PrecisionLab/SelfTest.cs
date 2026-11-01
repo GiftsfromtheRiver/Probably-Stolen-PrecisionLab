@@ -33,6 +33,7 @@ namespace PrecisionLab
             GameItem recycleCup = null;
             GameItem resolvingBottleItem = null;
             GameItem resolvingRefillItem = null;
+            GameItem recipeBookItem = null;
             GameItem tourniquetItem = null;
             GameItem fabricSample = null;
             GameItem scrapForCondition = null;
@@ -318,6 +319,7 @@ namespace PrecisionLab
                 boxItem = AdrenalineContent.CreateSupplyBox();
                 resolvingBottleItem = AdrenalineContent.CreateResolvingAgentBottle();
                 resolvingRefillItem = AdrenalineContent.CreateResolvingAgentRefillPack();
+                recipeBookItem = RecipeBook.Spawn();
                 noteItem = AdrenalineContent.CreateRecipeNote();
                 tourniquetItem = ItemSpawner.Spawn(ItemIds.Tourniquet);
                 fabricSample = ItemSpawner.Spawn(TourniquetCraft.FabricId);
@@ -325,6 +327,9 @@ namespace PrecisionLab
                     && LiquidTools.GetLiquidAmount(resolvingBottleItem, CustomLiquids.ResolvingAgent) == 20000
                     && WaterHelper.GetTotalCapacity(resolvingBottleItem) == 20000
                     && resolvingBottleItem.unitValue > 0;
+                bool recipeBookOk = recipeBookItem != null
+                    && recipeBookItem.IsTag("DOCUMENT")
+                    && recipeBookItem.canActivateSlotItemFunc != null;
                 bool resolvingRefillOk = resolvingRefillItem != null
                     && resolvingRefillItem.unitValue >= 30
                     && resolvingRefillItem.canActivateSlotItemFunc != null
@@ -346,6 +351,7 @@ namespace PrecisionLab
                     && boxItem.canActivateSlotItemFunc != null
                     && resolvingBottleOk
                     && resolvingRefillOk
+                    && recipeBookOk
                     && noteItem != null
                     && noteItem.IsTag("HANDNOTE_BODY");
 
@@ -359,7 +365,8 @@ namespace PrecisionLab
                     + "' | solution=" + solution + "µL hclLeft=" + hclLeft + "µL waterLeft=" + waterLeft + "µL"
                     + " | recipes=" + recipesOk + " items=" + itemsOk
                     + " resolvingBottle=" + resolvingBottleOk
-                    + " resolvingRefill=" + resolvingRefillOk);
+                    + " resolvingRefill=" + resolvingRefillOk
+                    + " recipeBook=" + recipeBookOk);
 
                 bool tourniquetOk = tourniquetItem != null
                     && tourniquetItem.IsGameItemType("MEDICAL")
@@ -528,6 +535,7 @@ namespace PrecisionLab
                 DestroyQuietly(tourniquetItem);
                 DestroyQuietly(resolvingBottleItem);
                 DestroyQuietly(resolvingRefillItem);
+                DestroyQuietly(recipeBookItem);
                 DestroyQuietly(fabricSample);
                 DestroyQuietly(scrapForCondition);
                 DestroyQuietly(ingotForCondition);

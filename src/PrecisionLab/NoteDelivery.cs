@@ -70,8 +70,7 @@ namespace PrecisionLab
                 {
                     return;
                 }
-                AdrenalineContent.EnsureRecipeNote();
-                TourniquetCraft.EnsureRecipeNote();
+                RecipeBook.EnsureDelivered();
             }
             catch (Exception e)
             {
