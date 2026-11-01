@@ -498,6 +498,44 @@ namespace PrecisionLab
                     + "µL recipes=" + synRecipesOk + " perks=" + synPerksOk
                     + " box=" + (synaprestBoxItem != null) + " injector=" + (synaprestInjectorItem != null)
                     + " speedOk=" + speedOk);
+                // --- 8f. Tourniquet price/gate + Apothecary unlock/phone/client -------------------
+                Apothecary.EnsurePhoneContact();
+                bool phoneContactOk = PlayerStore.Instance != null && PlayerStore.Instance.PhoneClientDict != null
+                    && PlayerStore.Instance.PhoneClientDict.ContainsKey(Apothecary.PhoneNumber);
+                bool apothecaryDefinitionsOk = NetworkUpgrade.GetDefinition(Apothecary.UpgradeId) != null
+                    && StoreClientListDict.storeClientDict.ContainsKey(Apothecary.ClientId)
+                    && PhoneClientList.DialogFuncs.ContainsKey(Apothecary.DialogFuncId);
+                bool appointmentOk = false;
+                try
+                {
+                    StoreClientManager manager = PlayerStore.Instance.storeClientManager;
+                    if (phoneContactOk && manager != null)
+                    {
+                        StorePhoneClient contact = PlayerStore.Instance.PhoneClientDict[Apothecary.PhoneNumber];
+                        contact.stockType = StoreStation.GetDayCounter();
+                        contact.phoneState = StorePhoneClient.PhoneState.Regular;
+                        int before = manager.clientStack.Count;
+                        Apothecary.TryInjectAppointment(manager);
+                        appointmentOk = manager.clientStack.Count == before + 1
+                            && manager.clientStack.Count > 0
+                            && manager.clientStack[0] != null
+                            && manager.clientStack[0].identifier == Apothecary.ClientId;
+                        manager.clientStack.RemoveAll(delegate (StoreClient c)
+                        {
+                            return c != null && c.identifier == Apothecary.ClientId;
+                        });
+                        contact.stockType = 0;
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.Log(Prefix + "apothecary appointment test warning: " + e.Message);
+                }
+                bool apothecaryOk = phoneContactOk
+                    && apothecaryDefinitionsOk
+                    && appointmentOk;
+                log.Log(Prefix + "apothecary: phone=" + phoneContactOk + " defs=" + apothecaryDefinitionsOk
+                    + " firstInQueue=" + appointmentOk);
 
                 apiItem = AdrenalineContent.CreateApi();
                 penItem = AdrenalineContent.CreatePen();
@@ -556,7 +594,7 @@ namespace PrecisionLab
                 bool tourniquetOk = tourniquetItem != null
                     && tourniquetItem.IsGameItemType("MEDICAL")
                     && tourniquetItem.IsTag("ITEM_MEDICAL_TAG")
-                    && tourniquetItem.unitValue > 0
+                    && tourniquetItem.unitValue == 150
                     && tourniquetItem.mayActivateSlotItemFunc != null
                     && tourniquetItem.canActivateSlotItemFunc != null
                     && tourniquetItem.shape != null
@@ -695,7 +733,7 @@ namespace PrecisionLab
                     + " hydrolysis=" + hydrolysis + " digestion=" + digestion + " cultivator=" + cultivatorOk
                     + " adrenaline=" + adrenalineOk + " adrenalineItems=" + adrenalineItemsOk
                     + " tourniquet=" + tourniquetOk
-                    + " recycle=" + recycleOk + " naloxone=" + naloxoneOk + " pills=" + pillOk + " synaprest=" + synaprestOk);
+                    + " recycle=" + recycleOk + " naloxone=" + naloxoneOk + " pills=" + pillOk + " synaprest=" + synaprestOk + " apothecary=" + apothecaryOk);
             }
             catch (Exception e)
             {

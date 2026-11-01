@@ -134,8 +134,8 @@ item.makeshift_tourniquet.name,简易止血带
 item.makeshift_tourniquet.desc,用韧棉织物和废金属（或金属锭）拼成的应急止血带。医疗物：受伤（伤势未稳定）时使用，会稳定伤势并把伤势等级 -1（相当于止血绷带）。材料决定标签与价值：废金属=破旧(-50%)；金属锭纯度中等以上=极佳(+25%)；低于中等=陈旧(-25%)。
 item.tourniquet_recipe.name,简易止血带配方
 item.tourniquet_recipe.title,简易止血带
-item.tourniquet_recipe.body,"简易止血带——应急医疗配方。\n\n把「韧棉织物」拖到「废金属」或「金属锭」上：会消耗 1 份韧棉织物 + 1 块金属，合成为 1 条简易止血带。\n\n材料决定成品标签与价值：\n- 废金属做的：破旧（价值 -50%）\n- 金属锭做的，纯度中等及以上：极佳（价值 +25%）\n- 金属锭做的，纯度低于中等：陈旧（价值 -25%）\n\n简易止血带是医疗物：受伤（伤势未稳定）时使用，会稳定伤势并把伤势等级 -1，相当于一条止血绷带。\n\n只有解锁「更多药品：肾上腺素」之后才能合成。"
-tooltip.tourniquet.hint,简易止血带：把「韧棉织物」拖到「废金属」或「金属锭」上即可合成（需解锁“更多药品”）。
+item.tourniquet_recipe.body,"简易止血带——应急医疗配方（开局即可使用，不需要解锁）。\n\n把「韧棉织物」拖到「废金属」或「金属锭」上：会消耗 1 份韧棉织物 + 1 块金属，合成为 1 条简易止血带（基础价值 150）。\n\n材料决定成品标签与价值：\n- 废金属做的：破旧（价值 -50%）\n- 金属锭做的，纯度中等及以上：极佳（价值 +25%）\n- 金属锭做的，纯度低于中等：陈旧（价值 -25%）\n\n简易止血带是医疗物：受伤（伤势未稳定）时使用，会稳定伤势并把伤势等级 -1，相当于一条止血绷带。"
+tooltip.tourniquet.hint,"简易止血带：把「韧棉织物」拖到「废金属」或「金属锭」上即可合成（开局即可，无需解锁）。"
 mech.tourniquet.no_space,没有空间放置做好的简易止血带：韧棉织物和金属都没有被消耗，请先腾出 2×2 的空位再试。
 mech.tourniquet.note_delivered,“简易止血带配方”纸条已放进店内库存（可翻页阅读）。
 condition.tourniquet.worn,破旧
@@ -203,3 +203,16 @@ perk.synaprest_use_count.desc,累计使用赛普那斯的次数；达到 3 次�
 mech.synaprest.use,赛普那斯注射器：随机清除了 {0} 项成瘾（原版效果），但奖励机制被抑制（快感缺失 3 天，好运 -15）。
 mech.synaprest.anhedonia_over,赛普那斯的影响消退了：快感缺失结束。
 mech.synaprest.craving,赛普那斯依赖发作：你又对药物产生了渴望（获得药物成瘾）。
+network.PRECISION_APOTHECARY.title,药剂师 / Apothecary
+network.PRECISION_APOTHECARY.desc,解锁药剂师电话。打电话预约后，药剂师会在第二天第一个到店，出售本 mod 新增的药剂与原料盒；预约冷却 3 天。
+client.apothecary.name,药剂师
+dialog.apothecary.generic_1,货都在台面上。我只卖本店实验线的新药和原料盒，挑好了叫我。
+phone.apothecary.regular,我是药剂师。需要我上门吗？我卖的东西比退休化学家更全，但只接受预约。
+phone.apothecary.book,预约上门（冷却 3 天）
+phone.apothecary.cancel_choice,改天再说
+phone.apothecary.confirmed,好，明天开门时我会第一个到店。准备好信用点。
+phone.apothecary.cancel,行，想好了再打给我。
+phone.apothecary.cooldown,最近不方便出诊，{0} 天后才能再预约。
+mech.apothecary.unlocked,新联系人「药剂师」已加入电话簿：打电话预约，第二天第一个到店（冷却 3 天）。
+mech.apothecary.booked,药剂师预约成功：明天开门时第一个到店。
+mech.apothecary.arrived,药剂师今天第一个到店，正在柜台等你。

@@ -38,7 +38,7 @@ namespace PrecisionLab
             item.shortDescription = Loc.Get(
                 "item.makeshift_tourniquet.desc",
                 "A strip of tough fabric with a scrap-metal buckle. Medical item: use it while wounded to stabilise the wound and lower the wound level by one (like a hemostatic bandage).");
-            item.unitValue = 24L;
+            item.unitValue = 150L;
             item.SetGameItemType("MEDICAL");
             item.EnableTag("ITEM_MEDICAL_TAG");
             item.EnableProficiency("MEDICAL_PROFICIENCY");
@@ -142,7 +142,6 @@ namespace PrecisionLab
                     && target != null
                     && source.identifier == FabricId
                     && (target.identifier == ScrapId || target.identifier == IngotId)
-                    && IsUnlocked()
                     && GeneralHelper.IsItemOwned(source)
                     && GeneralHelper.IsItemOwned(target)
                     && (target.parentInventory != null || source.parentInventory != null);
@@ -344,7 +343,7 @@ namespace PrecisionLab
             {
                 GameItem note = PreBuiltItemHelper.CreateHandnote(
                     Loc.Get("item.tourniquet_recipe.body",
-                        "MAKESHIFT TOURNIQUET - emergency medical recipe.\n\nDrag a piece of tough cotton fabric (kotton_fabric) onto a piece of scrap metal (scrap_metal): this consumes 1 fabric + 1 scrap metal and crafts 1 makeshift tourniquet.\n\nThe tourniquet is a medical item: use it while wounded to stabilise the wound and lower the wound level by one (like a hemostatic bandage).\n\nThis recipe only works after unlocking More Medicines: Adrenaline."),
+                        "MAKESHIFT TOURNIQUET - emergency medical recipe.\n\nDrag a piece of tough cotton fabric (kotton_fabric) onto a piece of scrap metal (scrap_metal): this consumes 1 fabric + 1 scrap metal and crafts 1 makeshift tourniquet.\n\nThe tourniquet is a medical item: use it while wounded to stabilise the wound and lower the wound level by one (like a hemostatic bandage).\n\nThis recipe is available from the start (no medical unlock required)."),
                     Loc.Get("item.tourniquet_recipe.title", "Makeshift Tourniquet"),
                     "",
                     1);
@@ -367,12 +366,15 @@ namespace PrecisionLab
         {
             try
             {
-                if (!IsUnlocked() || !PlayerStore.HasInstance || PlayerStore.Instance == null)
+                if (!PlayerStore.HasInstance || PlayerStore.Instance == null)
                 {
                     return;
                 }
                 AttachToStoreItems();
-                EnsureRecipeNote();
+                if (IsUnlocked())
+                {
+                    EnsureRecipeNote();
+                }
             }
             catch (Exception e)
             {

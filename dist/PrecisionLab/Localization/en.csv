@@ -135,8 +135,8 @@ item.makeshift_tourniquet.name,Makeshift Tourniquet
 item.makeshift_tourniquet.desc,A strip of tough cotton fabric with a scrap-metal (or metal-ingot) buckle. Medical item: use it while wounded to stabilise the wound and lower the wound level by one (like a hemostatic bandage). Material decides condition/value: scrap=Worn(-50%); ingot fair purity or better=Excellent(+25%); below fair=Aged(-25%).
 item.tourniquet_recipe.name,Makeshift Tourniquet Recipe
 item.tourniquet_recipe.title,Makeshift Tourniquet
-item.tourniquet_recipe.body,"MAKESHIFT TOURNIQUET - emergency medical recipe.\n\nDrag a piece of tough cotton fabric (kotton_fabric) onto a piece of scrap metal (scrap_metal) OR a metal ingot (metal_ingot): this consumes 1 fabric + 1 metal and crafts 1 makeshift tourniquet.\n\nThe buckle material decides the condition label and value:\n- scrap metal: Worn (value -50%)\n- metal ingot, fair purity or better: Excellent (value +25%)\n- metal ingot, below fair purity: Aged (value -25%)\n\nThe tourniquet is a medical item: use it while wounded to stabilise the wound and lower the wound level by one (like a hemostatic bandage).\n\nThis recipe only works after unlocking More Medicines: Adrenaline."
-tooltip.tourniquet.hint,Makeshift tourniquet: drag tough cotton fabric onto scrap metal or a metal ingot (requires the More Medicines unlock).
+item.tourniquet_recipe.body,"Makeshift Tourniquet - emergency medical recipe (available from the start, no unlock required).\n\nDrag tough cotton fabric (kotton_fabric) onto scrap metal (scrap_metal) or a metal ingot: consumes 1 fabric + 1 metal and crafts 1 makeshift tourniquet (base value 150).\n\nMaterial condition: scrap metal -50%, metal ingot fair or better +25%, metal ingot below fair -25%.\n\nUse while wounded to stabilise the wound and lower the wound level by one."
+tooltip.tourniquet.hint,"Makeshift tourniquet: drag tough cotton fabric onto scrap metal or a metal ingot (available from the start)."
 mech.tourniquet.no_space,No room to place the crafted makeshift tourniquet: the fabric and metal were NOT consumed. Free up a 2x2 spot and try again.
 mech.tourniquet.note_delivered,A "Makeshift Tourniquet Recipe" note was added to your store inventory.
 condition.tourniquet.worn,Worn
@@ -204,3 +204,16 @@ perk.synaprest_use_count.desc,Total Synaprest uses; reaching 3 forms a dependenc
 mech.synaprest.use,Synaprest injector: cleared {0} random addiction(s) (vanilla behaviour), but the reward system is suppressed (anhedonia for 3 days, Luck -15).
 mech.synaprest.anhedonia_over,The Synaprest effect fades: anhedonia ends.
 mech.synaprest.craving,Synaprest dependency kicks in: the craving returns (gained narcotic addiction).
+network.PRECISION_APOTHECARY.title,Apothecary
+network.PRECISION_APOTHECARY.desc,Unlocks the Apothecary phone contact. Call to book an appointment: the Apothecary arrives first thing next day and sells this mod's new medicines and precursor kits. 3-day booking cooldown.
+client.apothecary.name,Apothecary
+dialog.apothecary.generic_1,Everything is on the counter. I only sell this shop's experimental medicines and precursor kits.
+phone.apothecary.regular,This is the Apothecary. Do you need a house call? I carry more than the retired chemist, but by appointment only.
+phone.apothecary.book,Book a visit (3-day cooldown)
+phone.apothecary.cancel_choice,Maybe later
+phone.apothecary.confirmed,Fine. I will be the first one at your door tomorrow morning. Have the credits ready.
+phone.apothecary.cancel,Sure, call me when you make up your mind.
+phone.apothecary.cooldown,I cannot make house calls right now. Try again in {0} day(s).
+mech.apothecary.unlocked,New phone contact "Apothecary": call to book, first customer next day (3-day cooldown).
+mech.apothecary.booked,Apothecary booked: arriving first thing tomorrow.
+mech.apothecary.arrived,The Apothecary arrived first today and is waiting at the counter.

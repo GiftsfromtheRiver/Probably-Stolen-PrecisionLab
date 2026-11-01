@@ -638,3 +638,11 @@ v1.2.9 增加：提纯机/培养机显式 EnableTag("TURBO_BOOST_ELIGIBLE_TAG")�
 重新获得药物成瘾）。mod perk 通过 StartingPerkList.RegisterModPerk 注册；GetLuck Harmony postfix。
 所有链每 tick 转化率由 2% 提升至 20%（最后 100 µL 收尾）。
 自检新增 synaprest 链、配方、perk、速度断言与 synaprest 标志。
+## v1.7.0 药剂师 + 止血带调整（2026-11-02）
+
+止血带基础价值 24→150，移除「更多药品」合成门槛（tooltip/书页/配方纸条文案同步）。
+新增 NetworkUpgrade `PRECISION_APOTHECARY`（药剂师，1800，Referral）+ 电话联系人 7742：
+解锁后电话簿出现联系人，通话可预约；UseService 冷却 3 天，预约日期写入 contact.stockType；
+Harmony postfix StoreClientManager.GenerateClient 在预约日把药剂师客户端插入 clientStack[0]（第一位），
+出售本 mod 全部药剂/原料盒；客户端工厂/通话对话函数/升级定义均在 ModEntry.Init 注册，
+旧存档读过 OnGameLoadedLate 时 EnsureUnlockedState 补联系人。自检新增 apothecary 标志。
