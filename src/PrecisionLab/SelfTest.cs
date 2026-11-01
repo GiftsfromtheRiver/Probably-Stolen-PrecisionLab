@@ -221,13 +221,26 @@ namespace PrecisionLab
                 int pressed = ItemFactory.PressNutrientFruit(cultivator, nutrientSlot);
                 int activityAfterFeed = ItemFactory.GetCultivatorActivity(cultivator);
                 bool fruitConsumed = nutrientSlot != null && nutrientSlot.childItem == null;
+                string cultureAt60 = ItemFactory.FormatCulturePanel(cultivator);
+                cultivator.ModifyTag(Tags.CultivatorActivity, delegate (TagState state)
+                {
+                    state.Enable().SetInt(0);
+                });
+                string cultureDormant = ItemFactory.FormatCulturePanel(cultivator);
+                cultivator.ModifyTag(Tags.CultivatorActivity, delegate (TagState state)
+                {
+                    state.Enable().SetInt(100);
+                });
+                bool cultureDisplayOk = cultivator.onOneSecondItemFunc != null
+                    && cultureAt60 != null && cultureAt60.Contains("60%")
+                    && cultureDormant == Loc.Get("tooltip.cultivator.dormant_panel", "Dormant · needs nutrifruit");
                 log.Log(Prefix + "cultivator machine: window=" + (cultivator.contentWindow != null)
                     + " power=" + MachineryHelper.GetMachinePowerUsage(cultivator)
                     + " activity=" + cultivatorActivity + "% manual=" + cultivatorManualOk
                     + " manualName='" + (cultivatorManual != null ? cultivatorManual.name : "-") + "'"
                     + " nutrientSlot=" + (nutrientSlot != null) + " fruitAccepted=" + fruitAccepted
                     + " pressed=+" + pressed + "% activityAfterFeed=" + activityAfterFeed + "%"
-                    + " fruitConsumed=" + fruitConsumed);
+                    + " fruitConsumed=" + fruitConsumed + " cultureDisplay=" + cultureDisplayOk);
 
                 // --- 7. Adrenaline production chain (six reaction steps) ---------------
                 adrenalineCup = ItemFactory.CreateExtractor();
@@ -405,6 +418,7 @@ namespace PrecisionLab
                     && pressed == 60
                     && activityAfterFeed == 60
                     && fruitConsumed
+                    && cultureDisplayOk
                     && LiquidTools.GetCultivatorThroughput(0, 100) == LiquidTools.CultivatorBaseThroughput;
                 bool adrenalineOk = amination == 3000
                     && catecholLeft == 0

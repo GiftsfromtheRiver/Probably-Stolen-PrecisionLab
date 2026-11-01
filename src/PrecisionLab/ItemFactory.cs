@@ -557,6 +557,16 @@ namespace PrecisionLab
                 RunCultivatorCycle(self, powerSlot, moduleGrid, containerSlot, nutrientSlot, cultureText);
             };
 
+            // Keep the culture readout live: activity changes on the nightly cycle (and can go
+            // dormant) while the player never touches the machine. A once-per-second refresh with
+            // a cheap string comparison keeps the panel in sync even without slot interactions.
+            machine.onOneSecondItemFunc = (Action<GameItem, GameInventory, SlotMarker>)Delegate.Combine(
+                machine.onOneSecondItemFunc,
+                (Action<GameItem, GameInventory, SlotMarker>)delegate (GameItem self, GameInventory inventory, SlotMarker slotMarker)
+                {
+                    UpdateCulturePanel(cultureText, self);
+                });
+
             UpdateCulturePanel(cultureText, machine);
             ModHelper.SetSource(machine, Loc.ModId, ModEntry.ModDisplayName);
             return machine;
@@ -594,6 +604,23 @@ namespace PrecisionLab
             return Mathf.Clamp(machine.GetTagReadonly(Tags.CultivatorActivity).GetInt(), 0, 100);
         }
 
+        /// <summary>Formats the culture panel text from the live machine state.</summary>
+        internal static string FormatCulturePanel(GameItem machine)
+        {
+            int activity = GetCultivatorActivity(machine);
+            if (activity <= 0)
+            {
+                return Loc.Get("tooltip.cultivator.dormant_panel", "Dormant · needs nutrifruit");
+            }
+            int performance = MachineryHelper.GetCurrentPerformanceBonus(machine);
+            int throughput = LiquidTools.GetCultivatorThroughput(performance, activity);
+            return string.Format(
+                System.Globalization.CultureInfo.InvariantCulture,
+                "{0}% · {1} mL/night",
+                activity,
+                LiquidTools.FormatUl(throughput));
+        }
+
         /// <summary>Updates the culture panel: activity (or dormant state) + sugar throughput per night.</summary>
         internal static void UpdateCulturePanel(MachineryText text, GameItem machine)
         {
@@ -603,19 +630,11 @@ namespace PrecisionLab
             }
             try
             {
-                int activity = GetCultivatorActivity(machine);
-                if (activity <= 0)
+                string value = FormatCulturePanel(machine);
+                if (text.GetText() != value)
                 {
-                    text.SetText(Loc.Get("tooltip.cultivator.dormant_panel", "Dormant · needs nutrifruit"));
-                    return;
+                    text.SetText(value);
                 }
-                int performance = MachineryHelper.GetCurrentPerformanceBonus(machine);
-                int throughput = LiquidTools.GetCultivatorThroughput(performance, activity);
-                text.SetText(string.Format(
-                    System.Globalization.CultureInfo.InvariantCulture,
-                    "{0}% · {1} mL/night",
-                    activity,
-                    LiquidTools.FormatUl(throughput)));
             }
             catch (Exception e)
             {
