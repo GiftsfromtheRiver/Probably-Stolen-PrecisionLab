@@ -7,8 +7,9 @@
 - 微生物培养机：营养果养菌、糖→有机废物、低糖休眠、活性实时显示
 - 淀粉水解：淀粉 + 酸 40–60°C → 糖（酸为催化剂）
 - 肾上腺素注射笔、纳洛酮（纳洛通）、避孕药、山奈德片、赛普那斯注射器生产线
-- 简易止血带：韧棉织物 + 废金属/金属锭拖拽合成，开局即可用，基础价值 150
+- 简易止血带：韧棉织物 + 废金属/金属锭拖拽合成，开局可用，基础价值 150
 - 药剂师：黑网解锁（1800），电话预约，次日第一个到店，冷却 3 天；出售随机原料盒、散装试剂瓶和随机品质成品药
+- 拆分剂补充装：**2 × 20 毫升**，64 信用点，一次拆出 2 瓶满瓶拆分剂
 - 《精密实验室配方手册》：游戏内书籍，6 页配方
 
 [b]原料盒[/b]
@@ -24,6 +25,6 @@
 Steam 创意工坊订阅后，在游戏内 Mods 菜单启用并信任；需要游戏版本 0.46D。
 
 [b]English[/b]
-A local content mod for Probably Stolen 0.46D: precision extractor, purifier, cultivator, starch hydrolysis, adrenaline/naloxone/contraceptive/Sannai/Synaprest production lines, makeshift tourniquet, a phone-booked Apothecary (3-day cooldown, first customer next day, random kits + loose reagent bottles + random-quality medicines), and a 6-page in-game recipe book. Kits use custom 3×2 transparent reagent-rack art. Reactions run at 20% per tick.
+A local content mod for Probably Stolen 0.46D: precision extractor, purifier, cultivator, starch hydrolysis, adrenaline/naloxone/contraceptive/Sannai/Synaprest production lines, makeshift tourniquet, a phone-booked Apothecary (3-day cooldown, first customer next day, random kits + loose reagent bottles + random-quality medicines), 2-vial resolving-agent refill packs, and a 6-page in-game recipe book. Kits use custom 3×2 transparent reagent-rack art. Reactions run at 20% per tick.
 
-Version 1.8.9 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab
+Version 1.9.0 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab

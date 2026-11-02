@@ -118,23 +118,23 @@ namespace PrecisionLab
         }
 
         /// <summary>
-        /// Sealed 20 mL resolving-agent refill pack sold by the retired chemist. Sold as a normal
-        /// (non-liquid) supply item so its counter value is stable; activating it unpacks one full
-        /// resolving-agent bottle, like vanilla chemical supply boxes.
+        /// Sealed resolving-agent refill pack (2 x 20 mL) sold by the retired chemist. Sold as a
+        /// normal (non-liquid) supply item so its counter value is stable; activating it unpacks
+        /// two full resolving-agent bottles, like vanilla chemical supply boxes.
         /// </summary>
         internal static GameItem CreateResolvingAgentRefillPack()
         {
             GameItem item = ItemDirectory.CreateEmptyItem();
-            item.name = Loc.Get("item.resolving_refill.name", "Resolving Agent Refill Pack (20 mL)");
+            item.name = Loc.Get("item.resolving_refill.name", "Resolving Agent Refill Pack (2 × 20 mL)");
             item.shortDescription = Loc.Get(
                 "item.resolving_refill.desc",
-                "A sealed refill pack containing one full 20 mL vial of chiral resolving agent. Activate it to unpack the vial; useful when recycling dextro waste back into racemic adrenaline.");
+                "A sealed refill pack containing TWO full 20 mL vials of chiral resolving agent. Activate it to unpack both vials; useful when recycling dextro waste back into racemic adrenaline.");
             item.flavorText = Loc.Get(
                 "item.resolving_refill.flavor",
                 "The retired chemist keeps a crate of these behind the counter for people who keep recycling their dextro waste.");
             item.SetSpriteAndShape("Items/items_material", "chemical2");
             item.SetGameItemType("CHEMICAL_SUPPLIES");
-            item.unitValue = 32L;
+            item.unitValue = 64L;
             item.canActivateSlotItemFunc = delegate (GameItem self, GameInventory inventory, SlotMarker slot)
             {
                 return GeneralHelper.IsItemOwned(self);
@@ -147,67 +147,42 @@ namespace PrecisionLab
             {
                 try
                 {
-                    GameItem bottle = CreateResolvingAgentBottle();
-                    if (bottle == null)
+                    // A refill pack contains TWO full 20 mL vials. Place them one by one; only
+                    // consume the pack after both are safely placed, otherwise destroy the ones
+                    // already placed and keep the pack so nothing is lost.
+                    GameItem[] bottles = { CreateResolvingAgentBottle(), CreateResolvingAgentBottle() };
+                    for (int i = 0; i < bottles.Length; i++)
                     {
-                        Debug.LogWarning("[PrecisionLab] resolving agent refill: bottle factory returned null; pack kept");
-                        return;
-                    }
-                    GeneralHelper.SetItemOwned(bottle, true);
-                    bool placed = false;
-                    // 1) the inventory the pack was activated in, 2) every other store inventory,
-                    // 3) the game's own store-wide fallback. Only consume the pack once the
-                    // bottle is really placed - otherwise keep the pack so nothing is lost.
-                    if (inventory != null && GraphUtils.TryAcceptAll(inventory, bottle) == 0)
-                    {
-                        placed = true;
-                    }
-                    EmporiumEntry entry = EmporiumEntry.Instance;
-                    if (!placed && entry != null)
-                    {
-                        GameInventory[] candidates =
+                        if (bottles[i] == null)
                         {
-                            entry.frontInvinvElement,
-                            entry.backInvinvElement,
-                            entry.invElement,
-                            entry.showcaseElement
-                        };
-                        for (int i = 0; i < candidates.Length; i++)
+                            DestroyBottles(bottles, i);
+                            Debug.LogWarning("[PrecisionLab] resolving agent refill: bottle factory returned null; pack kept");
+                            return;
+                        }
+                        GeneralHelper.SetItemOwned(bottles[i], true);
+                        if (!TryPlaceResolvingBottle(inventory, bottles[i]))
                         {
-                            if (candidates[i] == null)
+                            DestroyBottles(bottles, i + 1);
+                            Debug.LogWarning("[PrecisionLab] resolving agent refill: no room for both bottles; pack kept");
+                            try
                             {
-                                continue;
+                                PlayerStore.Instance.AddNightLog(
+                                    Loc.Get("mech.resolving_refill.no_space", "No room to unpack both resolving agent vials; the refill pack was not used."),
+                                    "9c3738");
                             }
-                            if (GraphUtils.TryAcceptAll(candidates[i], bottle) == 0)
+                            catch (Exception)
                             {
-                                placed = true;
-                                break;
+                                // Cosmetic only.
                             }
+                            return;
                         }
                     }
-                    if (!placed)
+                    for (int i = 0; i < bottles.Length; i++)
                     {
-                        GraphUtils.EmporiumTryAdd(inventory, bottle);
-                        placed = bottle.parentInventory != null;
+                        AudioHelper.InitPlasticContainer(bottles[i]);
                     }
-                    if (!placed)
-                    {
-                        Debug.LogWarning("[PrecisionLab] resolving agent refill: no room for the bottle; pack kept");
-                        try
-                        {
-                            PlayerStore.Instance.AddNightLog(
-                                Loc.Get("mech.resolving_refill.no_space", "No room to unpack the resolving agent refill; the pack was not used."),
-                                "9c3738");
-                        }
-                        catch (Exception)
-                        {
-                            // Cosmetic only.
-                        }
-                        return;
-                    }
-                    AudioHelper.InitPlasticContainer(bottle);
                     self.Destroy();
-                    Debug.Log("[PrecisionLab] resolving agent refill unpacked");
+                    Debug.Log("[PrecisionLab] resolving agent refill unpacked (2 vials)");
                 }
                 catch (Exception e)
                 {
@@ -217,6 +192,54 @@ namespace PrecisionLab
             AudioHelper.InitPlasticContainer(item);
             ModHelper.SetSource(item, Loc.ModId, ModEntry.ModDisplayName);
             return item;
+        }
+
+        private static bool TryPlaceResolvingBottle(GameInventory inventory, GameItem bottle)
+        {
+            // 1) the inventory the pack was activated in, 2) every other store inventory,
+            // 3) the game's own store-wide fallback.
+            if (inventory != null && GraphUtils.TryAcceptAll(inventory, bottle) == 0)
+            {
+                return true;
+            }
+            EmporiumEntry entry = EmporiumEntry.Instance;
+            if (entry != null)
+            {
+                GameInventory[] candidates =
+                {
+                    entry.frontInvinvElement,
+                    entry.backInvinvElement,
+                    entry.invElement,
+                    entry.showcaseElement
+                };
+                for (int i = 0; i < candidates.Length; i++)
+                {
+                    if (candidates[i] != null && GraphUtils.TryAcceptAll(candidates[i], bottle) == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            GraphUtils.EmporiumTryAdd(inventory, bottle);
+            return bottle.parentInventory != null;
+        }
+
+        private static void DestroyBottles(GameItem[] bottles, int count)
+        {
+            for (int i = 0; i < count && i < bottles.Length; i++)
+            {
+                try
+                {
+                    if (bottles[i] != null && bottles[i].parentInventory != null)
+                    {
+                        bottles[i].Destroy();
+                    }
+                }
+                catch (Exception)
+                {
+                    // Best-effort rollback.
+                }
+            }
         }
         /// <summary>Standalone 20 mL resolving-agent refill sold by the retired chemist.</summary>
         internal static GameItem CreateResolvingAgentBottle()

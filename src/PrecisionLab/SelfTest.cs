@@ -603,7 +603,7 @@ namespace PrecisionLab
                     && recipeBookItem.IsTag("DOCUMENT")
                     && recipeBookItem.canActivateSlotItemFunc != null;
                 bool resolvingRefillOk = resolvingRefillItem != null
-                    && resolvingRefillItem.unitValue >= 30
+                    && resolvingRefillItem.unitValue >= 60
                     && resolvingRefillItem.canActivateSlotItemFunc != null
                     && resolvingRefillItem.mayActivateSlotItemFunc != null;
                 bool itemsOk = apiItem != null

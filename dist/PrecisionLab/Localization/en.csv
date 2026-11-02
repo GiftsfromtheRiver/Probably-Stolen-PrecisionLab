@@ -144,10 +144,10 @@ condition.tourniquet.aged,Aged
 condition.tourniquet.excellent,Excellent
 tooltip.tourniquet.condition,Condition: {0} ({2}{1}% value)
 item.resolving_bottle.flavor,A resolving-agent refill kept behind the retired chemist counter for people who keep recycling their dextro waste.
-item.resolving_refill.name,Resolving Agent Refill Pack (20 mL)
-item.resolving_refill.desc,A sealed refill pack containing one full 20 mL vial of chiral resolving agent. Activate it to unpack the vial; useful when recycling dextro waste back into racemic adrenaline.
+item.resolving_refill.name,Resolving Agent Refill Pack (2 × 20 mL)
+item.resolving_refill.desc,A sealed refill pack containing two full 20 mL vials of chiral resolving agent. Activate it to unpack both vials; useful when recycling dextro waste back into racemic adrenaline.
 item.resolving_refill.flavor,The retired chemist keeps a crate of these behind the counter for people who keep recycling their dextro waste.
-mech.resolving_refill.no_space,No room to unpack the resolving agent refill; the pack was not used.
+mech.resolving_refill.no_space,No room to unpack both resolving agent vials; the refill pack was not used and nothing was lost.
 item.recipe_book.name,Precision Lab Recipe Book
 item.recipe_book.desc,A collection of Precision Lab recipes: one page per recipe (adrenaline pen, makeshift tourniquet, ...). Future medicines only add pages. Activate to read.
 mech.recipe_book.delivered,A Precision Lab recipe book was added to your store (front counter first).
