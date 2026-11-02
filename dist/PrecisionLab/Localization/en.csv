@@ -207,7 +207,7 @@ mech.synaprest.craving,Synaprest dependency kicks in: the craving returns (gaine
 network.PRECISION_APOTHECARY.title,Apothecary
 network.PRECISION_APOTHECARY.desc,Unlocks the Apothecary phone contact. Call to book an appointment: the Apothecary arrives first thing next day and sells this mod's new medicines and precursor kits. 3-day booking cooldown.
 client.apothecary.name,Apothecary
-dialog.apothecary.generic_1,Everything is on the counter. I only sell this shop's experimental medicines and precursor kits.
+dialog.apothecary.generic_1,Everything is on the counter: precursor kits, loose reagent bottles, and a few finished medicines of varying quality. Take your pick.
 phone.apothecary.regular,This is the Apothecary. Do you need a house call? I carry more than the retired chemist, but by appointment only.
 phone.apothecary.book,Book a visit (3-day cooldown)
 phone.apothecary.cancel_choice,Maybe later
@@ -215,5 +215,9 @@ phone.apothecary.confirmed,Fine. I will be the first one at your door tomorrow m
 phone.apothecary.cancel,Sure, call me when you make up your mind.
 phone.apothecary.cooldown,I cannot make house calls right now. Try again in {0} day(s).
 mech.apothecary.unlocked,New phone contact "Apothecary": call to book, first customer next day (3-day cooldown).
-mech.apothecary.booked,Apothecary booked: arriving first thing tomorrow.
+mech.apothecary.booked,Apothecary booked: first through the door today.
 mech.apothecary.arrived,The Apothecary arrived first today and is waiting at the counter.
+phone.apothecary.book_line,I want to book a visit.
+phone.apothecary.cancel_line,Wrong number.
+mech.apothecary.ready,The Apothecary is ready with more medicines.
+item.apothecary.loose_bottle.name,{0} · 20 mL

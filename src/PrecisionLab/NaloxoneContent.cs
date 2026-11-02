@@ -65,7 +65,8 @@ namespace PrecisionLab
         internal static GameItem CreateSupplyBox()
         {
             GameItem item = ItemDirectory.CreateEmptyItem();
-            ModSprites.Apply(item, SpriteKeys.SupplyBox, "Items/items_material", "chemical2");
+            ModSprites.Apply(item, SpriteKeys.ReagentKitNaloxone, "Items/items_material", "chemical2");
+            ReagentKitVisuals.ForceKitShape(item);
             item.name = Loc.Get("item.naloxone_box.name", "Naloxone Precursor Kit");
             item.flavorText = Loc.Get(
                 "item.naloxone_box.flavor",
@@ -74,6 +75,7 @@ namespace PrecisionLab
                 "item.naloxone_box.desc",
                 "Activate to unpack one naloxone batch: thebaine, acid, reducing agent, lipobond agent, N-hydroxymethyl base solution and alcohol (20 mL each). Thebaine is the only ingredient you cannot get anywhere else.");
             item.SetGameItemType("CHEMICAL_SUPPLIES");
+            ReagentKitVisuals.MakeNonContraband(item);
             item.unitValue = 120L;
             item.canActivateSlotItemFunc = delegate (GameItem self, GameInventory inventory, SlotMarker slot)
             {

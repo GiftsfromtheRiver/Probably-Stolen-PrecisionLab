@@ -206,7 +206,7 @@ mech.synaprest.craving,赛普那斯依赖发作：你又对药物产生了渴望
 network.PRECISION_APOTHECARY.title,药剂师 / Apothecary
 network.PRECISION_APOTHECARY.desc,解锁药剂师电话。打电话预约后，药剂师会在第二天第一个到店，出售本 mod 新增的药剂与原料盒；预约冷却 3 天。
 client.apothecary.name,药剂师
-dialog.apothecary.generic_1,货都在台面上。我只卖本店实验线的新药和原料盒，挑好了叫我。
+dialog.apothecary.generic_1,货都在台面上：原料盒、散装试剂瓶，还有几支成色不一的成品药。挑好了叫我。
 phone.apothecary.regular,我是药剂师。需要我上门吗？我卖的东西比退休化学家更全，但只接受预约。
 phone.apothecary.book,预约上门（冷却 3 天）
 phone.apothecary.cancel_choice,改天再说
@@ -214,5 +214,9 @@ phone.apothecary.confirmed,好，明天开门时我会第一个到店。准备�
 phone.apothecary.cancel,行，想好了再打给我。
 phone.apothecary.cooldown,最近不方便出诊，{0} 天后才能再预约。
 mech.apothecary.unlocked,新联系人「药剂师」已加入电话簿：打电话预约，第二天第一个到店（冷却 3 天）。
-mech.apothecary.booked,药剂师预约成功：明天开门时第一个到店。
+mech.apothecary.booked,药剂师预约成功：今天开门时第一个到店。
 mech.apothecary.arrived,药剂师今天第一个到店，正在柜台等你。
+phone.apothecary.book_line,我要预约。
+phone.apothecary.cancel_line,打错了。
+mech.apothecary.ready,药剂师已准备好更多药品。
+item.apothecary.loose_bottle.name,{0} · 20 毫升

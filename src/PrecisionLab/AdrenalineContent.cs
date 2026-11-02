@@ -37,8 +37,10 @@ namespace PrecisionLab
             item.shortDescription = Loc.Get(
                 "item.adrenaline_box.desc",
                 "Activate to unpack: catechol, N-hydroxymethyl base solution, lipobond agent, reducing agent, chiral resolving agent, base and acid. All intermediates are produced by the recipes themselves — only the starting reagents are supplied.");
-            ModSprites.Apply(item, SpriteKeys.SupplyBox, "Items/items_material", "chemical2");
+            ModSprites.Apply(item, SpriteKeys.ReagentKitAdrenaline, "Items/items_material", "chemical2");
+            ReagentKitVisuals.ForceKitShape(item);
             item.SetGameItemType("CHEMICAL_SUPPLIES");
+            ReagentKitVisuals.MakeNonContraband(item);
             item.unitValue = 150L;
             item.canActivateSlotItemFunc = (GameItem s, GameInventory _, SlotMarker _) => GeneralHelper.IsItemOwned(s);
             item.mayActivateSlotItemFunc = (GameItem s, GameInventory _, SlotMarker _) => GeneralHelper.IsItemOwned(s);

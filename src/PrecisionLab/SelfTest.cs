@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PrecisionLab
@@ -499,6 +500,34 @@ namespace PrecisionLab
                     + " box=" + (synaprestBoxItem != null) + " injector=" + (synaprestInjectorItem != null)
                     + " speedOk=" + speedOk);
                 // --- 8f. Tourniquet price/gate + Apothecary unlock/phone/client -------------------
+                // IMPORTANT: the selftest runs on every boot against the real player store. Snapshot
+                // everything it touches and restore it afterwards, otherwise a pending apothecary
+                // appointment gets wiped (and a fake arrival night-log line is left behind).
+                StorePhoneClient existingContact = null;
+                bool contactExistedBefore = false;
+                int savedStockType = 0;
+                int savedCooldown = 0;
+                int savedAmountSpent = 0;
+                bool savedDialedBefore = false;
+                StorePhoneClient.PhoneState savedPhoneState = StorePhoneClient.PhoneState.Regular;
+                List<string> savedNightLogs = null;
+                if (PlayerStore.Instance != null && PlayerStore.Instance.PhoneClientDict != null)
+                {
+                    contactExistedBefore = PlayerStore.Instance.PhoneClientDict.TryGetValue(Apothecary.PhoneNumber, out existingContact)
+                        && existingContact != null;
+                    if (contactExistedBefore)
+                    {
+                        savedStockType = existingContact.stockType;
+                        savedPhoneState = existingContact.phoneState;
+                        savedCooldown = existingContact.currentCooldown;
+                        savedAmountSpent = existingContact.amountSpent;
+                        savedDialedBefore = existingContact.dialedBefore;
+                    }
+                }
+                if (PlayerStore.Instance != null && PlayerStore.Instance.nightLogs != null)
+                {
+                    savedNightLogs = new List<string>(PlayerStore.Instance.nightLogs);
+                }
                 Apothecary.EnsurePhoneContact();
                 bool phoneContactOk = PlayerStore.Instance != null && PlayerStore.Instance.PhoneClientDict != null
                     && PlayerStore.Instance.PhoneClientDict.ContainsKey(Apothecary.PhoneNumber);
@@ -524,12 +553,32 @@ namespace PrecisionLab
                         {
                             return c != null && c.identifier == Apothecary.ClientId;
                         });
-                        contact.stockType = 0;
                     }
                 }
                 catch (Exception e)
                 {
                     log.Log(Prefix + "apothecary appointment test warning: " + e.Message);
+                }
+                finally
+                {
+                    // Restore the real phone contact / appointment and the real night log list.
+                    if (contactExistedBefore && existingContact != null)
+                    {
+                        existingContact.stockType = savedStockType;
+                        existingContact.phoneState = savedPhoneState;
+                        existingContact.currentCooldown = savedCooldown;
+                        existingContact.amountSpent = savedAmountSpent;
+                        existingContact.dialedBefore = savedDialedBefore;
+                    }
+                    else if (PlayerStore.Instance != null && PlayerStore.Instance.PhoneClientDict != null)
+                    {
+                        PlayerStore.Instance.PhoneClientDict.Remove(Apothecary.PhoneNumber);
+                    }
+                    if (savedNightLogs != null && PlayerStore.Instance != null && PlayerStore.Instance.nightLogs != null)
+                    {
+                        PlayerStore.Instance.nightLogs.Clear();
+                        PlayerStore.Instance.nightLogs.AddRange(savedNightLogs);
+                    }
                 }
                 bool apothecaryOk = phoneContactOk
                     && apothecaryDefinitionsOk

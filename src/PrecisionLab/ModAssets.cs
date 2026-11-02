@@ -21,6 +21,11 @@ namespace PrecisionLab
         internal const string SannaiBox = "sannai_supply_box";
         internal const string SynaprestBox = "synaprest_supply_box";
         internal const string SynaprestInjector = "synaprest_injector";
+        internal const string ReagentKitAdrenaline = "reagent_kit_adrenaline";
+        internal const string ReagentKitNaloxone = "reagent_kit_naloxone";
+        internal const string ReagentKitBirthControl = "reagent_kit_birth_control";
+        internal const string ReagentKitSannai = "reagent_kit_sannai";
+        internal const string ReagentKitSynaprest = "reagent_kit_synaprest";
     }
 
     internal static class SpriteKeys
@@ -43,6 +48,11 @@ namespace PrecisionLab
         internal const string SannaiBox = "sannai_supply_box";
         internal const string SynaprestBox = "synaprest_supply_box";
         internal const string SynaprestInjector = "synaprest_injector";
+        internal const string ReagentKitAdrenaline = "reagent_kit_adrenaline";
+        internal const string ReagentKitNaloxone = "reagent_kit_naloxone";
+        internal const string ReagentKitBirthControl = "reagent_kit_birth_control";
+        internal const string ReagentKitSannai = "reagent_kit_sannai";
+        internal const string ReagentKitSynaprest = "reagent_kit_synaprest";
     }
 
     internal static class Tags

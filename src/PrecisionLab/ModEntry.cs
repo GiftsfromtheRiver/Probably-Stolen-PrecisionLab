@@ -405,6 +405,7 @@ namespace PrecisionLab
             try
             {
                 TourniquetCraft.AttachToStoreItems();
+                ReagentKitVisuals.MigrateExistingKits();
                 if (!IsUpgradeUnlocked("PRECISION_LAB_MEDS"))
                 {
                     return;
@@ -443,6 +444,7 @@ namespace PrecisionLab
             NoteDelivery.EnsureAll();
             // Expire anhedonia / trigger Synaprest dependency cravings at the start of the day.
             SynaprestEffects.OnWakingUpLate();
+            Apothecary.StripLegacyBookingLogs();
         }
 
         private static void GiveItem(string itemId)

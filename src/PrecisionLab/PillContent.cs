@@ -113,11 +113,14 @@ namespace PrecisionLab
         private static GameItem CreateBox(string nameKey, string nameFallback, string descKey, string descFallback, string flavorKey, string flavorFallback, GameItem[] bottles)
         {
             GameItem item = ItemDirectory.CreateEmptyItem();
-            ModSprites.Apply(item, SpriteKeys.SupplyBox, "Items/items_material", "chemical2");
+            string spriteKey = nameKey.Contains("birth_control") ? SpriteKeys.ReagentKitBirthControl : SpriteKeys.ReagentKitSannai;
+            ModSprites.Apply(item, spriteKey, "Items/items_material", "chemical2");
+            ReagentKitVisuals.ForceKitShape(item);
             item.name = Loc.Get(nameKey, nameFallback);
             item.shortDescription = Loc.Get(descKey, descFallback);
             item.flavorText = Loc.Get(flavorKey, flavorFallback);
             item.SetGameItemType("CHEMICAL_SUPPLIES");
+            ReagentKitVisuals.MakeNonContraband(item);
             item.unitValue = 120L;
             item.canActivateSlotItemFunc = delegate (GameItem self, GameInventory inventory, SlotMarker slot)
             {

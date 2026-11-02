@@ -646,3 +646,9 @@ v1.2.9 增加：提纯机/培养机显式 EnableTag("TURBO_BOOST_ELIGIBLE_TAG")�
 Harmony postfix StoreClientManager.GenerateClient 在预约日把药剂师客户端插入 clientStack[0]（第一位），
 出售本 mod 全部药剂/原料盒；客户端工厂/通话对话函数/升级定义均在 ModEntry.Init 注册，
 旧存档读过 OnGameLoadedLate 时 EnsureUnlockedState 补联系人。自检新增 apothecary 标志。
+## v1.7.1–v1.8.9 累计（2026-11-02）
+
+药剂师通话选项修复（我要预约/打错了）、预约夜报去重、冷却结束自定义提示、自检不再改动真实存档（含 amountSpent 快照还原）、旧预约/陈旧冷却迁移清理。
+药剂师库存三类：随机 2–3 原料盒、3–5 瓶 20mL 散装试剂、1–3 件随机品质成品药（七档概率 2/25/35/30/5/2/1）。
+原料盒 3×2 外观（mod 48×32 透明 PNG ×5，不同液体颜色），非违禁品；迁移强制 filled GridShapeBuilder(3,2).SetDataFill(1) 占 6 格并重新落位，
+修复 2×2→3×2 重叠；无法放下时 2×2 filled 回退并放回原背包。

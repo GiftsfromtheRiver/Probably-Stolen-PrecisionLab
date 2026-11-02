@@ -37,7 +37,8 @@ namespace PrecisionLab
         internal static GameItem CreateSupplyBox()
         {
             GameItem item = ItemDirectory.CreateEmptyItem();
-            ModSprites.Apply(item, SpriteKeys.SupplyBox, "Items/items_material", "chemical2");
+            ModSprites.Apply(item, SpriteKeys.ReagentKitSynaprest, "Items/items_material", "chemical2");
+            ReagentKitVisuals.ForceKitShape(item);
             item.name = Loc.Get("item.synaprest_box.name", "赛普那斯原料盒");
             item.shortDescription = Loc.Get(
                 "item.synaprest_box.desc",
@@ -46,6 +47,7 @@ namespace PrecisionLab
                 "item.synaprest_box.flavor",
                 "密封的高价值原料盒。标签上写着：抑制奖励，也抑制你自己。");
             item.SetGameItemType("CHEMICAL_SUPPLIES");
+            ReagentKitVisuals.MakeNonContraband(item);
             item.unitValue = 500L;
             item.canActivateSlotItemFunc = delegate (GameItem self, GameInventory inventory, SlotMarker slot)
             {
