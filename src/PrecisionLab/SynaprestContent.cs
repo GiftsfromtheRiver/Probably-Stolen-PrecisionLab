@@ -115,12 +115,15 @@ namespace PrecisionLab
             GameItem item = ItemDirectory.CreateEmptyItem();
             item.SetSpriteAndShape("Items/items_medical", "injector_black");
             item.name = Loc.Get("item.synaprest_injector.name", "赛普那斯注射器");
-            item.shortDescription = Loc.Get(
-                "item.synaprest_injector.desc",
-                "次世代成瘾治疗注射器：随机清除一项药物/酒精/尼古丁/赌博成瘾（与原版赛普那斯一致）。代价是奖励机制被抑制——快感缺失 3 天（好运 -15），连续使用 3 次会形成依赖。");
-            item.flavorText = Loc.Get(
-                "item.synaprest_injector.flavor",
-                "治疗药物成瘾的次世代疗法，抑制大脑奖励机制，减轻药瘾，辅助长期康复。");
+            // Keep the in-game description identical to the vanilla Synaprest injector.
+            string vanillaDesc = LocHelper.GetLocalizedItem("item_black_injector_desc");
+            item.shortDescription = string.IsNullOrEmpty(vanillaDesc)
+                ? Loc.Get("item.synaprest_injector.desc", "A next-generation addiction treatment.")
+                : vanillaDesc;
+            string vanillaFlavor = LocHelper.GetLocalizedItem("item_black_injector_flavor");
+            item.flavorText = string.IsNullOrEmpty(vanillaFlavor)
+                ? Loc.Get("item.synaprest_injector.flavor", "A next-generation therapy for drug addiction.")
+                : vanillaFlavor;
             item.unitValue = 350L;
             item.SetGameItemType("MEDICAL");
             item.SetGameItemType("LUXURY_ITEM");

@@ -119,8 +119,6 @@ namespace PrecisionLab
         private static void OnUnlocked()
         {
             EnsurePhoneContact();
-            AddNightLog(Loc.Get("mech.apothecary.unlocked",
-                "新联系人「药剂师」已加入电话簿：打电话预约，第二天第一个到店（冷却 3 天）。"), "67e8f9");
         }
 
         internal static void EnsurePhoneContact()
@@ -370,42 +368,51 @@ namespace PrecisionLab
                 {
                     continue;
                 }
-                ChemicalProductHelper.SetPurityFeature(item, RandomQualityCondition());
+                if (id == "birth_control_pill")
+                {
+                    ApplyRandomPillComposition(item, "contraceptive", 100);
+                }
+                else if (id == "zyanide_pill")
+                {
+                    ApplyRandomPillComposition(item, "zyanide", 600);
+                }
                 PlayerStore.Instance.AddDirectSellingItemToTable(item);
             }
         }
 
-        private static ItemCondition RandomQualityCondition()
+        /// <summary>
+        /// Gives a vanilla pill a REAL internal composition at the requested quality instead of
+        /// only relabelling its purity condition (which previously produced “0.00% / 淀粉级” next
+        /// to a 100% API composition). We rebuild the chemical content with the pill's vanilla
+        /// active ingredient and let GradeProduct derive the matching purity condition.
+        /// </summary>
+        private static void ApplyRandomPillComposition(GameItem item, string vanillaActiveLiquid, int vanillaVolume)
         {
-            // Apothecary stock is intentionally skewed towards usable grades:
-            // lab pure is rare, street standard is common, junk/starch are rare.
-            // 2% lab_pure / 25% pharma / 35% near_pharma / 30% street / 5% cut / 2% junk / 1% starch
-            int roll = UnityEngine.Random.Range(0, 100);
-            if (roll < 2)
+            try
             {
-                return ItemConditionList.CreateLabPure();
+                int roll = UnityEngine.Random.Range(0, 100);
+                int minPurity;
+                int maxPurity;
+                if (roll < 2) { minPurity = 99; maxPurity = 100; }
+                else if (roll < 27) { minPurity = 90; maxPurity = 99; }
+                else if (roll < 62) { minPurity = 80; maxPurity = 90; }
+                else if (roll < 92) { minPurity = 60; maxPurity = 80; }
+                else if (roll < 97) { minPurity = 45; maxPurity = 60; }
+                else if (roll < 99) { minPurity = 30; maxPurity = 45; }
+                else { minPurity = 0; maxPurity = 30; }
+
+                ChemicalHelper.RemoveAllLiquid(item);
+                item.ModifyTag("ACTIVATE_INGREDIENT_TAG", delegate (TagState state)
+                {
+                    state.Enable().SetString(vanillaActiveLiquid);
+                });
+                ChemFinisherRecipe.SetCompositionByPurity(item, minPurity, maxPurity, vanillaVolume, vanillaActiveLiquid);
+                ChemicalProductHelper.GradeProduct(item);
             }
-            if (roll < 27)
+            catch (Exception e)
             {
-                return ItemConditionList.CreatePharmaGrade();
+                Debug.LogWarning("[PrecisionLab] rebuilding apothecary pill composition failed: " + e.Message);
             }
-            if (roll < 62)
-            {
-                return ItemConditionList.CreateNearPharma();
-            }
-            if (roll < 92)
-            {
-                return ItemConditionList.CreateStreetStandard();
-            }
-            if (roll < 97)
-            {
-                return ItemConditionList.CreateCutProduct();
-            }
-            if (roll < 99)
-            {
-                return ItemConditionList.CreateJunkGrade();
-            }
-            return ItemConditionList.CreateStarchGrade();
         }
 
         private static int[] ShuffledIndices(int length)
@@ -455,8 +462,6 @@ namespace PrecisionLab
                 });
                 manager.clientStack.Insert(0, apothecary);
                 manager.TrackClient(apothecary);
-                AddNightLog(Loc.Get("mech.apothecary.arrived",
-                    "药剂师今天第一个到店，正在柜台等你。"), "67e8f9");
                 Debug.Log("[PrecisionLab] apothecary inserted at the front of the client queue");
             }
             catch (Exception e)
