@@ -130,7 +130,7 @@ namespace PrecisionLab
                 return 0;
             }
             Add(container, CustomLiquids.SteroidIntermediate, -x);
-            Add(container, CustomLiquids.ContraceptiveApi, x);
+            Add(container, "contraceptive", x);
             return 1;
         }
 
@@ -178,7 +178,7 @@ namespace PrecisionLab
                 return 0;
             }
             Add(container, CustomLiquids.SannaiExtract, -x);
-            Add(container, CustomLiquids.SannaiApi, x);
+            Add(container, "zyanide", x);
             return 1;
         }
 

@@ -411,7 +411,7 @@ namespace PrecisionLab
                 int birthIntermediate = LiquidTools.GetLiquidAmount(pillCup, CustomLiquids.SteroidIntermediate);
                 SetTemperature(pillCup, 40.0);
                 PulseStep(pillCup, PillChemistry.StepContraceptiveApi);
-                int birthApi = LiquidTools.GetLiquidAmount(pillCup, CustomLiquids.ContraceptiveApi);
+                int birthApi = LiquidTools.GetLiquidAmount(pillCup, "contraceptive");
 
                 sannaiCup = ItemFactory.CreateExtractor();
                 GeneralHelper.SetItemOwned(sannaiCup, true);
@@ -424,14 +424,14 @@ namespace PrecisionLab
                 LiquidTools.SetLiquidRaw(sannaiCup, "acid", 1000);
                 SetTemperature(sannaiCup, 40.0);
                 PulseStep(sannaiCup, PillChemistry.StepSannaiApi);
-                int sannaiApi = LiquidTools.GetLiquidAmount(sannaiCup, CustomLiquids.SannaiApi);
+                int sannaiApi = LiquidTools.GetLiquidAmount(sannaiCup, "zyanide");
                 int sannaiAcidLeft = LiquidTools.GetLiquidAmount(sannaiCup, "acid");
 
                 PillContent.EnsureRecipes();
                 bool pillRecipesOk = ChemFinisherRecipe.GetRecipeById(PillContent.BirthControlPillId) != null
                     && ChemFinisherRecipe.GetRecipeById(PillContent.SannaiPillId) != null
-                    && ChemFinisherRecipe.GetRecipeById(PillContent.BirthControlPillId).activeIngredientId == CustomLiquids.ContraceptiveApi
-                    && ChemFinisherRecipe.GetRecipeById(PillContent.SannaiPillId).activeIngredientId == CustomLiquids.SannaiApi
+                    && ChemFinisherRecipe.GetRecipeById(PillContent.BirthControlPillId).activeIngredientId == "contraceptive"
+                    && ChemFinisherRecipe.GetRecipeById(PillContent.SannaiPillId).activeIngredientId == "zyanide"
                     && ChemFinisherRecipe.GetRecipeById(PillContent.BirthControlPillId).requiredVolume == PillContent.PressVolume
                     && ChemFinisherRecipe.GetRecipeById(PillContent.SannaiPillId).requiredVolume == PillContent.PressVolume;
                 birthControlBoxItem = PillContent.CreateBirthControlBox();

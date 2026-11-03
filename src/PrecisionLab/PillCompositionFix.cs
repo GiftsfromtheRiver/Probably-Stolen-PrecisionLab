@@ -24,23 +24,15 @@ namespace PrecisionLab
             return item != null && (item.identifier == "birth_control_pill" || item.identifier == "zyanide_pill");
         }
 
-        internal static bool HasCustomApi(GameItem item)
+        internal static bool NeedsNormalize(GameItem item)
         {
-            if (item == null)
+            if (!IsPill(item))
             {
                 return false;
             }
             try
             {
-                // Pills are chem items, not liquid containers: read the chemical-content tags
-                // directly instead of LiquidTools.GetLiquidAmount (which requires a liquid container).
-                string apiPart = Liquid.GetCurrentPartFromId(CustomLiquids.ContraceptiveApi);
-                if (apiPart != null && item.GetTagReadonly(apiPart).GetInt() > 0)
-                {
-                    return true;
-                }
-                string sannaiPart = Liquid.GetCurrentPartFromId(CustomLiquids.SannaiApi);
-                return sannaiPart != null && item.GetTagReadonly(sannaiPart).GetInt() > 0;
+                return ChemicalHelper.GetTotalVolume(item) > 0;
             }
             catch (Exception)
             {
@@ -66,12 +58,51 @@ namespace PrecisionLab
                 active = "zyanide";
                 volume = 600;
             }
+
+            // Preserve the purity the pill was actually created at. A pure press (100%) must result
+            // in a single-component, lab-pure pill; an impure press keeps only the relevant active
+            // amount and puts the remainder into one contaminant entry. Both the vanilla active
+            // liquid (new chains) and the older custom API liquids are counted, so old saves also
+            // normalize correctly.
+            double purity = 0.0;
+            try
+            {
+                int total = ChemicalHelper.GetTotalVolume(item);
+                int activeTotal = 0;
+                string[] activeIds = item.identifier == "birth_control_pill"
+                    ? new[] { "contraceptive", CustomLiquids.ContraceptiveApi }
+                    : new[] { "zyanide", CustomLiquids.SannaiApi };
+                for (int i = 0; i < activeIds.Length; i++)
+                {
+                    string part = Liquid.GetCurrentPartFromId(activeIds[i]);
+                    if (part != null)
+                    {
+                        activeTotal += item.GetTagReadonly(part).GetInt();
+                    }
+                }
+                if (total > 0) purity = Math.Min(100.0, activeTotal * 100.0 / total);
+            }
+            catch (Exception)
+            {
+                purity = 0.0;
+            }
+
             ChemicalHelper.RemoveAllLiquid(item);
             item.ModifyTag("ACTIVATE_INGREDIENT_TAG", delegate (TagState state)
             {
                 state.Enable().SetString(active);
             });
-            ChemFinisherRecipe.SetCompositionByPurity(item, 60, 80, volume, active);
+            int activeAmount = (int)Math.Round(volume * purity / 100.0);
+            activeAmount = Math.Max(0, Math.Min(volume, activeAmount));
+            if (activeAmount > 0)
+            {
+                ChemicalHelper.SetChemContentUL(item, active, activeAmount);
+            }
+            int remainder = volume - activeAmount;
+            if (remainder > 0)
+            {
+                ChemicalHelper.SetChemContentUL(item, "physical_contaminant", remainder);
+            }
             ChemicalProductHelper.GradeProduct(item);
         }
     }
@@ -87,7 +118,7 @@ namespace PrecisionLab
             {
                 return;
             }
-            if (!PillCompositionFix.IsPill(item) || !PillCompositionFix.HasCustomApi(item))
+            if (!PillCompositionFix.NeedsNormalize(item))
             {
                 return;
             }

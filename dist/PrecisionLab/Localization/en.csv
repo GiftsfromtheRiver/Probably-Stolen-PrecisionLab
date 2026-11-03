@@ -221,3 +221,4 @@ phone.apothecary.book_line,I want to book a visit.
 phone.apothecary.cancel_line,Wrong number.
 mech.apothecary.ready,The Apothecary is ready with more medicines.
 item.apothecary.loose_bottle.name,{0} · 20 mL
+mech.chem.purity_too_low,Purity too low: main ingredient is {0:F1}%; requires >=99% to press. Remove the impurities first.

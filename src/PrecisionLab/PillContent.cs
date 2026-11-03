@@ -32,7 +32,7 @@ namespace PrecisionLab
                     recipe.displayName = Loc.Get("item.birth_control_pill.recipe_name", "Birth Control Pill");
                     recipe.requiredVolume = PressVolume;
                     recipe.isRequireDry = true;
-                    recipe.activeIngredientId = CustomLiquids.ContraceptiveApi;
+                    recipe.activeIngredientId = "contraceptive";
                 }
                 else
                 {
@@ -49,7 +49,7 @@ namespace PrecisionLab
                     recipe2.displayName = Loc.Get("item.sannai_pill.recipe_name", "Zyanide Pill (Sannai)");
                     recipe2.requiredVolume = PressVolume;
                     recipe2.isRequireDry = true;
-                    recipe2.activeIngredientId = CustomLiquids.SannaiApi;
+                    recipe2.activeIngredientId = "zyanide";
                 }
                 else
                 {

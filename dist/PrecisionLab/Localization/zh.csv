@@ -220,3 +220,4 @@ phone.apothecary.book_line,我要预约。
 phone.apothecary.cancel_line,打错了。
 mech.apothecary.ready,药剂师已准备好更多药品。
 item.apothecary.loose_bottle.name,{0} · 20 毫升
+mech.chem.purity_too_low,纯度过低：主成分 {0:F1}%，需要 ≥99% 才能压制（先把杂质去掉）。
