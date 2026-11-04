@@ -44,7 +44,12 @@ namespace PrecisionLab
         internal const string NeuralLigand = "neural_ligand";
         internal const string ActivatedLigand = "activated_ligand";
         internal const string SynaprestCrude = "synaprest_crude";
-        internal const string SynaprestApi = "synaprest_api"; // 肾上腺素药液
+        internal const string SynaprestApi = "synaprest_api";
+        internal const string ImmuneSerum = "immune_serum";
+        internal const string ImmunoglobulinSuspension = "immunoglobulin_suspension";
+        internal const string CrudeImmunoglobulin = "crude_immunoglobulin";
+        internal const string ImmunoglobulinApi = "immunoglobulin_api";
+        internal const string DenaturedWaste = "denatured_immunoglobulin_waste"; // 肾上腺素药液
 
         private static bool _registered;
 
@@ -84,7 +89,12 @@ namespace PrecisionLab
                 AddLiquid(ActivatedLigand, "liquid.activated_ligand", "Activated Ligand", "c8d8f8", false);
                 AddLiquid(SynaprestCrude, "liquid.synaprest_crude", "Synaprest Crude", "b8a8c8", false);
                 AddLiquid(SynaprestApi, "liquid.synaprest_api", "Synaprest API Solution", "dfeef5", false);
-                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 27 + ")");
+                AddLiquid(ImmuneSerum, "liquid.immune_serum", "Immune Serum", "f0d8a8", false);
+                AddLiquid(ImmunoglobulinSuspension, "liquid.immunoglobulin_suspension", "Immunoglobulin Suspension", "e8e0c8", false);
+                AddLiquid(CrudeImmunoglobulin, "liquid.crude_immunoglobulin", "Crude Immunoglobulin", "e8d8b0", false);
+                AddLiquid(ImmunoglobulinApi, "liquid.immunoglobulin_api", "Immunivax API Solution", "e0f0f8", false);
+                AddLiquid(DenaturedWaste, "liquid.denatured_waste", "Denatured Protein Waste", "8a7a6a", true);
+                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 32 + ")");
             }
             catch (Exception e)
             {
@@ -124,6 +134,11 @@ namespace PrecisionLab
                 SetName(ActivatedLigand, "liquid.activated_ligand", "Activated Ligand");
                 SetName(SynaprestCrude, "liquid.synaprest_crude", "Synaprest Crude");
                 SetName(SynaprestApi, "liquid.synaprest_api", "Synaprest API Solution");
+                SetName(ImmuneSerum, "liquid.immune_serum", "Immune Serum");
+                SetName(ImmunoglobulinSuspension, "liquid.immunoglobulin_suspension", "Immunoglobulin Suspension");
+                SetName(CrudeImmunoglobulin, "liquid.crude_immunoglobulin", "Crude Immunoglobulin");
+                SetName(ImmunoglobulinApi, "liquid.immunoglobulin_api", "Immunivax API Solution");
+                SetName(DenaturedWaste, "liquid.denatured_waste", "Denatured Protein Waste");
             }
             catch (Exception e)
             {
@@ -143,6 +158,9 @@ namespace PrecisionLab
                 || liquidId.StartsWith("sannai_", StringComparison.Ordinal)
                 || liquidId == NeuralLigand || liquidId == ActivatedLigand
                 || liquidId == SynaprestCrude || liquidId == SynaprestApi
+                || liquidId == ImmuneSerum || liquidId == ImmunoglobulinSuspension
+                || liquidId == CrudeImmunoglobulin || liquidId == ImmunoglobulinApi
+                || liquidId == DenaturedWaste
                 || liquidId == Thebaine || liquidId == ContraceptiveApi || liquidId == SannaiApi;
         }
 

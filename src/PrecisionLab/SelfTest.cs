@@ -43,6 +43,9 @@ namespace PrecisionLab
             GameItem synaprestCup = null;
             GameItem synaprestBoxItem = null;
             GameItem synaprestInjectorItem = null;
+            GameItem immunivaxCup = null;
+            GameItem immunivaxWasteCup = null;
+            GameItem immuneSerumItem = null;
             GameItem resolvingBottleItem = null;
             GameItem resolvingRefillItem = null;
             GameItem recipeBookItem = null;
@@ -585,6 +588,51 @@ namespace PrecisionLab
                     && appointmentOk;
                 log.Log(Prefix + "apothecary: phone=" + phoneContactOk + " defs=" + apothecaryDefinitionsOk
                     + " firstInQueue=" + appointmentOk);
+                // --- 8g. Immunivax chain (serum + alcohol -> suspension -> crude -> API) ------------
+                immunivaxCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(immunivaxCup, true);
+                LiquidTools.SetLiquidRaw(immunivaxCup, CustomLiquids.ImmuneSerum, 2000);
+                LiquidTools.SetLiquidRaw(immunivaxCup, "alcohol", 2000);
+                SetTemperature(immunivaxCup, 30.0);
+                PulseStep(immunivaxCup, ImmunivaxChemistry.StepPrecipitation);
+                int immSuspension = LiquidTools.GetLiquidAmount(immunivaxCup, CustomLiquids.ImmunoglobulinSuspension);
+                int immSerumLeft = LiquidTools.GetLiquidAmount(immunivaxCup, CustomLiquids.ImmuneSerum);
+                SetTemperature(immunivaxCup, 35.0);
+                PulseStep(immunivaxCup, ImmunivaxChemistry.StepConcentration);
+                int immCrude = LiquidTools.GetLiquidAmount(immunivaxCup, CustomLiquids.CrudeImmunoglobulin);
+                int immRecoveredAlcohol = LiquidTools.GetLiquidAmount(immunivaxCup, "alcohol");
+                LiquidTools.SetLiquidRaw(immunivaxCup, "water", 1000);
+                PulseStep(immunivaxCup, ImmunivaxChemistry.StepDialysis);
+                int immApi = LiquidTools.GetLiquidAmount(immunivaxCup, CustomLiquids.ImmunoglobulinApi);
+
+                immunivaxWasteCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(immunivaxWasteCup, true);
+                LiquidTools.SetLiquidRaw(immunivaxWasteCup, CustomLiquids.ImmunoglobulinSuspension, 1000);
+                SetTemperature(immunivaxWasteCup, 50.0);
+                PulseStep(immunivaxWasteCup, ImmunivaxChemistry.StepConcentration);
+                int immDenatured = LiquidTools.GetLiquidAmount(immunivaxWasteCup, CustomLiquids.DenaturedWaste);
+                int immCrudeLeft = LiquidTools.GetLiquidAmount(immunivaxWasteCup, CustomLiquids.CrudeImmunoglobulin);
+
+                ImmunivaxContent.EnsureRecipes();
+                bool immRecipesOk = ChemFinisherRecipe.GetRecipeById(ImmunivaxContent.VanillaInjectorId) != null
+                    && ChemFinisherRecipe.GetRecipeById(ImmunivaxContent.VanillaInjectorId).activeIngredientId == CustomLiquids.ImmunoglobulinApi
+                    && ChemFinisherRecipe.GetRecipeById(ImmunivaxContent.VanillaInjectorId).requiredVolume == ImmunivaxContent.InjectorVolume;
+                immuneSerumItem = ImmunivaxContent.CreateImmuneSerumBottle();
+                bool immunivaxOk = immSuspension == 1000
+                    && immSerumLeft == 0
+                    && immCrude == 1000
+                    && immRecoveredAlcohol == 1000
+                    && immApi == 1000
+                    && immDenatured == 1000
+                    && immCrudeLeft == 0
+                    && immRecipesOk
+                    && immuneSerumItem != null
+                    && immuneSerumItem.unitValue == 120
+                    && LiquidTools.GetLiquidAmount(immuneSerumItem, CustomLiquids.ImmuneSerum) == 20000;
+                log.Log(Prefix + "immunivax chain: suspension=" + immSuspension + "µL crude=" + immCrude
+                    + "µL recoveredAlcohol=" + immRecoveredAlcohol + "µL api=" + immApi
+                    + "µL denatured=" + immDenatured + "µL crudeLeft=" + immCrudeLeft
+                    + "µL recipes=" + immRecipesOk + " serumBottle=" + (immuneSerumItem != null));
 
                 apiItem = AdrenalineContent.CreateApi();
                 penItem = AdrenalineContent.CreatePen();
@@ -782,7 +830,7 @@ namespace PrecisionLab
                     + " hydrolysis=" + hydrolysis + " digestion=" + digestion + " cultivator=" + cultivatorOk
                     + " adrenaline=" + adrenalineOk + " adrenalineItems=" + adrenalineItemsOk
                     + " tourniquet=" + tourniquetOk
-                    + " recycle=" + recycleOk + " naloxone=" + naloxoneOk + " pills=" + pillOk + " synaprest=" + synaprestOk + " apothecary=" + apothecaryOk);
+                    + " recycle=" + recycleOk + " naloxone=" + naloxoneOk + " pills=" + pillOk + " synaprest=" + synaprestOk + " apothecary=" + apothecaryOk + " immunivax=" + immunivaxOk);
             }
             catch (Exception e)
             {
@@ -826,6 +874,9 @@ namespace PrecisionLab
                 DestroyQuietly(synaprestCup);
                 DestroyQuietly(synaprestBoxItem);
                 DestroyQuietly(synaprestInjectorItem);
+                DestroyQuietly(immunivaxCup);
+                DestroyQuietly(immunivaxWasteCup);
+                DestroyQuietly(immuneSerumItem);
             }
         }
 

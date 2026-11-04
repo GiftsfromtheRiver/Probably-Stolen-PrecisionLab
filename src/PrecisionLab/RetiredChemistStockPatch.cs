@@ -37,6 +37,7 @@ namespace PrecisionLab
                     RetiredChemistStock.TryAddNaloxoneKit();
                     RetiredChemistStock.TryAddPillKits();
                     RetiredChemistStock.TryAddSynaprestKit();
+                    RetiredChemistStock.TryAddImmunivaxStock();
                 };
             }
             catch (Exception e)
@@ -188,6 +189,32 @@ namespace PrecisionLab
             catch (Exception e)
             {
                 Debug.LogWarning("[PrecisionLab] retired chemist synaprest kit stock failed: " + e);
+            }
+        }
+
+        /// <summary>After the "More Medicines" unlock the retired chemist also sells immune serum.</summary>
+        internal static void TryAddImmunivaxStock()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.ImmuneSerumBottle);
+                Debug.Log("[PrecisionLab] retired chemist offers immune serum");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist immune serum stock failed: " + e);
             }
         }
 

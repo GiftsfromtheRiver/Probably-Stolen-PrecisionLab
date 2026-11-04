@@ -21,6 +21,7 @@ namespace PrecisionLab
         internal const string SannaiBox = "sannai_supply_box";
         internal const string SynaprestBox = "synaprest_supply_box";
         internal const string SynaprestInjector = "synaprest_injector";
+        internal const string ImmuneSerumBottle = "immune_serum_bottle";
         internal const string ReagentKitAdrenaline = "reagent_kit_adrenaline";
         internal const string ReagentKitNaloxone = "reagent_kit_naloxone";
         internal const string ReagentKitBirthControl = "reagent_kit_birth_control";
@@ -48,6 +49,7 @@ namespace PrecisionLab
         internal const string SannaiBox = "sannai_supply_box";
         internal const string SynaprestBox = "synaprest_supply_box";
         internal const string SynaprestInjector = "synaprest_injector";
+        internal const string ImmuneSerumBottle = "immune_serum_bottle";
         internal const string ReagentKitAdrenaline = "reagent_kit_adrenaline";
         internal const string ReagentKitNaloxone = "reagent_kit_naloxone";
         internal const string ReagentKitBirthControl = "reagent_kit_birth_control";

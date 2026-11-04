@@ -294,6 +294,7 @@ namespace PrecisionLab
             CustomLiquids.Catechol,
             CustomLiquids.HydroxymethylBase,
             CustomLiquids.ResolvingAgent,
+            CustomLiquids.ImmuneSerum,
             "acid",
             "reducing_agent",
             "lipobond_agent",
@@ -303,7 +304,7 @@ namespace PrecisionLab
 
         private static readonly int[] LooseBottlePrices =
         {
-            150, 150, 60, 60, 40, 40, 40, 20, 20, 30, 20, 20
+            150, 150, 60, 60, 40, 40, 40, 120, 20, 20, 30, 20, 20
         };
 
         private static readonly string[] LooseBottleContainers =

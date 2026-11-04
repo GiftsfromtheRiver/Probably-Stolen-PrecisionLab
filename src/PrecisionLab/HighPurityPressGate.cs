@@ -17,7 +17,8 @@ namespace PrecisionLab
 
         internal static bool IsRestrictedRecipe(string identifier)
         {
-            return identifier == "pure_white_injector" || identifier == "synaprest_injector";
+            return identifier == "pure_white_injector"
+                || identifier == "synaprest_injector";
         }
 
         internal static double GetActivePurity(GameItem container, string activeIngredientId)

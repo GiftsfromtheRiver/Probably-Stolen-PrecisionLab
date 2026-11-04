@@ -27,6 +27,7 @@ namespace PrecisionLab
             NaloxoneChemistry.React(container);
             PillChemistry.React(container);
             SynaprestChemistry.React(container);
+            ImmunivaxChemistry.React(container);
         }
     }
 

@@ -7,15 +7,16 @@
 - 微生物培养机：营养果养菌、糖→有机废物、低糖休眠、活性实时显示
 - 淀粉水解：淀粉 + 酸 40–60°C → 糖（酸为催化剂）
 - 肾上腺素注射笔、纳洛酮（纳洛通）、避孕药、山奈德片、赛普那斯注射器生产线
+- 免疫宁生产线：采购免疫血清，冷酒精沉淀 → 26–40°C 精准浓缩（超过 40°C 蛋白变性报废）→ 透析 → 成型机灌装原版免疫宁注射器
 - 简易止血带：韧棉织物 + 废金属/金属锭拖拽合成，开局可用，基础价值 150
 - 药剂师：黑网解锁（1800），电话预约，次日第一个到店，冷却 3 天；出售随机原料盒、散装试剂瓶和随机品质成品药
 - 拆分剂补充装：2 × 20 毫升，64 信用点
-- 《精密实验室配方手册》：游戏内书籍，6 页配方
+- 《精密实验室配方手册》：游戏内书籍，7 页配方
 
-[b]纯度与成分[/b]
-- 避孕药 B3 直接生成原版**避孕激素**，山奈德 S2 直接生成原版**山奈德**；
-- 压片保留真实纯度：100% 原料 → 单成分 100% 实验室纯；含杂质 → 主成分 + 1 个杂质，提示自洽；
-- 纳洛通 / 赛普那斯最终压制要求主成分 **≥99%**，否则提示纯度过低并禁止压制。
+[b]纯度与鉴别[/b]
+- 避孕药 B3 直接生成原版避孕激素，山奈德 S2 直接生成原版山奈德；压片保留真实纯度（100% → 单成分实验室纯，含杂质 → 主成分 + 杂质）。
+- 纳洛通 / 赛普那斯灌注要求主成分 ≥99%。
+- 免疫宁：≥99% 为完整正品；低于 99% 仍可压制，但瓶体随机出现 1–4 个鉴别问题（指示灯/编号/标签/颜色/瓶体裂纹），纯度越低问题越多。
 
 [b]原料盒[/b]
 3×2 格管制化学品瓶架外观（透明底、五条生产线液体颜色不同），非违禁品。
@@ -24,12 +25,12 @@
 所有化学链每 tick 转化率 20%（原 2%），一批 20000 µL 约 15–25 秒完成。
 
 [b]获取[/b]
-黑网（游戏内手机）→「精密实验室」页签购买升级；之后杰克逊博士/退休化学家供应机器与原料盒；「药剂师」在 Referral 页签。
+黑网（游戏内手机）→「精密实验室」页签购买升级；之后杰克逊博士/退休化学家供应机器、原料盒与免疫血清。
 
 [b]安装[/b]
 Steam 创意工坊订阅后，在游戏内 Mods 菜单启用并信任；需要游戏版本 0.46D。
 
 [b]English[/b]
-A local content mod for Probably Stolen 0.46D: precision extractor, purifier, cultivator, starch hydrolysis, adrenaline/naloxone/contraceptive/Sannai/Synaprest production lines, makeshift tourniquet, a phone-booked Apothecary, 2-vial refill packs, and a 6-page recipe book. Birth-control B3 and Sannai S2 now produce the vanilla active liquids directly; pressed pills preserve real purity (100% input = single-component lab-pure); Naloxone/Synaprest final press requires >=99% active purity. Reactions run at 20% per tick.
+A local content mod for Probably Stolen 0.46D: precision extractor, purifier, cultivator, starch hydrolysis, adrenaline/naloxone/contraceptive/Sannai/Synaprest lines, an Immunivax line (immune serum, cold alcohol precipitation, strict 26–40 °C concentration, dialysis, vanilla Immunivax injector), makeshift tourniquet, phone-booked Apothecary, 2-vial refill packs, and a 7-page recipe book. Immunivax ≥99% purity is genuine; lower purity presses produce 1–4 random authenticity defects. Naloxone/Synaprest require ≥99%.
 
-Version 1.9.7 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab
+Version 1.10.5 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab

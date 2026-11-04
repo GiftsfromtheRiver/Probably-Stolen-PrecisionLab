@@ -221,3 +221,12 @@ phone.apothecary.cancel_line,打错了。
 mech.apothecary.ready,药剂师已准备好更多药品。
 item.apothecary.loose_bottle.name,{0} · 20 毫升
 mech.chem.purity_too_low,纯度过低：主成分 {0:F1}%，需要 ≥99% 才能压制（先把杂质去掉）。
+liquid.immune_serum,免疫血清
+liquid.immunoglobulin_suspension,免疫球蛋白悬浊液
+liquid.crude_immunoglobulin,粗制免疫球蛋白液
+liquid.immunoglobulin_api,免疫宁原料药溶液
+liquid.denatured_waste,变性蛋白废液
+item.immune_serum_bottle.name,免疫血清瓶（20 毫升）
+item.immune_serum_bottle.desc,一整瓶 20 毫升免疫血清，免疫宁生产线的起始原料，可直接向退休化学家购买。
+item.immune_serum_bottle.flavor,保持低温，请勿摇晃。
+item.immunivax_injector.recipe_name,免疫宁注射器
