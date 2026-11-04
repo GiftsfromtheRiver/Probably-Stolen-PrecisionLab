@@ -231,3 +231,15 @@ item.immune_serum_bottle.name,Immune Serum Bottle (20 mL)
 item.immune_serum_bottle.desc,A full 20 mL vial of immune serum, the starting material for the Immunivax chain. Purchased directly from the retired chemist.
 item.immune_serum_bottle.flavor,Keep cold. Do not shake.
 item.immunivax_injector.recipe_name,Immunivax Injector
+liquid.bio_gel_base,Bio-Gel Matrix
+liquid.acidic_gel,Acidic Gel
+liquid.crude_blue_gel,Crude Blue Gel
+liquid.medical_blue_gel,Medical-Grade Blue Gel
+liquid.denatured_blue_gel_waste,Denatured Gel Waste
+item.bio_gel_bottle.name,Bio-Gel Matrix Bottle (20 mL)
+item.bio_gel_bottle.desc,A full 20 mL vial of bio-gel matrix, the starting material for the Blue Blood chain. Purchased from the retired chemist; handle at room temperature.
+item.bio_gel_bottle.flavor,Not blood. Do not let the customers read the label.
+item.blue_blood.recipe_name,Blue Blood
+item.blue_blood_box.name,Blue Blood Precursor Kit
+item.blue_blood_box.desc,Activate to unpack exactly one Blue Blood batch: bio-gel matrix 20 mL, water 10 mL, trace acid 50 uL, reducing agent 10 mL, lipobond agent 10 mL.
+item.blue_blood_box.flavor,The label simply says "bio-gel material".

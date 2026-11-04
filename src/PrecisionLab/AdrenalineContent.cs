@@ -275,6 +275,7 @@ namespace PrecisionLab
             item.unitValue = 50L;
             ChemicalHelper.InitChemItem(item, isBlendable: true, isSoluble: true);
             ChemicalProductHelper.InitChemicalProduct(item, CustomLiquids.AdrenalineHcl);
+            SeedChemicalComposition(item, CustomLiquids.AdrenalineHcl, 5000);
             ChemicalFeedbackHelper.InitChemicalIntentItem(item, ChemicalFeedbackHelper.ChemicalIntent.MEDICAL);
             AudioHelper.InitPlasticContainer(item);
             ModHelper.SetSource(item, Loc.ModId, ModEntry.ModDisplayName);
@@ -320,10 +321,34 @@ namespace PrecisionLab
             AudioHelper.InitInjectorAudio(item);
             ChemicalHelper.InitChemItem(item, isBlendable: true, isSoluble: true);
             ChemicalProductHelper.InitChemicalProduct(item, CustomLiquids.AdrenalineSolution);
+            SeedChemicalComposition(item, CustomLiquids.AdrenalineSolution, 5000);
             ChemicalFeedbackHelper.InitChemicalIntentItem(item, ChemicalFeedbackHelper.ChemicalIntent.MEDICAL);
             item.EnableManufacturer("carmicheal");
             ModHelper.SetSource(item, Loc.ModId, ModEntry.ModDisplayName);
             return item;
+        }
+
+        /// <summary>
+        /// Gives a factory-spawned mod chemical product a real internal composition so its
+        /// purity/condition tooltip is numeric instead of NaN/淀粉级. Pressed outputs get their
+        /// composition from the Chem Finisher transfer anyway.
+        /// </summary>
+        internal static void SeedChemicalComposition(GameItem item, string activeLiquid, int volume)
+        {
+            try
+            {
+                ChemicalHelper.RemoveAllLiquid(item);
+                item.ModifyTag("ACTIVATE_INGREDIENT_TAG", delegate (TagState state)
+                {
+                    state.Enable().SetString(activeLiquid);
+                });
+                ChemFinisherRecipe.SetCompositionByPurity(item, 60, 80, volume, activeLiquid);
+                ChemicalProductHelper.GradeProduct(item);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] seeding chemical composition failed: " + e.Message);
+            }
         }
 
         internal static GameItem CreateWasteItem()

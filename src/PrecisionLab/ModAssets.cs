@@ -22,11 +22,14 @@ namespace PrecisionLab
         internal const string SynaprestBox = "synaprest_supply_box";
         internal const string SynaprestInjector = "synaprest_injector";
         internal const string ImmuneSerumBottle = "immune_serum_bottle";
+        internal const string BioGelBottle = "bio_gel_base_bottle";
+        internal const string BlueBloodBox = "blue_blood_supply_box";
         internal const string ReagentKitAdrenaline = "reagent_kit_adrenaline";
         internal const string ReagentKitNaloxone = "reagent_kit_naloxone";
         internal const string ReagentKitBirthControl = "reagent_kit_birth_control";
         internal const string ReagentKitSannai = "reagent_kit_sannai";
         internal const string ReagentKitSynaprest = "reagent_kit_synaprest";
+        internal const string ReagentKitBlueBlood = "reagent_kit_blue_blood";
     }
 
     internal static class SpriteKeys
@@ -50,11 +53,14 @@ namespace PrecisionLab
         internal const string SynaprestBox = "synaprest_supply_box";
         internal const string SynaprestInjector = "synaprest_injector";
         internal const string ImmuneSerumBottle = "immune_serum_bottle";
+        internal const string BioGelBottle = "bio_gel_base_bottle";
+        internal const string BlueBloodBox = "blue_blood_supply_box";
         internal const string ReagentKitAdrenaline = "reagent_kit_adrenaline";
         internal const string ReagentKitNaloxone = "reagent_kit_naloxone";
         internal const string ReagentKitBirthControl = "reagent_kit_birth_control";
         internal const string ReagentKitSannai = "reagent_kit_sannai";
         internal const string ReagentKitSynaprest = "reagent_kit_synaprest";
+        internal const string ReagentKitBlueBlood = "reagent_kit_blue_blood";
     }
 
     internal static class Tags

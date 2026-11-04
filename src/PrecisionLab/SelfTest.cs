@@ -46,6 +46,9 @@ namespace PrecisionLab
             GameItem immunivaxCup = null;
             GameItem immunivaxWasteCup = null;
             GameItem immuneSerumItem = null;
+            GameItem blueGelCup = null;
+            GameItem blueGelWasteCup = null;
+            GameItem bioGelBottleItem = null;
             GameItem resolvingBottleItem = null;
             GameItem resolvingRefillItem = null;
             GameItem recipeBookItem = null;
@@ -476,11 +479,11 @@ namespace PrecisionLab
                 int synApi = LiquidTools.GetLiquidAmount(synaprestCup, CustomLiquids.SynaprestApi);
                 int synAlcoholLeft = LiquidTools.GetLiquidAmount(synaprestCup, "alcohol");
                 SynaprestContent.EnsureRecipes();
-                bool synRecipesOk = ChemFinisherRecipe.GetRecipeById(ItemIds.SynaprestInjector) != null
-                    && ChemFinisherRecipe.GetRecipeById(ItemIds.SynaprestInjector).activeIngredientId == CustomLiquids.SynaprestApi
-                    && ChemFinisherRecipe.GetRecipeById(ItemIds.SynaprestInjector).requiredVolume == SynaprestContent.PressVolume;
+                bool synRecipesOk = ChemFinisherRecipe.GetRecipeById(SynaprestContent.VanillaInjectorId) != null
+                    && ChemFinisherRecipe.GetRecipeById(SynaprestContent.VanillaInjectorId).activeIngredientId == CustomLiquids.SynaprestApi
+                    && ChemFinisherRecipe.GetRecipeById(SynaprestContent.VanillaInjectorId).requiredVolume == SynaprestContent.PressVolume;
                 synaprestBoxItem = SynaprestContent.CreateSupplyBox();
-                synaprestInjectorItem = SynaprestContent.CreateInjector();
+                synaprestInjectorItem = DirectoryMaster.Item(SynaprestContent.VanillaInjectorId);
                 SynaprestEffects.RegisterPerks();
                 bool synPerksOk = StartingPerkList.GetModPerk(SynaprestEffects.AnhedoniaPerk) != null
                     && StartingPerkList.GetModPerk(SynaprestEffects.DependencyPerk) != null
@@ -495,7 +498,9 @@ namespace PrecisionLab
                     && synaprestBoxItem != null
                     && synaprestBoxItem.unitValue == 500
                     && synaprestInjectorItem != null
+                    && synaprestInjectorItem.identifier == SynaprestContent.VanillaInjectorId
                     && synaprestInjectorItem.unitValue == 350
+                    && !synaprestInjectorItem.IsTag("MOD_ID_TAG")
                     && speedOk;
                 log.Log(Prefix + "synaprest chain: activated=" + synActivated + "µL crude=" + synCrude
                     + "µL api=" + synApi + "µL alcoholLeft=" + synAlcoholLeft
@@ -633,6 +638,59 @@ namespace PrecisionLab
                     + "µL recoveredAlcohol=" + immRecoveredAlcohol + "µL api=" + immApi
                     + "µL denatured=" + immDenatured + "µL crudeLeft=" + immCrudeLeft
                     + "µL recipes=" + immRecipesOk + " serumBottle=" + (immuneSerumItem != null));
+                // --- 8h. Blue Blood chain (bio-gel -> acidic gel -> crude -> medical) -------------
+                blueGelCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(blueGelCup, true);
+                LiquidTools.SetLiquidRaw(blueGelCup, CustomLiquids.BioGelBase, 2000);
+                LiquidTools.SetLiquidRaw(blueGelCup, "water", 1000);
+                LiquidTools.SetLiquidRaw(blueGelCup, "acid", 5);
+                SetTemperature(blueGelCup, 30.0);
+                PulseStep(blueGelCup, BlueBloodChemistry.StepSolubilise);
+                int acidicGel = LiquidTools.GetLiquidAmount(blueGelCup, CustomLiquids.AcidicGel);
+                LiquidTools.SetLiquidRaw(blueGelCup, "reducing_agent", 1000);
+                LiquidTools.SetLiquidRaw(blueGelCup, "lipobond_agent", 1000);
+                PulseStep(blueGelCup, BlueBloodChemistry.StepCrosslink);
+                int crudeBlueGel = LiquidTools.GetLiquidAmount(blueGelCup, CustomLiquids.CrudeBlueGel);
+                int blueContaminant = LiquidTools.GetLiquidAmount(blueGelCup, "chemical_contaminant");
+                // B3 must refuse impure crude gel (purity 1000/1050 = 95.2% < 99%).
+                PulseStep(blueGelCup, BlueBloodChemistry.StepMedicalGrade);
+                int medicalBeforePurify = LiquidTools.GetLiquidAmount(blueGelCup, CustomLiquids.MedicalBlueGel);
+                // Simulate the purification machine having removed the contaminant.
+                LiquidTools.SetLiquidRaw(blueGelCup, "chemical_contaminant", 0);
+                PulseStep(blueGelCup, BlueBloodChemistry.StepMedicalGrade);
+                int medicalBlueGel = LiquidTools.GetLiquidAmount(blueGelCup, CustomLiquids.MedicalBlueGel);
+
+                blueGelWasteCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(blueGelWasteCup, true);
+                LiquidTools.SetLiquidRaw(blueGelWasteCup, CustomLiquids.AcidicGel, 1000);
+                LiquidTools.SetLiquidRaw(blueGelWasteCup, "reducing_agent", 1000);
+                LiquidTools.SetLiquidRaw(blueGelWasteCup, "lipobond_agent", 1000);
+                SetTemperature(blueGelWasteCup, 50.0);
+                PulseStep(blueGelWasteCup, BlueBloodChemistry.StepCrosslink);
+                int blueDenatured = LiquidTools.GetLiquidAmount(blueGelWasteCup, CustomLiquids.DenaturedBlueGelWaste);
+                int blueWasteCrude = LiquidTools.GetLiquidAmount(blueGelWasteCup, CustomLiquids.CrudeBlueGel);
+
+                BlueBloodContent.EnsureRecipes();
+                bool blueRecipesOk = ChemFinisherRecipe.GetRecipeById(BlueBloodContent.VanillaBagId) != null
+                    && ChemFinisherRecipe.GetRecipeById(BlueBloodContent.VanillaBagId).activeIngredientId == CustomLiquids.MedicalBlueGel
+                    && ChemFinisherRecipe.GetRecipeById(BlueBloodContent.VanillaBagId).requiredVolume == BlueBloodContent.BagVolume;
+                bioGelBottleItem = BlueBloodContent.CreateBioGelBottle();
+                bool blueBloodOk = acidicGel == 1000
+                    && crudeBlueGel == 1000
+                    && blueContaminant > 0
+                    && medicalBeforePurify == 0
+                    && medicalBlueGel == 1000
+                    && blueDenatured == 1000
+                    && blueWasteCrude == 0
+                    && blueRecipesOk
+                    && bioGelBottleItem != null
+                    && bioGelBottleItem.unitValue == 120
+                    && LiquidTools.GetLiquidAmount(bioGelBottleItem, CustomLiquids.BioGelBase) == 20000;
+                log.Log(Prefix + "blue blood chain: acidic=" + acidicGel + "µL crude=" + crudeBlueGel
+                    + "µL contaminant=" + blueContaminant + "µL medicalBeforePurify=" + medicalBeforePurify
+                    + "µL medical=" + medicalBlueGel + "µL denatured=" + blueDenatured
+                    + "µL wasteCrude=" + blueWasteCrude + "µL recipes=" + blueRecipesOk
+                    + " bioGelBottle=" + (bioGelBottleItem != null));
 
                 apiItem = AdrenalineContent.CreateApi();
                 penItem = AdrenalineContent.CreatePen();
@@ -830,7 +888,7 @@ namespace PrecisionLab
                     + " hydrolysis=" + hydrolysis + " digestion=" + digestion + " cultivator=" + cultivatorOk
                     + " adrenaline=" + adrenalineOk + " adrenalineItems=" + adrenalineItemsOk
                     + " tourniquet=" + tourniquetOk
-                    + " recycle=" + recycleOk + " naloxone=" + naloxoneOk + " pills=" + pillOk + " synaprest=" + synaprestOk + " apothecary=" + apothecaryOk + " immunivax=" + immunivaxOk);
+                    + " recycle=" + recycleOk + " naloxone=" + naloxoneOk + " pills=" + pillOk + " synaprest=" + synaprestOk + " apothecary=" + apothecaryOk + " immunivax=" + immunivaxOk + " blueBlood=" + blueBloodOk);
             }
             catch (Exception e)
             {
@@ -877,6 +935,9 @@ namespace PrecisionLab
                 DestroyQuietly(immunivaxCup);
                 DestroyQuietly(immunivaxWasteCup);
                 DestroyQuietly(immuneSerumItem);
+                DestroyQuietly(blueGelCup);
+                DestroyQuietly(blueGelWasteCup);
+                DestroyQuietly(bioGelBottleItem);
             }
         }
 

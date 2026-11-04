@@ -38,6 +38,7 @@ namespace PrecisionLab
                     RetiredChemistStock.TryAddPillKits();
                     RetiredChemistStock.TryAddSynaprestKit();
                     RetiredChemistStock.TryAddImmunivaxStock();
+                    RetiredChemistStock.TryAddBlueBloodStock();
                 };
             }
             catch (Exception e)
@@ -215,6 +216,33 @@ namespace PrecisionLab
             catch (Exception e)
             {
                 Debug.LogWarning("[PrecisionLab] retired chemist immune serum stock failed: " + e);
+            }
+        }
+
+        /// <summary>After the "More Medicines" unlock the retired chemist also sells bio-gel matrix.</summary>
+        internal static void TryAddBlueBloodStock()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.BioGelBottle);
+                store.AddDirectSellingItemToTable(ItemIds.BlueBloodBox);
+                Debug.Log("[PrecisionLab] retired chemist offers bio-gel matrix and blue blood kit");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist bio-gel stock failed: " + e);
             }
         }
 

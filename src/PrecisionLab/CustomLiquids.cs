@@ -49,7 +49,12 @@ namespace PrecisionLab
         internal const string ImmunoglobulinSuspension = "immunoglobulin_suspension";
         internal const string CrudeImmunoglobulin = "crude_immunoglobulin";
         internal const string ImmunoglobulinApi = "immunoglobulin_api";
-        internal const string DenaturedWaste = "denatured_immunoglobulin_waste"; // 肾上腺素药液
+        internal const string DenaturedWaste = "denatured_immunoglobulin_waste";
+        internal const string BioGelBase = "bio_gel_base";
+        internal const string AcidicGel = "acidic_gel";
+        internal const string CrudeBlueGel = "crude_blue_gel";
+        internal const string MedicalBlueGel = "medical_blue_gel";
+        internal const string DenaturedBlueGelWaste = "denatured_blue_gel_waste"; // 肾上腺素药液
 
         private static bool _registered;
 
@@ -94,7 +99,12 @@ namespace PrecisionLab
                 AddLiquid(CrudeImmunoglobulin, "liquid.crude_immunoglobulin", "Crude Immunoglobulin", "e8d8b0", false);
                 AddLiquid(ImmunoglobulinApi, "liquid.immunoglobulin_api", "Immunivax API Solution", "e0f0f8", false);
                 AddLiquid(DenaturedWaste, "liquid.denatured_waste", "Denatured Protein Waste", "8a7a6a", true);
-                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 32 + ")");
+                AddLiquid(BioGelBase, "liquid.bio_gel_base", "Bio-Gel Matrix", "c8e8f0", false);
+                AddLiquid(AcidicGel, "liquid.acidic_gel", "Acidic Gel", "b0d8e8", false);
+                AddLiquid(CrudeBlueGel, "liquid.crude_blue_gel", "Crude Blue Gel", "6ac8e8", false);
+                AddLiquid(MedicalBlueGel, "liquid.medical_blue_gel", "Medical-Grade Blue Gel", "4ab8e0", false);
+                AddLiquid(DenaturedBlueGelWaste, "liquid.denatured_blue_gel_waste", "Denatured Gel Waste", "6a6a7a", true);
+                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 37 + ")");
             }
             catch (Exception e)
             {
@@ -139,6 +149,11 @@ namespace PrecisionLab
                 SetName(CrudeImmunoglobulin, "liquid.crude_immunoglobulin", "Crude Immunoglobulin");
                 SetName(ImmunoglobulinApi, "liquid.immunoglobulin_api", "Immunivax API Solution");
                 SetName(DenaturedWaste, "liquid.denatured_waste", "Denatured Protein Waste");
+                SetName(BioGelBase, "liquid.bio_gel_base", "Bio-Gel Matrix");
+                SetName(AcidicGel, "liquid.acidic_gel", "Acidic Gel");
+                SetName(CrudeBlueGel, "liquid.crude_blue_gel", "Crude Blue Gel");
+                SetName(MedicalBlueGel, "liquid.medical_blue_gel", "Medical-Grade Blue Gel");
+                SetName(DenaturedBlueGelWaste, "liquid.denatured_blue_gel_waste", "Denatured Gel Waste");
             }
             catch (Exception e)
             {
@@ -161,6 +176,8 @@ namespace PrecisionLab
                 || liquidId == ImmuneSerum || liquidId == ImmunoglobulinSuspension
                 || liquidId == CrudeImmunoglobulin || liquidId == ImmunoglobulinApi
                 || liquidId == DenaturedWaste
+                || liquidId == BioGelBase || liquidId == AcidicGel || liquidId == CrudeBlueGel
+                || liquidId == MedicalBlueGel || liquidId == DenaturedBlueGelWaste
                 || liquidId == Thebaine || liquidId == ContraceptiveApi || liquidId == SannaiApi;
         }
 

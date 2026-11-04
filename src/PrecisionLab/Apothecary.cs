@@ -272,13 +272,14 @@ namespace PrecisionLab
             ItemIds.NaloxoneBox,
             ItemIds.BirthControlBox,
             ItemIds.SannaiBox,
-            ItemIds.SynaprestBox
+            ItemIds.SynaprestBox,
+            ItemIds.BlueBloodBox
         };
 
         private static void AddRandomPrecursorKits()
         {
             int[] order = ShuffledIndices(PrecursorKitPool.Length);
-            int count = UnityEngine.Random.Range(2, 4);
+            int count = UnityEngine.Random.Range(3, 6);
             for (int i = 0; i < count && i < order.Length; i++)
             {
                 PlayerStore.Instance.AddDirectSellingItemToTable(PrecursorKitPool[order[i]]);
@@ -295,6 +296,7 @@ namespace PrecisionLab
             CustomLiquids.HydroxymethylBase,
             CustomLiquids.ResolvingAgent,
             CustomLiquids.ImmuneSerum,
+            CustomLiquids.BioGelBase,
             "acid",
             "reducing_agent",
             "lipobond_agent",
@@ -304,7 +306,7 @@ namespace PrecisionLab
 
         private static readonly int[] LooseBottlePrices =
         {
-            150, 150, 60, 60, 40, 40, 40, 120, 20, 20, 30, 20, 20
+            150, 150, 60, 60, 40, 40, 40, 120, 120, 20, 20, 30, 20, 20
         };
 
         private static readonly string[] LooseBottleContainers =
@@ -319,7 +321,7 @@ namespace PrecisionLab
         private static readonly string[] FinishedMedicineIds =
         {
             ItemIds.Pen,
-            ItemIds.SynaprestInjector,
+            "black_injector",
             "pure_white_injector",
             "birth_control_pill",
             "zyanide_pill"

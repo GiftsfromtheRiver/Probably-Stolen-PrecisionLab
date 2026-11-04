@@ -3,34 +3,30 @@
 
 [b]内容[/b]
 - 精确取液器：1 µL 精度、双击设置量程、即时生效、三种方向模式
-- 提纯机器：物理/化学/重金属/生物污染物，单行六格（含废料输出位与提纯上限）、说明便签
-- 微生物培养机：营养果养菌、糖→有机废物、低糖休眠、活性实时显示
-- 淀粉水解：淀粉 + 酸 40–60°C → 糖（酸为催化剂）
-- 肾上腺素注射笔、纳洛酮（纳洛通）、避孕药、山奈德片、赛普那斯注射器生产线
-- 免疫宁生产线：采购免疫血清，冷酒精沉淀 → 26–40°C 精准浓缩（超过 40°C 蛋白变性报废）→ 透析 → 成型机灌装原版免疫宁注射器
-- 简易止血带：韧棉织物 + 废金属/金属锭拖拽合成，开局可用，基础价值 150
-- 药剂师：黑网解锁（1800），电话预约，次日第一个到店，冷却 3 天；出售随机原料盒、散装试剂瓶和随机品质成品药
-- 拆分剂补充装：2 × 20 毫升，64 信用点
-- 《精密实验室配方手册》：游戏内书籍，7 页配方
+- 提纯机器、微生物培养机、淀粉水解
+- 肾上腺素注射笔、纳洛酮（纳洛通）、避孕药、山奈德片、赛纳普斯注射器、免疫宁注射器生产线
+- 蓝血生物凝胶生产线：生物胶基/蓝血原料盒 → 冷溶胶 → 26–40°C 交联显色 → 提纯至 ≥99% → 成型机压制原版「一袋“蓝血”」
+- 简易止血带、药剂师（电话预约，3–5 种随机原料盒/散装试剂/随机品质成品药）、拆分剂补充装 2×20mL
+- 《精密实验室配方手册》：8 页配方
 
 [b]纯度与鉴别[/b]
-- 避孕药 B3 直接生成原版避孕激素，山奈德 S2 直接生成原版山奈德；压片保留真实纯度（100% → 单成分实验室纯，含杂质 → 主成分 + 杂质）。
-- 纳洛通 / 赛普那斯灌注要求主成分 ≥99%。
-- 免疫宁：≥99% 为完整正品；低于 99% 仍可压制，但瓶体随机出现 1–4 个鉴别问题（指示灯/编号/标签/颜色/瓶体裂纹），纯度越低问题越多。
+- 纳洛通 / 赛纳普斯 / 蓝血灌装要求主成分 ≥99%
+- 免疫宁 ≥99% 为正品，低于 99% 随机 1–4 个鉴别缺陷
+- 避孕药/山奈德片压片保留真实纯度；肾上腺素笔纯度提示已修复
 
 [b]原料盒[/b]
-3×2 格管制化学品瓶架外观（透明底、五条生产线液体颜色不同），非违禁品。
+六种原料盒统一 3×2 格管制化学瓶架外观（透明底，各生产线液体颜色不同，蓝血为蓝色），非违禁品。
 
 [b]反应速度[/b]
-所有化学链每 tick 转化率 20%（原 2%），一批 20000 µL 约 15–25 秒完成。
+所有化学链每 tick 转化率 20%（原 2%）。
 
 [b]获取[/b]
-黑网（游戏内手机）→「精密实验室」页签购买升级；之后杰克逊博士/退休化学家供应机器、原料盒与免疫血清。
+黑网（游戏内手机）→「精密实验室」页签购买升级；之后杰克逊博士/退休化学家供应机器、原料盒与起始原料。
 
 [b]安装[/b]
 Steam 创意工坊订阅后，在游戏内 Mods 菜单启用并信任；需要游戏版本 0.46D。
 
 [b]English[/b]
-A local content mod for Probably Stolen 0.46D: precision extractor, purifier, cultivator, starch hydrolysis, adrenaline/naloxone/contraceptive/Sannai/Synaprest lines, an Immunivax line (immune serum, cold alcohol precipitation, strict 26–40 °C concentration, dialysis, vanilla Immunivax injector), makeshift tourniquet, phone-booked Apothecary, 2-vial refill packs, and a 7-page recipe book. Immunivax ≥99% purity is genuine; lower purity presses produce 1–4 random authenticity defects. Naloxone/Synaprest require ≥99%.
+A local content mod for Probably Stolen 0.46D: precision extractor, purifier, cultivator, starch hydrolysis, six production lines (adrenaline, naloxone, contraceptive, Sannai, Synaprest, Immunivax) plus Blue Blood bio-gel; all final vanilla medicines are pressed as vanilla items with no mod source line. Phone-booked Apothecary, 2-vial refill packs, 8-page recipe book. Kits use custom 3×2 transparent reagent-rack art (blue for Blue Blood).
 
-Version 1.10.5 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab
+Version 1.11.4 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab

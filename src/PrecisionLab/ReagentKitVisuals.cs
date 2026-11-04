@@ -16,7 +16,8 @@ namespace PrecisionLab
             { ItemIds.NaloxoneBox, SpriteKeys.ReagentKitNaloxone },
             { ItemIds.BirthControlBox, SpriteKeys.ReagentKitBirthControl },
             { ItemIds.SannaiBox, SpriteKeys.ReagentKitSannai },
-            { ItemIds.SynaprestBox, SpriteKeys.ReagentKitSynaprest }
+            { ItemIds.SynaprestBox, SpriteKeys.ReagentKitSynaprest },
+            { ItemIds.BlueBloodBox, SpriteKeys.ReagentKitBlueBlood }
         };
 
         internal static bool HasArt(string itemId)

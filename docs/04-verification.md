@@ -630,10 +630,10 @@ v1.2.9 增加：提纯机/培养机显式 EnableTag("TURBO_BOOST_ELIGIBLE_TAG")�
 新增两个原料盒（各 120c）由退休化学家在 MEDS 解锁后出售；配方手册加第 4/5 页；一盒各 4 片。
 说明：成型机只能处理液体，故原“原料药＋微量碱/水压片”合并为成型机最终压制配方。
 自检新增两条链断言与 pills 标志。
-## v1.6.0 赛普那斯链 + 反应速度（2026-11-02）
+## v1.6.0 赛纳普斯链 + 反应速度（2026-11-02）
 
 新增 4 种液体（neural_ligand/activated_ligand/synaprest_crude/synaprest_api）、C1–C4 反应、
-赛普那斯原料盒（500c，6 瓶）、赛普那斯注射器（350，MEDICAL+LUXURY）：随机清除一项成瘾（与原版一致），
+赛纳普斯原料盒（500c，6 瓶）、赛纳普斯注射器（350，MEDICAL+LUXURY）：随机清除一项成瘾（与原版一致），
 附 3 天「快感缺失」perk（好运 -15，逐日递减/移除），3 次使用后形成依赖 perk（每天 10% 概率
 重新获得药物成瘾）。mod perk 通过 StartingPerkList.RegisterModPerk 注册；GetLuck Harmony postfix。
 所有链每 tick 转化率由 2% 提升至 20%（最后 100 µL 收尾）。

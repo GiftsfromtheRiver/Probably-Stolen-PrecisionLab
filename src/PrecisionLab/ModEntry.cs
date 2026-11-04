@@ -167,9 +167,11 @@ namespace PrecisionLab
                 bool synaprestBox = directory.Has(ItemIds.SynaprestBox) || directory.Add(ItemIds.SynaprestBox, SynaprestContent.CreateSupplyBox);
                 bool synaprestInjector = directory.Has(ItemIds.SynaprestInjector) || directory.Add(ItemIds.SynaprestInjector, SynaprestContent.CreateInjector);
                 bool immuneSerum = directory.Has(ItemIds.ImmuneSerumBottle) || directory.Add(ItemIds.ImmuneSerumBottle, ImmunivaxContent.CreateImmuneSerumBottle);
+                bool bioGel = directory.Has(ItemIds.BioGelBottle) || directory.Add(ItemIds.BioGelBottle, BlueBloodContent.CreateBioGelBottle);
+                bool blueBloodBox = directory.Has(ItemIds.BlueBloodBox) || directory.Add(ItemIds.BlueBloodBox, BlueBloodContent.CreateSupplyBox);
                 if (extractor || purifier || cultivator || supplyBox || api || pen || waste || tourniquet || resolvingBottle || resolvingRefill
                     || naloxoneBox || naloxoneApi || birthControlBox || sannaiBox
-                    || synaprestBox || synaprestInjector || immuneSerum)
+                    || synaprestBox || synaprestInjector || immuneSerum || bioGel || blueBloodBox)
                 {
                     _log.Log("items registered in mod item directory: extractor=" + extractor
                         + " purifier=" + purifier + " cultivator=" + cultivator
@@ -180,7 +182,7 @@ namespace PrecisionLab
                         + " naloxoneBox=" + naloxoneBox + " naloxoneApi=" + naloxoneApi
                         + " birthControlBox=" + birthControlBox + " sannaiBox=" + sannaiBox
                         + " synaprestBox=" + synaprestBox + " synaprestInjector=" + synaprestInjector
-                        + " immuneSerum=" + immuneSerum);
+                        + " immuneSerum=" + immuneSerum + " bioGel=" + bioGel + " blueBloodBox=" + blueBloodBox);
                 }
             }
             catch (Exception e)
@@ -357,6 +359,7 @@ namespace PrecisionLab
                 PillContent.EnsureRecipes();
                 SynaprestContent.EnsureRecipes();
                 ImmunivaxContent.EnsureRecipes();
+                BlueBloodContent.EnsureRecipes();
                 TourniquetCraft.OnUnlocked();
                 RecipeBook.EnsureDelivered();
             }
@@ -418,6 +421,7 @@ namespace PrecisionLab
                 PillContent.EnsureRecipes();
                 SynaprestContent.EnsureRecipes();
                 ImmunivaxContent.EnsureRecipes();
+                BlueBloodContent.EnsureRecipes();
                 Apothecary.EnsureUnlockedState();
                 RecipeBook.EnsureDelivered();
             }

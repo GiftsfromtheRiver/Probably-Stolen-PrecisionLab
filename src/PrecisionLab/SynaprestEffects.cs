@@ -49,7 +49,7 @@ namespace PrecisionLab
                     rawName = Loc.Get("perk.synaprest_anhedonia.name", "快感缺失 / Anhedonia"),
                     rawDescription = Loc.Get(
                         "perk.synaprest_anhedonia.desc",
-                        "赛普那斯抑制了大脑奖励机制：好运 -15，持续 3 天。"),
+                        "赛纳普斯抑制了大脑奖励机制：好运 -15，持续 3 天。"),
                     source = Loc.ModId
                 });
                 StartingPerkList.RegisterModPerk(new StartingPerk
@@ -58,10 +58,10 @@ namespace PrecisionLab
                     type = StartingPerk.StartingPerkType.NEGATIVE,
                     cost = 0,
                     mindEditable = false,
-                    rawName = Loc.Get("perk.synaprest_dependency.name", "赛普那斯依赖 / Synaprest Dependency"),
+                    rawName = Loc.Get("perk.synaprest_dependency.name", "赛纳普斯依赖 / Synaprest Dependency"),
                     rawDescription = Loc.Get(
                         "perk.synaprest_dependency.desc",
-                        "连续使用赛普那斯超过 3 次形成的轻度依赖；每天醒来有概率重新出现药物成瘾。"),
+                        "连续使用赛纳普斯超过 3 次形成的轻度依赖；每天醒来有概率重新出现药物成瘾。"),
                     source = Loc.ModId
                 });
                 StartingPerkList.RegisterModPerk(new StartingPerk
@@ -70,10 +70,10 @@ namespace PrecisionLab
                     type = StartingPerk.StartingPerkType.NEUTRAL,
                     cost = 0,
                     mindEditable = false,
-                    rawName = Loc.Get("perk.synaprest_use_count.name", "赛普那斯使用次数 / Synaprest Uses"),
+                    rawName = Loc.Get("perk.synaprest_use_count.name", "赛纳普斯使用次数 / Synaprest Uses"),
                     rawDescription = Loc.Get(
                         "perk.synaprest_use_count.desc",
-                        "累计使用赛普那斯的次数；达到 3 次会形成依赖。"),
+                        "累计使用赛纳普斯的次数；达到 3 次会形成依赖。"),
                     source = Loc.ModId
                 });
                 Debug.Log("[PrecisionLab] synaprest perks registered");
@@ -117,7 +117,7 @@ namespace PrecisionLab
                 }
                 string msg = Loc.Get(
                     "mech.synaprest.use",
-                    "赛普那斯注射器：随机清除了 {0} 项成瘾（原版效果），但奖励机制被抑制（快感缺失 3 天，好运 -15）。");
+                    "赛纳普斯注射器：随机清除了 {0} 项成瘾（原版效果），但奖励机制被抑制（快感缺失 3 天，好运 -15）。");
                 string text = string.Format(msg, cured);
                 AddNightLog(text, "b45cff");
                 Debug.Log("[PrecisionLab] synaprest used: cured=" + cured + " uses=" + uses);
@@ -139,7 +139,7 @@ namespace PrecisionLab
                     if (daysLeft <= 0)
                     {
                         StartingPerk.RemovePerk(AnhedoniaPerk);
-                        AddNightLog(Loc.Get("mech.synaprest.anhedonia_over", "赛普那斯的影响消退了：快感缺失结束。"), "9cc3ff");
+                        AddNightLog(Loc.Get("mech.synaprest.anhedonia_over", "赛纳普斯的影响消退了：快感缺失结束。"), "9cc3ff");
                     }
                     else
                     {
@@ -149,7 +149,7 @@ namespace PrecisionLab
                 if (IsDependencyActive() && RNG.Roll(10) && !StartingPerk.IsPerkActive("narcotic_addiction"))
                 {
                     PlayerStore.Instance.startingPerks.Add(StartingPerkList.NarcoticAddiction());
-                    AddNightLog(Loc.Get("mech.synaprest.craving", "赛普那斯依赖发作：你又对药物产生了渴望（获得药物成瘾）。"), "b45cff");
+                    AddNightLog(Loc.Get("mech.synaprest.craving", "赛纳普斯依赖发作：你又对药物产生了渴望（获得药物成瘾）。"), "b45cff");
                 }
             }
             catch (Exception e)

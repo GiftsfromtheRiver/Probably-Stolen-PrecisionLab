@@ -28,6 +28,7 @@ namespace PrecisionLab
             PillChemistry.React(container);
             SynaprestChemistry.React(container);
             ImmunivaxChemistry.React(container);
+            BlueBloodChemistry.React(container);
         }
     }
 
