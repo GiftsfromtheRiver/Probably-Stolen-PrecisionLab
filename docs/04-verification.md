@@ -264,7 +264,7 @@ With `dev.txt` present (verified, screenshots in `tools/verify/evidence/`):
 1. Normal play path (no dev tools): in-game **phone → Wild Network → "Precision Lab" tab**, buy
    *精确取液器 / Precision Liquid Extractor* (1200 credits) or *提纯机器 / Purification Machine*
    (2400) — delivered to the store inventory. Also low chance in `medicalTable` / `junkTable` loot
-   (the mod patches those loot tables), and existing saves get the items added on load.
+   (loot-table drops were removed after balance feedback; machines come from unlocks/Jackson), and existing saves get the items added on load.
 2. Verification/dev path: add empty `dev.txt` next to `Probably Stolen.exe`, load a save, press
    **F9 → Spawn → "PrecisionLab: spawn extractor"** (or *Open Debug Spawner* and search
    `precision_liquid_extractor` / `precision_purifier`). Both were confirmed spawnable in a loaded
