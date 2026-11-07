@@ -243,3 +243,56 @@ item.blue_blood.recipe_name,Blue Blood
 item.blue_blood_box.name,Blue Blood Precursor Kit
 item.blue_blood_box.desc,Activate to unpack exactly one Blue Blood batch: bio-gel matrix 20 mL, water 10 mL, trace acid 50 uL, reducing agent 10 mL, lipobond agent 10 mL.
 item.blue_blood_box.flavor,The label simply says "bio-gel material".
+liquid.oxidizer,Oxidizer
+liquid.metal_powder,Metal Powder
+liquid.nitrating_acid,Nitrating Acid
+liquid.flash_powder,Flash Composition
+liquid.smoke_composition,Smoke Composition
+liquid.nitro_base,Nitro Base
+liquid.plastic_putty,Plastic Explosive Putty
+liquid.ordnance_waste,Burnt Ordnance Waste
+item.oxidizer_bottle.name,Oxidizer Bottle (20 mL)
+item.oxidizer_bottle.desc,A 20 mL bottle of oxidizer used by flash and smoke compositions.
+item.metal_powder_bottle.name,Metal Powder Bottle (20 mL)
+item.metal_powder_bottle.desc,A 20 mL suspension of finely divided metal powder for flash compositions.
+item.nitrating_acid_bottle.name,Nitrating Acid Bottle (20 mL)
+item.nitrating_acid_bottle.desc,A 20 mL bottle of nitrating acid. Keep below 40 C or the batch runs away.
+item.flashbang_chip.name,3D Printer Chip: Flashbang Shell
+item.flashbang_chip.desc,Item ID: printer_chip_flashbang_shell. Put it in a 3D printer to print an empty flashbang shell.
+item.smoke_chip.name,3D Printer Chip: Smoke Grenade Shell
+item.smoke_chip.desc,Item ID: printer_chip_smoke_shell. Put it in a 3D printer to print an empty smoke grenade shell.
+item.charge_chip.name,3D Printer Chip: Explosive Charge Shell
+item.charge_chip.desc,Item ID: printer_chip_explosive_shell. Put it in a 3D printer to print an empty explosive charge shell.
+item.flashbang_shell.name,Empty Flashbang Shell
+item.flashbang_shell.desc,An empty printed flashbang shell. Drag a flash filling onto it to finish the grenade.
+item.smoke_shell.name,Empty Smoke Grenade Shell
+item.smoke_shell.desc,An empty printed smoke grenade shell. Drag a smoke filling onto it to finish the grenade.
+item.charge_shell.name,Empty Explosive Charge Shell
+item.charge_shell.desc,An empty printed explosive charge shell. Drag an explosive filling onto it to finish the charge.
+item.flash_filling.name,Flash Filling
+item.flash_filling.desc,The active filling for a printed flashbang shell. Drag it onto the shell.
+item.smoke_filling.name,Smoke Filling
+item.smoke_filling.desc,The active filling for a printed smoke grenade shell. Drag it onto the shell.
+item.explosive_filling.name,Plastic Explosive Filling
+item.explosive_filling.desc,The active filling for a printed explosive charge shell. Drag it onto the shell.
+item.flash_filling.recipe_name,Flash Filling
+item.smoke_filling.recipe_name,Smoke Filling
+item.explosive_filling.recipe_name,Plastic Explosive Filling
+item.plastic_explosive.name,Plastic Explosive Charge
+item.plastic_explosive.desc,A military-grade plastic explosive charge, moulded around a detonator. Plant it on a target and get clear.
+item.plastic_explosive.flavor,No serial number. No manufacturer. Just enough putty to ruin someone's day.
+item.immunivax_box.name,Immunivax Precursor Kit
+item.immunivax_box.desc,Activate to unpack one Immunivax batch: immune serum 20 mL x2, alcohol 20 mL x2, water 10 mL.
+item.immunivax_box.flavor,Keep cold. Do not ask what is in it.
+item.ordnance_box.name,Ordnance Precursor Kit
+item.ordnance_box.desc,Activate to unpack ordnance materials: oxidizer 20 mL x2, metal powder 20 mL, nitrating acid 20 mL, sugar 20 mL, alcohol 20 mL, lipobond 20 mL x2, stabilizing agent 20 mL.
+item.ordnance_box.flavor,High contraband. No army will admit this crate exists.
+item.mystery_med_box.name,Sealed Reagent Crate
+item.mystery_med_box.desc,A sealed reagent crate. Contents are locked before purchase; after buying it, double-click to open and get 5-10 random raw reagent bottles for the production lines.
+item.mystery_med_box.flavor,Manifest says: assorted laboratory reagents. The seal says: no refunds.
+item.sugar_bottle.name,Sugar Bottle (20 mL)
+item.sugar_bottle.desc,A 20 mL bottle of sugar used in smoke composition.
+item.stabilizing_bottle.name,Stabilizing Agent Bottle (20 mL)
+item.stabilizing_bottle.desc,A 20 mL bottle of stabilizing agent used in plastic explosive putty.
+mech.ordnance.wrong_composition,Wrong composition: this filling does not match the shell; assembly refused.
+mech.chem.output_space,Output grid full: clear the Chem Finisher output first; the input will not be consumed.

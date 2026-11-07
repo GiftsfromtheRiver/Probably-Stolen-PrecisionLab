@@ -242,3 +242,56 @@ item.blue_blood.recipe_name,蓝血
 item.blue_blood_box.name,蓝血原料盒
 item.blue_blood_box.desc,激活拆开得到刚好一锅蓝血原料：生物胶基 20 毫升、水 10 毫升、微量酸 50 微升、还原剂 10 毫升、脂合剂 10 毫升。
 item.blue_blood_box.flavor,标签只写“生物凝胶原料”。
+liquid.oxidizer,氧化剂
+liquid.metal_powder,金属粉末
+liquid.nitrating_acid,硝化酸
+liquid.flash_powder,闪光药剂
+liquid.smoke_composition,发烟剂
+liquid.nitro_base,硝化基质
+liquid.plastic_putty,塑性炸药膏
+liquid.ordnance_waste,烧毁的军需废液
+item.oxidizer_bottle.name,氧化剂瓶（20 毫升）
+item.oxidizer_bottle.desc,一整瓶 20 毫升氧化剂，用于闪光药剂与发烟剂。
+item.metal_powder_bottle.name,金属粉末瓶（20 毫升）
+item.metal_powder_bottle.desc,一整瓶 20 毫升金属粉末悬浮液，用于闪光药剂。
+item.nitrating_acid_bottle.name,硝化酸瓶（20 毫升）
+item.nitrating_acid_bottle.desc,一整瓶 20 毫升硝化酸。温度高于 40°C 会失控。
+item.flashbang_chip.name,3D打印芯片：闪光弹外壳
+item.flashbang_chip.desc,物品 ID：printer_chip_flashbang_shell。放进 3D 打印机可打印闪光弹空壳，消耗打印塑料与废金属。
+item.smoke_chip.name,3D打印芯片：烟雾弹外壳
+item.smoke_chip.desc,物品 ID：printer_chip_smoke_shell。放进 3D 打印机可打印烟雾弹空壳，消耗打印塑料与废金属。
+item.charge_chip.name,3D打印芯片：塑性炸药外壳
+item.charge_chip.desc,物品 ID：printer_chip_explosive_shell。放进 3D 打印机可打印塑性炸药空壳，消耗打印塑料与废金属。
+item.flashbang_shell.name,闪光弹空壳
+item.flashbang_shell.desc,打印出来的空壳。把闪光药剂芯拖到它上面完成组装。
+item.smoke_shell.name,烟雾弹空壳
+item.smoke_shell.desc,打印出来的空壳。把发烟药剂芯拖到它上面完成组装。
+item.charge_shell.name,塑性炸药空壳
+item.charge_shell.desc,打印出来的空壳。把塑性炸药药芯拖到它上面完成组装。
+item.flash_filling.name,闪光药剂芯
+item.flash_filling.desc,闪光弹的有效装药。拖到打印的闪光弹空壳上完成组装。
+item.smoke_filling.name,发烟药剂芯
+item.smoke_filling.desc,烟雾弹的有效装药。拖到打印的烟雾弹空壳上完成组装。
+item.explosive_filling.name,塑性炸药药芯
+item.explosive_filling.desc,塑性炸药的有效装药。拖到打印的塑性炸药空壳上完成组装。
+item.flash_filling.recipe_name,闪光药剂芯
+item.smoke_filling.recipe_name,发烟药剂芯
+item.explosive_filling.recipe_name,塑性炸药药芯
+item.plastic_explosive.name,塑性炸药包
+item.plastic_explosive.desc,军用级塑性炸药，已装入雷管。安放在目标上后立刻撤离。
+item.plastic_explosive.flavor,没有编号，没有厂商，只有足够毁掉某人一天的药量。
+item.immunivax_box.name,免疫宁原料盒
+item.immunivax_box.desc,激活拆开得到一批免疫宁原料：免疫血清 20 毫升 ×2、酒精 20 毫升 ×2、水 10 毫升。
+item.immunivax_box.flavor,冷藏保存，别问里面是什么。
+item.ordnance_box.name,军需原料盒
+item.ordnance_box.desc,激活拆开得到一批军需原料：氧化剂 20 毫升 ×2、金属粉末 20 毫升、硝化酸 20 毫升、糖 20 毫升、酒精 20 毫升、脂合剂 20 毫升 ×2、稳定剂 20 毫升。
+item.ordnance_box.flavor,高违禁品。没有军队会承认这个箱子存在。
+item.mystery_med_box.name,密封药剂原料箱
+item.mystery_med_box.desc,密封的药剂原料箱，购买前无法查看内容；购买后双击打开，里面随机装有 5–10 瓶生产用原料药剂。
+item.mystery_med_box.flavor,清单写着：各类实验室原料。封条写着：概不退换。
+item.sugar_bottle.name,糖浆瓶（20 毫升）
+item.sugar_bottle.desc,一整瓶 20 毫升糖浆，用于发烟剂。
+item.stabilizing_bottle.name,稳定剂瓶（20 毫升）
+item.stabilizing_bottle.desc,一整瓶 20 毫升稳定剂，用于塑性炸药塑化。
+mech.ordnance.wrong_composition,成分不对：这个药芯与外壳不匹配，拒绝组装。
+mech.chem.output_space,输出空间不足：请先清理成型机的输出格，输入原料不会被消耗。

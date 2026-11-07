@@ -54,7 +54,15 @@ namespace PrecisionLab
         internal const string AcidicGel = "acidic_gel";
         internal const string CrudeBlueGel = "crude_blue_gel";
         internal const string MedicalBlueGel = "medical_blue_gel";
-        internal const string DenaturedBlueGelWaste = "denatured_blue_gel_waste"; // 肾上腺素药液
+        internal const string DenaturedBlueGelWaste = "denatured_blue_gel_waste";
+        internal const string Oxidizer = "oxidizer";
+        internal const string MetalPowder = "metal_powder";
+        internal const string NitratingAcid = "nitrating_acid";
+        internal const string FlashPowder = "flash_powder";
+        internal const string SmokeComposition = "smoke_composition";
+        internal const string NitroBase = "nitro_base";
+        internal const string PlasticPutty = "plastic_explosive_putty";
+        internal const string OrdnanceWaste = "ordnance_waste"; // 肾上腺素药液
 
         private static bool _registered;
 
@@ -104,7 +112,15 @@ namespace PrecisionLab
                 AddLiquid(CrudeBlueGel, "liquid.crude_blue_gel", "Crude Blue Gel", "6ac8e8", false);
                 AddLiquid(MedicalBlueGel, "liquid.medical_blue_gel", "Medical-Grade Blue Gel", "4ab8e0", false);
                 AddLiquid(DenaturedBlueGelWaste, "liquid.denatured_blue_gel_waste", "Denatured Gel Waste", "6a6a7a", true);
-                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 37 + ")");
+                AddLiquid(Oxidizer, "liquid.oxidizer", "Oxidizer", "e8c060", false);
+                AddLiquid(MetalPowder, "liquid.metal_powder", "Metal Powder", "b8b8c0", false);
+                AddLiquid(NitratingAcid, "liquid.nitrating_acid", "Nitrating Acid", "d08060", false);
+                AddLiquid(FlashPowder, "liquid.flash_powder", "Flash Composition", "f0e8a0", false);
+                AddLiquid(SmokeComposition, "liquid.smoke_composition", "Smoke Composition", "c8c8c8", false);
+                AddLiquid(NitroBase, "liquid.nitro_base", "Nitro Base", "e0b080", false);
+                AddLiquid(PlasticPutty, "liquid.plastic_putty", "Plastic Explosive Putty", "d8c8b0", false);
+                AddLiquid(OrdnanceWaste, "liquid.ordnance_waste", "Burnt Ordnance Waste", "5a5a4a", true);
+                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 45 + ")");
             }
             catch (Exception e)
             {
@@ -154,6 +170,14 @@ namespace PrecisionLab
                 SetName(CrudeBlueGel, "liquid.crude_blue_gel", "Crude Blue Gel");
                 SetName(MedicalBlueGel, "liquid.medical_blue_gel", "Medical-Grade Blue Gel");
                 SetName(DenaturedBlueGelWaste, "liquid.denatured_blue_gel_waste", "Denatured Gel Waste");
+                SetName(Oxidizer, "liquid.oxidizer", "Oxidizer");
+                SetName(MetalPowder, "liquid.metal_powder", "Metal Powder");
+                SetName(NitratingAcid, "liquid.nitrating_acid", "Nitrating Acid");
+                SetName(FlashPowder, "liquid.flash_powder", "Flash Composition");
+                SetName(SmokeComposition, "liquid.smoke_composition", "Smoke Composition");
+                SetName(NitroBase, "liquid.nitro_base", "Nitro Base");
+                SetName(PlasticPutty, "liquid.plastic_putty", "Plastic Explosive Putty");
+                SetName(OrdnanceWaste, "liquid.ordnance_waste", "Burnt Ordnance Waste");
             }
             catch (Exception e)
             {
@@ -178,6 +202,9 @@ namespace PrecisionLab
                 || liquidId == DenaturedWaste
                 || liquidId == BioGelBase || liquidId == AcidicGel || liquidId == CrudeBlueGel
                 || liquidId == MedicalBlueGel || liquidId == DenaturedBlueGelWaste
+                || liquidId == Oxidizer || liquidId == MetalPowder || liquidId == NitratingAcid
+                || liquidId == FlashPowder || liquidId == SmokeComposition || liquidId == NitroBase
+                || liquidId == PlasticPutty || liquidId == OrdnanceWaste
                 || liquidId == Thebaine || liquidId == ContraceptiveApi || liquidId == SannaiApi;
         }
 

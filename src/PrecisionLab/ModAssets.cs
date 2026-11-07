@@ -24,12 +24,34 @@ namespace PrecisionLab
         internal const string ImmuneSerumBottle = "immune_serum_bottle";
         internal const string BioGelBottle = "bio_gel_base_bottle";
         internal const string BlueBloodBox = "blue_blood_supply_box";
+        internal const string ImmunivaxBox = "immunivax_supply_box";
+        internal const string OrdnanceBox = "ordnance_supply_box";
+        internal const string MysteryMedBox = "mystery_med_supply_box";
+        internal const string OxidizerBottle = "oxidizer_bottle";
+        internal const string MetalPowderBottle = "metal_powder_bottle";
+        internal const string NitratingAcidBottle = "nitrating_acid_bottle";
+        internal const string PlasticExplosive = "plastic_explosive_charge";
+        internal const string FlashbangShell = "flashbang_shell";
+        internal const string SmokeShell = "smoke_shell";
+        internal const string ExplosiveShell = "explosive_charge_shell";
+        internal const string FlashFilling = "flash_filling";
+        internal const string SmokeFilling = "smoke_filling";
+        internal const string ExplosiveFilling = "explosive_filling";
+        internal const string FlashbangChip = "printer_chip_flashbang_shell";
+        internal const string SmokeChip = "printer_chip_smoke_shell";
+        internal const string ChargeChip = "printer_chip_explosive_shell";
         internal const string ReagentKitAdrenaline = "reagent_kit_adrenaline";
         internal const string ReagentKitNaloxone = "reagent_kit_naloxone";
         internal const string ReagentKitBirthControl = "reagent_kit_birth_control";
         internal const string ReagentKitSannai = "reagent_kit_sannai";
         internal const string ReagentKitSynaprest = "reagent_kit_synaprest";
         internal const string ReagentKitBlueBlood = "reagent_kit_blue_blood";
+        internal const string ReagentKitImmunivax = "reagent_kit_immunivax";
+        internal const string ReagentKitOrdnance = "reagent_kit_ordnance";
+        internal const string MysteryMedCrate = "mystery_med_crate";
+        internal const string FillingFlash = "filling_flash";
+        internal const string FillingSmoke = "filling_smoke";
+        internal const string FillingExplosive = "filling_explosive";
     }
 
     internal static class SpriteKeys
@@ -55,12 +77,34 @@ namespace PrecisionLab
         internal const string ImmuneSerumBottle = "immune_serum_bottle";
         internal const string BioGelBottle = "bio_gel_base_bottle";
         internal const string BlueBloodBox = "blue_blood_supply_box";
+        internal const string ImmunivaxBox = "immunivax_supply_box";
+        internal const string OrdnanceBox = "ordnance_supply_box";
+        internal const string MysteryMedBox = "mystery_med_supply_box";
+        internal const string OxidizerBottle = "oxidizer_bottle";
+        internal const string MetalPowderBottle = "metal_powder_bottle";
+        internal const string NitratingAcidBottle = "nitrating_acid_bottle";
+        internal const string PlasticExplosive = "plastic_explosive_charge";
+        internal const string FlashbangShell = "flashbang_shell";
+        internal const string SmokeShell = "smoke_shell";
+        internal const string ExplosiveShell = "explosive_charge_shell";
+        internal const string FlashFilling = "flash_filling";
+        internal const string SmokeFilling = "smoke_filling";
+        internal const string ExplosiveFilling = "explosive_filling";
+        internal const string FlashbangChip = "printer_chip_flashbang_shell";
+        internal const string SmokeChip = "printer_chip_smoke_shell";
+        internal const string ChargeChip = "printer_chip_explosive_shell";
         internal const string ReagentKitAdrenaline = "reagent_kit_adrenaline";
         internal const string ReagentKitNaloxone = "reagent_kit_naloxone";
         internal const string ReagentKitBirthControl = "reagent_kit_birth_control";
         internal const string ReagentKitSannai = "reagent_kit_sannai";
         internal const string ReagentKitSynaprest = "reagent_kit_synaprest";
         internal const string ReagentKitBlueBlood = "reagent_kit_blue_blood";
+        internal const string ReagentKitImmunivax = "reagent_kit_immunivax";
+        internal const string ReagentKitOrdnance = "reagent_kit_ordnance";
+        internal const string MysteryMedCrate = "mystery_med_crate";
+        internal const string FillingFlash = "filling_flash";
+        internal const string FillingSmoke = "filling_smoke";
+        internal const string FillingExplosive = "filling_explosive";
     }
 
     internal static class Tags

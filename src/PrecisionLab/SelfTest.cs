@@ -49,6 +49,11 @@ namespace PrecisionLab
             GameItem blueGelCup = null;
             GameItem blueGelWasteCup = null;
             GameItem bioGelBottleItem = null;
+            GameItem flashCup = null;
+            GameItem smokeCup = null;
+            GameItem chargeCup = null;
+            GameItem chargeHotCup = null;
+            GameItem mysteryCrateItem = null;
             GameItem resolvingBottleItem = null;
             GameItem resolvingRefillItem = null;
             GameItem recipeBookItem = null;
@@ -691,6 +696,94 @@ namespace PrecisionLab
                     + "µL medical=" + medicalBlueGel + "µL denatured=" + blueDenatured
                     + "µL wasteCrude=" + blueWasteCrude + "µL recipes=" + blueRecipesOk
                     + " bioGelBottle=" + (bioGelBottleItem != null));
+                // --- 8i. Military ordnance: flash / smoke / plastic explosive fillings ------------
+                flashCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(flashCup, true);
+                LiquidTools.SetLiquidRaw(flashCup, CustomLiquids.MetalPowder, 1000);
+                LiquidTools.SetLiquidRaw(flashCup, CustomLiquids.Oxidizer, 1000);
+                SetTemperature(flashCup, 30.0);
+                PulseStep(flashCup, OrdnanceChemistry.StepFlashMix);
+                int flashAmount = LiquidTools.GetLiquidAmount(flashCup, CustomLiquids.FlashPowder);
+
+                smokeCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(smokeCup, true);
+                LiquidTools.SetLiquidRaw(smokeCup, "sugar", 1000);
+                LiquidTools.SetLiquidRaw(smokeCup, CustomLiquids.Oxidizer, 1000);
+                LiquidTools.SetLiquidRaw(smokeCup, "lipobond_agent", 1000);
+                SetTemperature(smokeCup, 30.0);
+                PulseStep(smokeCup, OrdnanceChemistry.StepSmokeMix);
+                int smokeAmount = LiquidTools.GetLiquidAmount(smokeCup, CustomLiquids.SmokeComposition);
+
+                chargeCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(chargeCup, true);
+                LiquidTools.SetLiquidRaw(chargeCup, CustomLiquids.NitratingAcid, 1000);
+                LiquidTools.SetLiquidRaw(chargeCup, "alcohol", 1000);
+                SetTemperature(chargeCup, 30.0);
+                PulseStep(chargeCup, OrdnanceChemistry.StepNitration);
+                LiquidTools.SetLiquidRaw(chargeCup, "stabilizing_agent", 1000);
+                LiquidTools.SetLiquidRaw(chargeCup, "lipobond_agent", 1000);
+                PulseStep(chargeCup, OrdnanceChemistry.StepPutty);
+                int puttyAmount = LiquidTools.GetLiquidAmount(chargeCup, CustomLiquids.PlasticPutty);
+
+                chargeHotCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(chargeHotCup, true);
+                LiquidTools.SetLiquidRaw(chargeHotCup, CustomLiquids.NitratingAcid, 1000);
+                LiquidTools.SetLiquidRaw(chargeHotCup, "alcohol", 1000);
+                SetTemperature(chargeHotCup, 50.0);
+                PulseStep(chargeHotCup, OrdnanceChemistry.StepNitration);
+                int burntAmount = LiquidTools.GetLiquidAmount(chargeHotCup, CustomLiquids.OrdnanceWaste);
+                int hotNitro = LiquidTools.GetLiquidAmount(chargeHotCup, CustomLiquids.NitroBase);
+
+                OrdnanceContent.EnsureRecipes();
+                bool ordRecipesOk = ChemFinisherRecipe.GetRecipeById(OrdnanceContent.VanillaFlashbangId) != null
+                    && ChemFinisherRecipe.GetRecipeById(OrdnanceContent.VanillaFlashbangId).activeIngredientId == CustomLiquids.FlashPowder
+                    && ChemFinisherRecipe.GetRecipeById(OrdnanceContent.VanillaFlashbangId).requiredVolume == OrdnanceContent.PressVolume
+                    && ChemFinisherRecipe.GetRecipeById(OrdnanceContent.VanillaSmokeId) != null
+                    && ChemFinisherRecipe.GetRecipeById(OrdnanceContent.VanillaSmokeId).activeIngredientId == CustomLiquids.SmokeComposition
+                    && ChemFinisherRecipe.GetRecipeById(OrdnanceContent.VanillaC4Id) != null
+                    && ChemFinisherRecipe.GetRecipeById(OrdnanceContent.VanillaC4Id).activeIngredientId == CustomLiquids.PlasticPutty;
+                bool ordnanceOk = flashAmount == 1000
+                    && smokeAmount == 1000
+                    && puttyAmount == 1000
+                    && burntAmount == 1000
+                    && hotNitro == 0
+                    && ordRecipesOk;
+                log.Log(Prefix + "ordnance chain: flash=" + flashAmount + "µL smoke=" + smokeAmount
+                    + "µL putty=" + puttyAmount + "µL burnt=" + burntAmount + "µL hotNitro=" + hotNitro
+                    + "µL directRecipes=" + ordRecipesOk);
+                // --- 8j. Sealed random medicine crate -------------------------------------------
+                mysteryCrateItem = MysteryMedBox.CreateStockItem();
+                int mysteryCount = mysteryCrateItem.contentWindow != null
+                    ? GraphUtils.FindChildrenType<GameItem>(mysteryCrateItem.contentWindow).Count
+                    : 0;
+                bool mysteryContentsOk = true;
+                if (mysteryCrateItem.contentWindow != null)
+                {
+                    List<GameItem> mysteryContents = GraphUtils.FindChildrenType<GameItem>(mysteryCrateItem.contentWindow);
+                    for (int mi = 0; mi < mysteryContents.Count; mi++)
+                    {
+                        GameItem content = mysteryContents[mi];
+                        if (content == null || !content.IsTag(MysteryMedBox.ReagentBottleTag))
+                        {
+                            mysteryContentsOk = false;
+                            break;
+                        }
+                    }
+                }
+                bool mysteryOk = mysteryCrateItem != null
+                    && mysteryCrateItem.shape != null
+                    && mysteryCrateItem.shape.width == 3
+                    && mysteryCrateItem.shape.height == 4
+                    && mysteryCrateItem.unitValue == 1500
+                    && mysteryCrateItem.contentWindow != null
+                    && mysteryCount >= MysteryMedBox.MinItems
+                    && mysteryCount <= MysteryMedBox.MaxItems
+                    && mysteryContentsOk
+                    && !mysteryCrateItem.IsTag("CONTAINER_TOOLTIP_TAG");
+                log.Log(Prefix + "mystery med crate: shape="
+                    + (mysteryCrateItem != null && mysteryCrateItem.shape != null ? mysteryCrateItem.shape.width + "x" + mysteryCrateItem.shape.height : "-")
+                    + " contents=" + mysteryCount + " reagents=" + mysteryContentsOk + " value="
+                    + (mysteryCrateItem != null ? mysteryCrateItem.unitValue : -1));
 
                 apiItem = AdrenalineContent.CreateApi();
                 penItem = AdrenalineContent.CreatePen();
@@ -888,7 +981,8 @@ namespace PrecisionLab
                     + " hydrolysis=" + hydrolysis + " digestion=" + digestion + " cultivator=" + cultivatorOk
                     + " adrenaline=" + adrenalineOk + " adrenalineItems=" + adrenalineItemsOk
                     + " tourniquet=" + tourniquetOk
-                    + " recycle=" + recycleOk + " naloxone=" + naloxoneOk + " pills=" + pillOk + " synaprest=" + synaprestOk + " apothecary=" + apothecaryOk + " immunivax=" + immunivaxOk + " blueBlood=" + blueBloodOk);
+                    + " recycle=" + recycleOk + " naloxone=" + naloxoneOk + " pills=" + pillOk + " synaprest=" + synaprestOk + " apothecary=" + apothecaryOk + " immunivax=" + immunivaxOk + " blueBlood=" + blueBloodOk + " ordnance=" + ordnanceOk
+                    + " mystery=" + mysteryOk);
             }
             catch (Exception e)
             {
@@ -938,6 +1032,11 @@ namespace PrecisionLab
                 DestroyQuietly(blueGelCup);
                 DestroyQuietly(blueGelWasteCup);
                 DestroyQuietly(bioGelBottleItem);
+                DestroyQuietly(flashCup);
+                DestroyQuietly(smokeCup);
+                DestroyQuietly(chargeCup);
+                DestroyQuietly(chargeHotCup);
+                DestroyQuietly(mysteryCrateItem);
             }
         }
 

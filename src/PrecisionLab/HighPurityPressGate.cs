@@ -19,7 +19,10 @@ namespace PrecisionLab
         {
             return identifier == "pure_white_injector"
                 || identifier == "black_injector"
-                || identifier == "blue_blood_bag"; // Blue Blood: below 99% it is not synthesised
+                || identifier == "blue_blood_bag" // Blue Blood: below 99% it is not synthesised
+                || identifier == OrdnanceContent.VanillaFlashbangId
+                || identifier == OrdnanceContent.VanillaSmokeId
+                || identifier == OrdnanceContent.VanillaC4Id; // wrong ordnance composition must not output
         }
 
         internal static double GetActivePurity(GameItem container, string activeIngredientId)
@@ -112,7 +115,7 @@ namespace PrecisionLab
                     "mech.chem.purity_too_low",
                     "纯度过低：主成分 {0:F1}%，需要 ≥99% 才能压制（先把杂质去掉）。",
                     purity);
-                StoreUIManager.Instance.Notify(message, "cc7755");
+                StoreUIManager.Instance.Notify(message, "default");
             }
             catch (Exception)
             {

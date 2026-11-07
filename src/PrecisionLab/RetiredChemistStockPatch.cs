@@ -39,6 +39,7 @@ namespace PrecisionLab
                     RetiredChemistStock.TryAddSynaprestKit();
                     RetiredChemistStock.TryAddImmunivaxStock();
                     RetiredChemistStock.TryAddBlueBloodStock();
+                    RetiredChemistStock.TryAddOrdnanceStock();
                 };
             }
             catch (Exception e)
@@ -211,6 +212,7 @@ namespace PrecisionLab
                     return;
                 }
                 store.AddDirectSellingItemToTable(ItemIds.ImmuneSerumBottle);
+                store.AddDirectSellingItemToTable(ItemIds.ImmunivaxBox);
                 Debug.Log("[PrecisionLab] retired chemist offers immune serum");
             }
             catch (Exception e)
@@ -243,6 +245,35 @@ namespace PrecisionLab
             catch (Exception e)
             {
                 Debug.LogWarning("[PrecisionLab] retired chemist bio-gel stock failed: " + e);
+            }
+        }
+
+        /// <summary>After the "More Medicines" unlock the retired chemist sells ordnance precursors.</summary>
+        internal static void TryAddOrdnanceStock()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.OxidizerBottle);
+                store.AddDirectSellingItemToTable(ItemIds.MetalPowderBottle);
+                store.AddDirectSellingItemToTable(ItemIds.NitratingAcidBottle);
+                store.AddDirectSellingItemToTable(ItemIds.OrdnanceBox);
+                Debug.Log("[PrecisionLab] retired chemist offers ordnance precursors");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist ordnance stock failed: " + e);
             }
         }
 

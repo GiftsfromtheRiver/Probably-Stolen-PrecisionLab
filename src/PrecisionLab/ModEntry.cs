@@ -169,9 +169,17 @@ namespace PrecisionLab
                 bool immuneSerum = directory.Has(ItemIds.ImmuneSerumBottle) || directory.Add(ItemIds.ImmuneSerumBottle, ImmunivaxContent.CreateImmuneSerumBottle);
                 bool bioGel = directory.Has(ItemIds.BioGelBottle) || directory.Add(ItemIds.BioGelBottle, BlueBloodContent.CreateBioGelBottle);
                 bool blueBloodBox = directory.Has(ItemIds.BlueBloodBox) || directory.Add(ItemIds.BlueBloodBox, BlueBloodContent.CreateSupplyBox);
+                bool immunivaxBox = directory.Has(ItemIds.ImmunivaxBox) || directory.Add(ItemIds.ImmunivaxBox, ImmunivaxContent.CreateSupplyBox);
+                bool ordnanceBox = directory.Has(ItemIds.OrdnanceBox) || directory.Add(ItemIds.OrdnanceBox, OrdnanceContent.CreateSupplyBox);
+                bool mysteryMedBox = directory.Has(ItemIds.MysteryMedBox) || directory.Add(ItemIds.MysteryMedBox, MysteryMedBox.CreateCrate);
+                bool oxidizerBottle = directory.Has(ItemIds.OxidizerBottle) || directory.Add(ItemIds.OxidizerBottle, OrdnanceContent.CreateOxidizerBottle);
+                bool metalPowderBottle = directory.Has(ItemIds.MetalPowderBottle) || directory.Add(ItemIds.MetalPowderBottle, OrdnanceContent.CreateMetalPowderBottle);
+                bool nitratingAcidBottle = directory.Has(ItemIds.NitratingAcidBottle) || directory.Add(ItemIds.NitratingAcidBottle, OrdnanceContent.CreateNitratingAcidBottle);
+
                 if (extractor || purifier || cultivator || supplyBox || api || pen || waste || tourniquet || resolvingBottle || resolvingRefill
                     || naloxoneBox || naloxoneApi || birthControlBox || sannaiBox
-                    || synaprestBox || synaprestInjector || immuneSerum || bioGel || blueBloodBox)
+                    || synaprestBox || synaprestInjector || immuneSerum || bioGel || blueBloodBox || immunivaxBox || ordnanceBox || mysteryMedBox
+                    || oxidizerBottle || metalPowderBottle || nitratingAcidBottle)
                 {
                     _log.Log("items registered in mod item directory: extractor=" + extractor
                         + " purifier=" + purifier + " cultivator=" + cultivator
@@ -182,7 +190,10 @@ namespace PrecisionLab
                         + " naloxoneBox=" + naloxoneBox + " naloxoneApi=" + naloxoneApi
                         + " birthControlBox=" + birthControlBox + " sannaiBox=" + sannaiBox
                         + " synaprestBox=" + synaprestBox + " synaprestInjector=" + synaprestInjector
-                        + " immuneSerum=" + immuneSerum + " bioGel=" + bioGel + " blueBloodBox=" + blueBloodBox);
+                        + " immuneSerum=" + immuneSerum + " bioGel=" + bioGel + " blueBloodBox=" + blueBloodBox
+                        + " immunivaxBox=" + immunivaxBox + " ordnanceBox=" + ordnanceBox + " mysteryMedBox=" + mysteryMedBox
+                        + " oxidizer=" + oxidizerBottle + " metalPowder=" + metalPowderBottle
+                        + " nitratingAcid=" + nitratingAcidBottle);
                 }
             }
             catch (Exception e)
@@ -360,6 +371,8 @@ namespace PrecisionLab
                 SynaprestContent.EnsureRecipes();
                 ImmunivaxContent.EnsureRecipes();
                 BlueBloodContent.EnsureRecipes();
+                OrdnanceContent.EnsureRecipes();
+                DebugSpawns.Register();
                 TourniquetCraft.OnUnlocked();
                 RecipeBook.EnsureDelivered();
             }
@@ -412,6 +425,8 @@ namespace PrecisionLab
             {
                 TourniquetCraft.AttachToStoreItems();
                 ReagentKitVisuals.MigrateExistingKits();
+                // Cheat/debug spawn buttons must exist even before the MEDS unlock.
+                DebugSpawns.Register();
                 if (!IsUpgradeUnlocked("PRECISION_LAB_MEDS"))
                 {
                     return;
@@ -422,6 +437,7 @@ namespace PrecisionLab
                 SynaprestContent.EnsureRecipes();
                 ImmunivaxContent.EnsureRecipes();
                 BlueBloodContent.EnsureRecipes();
+                OrdnanceContent.EnsureRecipes();
                 Apothecary.EnsureUnlockedState();
                 RecipeBook.EnsureDelivered();
             }

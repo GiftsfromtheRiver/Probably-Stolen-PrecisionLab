@@ -17,7 +17,9 @@ namespace PrecisionLab
             { ItemIds.BirthControlBox, SpriteKeys.ReagentKitBirthControl },
             { ItemIds.SannaiBox, SpriteKeys.ReagentKitSannai },
             { ItemIds.SynaprestBox, SpriteKeys.ReagentKitSynaprest },
-            { ItemIds.BlueBloodBox, SpriteKeys.ReagentKitBlueBlood }
+            { ItemIds.BlueBloodBox, SpriteKeys.ReagentKitBlueBlood },
+            { ItemIds.ImmunivaxBox, SpriteKeys.ReagentKitImmunivax },
+            { ItemIds.OrdnanceBox, SpriteKeys.ReagentKitOrdnance }
         };
 
         internal static bool HasArt(string itemId)
@@ -37,6 +39,28 @@ namespace PrecisionLab
             {
                 item.SetSpriteAndShapeFromMod(Loc.ModId, key);
                 ForceKitShape(item);
+            }
+            ApplyContrabandPolicy(item);
+        }
+
+        /// <summary>Military ordnance kits are high contraband; all other kits are non-contraband.</summary>
+        internal static void ApplyContrabandPolicy(GameItem item)
+        {
+            if (item == null)
+            {
+                return;
+            }
+            if (item.identifier == ItemIds.OrdnanceBox)
+            {
+                try
+                {
+                    ContrabandHelper.InitContrabandItem(item, 3);
+                }
+                catch (Exception)
+                {
+                    // Older/newer builds may not expose the helper.
+                }
+                return;
             }
             MakeNonContraband(item);
         }
@@ -124,7 +148,7 @@ namespace PrecisionLab
                         {
                             // Shape restore is best-effort; placement below still prevents loss.
                         }
-                        MakeNonContraband(item);
+                        ApplyContrabandPolicy(item);
                         // The kit previously occupied a 2x2 slot in this inventory, so this should fit;
                         // only search other store inventories if the parent genuinely has no room.
                         if (GraphUtils.TryAcceptAll(inventory, item) != 0 || item.parentInventory == null)
