@@ -490,9 +490,12 @@ namespace PrecisionLab
                 synaprestBoxItem = SynaprestContent.CreateSupplyBox();
                 synaprestInjectorItem = DirectoryMaster.Item(SynaprestContent.VanillaInjectorId);
                 SynaprestEffects.RegisterPerks();
-                bool synPerksOk = StartingPerkList.GetModPerk(SynaprestEffects.AnhedoniaPerk) != null
-                    && StartingPerkList.GetModPerk(SynaprestEffects.DependencyPerk) != null
-                    && StartingPerkList.GetModPerk(SynaprestEffects.UseCountPerk) != null;
+                // These are gameplay status effects, not selectable starting traits: they must
+                // NOT be in the starting-perk registry, but their local templates must exist.
+                bool synPerksOk = StartingPerkList.GetModPerk(SynaprestEffects.AnhedoniaPerk) == null
+                    && StartingPerkList.GetModPerk(SynaprestEffects.DependencyPerk) == null
+                    && StartingPerkList.GetModPerk(SynaprestEffects.UseCountPerk) == null
+                    && SynaprestEffects.PerkTemplatesReady();
                 bool speedOk = ReactionMath.Step(20000) >= 4000;
                 bool synaprestOk = synActivated == 1000
                     && synCrude == 1000

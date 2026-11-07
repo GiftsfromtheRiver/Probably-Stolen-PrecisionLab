@@ -31,6 +31,69 @@ namespace PrecisionLab
 
         private static bool _perksRegistered;
 
+        private static StartingPerk AnhedoniaTemplate()
+        {
+            return new StartingPerk
+            {
+                id = AnhedoniaPerk,
+                type = StartingPerk.StartingPerkType.NEGATIVE,
+                cost = AnhedoniaDays,
+                mindEditable = false,
+                rawName = Loc.Get("perk.synaprest_anhedonia.name", "快感缺失 / Anhedonia"),
+                rawDescription = Loc.Get(
+                    "perk.synaprest_anhedonia.desc",
+                    "赛纳普斯抑制了大脑奖励机制：好运 -15，持续 3 天。"),
+                source = Loc.ModId
+            };
+        }
+
+        private static StartingPerk DependencyTemplate()
+        {
+            return new StartingPerk
+            {
+                id = DependencyPerk,
+                type = StartingPerk.StartingPerkType.NEGATIVE,
+                cost = 0,
+                mindEditable = false,
+                rawName = Loc.Get("perk.synaprest_dependency.name", "赛纳普斯依赖 / Synaprest Dependency"),
+                rawDescription = Loc.Get(
+                    "perk.synaprest_dependency.desc",
+                    "连续使用赛纳普斯超过 3 次形成的轻度依赖；每天醒来有概率重新出现药物成瘾。"),
+                source = Loc.ModId
+            };
+        }
+
+        private static StartingPerk UseCountTemplate()
+        {
+            return new StartingPerk
+            {
+                id = UseCountPerk,
+                type = StartingPerk.StartingPerkType.NEUTRAL,
+                cost = 0,
+                mindEditable = false,
+                rawName = Loc.Get("perk.synaprest_use_count.name", "赛纳普斯使用次数 / Synaprest Uses"),
+                rawDescription = Loc.Get(
+                    "perk.synaprest_use_count.desc",
+                    "累计使用赛纳普斯的次数；达到 3 次会形成依赖。"),
+                source = Loc.ModId
+            };
+        }
+
+        private static StartingPerk GetTemplate(string perkId)
+        {
+            if (perkId == AnhedoniaPerk) return AnhedoniaTemplate();
+            if (perkId == DependencyPerk) return DependencyTemplate();
+            if (perkId == UseCountPerk) return UseCountTemplate();
+            return null;
+        }
+
+        internal static bool PerkTemplatesReady()
+        {
+            return GetTemplate(AnhedoniaPerk) != null
+                && GetTemplate(DependencyPerk) != null
+                && GetTemplate(UseCountPerk) != null;
+        }
+
         internal static void RegisterPerks()
         {
             if (_perksRegistered)
@@ -38,50 +101,52 @@ namespace PrecisionLab
                 return;
             }
             _perksRegistered = true;
+            // Deliberately do NOT call StartingPerkList.RegisterModPerk: these are gameplay
+            // status effects, not selectable starting traits. They are only added to the player's
+            // startingPerks list when the Synaprest injector actually applies them.
+            ApplyPerkIcons();
+        }
+
+        /// <summary>
+        /// The three mod perks are not in the vanilla icon loader, so the perk screen falls back to
+        /// the giant default silhouette placeholder. Map them onto existing vanilla perk icons.
+        /// </summary>
+        internal static void ApplyPerkIcons()
+        {
             try
             {
-                StartingPerkList.RegisterModPerk(new StartingPerk
+                var icons = StartingPerkIconLoader.perkIcons;
+                if (icons == null || icons.Count == 0)
                 {
-                    id = AnhedoniaPerk,
-                    type = StartingPerk.StartingPerkType.NEGATIVE,
-                    cost = AnhedoniaDays,
-                    mindEditable = false,
-                    rawName = Loc.Get("perk.synaprest_anhedonia.name", "快感缺失 / Anhedonia"),
-                    rawDescription = Loc.Get(
-                        "perk.synaprest_anhedonia.desc",
-                        "赛纳普斯抑制了大脑奖励机制：好运 -15，持续 3 天。"),
-                    source = Loc.ModId
-                });
-                StartingPerkList.RegisterModPerk(new StartingPerk
-                {
-                    id = DependencyPerk,
-                    type = StartingPerk.StartingPerkType.NEGATIVE,
-                    cost = 0,
-                    mindEditable = false,
-                    rawName = Loc.Get("perk.synaprest_dependency.name", "赛纳普斯依赖 / Synaprest Dependency"),
-                    rawDescription = Loc.Get(
-                        "perk.synaprest_dependency.desc",
-                        "连续使用赛纳普斯超过 3 次形成的轻度依赖；每天醒来有概率重新出现药物成瘾。"),
-                    source = Loc.ModId
-                });
-                StartingPerkList.RegisterModPerk(new StartingPerk
-                {
-                    id = UseCountPerk,
-                    type = StartingPerk.StartingPerkType.NEUTRAL,
-                    cost = 0,
-                    mindEditable = false,
-                    rawName = Loc.Get("perk.synaprest_use_count.name", "赛纳普斯使用次数 / Synaprest Uses"),
-                    rawDescription = Loc.Get(
-                        "perk.synaprest_use_count.desc",
-                        "累计使用赛纳普斯的次数；达到 3 次会形成依赖。"),
-                    source = Loc.ModId
-                });
-                Debug.Log("[PrecisionLab] synaprest perks registered");
+                    return;
+                }
+                Sprite negative = GetIcon(icons, "narcotic_addiction")
+                    ?? GetIcon(icons, "alcohol_addiction")
+                    ?? GetIcon(icons, "nicotine_addiction")
+                    ?? GetIcon(icons, "default");
+                Sprite dependency = GetIcon(icons, "alcohol_addiction")
+                    ?? GetIcon(icons, "nicotine_addiction")
+                    ?? negative;
+                Sprite neutral = GetIcon(icons, "experienced_chemist")
+                    ?? GetIcon(icons, "saving")
+                    ?? GetIcon(icons, "default")
+                    ?? dependency;
+                if (negative != null) icons[AnhedoniaPerk] = negative;
+                if (dependency != null) icons[DependencyPerk] = dependency;
+                if (neutral != null) icons[UseCountPerk] = neutral;
+                Debug.Log("[PrecisionLab] synaprest perk icons mapped (anhedonia=" + (negative != null)
+                    + " dependency=" + (dependency != null) + " useCount=" + (neutral != null) + ")");
             }
             catch (Exception e)
             {
-                Debug.LogWarning("[PrecisionLab] registering synaprest perks failed: " + e.Message);
+                Debug.LogWarning("[PrecisionLab] mapping synaprest perk icons failed: " + e.Message);
             }
+        }
+
+        private static Sprite GetIcon(Dictionary<string, Sprite> icons, string key)
+        {
+            Sprite sprite;
+            return icons.TryGetValue(key, out sprite) ? sprite : null;
         }
 
         internal static bool IsAnhedoniaActive()
@@ -177,7 +242,7 @@ namespace PrecisionLab
             StartingPerk perk = FindActivePerk(perkId);
             if (perk == null)
             {
-                StartingPerk template = StartingPerkList.GetModPerk(perkId);
+                StartingPerk template = GetTemplate(perkId);
                 if (template == null)
                 {
                     return;
@@ -254,6 +319,15 @@ namespace PrecisionLab
             {
                 __result = Math.Max(0, __result - SynaprestEffects.LuckPenalty);
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(StartingPerkIconLoader), "Start")]
+    internal static class SynaprestPerkIconPatch
+    {
+        private static void Postfix()
+        {
+            SynaprestEffects.ApplyPerkIcons();
         }
     }
 }
