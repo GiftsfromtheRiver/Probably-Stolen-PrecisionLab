@@ -62,7 +62,15 @@ namespace PrecisionLab
         internal const string SmokeComposition = "smoke_composition";
         internal const string NitroBase = "nitro_base";
         internal const string PlasticPutty = "plastic_explosive_putty";
-        internal const string OrdnanceWaste = "ordnance_waste"; // 肾上腺素药液
+        internal const string OrdnanceWaste = "ordnance_waste";
+        internal const string AromaticExtract = "aromatic_extract";
+        internal const string ActivatedFragrance = "activated_fragrance";
+        internal const string NeuroConcentrate = "neuroactive_concentrate";
+        internal const string CrudePheromone = "crude_pheromone";
+        internal const string PurifiedPheromone = "purified_pheromone";
+        internal const string PheromoneConcentrate = "pheromone_concentrate";
+        internal const string PheromoneByproduct = "pheromone_waste";
+        internal const string PheromoneWaste = "denatured_pheromone_waste"; // 肾上腺素药液
 
         private static bool _registered;
 
@@ -120,7 +128,15 @@ namespace PrecisionLab
                 AddLiquid(NitroBase, "liquid.nitro_base", "Nitro Base", "e0b080", false);
                 AddLiquid(PlasticPutty, "liquid.plastic_putty", "Plastic Explosive Putty", "d8c8b0", false);
                 AddLiquid(OrdnanceWaste, "liquid.ordnance_waste", "Burnt Ordnance Waste", "5a5a4a", true);
-                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 45 + ")");
+                AddLiquid(AromaticExtract, "liquid.aromatic_extract", "Aromatic Extract", "f0c8d8", false);
+                AddLiquid(ActivatedFragrance, "liquid.activated_fragrance", "Activated Fragrance", "f8d8e8", false);
+                AddLiquid(NeuroConcentrate, "liquid.neuro_concentrate", "Neuroactive Concentrate", "f0e0f8", false);
+                AddLiquid(CrudePheromone, "liquid.crude_pheromone", "Crude Pheromone", "d8c0a8", false);
+                AddLiquid(PurifiedPheromone, "liquid.purified_pheromone", "Purified Pheromone", "e8d0b8", false);
+                AddLiquid(PheromoneConcentrate, "liquid.pheromone_concentrate", "Pheromone Concentrate", "f0d8c0", false);
+                AddLiquid(PheromoneByproduct, "liquid.pheromone_byproduct", "Pheromone Byproduct", "8a7a6a", true);
+                AddLiquid(PheromoneWaste, "liquid.pheromone_waste", "Denatured Pheromone Waste", "6a5a5a", true);
+                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 53 + ")");
             }
             catch (Exception e)
             {
@@ -178,6 +194,14 @@ namespace PrecisionLab
                 SetName(NitroBase, "liquid.nitro_base", "Nitro Base");
                 SetName(PlasticPutty, "liquid.plastic_putty", "Plastic Explosive Putty");
                 SetName(OrdnanceWaste, "liquid.ordnance_waste", "Burnt Ordnance Waste");
+                SetName(AromaticExtract, "liquid.aromatic_extract", "Aromatic Extract");
+                SetName(ActivatedFragrance, "liquid.activated_fragrance", "Activated Fragrance");
+                SetName(NeuroConcentrate, "liquid.neuro_concentrate", "Neuroactive Concentrate");
+                SetName(CrudePheromone, "liquid.crude_pheromone", "Crude Pheromone");
+                SetName(PurifiedPheromone, "liquid.purified_pheromone", "Purified Pheromone");
+                SetName(PheromoneConcentrate, "liquid.pheromone_concentrate", "Pheromone Concentrate");
+                SetName(PheromoneByproduct, "liquid.pheromone_byproduct", "Pheromone Byproduct");
+                SetName(PheromoneWaste, "liquid.pheromone_waste", "Denatured Pheromone Waste");
             }
             catch (Exception e)
             {
@@ -205,6 +229,9 @@ namespace PrecisionLab
                 || liquidId == Oxidizer || liquidId == MetalPowder || liquidId == NitratingAcid
                 || liquidId == FlashPowder || liquidId == SmokeComposition || liquidId == NitroBase
                 || liquidId == PlasticPutty || liquidId == OrdnanceWaste
+                || liquidId == AromaticExtract || liquidId == ActivatedFragrance || liquidId == NeuroConcentrate
+                || liquidId == CrudePheromone || liquidId == PurifiedPheromone || liquidId == PheromoneConcentrate
+                || liquidId == PheromoneByproduct || liquidId == PheromoneWaste
                 || liquidId == Thebaine || liquidId == ContraceptiveApi || liquidId == SannaiApi;
         }
 

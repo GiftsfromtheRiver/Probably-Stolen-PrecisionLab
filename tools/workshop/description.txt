@@ -5,12 +5,13 @@
 - 精确取液器、提纯机器、微生物培养机、淀粉水解
 - 肾上腺素注射笔、纳洛酮（纳洛通）、避孕药、山奈德片、赛纳普斯/免疫宁注射器、蓝血生物凝胶生产线
 - 军需生产线：闪光弹/烟雾弹/塑性炸药，成型机直接压制原版成品
+- 香水生产线（无需搅拌机）：神经活性香水「同步」150、费洛蒙香水「本源」200，均为原版 5 次使用
 - 简易止血带、药剂师（电话预约，3–5 种随机原料盒/散装试剂瓶/随机品质成品药）
-- 密封药剂原料箱：3×4 物资箱外观，购买前锁定内容，购买后双击查看 5–10 瓶随机原料药剂
-- 《精密实验室配方手册》：11 页配方
+- 密封药剂原料箱：4×3 物资箱外观，购买前锁定且不显示内容，购买后双击查看 5–10 瓶随机原料药剂
+- 《精密实验室配方手册》：13 页配方
 
 [b]纯度与成分[/b]
-- 纳洛通 / 赛纳普斯 / 蓝血 / 军需成品压制要求主成分 ≥99%，成分不匹配拒绝输出
+- 纳洛通 / 赛纳普斯 / 蓝血 / 军需成品要求主成分 ≥99%，成分不匹配拒绝输出
 - 免疫宁 ≥99% 为正品，低于 99% 随机 1–4 个鉴别缺陷
 - 成型机输出空间不足时拒绝输出，不扣原料
 
@@ -18,14 +19,14 @@
 - 机器不再从垃圾堆/医疗池掉落；只能通过黑网升级解锁（首台免费）和杰克逊博士购买
 - 原料由退休化学家、药剂师供应；调试面板 Modding 分类提供测试按钮
 
-[b]修复[/b]
-- 赛纳普斯相关 Perk（快感缺失/依赖/使用次数）不再出现在初始特性选择中，只作为注射后的状态效果
-- 其他原料盒恢复原大小，仅密封药剂原料箱使用 3×4 比例贴图
+[b]平衡[/b]
+- 香水原料盒 2000 信用点、含信息素成分为 2 级违禁品；芳香萃取液 300、粗制信息素 600
+- 其他原料盒 3×2 统一瓶架外观；密封药剂原料箱为 4×3 比例贴图
 
 [b]安装[/b]
 Steam 创意工坊订阅后，在游戏内 Mods 菜单启用并信任；需要游戏版本 0.46D。
 
 [b]English[/b]
-A local content mod for Probably Stolen 0.46D: precision machines, pharmaceutical/ordnance production lines, direct-press vanilla military items, sealed reagent crate, phone-booked apothecary, and an 11-page recipe book. Machines no longer drop from junk/medical loot; Synaprest perks are gameplay status effects only, not selectable starting traits.
+A local content mod for Probably Stolen 0.46D with precision machines, pharmaceutical/ordnance/perfume production lines, direct-press vanilla military items, sealed reagent crate, phone-booked apothecary, and a 13-page recipe book. Machines no longer drop from junk/medical loot. Perfume kits are contraband and priced for balance; final perfumes are vanilla 5-use items.
 
-Version 1.14.6 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab
+Version 1.15.5 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab

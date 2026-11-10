@@ -57,6 +57,7 @@ namespace PrecisionLab
             SpawnItem(ItemIds.BlueBloodBox);
             SpawnItem(ItemIds.ImmunivaxBox);
             SpawnItem(ItemIds.OrdnanceBox);
+            SpawnItem(ItemIds.PerfumeBox);
         }
 
         private static void SpawnReagentCrate()
@@ -64,6 +65,10 @@ namespace PrecisionLab
             try
             {
                 GameItem crate = MysteryMedBox.CreateStockItem();
+                if (crate != null && crate.contentWindow != null)
+                {
+                    crate.contentWindow.isLocked = false;
+                }
                 GraphUtils.EmporiumTryAdd(crate);
                 Debug.Log("[PrecisionLab] debug spawned sealed reagent crate");
             }

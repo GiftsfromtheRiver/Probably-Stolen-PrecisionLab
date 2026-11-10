@@ -55,8 +55,12 @@ namespace PrecisionLab
                 "item.mystery_med_box.flavor",
                 "Manifest says: assorted laboratory reagents. The seal says: no refunds.");
             crate.SetGameItemType("HOUSEHOLD_GOOD");
-            crate.EnableTag("CONTAINER_TAG");
-            crate.SetShape(new GridShapeBuilder(3, 4).SetDataFill(1).Build());
+            crate.SetShape(new GridShapeBuilder(4, 3).SetDataFill(1).Build());
+            // Store stock must not be openable before purchase; PlayerStore.OnItemBought unlocks it.
+            if (crate.contentWindow != null)
+            {
+                crate.contentWindow.isLocked = true;
+            }
             crate.unitValue = 1500L;
             ModHelper.SetSource(crate, Loc.ModId, ModEntry.ModDisplayName);
             return crate;

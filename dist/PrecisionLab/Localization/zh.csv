@@ -295,3 +295,20 @@ item.stabilizing_bottle.name,稳定剂瓶（20 毫升）
 item.stabilizing_bottle.desc,一整瓶 20 毫升稳定剂，用于塑性炸药塑化。
 mech.ordnance.wrong_composition,成分不对：这个药芯与外壳不匹配，拒绝组装。
 mech.chem.output_space,输出空间不足：请先清理成型机的输出格，输入原料不会被消耗。
+liquid.aromatic_extract,芳香萃取液
+liquid.activated_fragrance,活化香精液
+liquid.neuro_concentrate,神经活性浓缩液
+liquid.crude_pheromone,粗制信息素
+liquid.purified_pheromone,纯净信息素液
+liquid.pheromone_concentrate,费洛蒙原液
+liquid.pheromone_waste,变性信息素废液
+item.aromatic_bottle.name,芳香萃取液瓶（20 毫升）
+item.aromatic_bottle.desc,一整瓶 20 毫升芳香萃取液/植物精油，是神经活性香水的起始原料。
+item.crude_pheromone_bottle.name,粗制信息素瓶（20 毫升）
+item.crude_pheromone_bottle.desc,一整瓶 20 毫升粗制信息素，黑市来源，极度怕热。
+item.perfume_box.name,香水原料盒
+item.perfume_box.desc,违禁品。激活拆开得到一批香水原料：芳香萃取液、粗制信息素、水、酸、酒精 ×2、N-羟甲基碱溶液、脂合剂。
+item.perfume_box.flavor,违禁品：含有信息素成分。一半是香气，一半是麻烦。
+item.neuroactive_perfume.recipe_name,神经活性香水「同步」
+item.pheromone_perfume.recipe_name,费洛蒙香水「本源」
+liquid.pheromone_byproduct,信息素废液（副产物）

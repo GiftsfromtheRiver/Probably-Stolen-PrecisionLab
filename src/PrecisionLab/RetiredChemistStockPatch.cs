@@ -40,6 +40,7 @@ namespace PrecisionLab
                     RetiredChemistStock.TryAddImmunivaxStock();
                     RetiredChemistStock.TryAddBlueBloodStock();
                     RetiredChemistStock.TryAddOrdnanceStock();
+                    RetiredChemistStock.TryAddPerfumeStock();
                 };
             }
             catch (Exception e)
@@ -274,6 +275,34 @@ namespace PrecisionLab
             catch (Exception e)
             {
                 Debug.LogWarning("[PrecisionLab] retired chemist ordnance stock failed: " + e);
+            }
+        }
+
+        /// <summary>After the "More Medicines" unlock the retired chemist sells perfume precursors.</summary>
+        internal static void TryAddPerfumeStock()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.AromaticBottle);
+                store.AddDirectSellingItemToTable(ItemIds.CrudePheromoneBottle);
+                store.AddDirectSellingItemToTable(ItemIds.PerfumeBox);
+                Debug.Log("[PrecisionLab] retired chemist offers perfume precursors");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist perfume stock failed: " + e);
             }
         }
 

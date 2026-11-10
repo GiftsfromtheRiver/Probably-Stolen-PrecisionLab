@@ -30,6 +30,7 @@ namespace PrecisionLab
             ImmunivaxChemistry.React(container);
             BlueBloodChemistry.React(container);
             OrdnanceChemistry.React(container);
+            PerfumeChemistry.React(container);
         }
     }
 

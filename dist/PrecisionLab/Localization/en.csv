@@ -296,3 +296,20 @@ item.stabilizing_bottle.name,Stabilizing Agent Bottle (20 mL)
 item.stabilizing_bottle.desc,A 20 mL bottle of stabilizing agent used in plastic explosive putty.
 mech.ordnance.wrong_composition,Wrong composition: this filling does not match the shell; assembly refused.
 mech.chem.output_space,Output grid full: clear the Chem Finisher output first; the input will not be consumed.
+liquid.aromatic_extract,Aromatic Extract
+liquid.activated_fragrance,Activated Fragrance
+liquid.neuro_concentrate,Neuroactive Concentrate
+liquid.crude_pheromone,Crude Pheromone
+liquid.purified_pheromone,Purified Pheromone
+liquid.pheromone_concentrate,Pheromone Concentrate
+liquid.pheromone_waste,Denatured Pheromone Waste
+item.aromatic_bottle.name,Aromatic Extract Bottle (20 mL)
+item.aromatic_bottle.desc,A 20 mL bottle of aromatic extract / plant oil, the starting material for neuroactive perfume.
+item.crude_pheromone_bottle.name,Crude Pheromone Bottle (20 mL)
+item.crude_pheromone_bottle.desc,A 20 mL bottle of black-market crude pheromone. Extremely heat-sensitive.
+item.perfume_box.name,Perfume Precursor Kit
+item.perfume_box.desc,Contraband. Unpacks aromatic extract, crude pheromone, water, acid, alcohol x2, N-hydroxymethyl base and lipobond agent.
+item.perfume_box.flavor,Contraband: contains pheromone. Half fragrance, half trouble.
+item.neuroactive_perfume.recipe_name,Neuroactive Perfume "Sync"
+item.pheromone_perfume.recipe_name,Pheromone Perfume "Origin"
+liquid.pheromone_byproduct,Pheromone Byproduct

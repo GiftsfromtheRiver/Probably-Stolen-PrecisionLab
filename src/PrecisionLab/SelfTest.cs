@@ -54,6 +54,10 @@ namespace PrecisionLab
             GameItem chargeCup = null;
             GameItem chargeHotCup = null;
             GameItem mysteryCrateItem = null;
+            GameItem neuroCup = null;
+            GameItem pheromoneCup = null;
+            GameItem pheromoneHotCup = null;
+            GameItem perfumeKitItem = null;
             GameItem resolvingBottleItem = null;
             GameItem resolvingRefillItem = null;
             GameItem recipeBookItem = null;
@@ -783,6 +787,64 @@ namespace PrecisionLab
                     && mysteryCount <= MysteryMedBox.MaxItems
                     && mysteryContentsOk
                     && !mysteryCrateItem.IsTag("CONTAINER_TOOLTIP_TAG");
+
+                // --- 8k. Perfume lines (neuroactive + pheromone) ------------------------------
+                neuroCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(neuroCup, true);
+                LiquidTools.SetLiquidRaw(neuroCup, CustomLiquids.AromaticExtract, 1000);
+                LiquidTools.SetLiquidRaw(neuroCup, "water", 1000);
+                LiquidTools.SetLiquidRaw(neuroCup, "acid", 5);
+                SetTemperature(neuroCup, 40.0);
+                PulseStep(neuroCup, PerfumeChemistry.StepNeuroActivation);
+                int activated = LiquidTools.GetLiquidAmount(neuroCup, CustomLiquids.ActivatedFragrance);
+                int neuroContaminant = LiquidTools.GetLiquidAmount(neuroCup, "chemical_contaminant");
+                LiquidTools.SetLiquidRaw(neuroCup, "chemical_contaminant", 0);
+                PulseStep(neuroCup, PerfumeChemistry.StepNeuropePurify);
+                int neuroConcentrate = LiquidTools.GetLiquidAmount(neuroCup, CustomLiquids.NeuroConcentrate);
+
+                pheromoneCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(pheromoneCup, true);
+                LiquidTools.SetLiquidRaw(pheromoneCup, CustomLiquids.CrudePheromone, 1000);
+                LiquidTools.SetLiquidRaw(pheromoneCup, "alcohol", 1000);
+                SetTemperature(pheromoneCup, 28.0);
+                PulseStep(pheromoneCup, PerfumeChemistry.StepPheromoneColdPurify);
+                int purifiedPheromone = LiquidTools.GetLiquidAmount(pheromoneCup, CustomLiquids.PurifiedPheromone);
+                int pheromoneWaste = LiquidTools.GetLiquidAmount(pheromoneCup, CustomLiquids.PheromoneByproduct);
+                LiquidTools.SetLiquidRaw(pheromoneCup, CustomLiquids.HydroxymethylBase, 1000);
+                PulseStep(pheromoneCup, PerfumeChemistry.StepPheromoneModify);
+                int pheromoneConcentrate = LiquidTools.GetLiquidAmount(pheromoneCup, CustomLiquids.PheromoneConcentrate);
+
+                pheromoneHotCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(pheromoneHotCup, true);
+                LiquidTools.SetLiquidRaw(pheromoneHotCup, CustomLiquids.CrudePheromone, 1000);
+                LiquidTools.SetLiquidRaw(pheromoneHotCup, "alcohol", 1000);
+                SetTemperature(pheromoneHotCup, 35.0);
+                PulseStep(pheromoneHotCup, PerfumeChemistry.StepPheromoneColdPurify);
+                int hotPheromone = LiquidTools.GetLiquidAmount(pheromoneHotCup, CustomLiquids.PurifiedPheromone);
+                int hotPheromoneWaste = LiquidTools.GetLiquidAmount(pheromoneHotCup, CustomLiquids.PheromoneWaste);
+
+                PerfumeContent.EnsureRecipes();
+                bool perfumeRecipesOk = ChemFinisherRecipe.GetRecipeById(PerfumeContent.NeuroPerfumeId) != null
+                    && ChemFinisherRecipe.GetRecipeById(PerfumeContent.NeuroPerfumeId).activeIngredientId == CustomLiquids.NeuroConcentrate
+                    && ChemFinisherRecipe.GetRecipeById(PerfumeContent.PheromonePerfumeId) != null
+                    && ChemFinisherRecipe.GetRecipeById(PerfumeContent.PheromonePerfumeId).activeIngredientId == CustomLiquids.PheromoneConcentrate;
+                perfumeKitItem = PerfumeContent.CreateSupplyBox();
+                bool perfumeOk = activated == 1000
+                    && neuroContaminant > 0
+                    && neuroConcentrate == 1000
+                    && purifiedPheromone == 1000
+                    && pheromoneWaste > 0
+                    && pheromoneConcentrate == 1000
+                    && hotPheromone == 0
+                    && hotPheromoneWaste == 1000
+                    && perfumeRecipesOk
+                    && perfumeKitItem != null
+                    && perfumeKitItem.unitValue == 2000;
+                log.Log(Prefix + "perfume chains: activated=" + activated + "µL contaminant=" + neuroContaminant
+                    + "µL neuroConcentrate=" + neuroConcentrate + "µL purifiedPheromone=" + purifiedPheromone
+                    + "µL pheromoneConcentrate=" + pheromoneConcentrate + "µL hotPheromone=" + hotPheromone
+                    + "µL hotWaste=" + hotPheromoneWaste + "µL recipes=" + perfumeRecipesOk
+                    + " kit=" + (perfumeKitItem != null));
                 log.Log(Prefix + "mystery med crate: shape="
                     + (mysteryCrateItem != null && mysteryCrateItem.shape != null ? mysteryCrateItem.shape.width + "x" + mysteryCrateItem.shape.height : "-")
                     + " contents=" + mysteryCount + " reagents=" + mysteryContentsOk + " value="
@@ -977,7 +1039,9 @@ namespace PrecisionLab
                 bool modes = modesEmpty && modesDraw && modesInject && autoFilledInjects;
                 log.Log(Prefix + (exact && refuseOverdose && hasWindow && sliderWorks && modes && manualOk
                         && clean && conc && hydrolysis && digestion && cultivatorOk
-                        && adrenalineOk && adrenalineItemsOk && recycleOk ? "OK" : "FAILED")
+                        && adrenalineOk && adrenalineItemsOk && recycleOk && naloxoneOk && pillOk
+                        && synaprestOk && apothecaryOk && immunivaxOk && blueBloodOk && ordnanceOk
+                        && mysteryOk && perfumeOk ? "OK" : "FAILED")
                     + " exact=" + exact + " refuseOverdose=" + refuseOverdose + " window=" + hasWindow
                     + " slider=" + sliderWorks + " modes=" + modes + " manual=" + manualOk
                     + " cleanWater=" + clean + " concentrate=" + conc
@@ -985,7 +1049,7 @@ namespace PrecisionLab
                     + " adrenaline=" + adrenalineOk + " adrenalineItems=" + adrenalineItemsOk
                     + " tourniquet=" + tourniquetOk
                     + " recycle=" + recycleOk + " naloxone=" + naloxoneOk + " pills=" + pillOk + " synaprest=" + synaprestOk + " apothecary=" + apothecaryOk + " immunivax=" + immunivaxOk + " blueBlood=" + blueBloodOk + " ordnance=" + ordnanceOk
-                    + " mystery=" + mysteryOk);
+                    + " mystery=" + mysteryOk + " perfume=" + perfumeOk);
             }
             catch (Exception e)
             {
@@ -1040,6 +1104,10 @@ namespace PrecisionLab
                 DestroyQuietly(chargeCup);
                 DestroyQuietly(chargeHotCup);
                 DestroyQuietly(mysteryCrateItem);
+                DestroyQuietly(neuroCup);
+                DestroyQuietly(pheromoneCup);
+                DestroyQuietly(pheromoneHotCup);
+                DestroyQuietly(perfumeKitItem);
             }
         }
 

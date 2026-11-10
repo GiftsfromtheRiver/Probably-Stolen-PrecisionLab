@@ -27,6 +27,9 @@ namespace PrecisionLab
         internal const string ImmunivaxBox = "immunivax_supply_box";
         internal const string OrdnanceBox = "ordnance_supply_box";
         internal const string MysteryMedBox = "mystery_med_supply_box";
+        internal const string AromaticBottle = "aromatic_extract_bottle";
+        internal const string CrudePheromoneBottle = "crude_pheromone_bottle";
+        internal const string PerfumeBox = "perfume_supply_box";
         internal const string OxidizerBottle = "oxidizer_bottle";
         internal const string MetalPowderBottle = "metal_powder_bottle";
         internal const string NitratingAcidBottle = "nitrating_acid_bottle";
@@ -49,6 +52,7 @@ namespace PrecisionLab
         internal const string ReagentKitImmunivax = "reagent_kit_immunivax";
         internal const string ReagentKitOrdnance = "reagent_kit_ordnance";
         internal const string MysteryMedCrate = "mystery_med_crate";
+        internal const string ReagentKitPerfume = "reagent_kit_perfume";
         internal const string FillingFlash = "filling_flash";
         internal const string FillingSmoke = "filling_smoke";
         internal const string FillingExplosive = "filling_explosive";
@@ -80,6 +84,9 @@ namespace PrecisionLab
         internal const string ImmunivaxBox = "immunivax_supply_box";
         internal const string OrdnanceBox = "ordnance_supply_box";
         internal const string MysteryMedBox = "mystery_med_supply_box";
+        internal const string AromaticBottle = "aromatic_extract_bottle";
+        internal const string CrudePheromoneBottle = "crude_pheromone_bottle";
+        internal const string PerfumeBox = "perfume_supply_box";
         internal const string OxidizerBottle = "oxidizer_bottle";
         internal const string MetalPowderBottle = "metal_powder_bottle";
         internal const string NitratingAcidBottle = "nitrating_acid_bottle";
@@ -102,6 +109,7 @@ namespace PrecisionLab
         internal const string ReagentKitImmunivax = "reagent_kit_immunivax";
         internal const string ReagentKitOrdnance = "reagent_kit_ordnance";
         internal const string MysteryMedCrate = "mystery_med_crate";
+        internal const string ReagentKitPerfume = "reagent_kit_perfume";
         internal const string FillingFlash = "filling_flash";
         internal const string FillingSmoke = "filling_smoke";
         internal const string FillingExplosive = "filling_explosive";

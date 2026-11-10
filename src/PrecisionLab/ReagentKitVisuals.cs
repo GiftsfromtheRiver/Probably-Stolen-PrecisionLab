@@ -19,7 +19,8 @@ namespace PrecisionLab
             { ItemIds.SynaprestBox, SpriteKeys.ReagentKitSynaprest },
             { ItemIds.BlueBloodBox, SpriteKeys.ReagentKitBlueBlood },
             { ItemIds.ImmunivaxBox, SpriteKeys.ReagentKitImmunivax },
-            { ItemIds.OrdnanceBox, SpriteKeys.ReagentKitOrdnance }
+            { ItemIds.OrdnanceBox, SpriteKeys.ReagentKitOrdnance },
+            { ItemIds.PerfumeBox, SpriteKeys.ReagentKitPerfume }
         };
 
         internal static bool HasArt(string itemId)
@@ -55,6 +56,18 @@ namespace PrecisionLab
                 try
                 {
                     ContrabandHelper.InitContrabandItem(item, 3);
+                }
+                catch (Exception)
+                {
+                    // Older/newer builds may not expose the helper.
+                }
+                return;
+            }
+            if (item.identifier == ItemIds.PerfumeBox)
+            {
+                try
+                {
+                    ContrabandHelper.InitContrabandItem(item, 2);
                 }
                 catch (Exception)
                 {
