@@ -312,3 +312,34 @@ item.perfume_box.flavor,违禁品：含有信息素成分。一半是香气，�
 item.neuroactive_perfume.recipe_name,神经活性香水「同步」
 item.pheromone_perfume.recipe_name,费洛蒙香水「本源」
 liquid.pheromone_byproduct,信息素废液（副产物）
+liquid.phage_culture,噬菌体培养液
+liquid.fungal_extract,真菌提取物
+liquid.symbiotic_culture,共生菌液
+liquid.pure_antibiotic_api,高纯抗生素粉悬液
+liquid.stem_cell,干细胞原液
+liquid.active_cell_suspension,活性细胞悬液
+liquid.essence_concentrate,焕活精华原液
+liquid.dead_cell_waste,死细胞废液
+item.phage_culture_bottle.name,噬菌体培养液瓶（20 毫升）
+item.phage_culture_bottle.desc,一整瓶 20 毫升噬菌体培养液，噬菌霉素的起始原料。
+item.fungal_extract_bottle.name,真菌提取物瓶（20 毫升）
+item.fungal_extract_bottle.desc,一整瓶 20 毫升真菌提取物，与噬菌体共生培养。
+item.stem_cell_bottle.name,干细胞原液瓶（20 毫升）
+item.stem_cell_bottle.desc,一整瓶 20 毫升干细胞原液，必须低温保存。
+item.phagimycin.recipe_name,噬菌霉素片
+item.eternal.recipe_name,永恒焕活精华液
+phone.wilde.name,乔·王尔德
+phone.wilde.intro,我是乔·王尔德。想要合法生产噬菌霉素？执照 800 信用点，一次买断。
+phone.wilde.buy,我想弄点合法的门路。
+phone.wilde.cancel_line,打错了。
+phone.wilde.bought,手续办好了，执照生效。别让我后悔。
+phone.wilde.cancel,想好了再打给我。
+phone.wilde.already,执照已经在你名下了。别拿去干蠢事。
+phone.wilde.no_cash,钱不够：执照需要 800 信用点。
+phone.wilde.log,你从乔·王尔德处拿到了制药执照：噬菌霉素。
+perk.phagimycin_license.name,制药执照：噬菌霉素
+perk.phagimycin_license.desc,允许合法生产噬菌霉素片；永久被动生效。
+item.biopharma_box.name,生物制药原料盒
+item.biopharma_box.desc,激活拆开得到一批生物制药原料：噬菌体培养液 20 毫升、真菌提取物 20 毫升、水 20 毫升 ×2、干细胞原液 20 毫升 ×2、酒精 20 毫升、脂合剂 20 毫升。
+item.biopharma_box.flavor,冷藏运输。里面有活的，也有不能算活的。
+phone.wilde.not_enough,先凑够 800 信用点再来，别浪费我时间。

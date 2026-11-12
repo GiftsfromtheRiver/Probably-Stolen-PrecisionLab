@@ -278,7 +278,8 @@ namespace PrecisionLab
             ItemIds.BlueBloodBox,
             ItemIds.ImmunivaxBox,
             ItemIds.OrdnanceBox,
-            ItemIds.PerfumeBox
+            ItemIds.PerfumeBox,
+            ItemIds.BioPharmaBox
         };
 
         private static void AddRandomPrecursorKits()
@@ -307,6 +308,9 @@ namespace PrecisionLab
             CustomLiquids.NitratingAcid,
             CustomLiquids.AromaticExtract,
             CustomLiquids.CrudePheromone,
+            CustomLiquids.PhageCulture,
+            CustomLiquids.FungalExtract,
+            CustomLiquids.StemCell,
             "sugar",
             "acid",
             "reducing_agent",
@@ -317,7 +321,7 @@ namespace PrecisionLab
 
         private static readonly int[] LooseBottlePrices =
         {
-            150, 150, 60, 60, 40, 40, 40, 120, 120, 45, 60, 90, 300, 600, 20, 20, 20, 30, 20, 20
+            150, 150, 60, 60, 40, 40, 40, 120, 120, 45, 60, 90, 300, 600, 250, 200, 350, 20, 20, 20, 30, 20, 20
         };
 
         private static readonly string[] LooseBottleContainers =

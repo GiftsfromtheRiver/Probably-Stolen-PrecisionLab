@@ -31,6 +31,7 @@ namespace PrecisionLab
             BlueBloodChemistry.React(container);
             OrdnanceChemistry.React(container);
             PerfumeChemistry.React(container);
+            BioPharmaChemistry.React(container);
         }
     }
 

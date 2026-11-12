@@ -34,16 +34,33 @@ namespace PrecisionLab
                 string message;
                 if (recipeId == PerfumeContent.NeuroPerfumeId)
                 {
-                    valid = Has(container, CustomLiquids.NeuroConcentrate, 5000)
-                        && Has(container, "alcohol", 5000);
-                    message = "缺少成分：神经活性香水需要神经活性浓缩液 + 酒精各至少 5000 微升。";
+                    int concentrate = Amount(container, CustomLiquids.NeuroConcentrate);
+                    int alcohol = Amount(container, "alcohol");
+                    int sum = concentrate + alcohol;
+                    valid = sum >= 5000
+                        && concentrate * 100 >= sum * 40
+                        && alcohol * 100 >= sum * 40;
+                    message = "比例不对：神经活性香水需要浓缩液与酒精大致各半（各 ≥40%），总量 ≥5000 微升。";
                 }
                 else if (recipeId == PerfumeContent.PheromonePerfumeId)
                 {
-                    valid = Has(container, CustomLiquids.PheromoneConcentrate, 5000)
-                        && Has(container, "lipobond_agent", 5000)
-                        && Has(container, "alcohol", 5000);
-                    message = "缺少成分：费洛蒙香水需要费洛蒙浓缩液 + 脂合剂 + 酒精各至少 5000 微升。";
+                    int concentrate = Amount(container, CustomLiquids.PheromoneConcentrate);
+                    int lipobond = Amount(container, "lipobond_agent");
+                    int alcohol = Amount(container, "alcohol");
+                    int sum = concentrate + lipobond + alcohol;
+                    valid = sum >= 5000
+                        && concentrate * 100 >= sum * 25
+                        && lipobond * 100 >= sum * 25
+                        && alcohol * 100 >= sum * 25;
+                    message = "比例不对：费洛蒙香水需要原液/脂合剂/酒精大致三等分（各 ≥25%），总量 ≥5000 微升。";
+                }
+                else if (recipeId == BioPharmaContent.EssenceId)
+                {
+                    int essence = Amount(container, CustomLiquids.EssenceConcentrate);
+                    int total = WaterHelper.GetTotalVolume(container);
+                    valid = total >= BioPharmaContent.EssencePressVolume
+                        && essence * 100 >= total * 99;
+                    message = "纯度不足：「永恒」焕活精华液要求焕活精华原液纯度 ≥99%，且总量 ≥5000 微升。";
                 }
                 else
                 {
@@ -62,6 +79,17 @@ namespace PrecisionLab
                 Debug.LogWarning("[PrecisionLab] perfume press gate failed: " + e.Message);
                 return true;
             }
+        }
+
+        private static bool TotalAtLeast(GameItem container, int amount)
+        {
+            return WaterHelper.GetTotalVolume(container) >= amount;
+        }
+
+        private static int Amount(GameItem container, string liquidId)
+        {
+            string part = Liquid.GetCurrentPartFromId(liquidId);
+            return part != null ? container.GetTagReadonly(part).GetInt() : 0;
         }
 
         private static bool Has(GameItem container, string liquidId, int amount)

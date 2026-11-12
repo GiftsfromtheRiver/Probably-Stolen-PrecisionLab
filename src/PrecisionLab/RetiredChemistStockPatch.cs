@@ -41,6 +41,7 @@ namespace PrecisionLab
                     RetiredChemistStock.TryAddBlueBloodStock();
                     RetiredChemistStock.TryAddOrdnanceStock();
                     RetiredChemistStock.TryAddPerfumeStock();
+                    RetiredChemistStock.TryAddBioPharmaStock();
                 };
             }
             catch (Exception e)
@@ -303,6 +304,27 @@ namespace PrecisionLab
             catch (Exception e)
             {
                 Debug.LogWarning("[PrecisionLab] retired chemist perfume stock failed: " + e);
+            }
+        }
+
+        internal static void TryAddBioPharmaStock()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null) return;
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null || !upgrade.IsUnlocked()) return;
+                store.AddDirectSellingItemToTable(ItemIds.PhageCultureBottle);
+                store.AddDirectSellingItemToTable(ItemIds.FungalExtractBottle);
+                store.AddDirectSellingItemToTable(ItemIds.StemCellBottle);
+                store.AddDirectSellingItemToTable(ItemIds.BioPharmaBox);
+                Debug.Log("[PrecisionLab] retired chemist offers bio-pharma precursors");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist bio-pharma stock failed: " + e);
             }
         }
 

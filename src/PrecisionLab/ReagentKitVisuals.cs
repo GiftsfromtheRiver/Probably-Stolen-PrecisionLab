@@ -20,7 +20,8 @@ namespace PrecisionLab
             { ItemIds.BlueBloodBox, SpriteKeys.ReagentKitBlueBlood },
             { ItemIds.ImmunivaxBox, SpriteKeys.ReagentKitImmunivax },
             { ItemIds.OrdnanceBox, SpriteKeys.ReagentKitOrdnance },
-            { ItemIds.PerfumeBox, SpriteKeys.ReagentKitPerfume }
+            { ItemIds.PerfumeBox, SpriteKeys.ReagentKitPerfume },
+            { ItemIds.BioPharmaBox, SpriteKeys.ReagentKitBioPharma }
         };
 
         internal static bool HasArt(string itemId)

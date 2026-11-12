@@ -175,6 +175,10 @@ namespace PrecisionLab
                 bool aromaticBottle = directory.Has(ItemIds.AromaticBottle) || directory.Add(ItemIds.AromaticBottle, PerfumeContent.CreateAromaticBottle);
                 bool crudePheromoneBottle = directory.Has(ItemIds.CrudePheromoneBottle) || directory.Add(ItemIds.CrudePheromoneBottle, PerfumeContent.CreateCrudePheromoneBottle);
                 bool perfumeBox = directory.Has(ItemIds.PerfumeBox) || directory.Add(ItemIds.PerfumeBox, PerfumeContent.CreateSupplyBox);
+                bool phageBottle = directory.Has(ItemIds.PhageCultureBottle) || directory.Add(ItemIds.PhageCultureBottle, BioPharmaContent.CreatePhageCultureBottle);
+                bool fungalBottle = directory.Has(ItemIds.FungalExtractBottle) || directory.Add(ItemIds.FungalExtractBottle, BioPharmaContent.CreateFungalExtractBottle);
+                bool stemBottle = directory.Has(ItemIds.StemCellBottle) || directory.Add(ItemIds.StemCellBottle, BioPharmaContent.CreateStemCellBottle);
+                bool bioPharmaBox = directory.Has(ItemIds.BioPharmaBox) || directory.Add(ItemIds.BioPharmaBox, BioPharmaContent.CreateSupplyBox);
                 bool oxidizerBottle = directory.Has(ItemIds.OxidizerBottle) || directory.Add(ItemIds.OxidizerBottle, OrdnanceContent.CreateOxidizerBottle);
                 bool metalPowderBottle = directory.Has(ItemIds.MetalPowderBottle) || directory.Add(ItemIds.MetalPowderBottle, OrdnanceContent.CreateMetalPowderBottle);
                 bool nitratingAcidBottle = directory.Has(ItemIds.NitratingAcidBottle) || directory.Add(ItemIds.NitratingAcidBottle, OrdnanceContent.CreateNitratingAcidBottle);
@@ -182,6 +186,7 @@ namespace PrecisionLab
                 if (extractor || purifier || cultivator || supplyBox || api || pen || waste || tourniquet || resolvingBottle || resolvingRefill
                     || naloxoneBox || naloxoneApi || birthControlBox || sannaiBox
                     || synaprestBox || synaprestInjector || immuneSerum || bioGel || blueBloodBox || immunivaxBox || ordnanceBox || mysteryMedBox || aromaticBottle || crudePheromoneBottle || perfumeBox
+                    || phageBottle || fungalBottle || stemBottle || bioPharmaBox
                     || oxidizerBottle || metalPowderBottle || nitratingAcidBottle)
                 {
                     _log.Log("items registered in mod item directory: extractor=" + extractor
@@ -196,6 +201,7 @@ namespace PrecisionLab
                         + " immuneSerum=" + immuneSerum + " bioGel=" + bioGel + " blueBloodBox=" + blueBloodBox
                         + " immunivaxBox=" + immunivaxBox + " ordnanceBox=" + ordnanceBox + " mysteryMedBox=" + mysteryMedBox
                         + " perfume=" + (aromaticBottle && crudePheromoneBottle && perfumeBox)
+                        + " biopharma=" + (phageBottle && fungalBottle && stemBottle) + " bioBox=" + bioPharmaBox
                         + " oxidizer=" + oxidizerBottle + " metalPowder=" + metalPowderBottle
                         + " nitratingAcid=" + nitratingAcidBottle);
                 }
@@ -377,6 +383,8 @@ namespace PrecisionLab
                 BlueBloodContent.EnsureRecipes();
                 OrdnanceContent.EnsureRecipes();
                 PerfumeContent.EnsureRecipes();
+                BioPharmaContent.EnsureRecipes();
+                PhagimycinLicense.Register();
                 DebugSpawns.Register();
                 TourniquetCraft.OnUnlocked();
                 RecipeBook.EnsureDelivered();
@@ -444,6 +452,8 @@ namespace PrecisionLab
                 BlueBloodContent.EnsureRecipes();
                 OrdnanceContent.EnsureRecipes();
                 PerfumeContent.EnsureRecipes();
+                BioPharmaContent.EnsureRecipes();
+                PhagimycinLicense.Register();
                 Apothecary.EnsureUnlockedState();
                 RecipeBook.EnsureDelivered();
             }
@@ -459,6 +469,7 @@ namespace PrecisionLab
                 EnsureCustomContentRegistered();
                 TryRegisterUpgrades();
                 EnsureItemsRegisteredForGameplay();
+                PhagimycinLicense.Register();
             }
             catch (Exception e)
             {
@@ -486,6 +497,7 @@ namespace PrecisionLab
                     // Defensive: a fresh run may reach the black market before any save-load
                     // hook ran. Make sure the factories are attached before spawning.
                     EnsureItemsRegisteredForGameplay();
+                PhagimycinLicense.Register();
                 }
                 GameItem item = ItemSpawner.Spawn(itemId);
                 if (item == null)
@@ -861,6 +873,7 @@ namespace PrecisionLab
                 EnsureCustomContentRegistered();
                 TryRegisterUpgrades();
                 EnsureItemsRegisteredForGameplay();
+                PhagimycinLicense.Register();
                 if (IsUpgradeUnlocked("PRECISION_LAB_MEDS"))
                 {
                     AdrenalineContent.EnsureRecipes();

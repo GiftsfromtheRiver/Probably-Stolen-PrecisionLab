@@ -313,3 +313,34 @@ item.perfume_box.flavor,Contraband: contains pheromone. Half fragrance, half tro
 item.neuroactive_perfume.recipe_name,Neuroactive Perfume "Sync"
 item.pheromone_perfume.recipe_name,Pheromone Perfume "Origin"
 liquid.pheromone_byproduct,Pheromone Byproduct
+liquid.phage_culture,Bacteriophage Culture
+liquid.fungal_extract,Fungal Extract
+liquid.symbiotic_culture,Symbiotic Culture
+liquid.pure_antibiotic_api,Pure Antibiotic Powder Suspension
+liquid.stem_cell,Stem Cell Stock
+liquid.active_cell_suspension,Active Cell Suspension
+liquid.essence_concentrate,Eternal Essence Concentrate
+liquid.dead_cell_waste,Dead Cell Waste
+item.phage_culture_bottle.name,Bacteriophage Culture Bottle (20 mL)
+item.phage_culture_bottle.desc,A 20 mL bottle of bacteriophage culture, the starting material for phagimycin.
+item.fungal_extract_bottle.name,Fungal Extract Bottle (20 mL)
+item.fungal_extract_bottle.desc,A 20 mL bottle of fungal extract for symbiotic culture.
+item.stem_cell_bottle.name,Stem Cell Stock Bottle (20 mL)
+item.stem_cell_bottle.desc,A 20 mL bottle of stem cell stock; keep cold.
+item.phagimycin.recipe_name,Phagimycin Pill
+item.eternal.recipe_name,Eternal Revitalizing Essence
+phone.wilde.name,Joe Wilde
+phone.wilde.intro,Joe Wilde. Want a legal phagimycin licence? 800 credits, one-time.
+phone.wilde.buy,I want to do this legally.
+phone.wilde.cancel_line,Wrong number.
+phone.wilde.bought,Paperwork done, licence active. Do not make me regret this.
+phone.wilde.cancel,Call me when you decide.
+phone.wilde.already,You already hold the licence.
+phone.wilde.no_cash,Not enough cash: the licence costs 800 credits.
+phone.wilde.log,You obtained the phagimycin manufacturing licence from Joe Wilde.
+perk.phagimycin_license.name,Phagimycin Manufacturing Licence
+perk.phagimycin_license.desc,Allows legal production of phagimycin pills; permanent passive.
+item.biopharma_box.name,Bio-Pharma Precursor Kit
+item.biopharma_box.desc,Unpacks bio-pharma materials: bacteriophage culture 20 mL, fungal extract 20 mL, water 20 mL x2, stem cell stock 20 mL x2, alcohol 20 mL, lipobond 20 mL.
+item.biopharma_box.flavor,Ship cold. Some of it is alive; some of it is not.
+phone.wilde.not_enough,Come back when you have 800 credits. Do not waste my time.

@@ -58,6 +58,9 @@ namespace PrecisionLab
             GameItem pheromoneCup = null;
             GameItem pheromoneHotCup = null;
             GameItem perfumeKitItem = null;
+            GameItem phageCup = null;
+            GameItem stemCup = null;
+            GameItem stemHotCup = null;
             GameItem resolvingBottleItem = null;
             GameItem resolvingRefillItem = null;
             GameItem recipeBookItem = null;
@@ -779,8 +782,8 @@ namespace PrecisionLab
                 }
                 bool mysteryOk = mysteryCrateItem != null
                     && mysteryCrateItem.shape != null
-                    && mysteryCrateItem.shape.width == 3
-                    && mysteryCrateItem.shape.height == 4
+                    && mysteryCrateItem.shape.width == 4
+                    && mysteryCrateItem.shape.height == 3
                     && mysteryCrateItem.unitValue == 1500
                     && mysteryCrateItem.contentWindow != null
                     && mysteryCount >= MysteryMedBox.MinItems
@@ -840,6 +843,59 @@ namespace PrecisionLab
                     && perfumeRecipesOk
                     && perfumeKitItem != null
                     && perfumeKitItem.unitValue == 2000;
+
+                // --- 8l. Bio-pharma: phagimycin API + stem-cell essence -----------------------
+                phageCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(phageCup, true);
+                LiquidTools.SetLiquidRaw(phageCup, CustomLiquids.PhageCulture, 1000);
+                LiquidTools.SetLiquidRaw(phageCup, CustomLiquids.FungalExtract, 1000);
+                LiquidTools.SetLiquidRaw(phageCup, "water", 1000);
+                SetTemperature(phageCup, 30.0);
+                PulseStep(phageCup, BioPharmaChemistry.StepSymbioticCulture);
+                int symbiotic = LiquidTools.GetLiquidAmount(phageCup, CustomLiquids.SymbioticCulture);
+                int bioContaminant = LiquidTools.GetLiquidAmount(phageCup, "chemical_contaminant");
+                LiquidTools.SetLiquidRaw(phageCup, "chemical_contaminant", 0);
+                PulseStep(phageCup, BioPharmaChemistry.StepAntibioticPurify);
+                int pureApi = LiquidTools.GetLiquidAmount(phageCup, CustomLiquids.PureAntibioticApi);
+
+                stemCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(stemCup, true);
+                LiquidTools.SetLiquidRaw(stemCup, CustomLiquids.StemCell, 2000);
+                LiquidTools.SetLiquidRaw(stemCup, "water", 1000);
+                LiquidTools.SetLiquidRaw(stemCup, "alcohol", 1000);
+                SetTemperature(stemCup, 28.0);
+                PulseStep(stemCup, BioPharmaChemistry.StepCellActivation);
+                int activeCells = LiquidTools.GetLiquidAmount(stemCup, CustomLiquids.ActiveCellSuspension);
+                LiquidTools.SetLiquidRaw(stemCup, "lipobond_agent", 1000);
+                PulseStep(stemCup, BioPharmaChemistry.StepEssencePurify);
+                int essence = LiquidTools.GetLiquidAmount(stemCup, CustomLiquids.EssenceConcentrate);
+
+                stemHotCup = ItemFactory.CreateExtractor();
+                GeneralHelper.SetItemOwned(stemHotCup, true);
+                LiquidTools.SetLiquidRaw(stemHotCup, CustomLiquids.StemCell, 2000);
+                LiquidTools.SetLiquidRaw(stemHotCup, "water", 1000);
+                LiquidTools.SetLiquidRaw(stemHotCup, "alcohol", 1000);
+                SetTemperature(stemHotCup, 35.0);
+                PulseStep(stemHotCup, BioPharmaChemistry.StepCellActivation);
+                int hotCells = LiquidTools.GetLiquidAmount(stemHotCup, CustomLiquids.ActiveCellSuspension);
+                int deadCells = LiquidTools.GetLiquidAmount(stemHotCup, CustomLiquids.DeadCellWaste);
+
+                BioPharmaContent.EnsureRecipes();
+                bool bioRecipesOk = ChemFinisherRecipe.GetRecipeById(BioPharmaContent.UnlicensedPillId) != null
+                    && ChemFinisherRecipe.GetRecipeById(BioPharmaContent.UnlicensedPillId).activeIngredientId == CustomLiquids.PureAntibioticApi
+                    && ChemFinisherRecipe.GetRecipeById(BioPharmaContent.EssenceId) != null
+                    && ChemFinisherRecipe.GetRecipeById(BioPharmaContent.EssenceId).activeIngredientId == CustomLiquids.EssenceConcentrate;
+                bool bioOk = symbiotic == 1000
+                    && bioContaminant > 0
+                    && pureApi == 1000
+                    && activeCells == 1000
+                    && essence == 1000
+                    && hotCells == 0
+                    && deadCells == 1000
+                    && bioRecipesOk;
+                log.Log(Prefix + "bio-pharma chains: symbiotic=" + symbiotic + "µL contaminant=" + bioContaminant
+                    + "µL pureApi=" + pureApi + "µL activeCells=" + activeCells + "µL essence=" + essence
+                    + "µL hotCells=" + hotCells + "µL deadCells=" + deadCells + "µL recipes=" + bioRecipesOk);
                 log.Log(Prefix + "perfume chains: activated=" + activated + "µL contaminant=" + neuroContaminant
                     + "µL neuroConcentrate=" + neuroConcentrate + "µL purifiedPheromone=" + purifiedPheromone
                     + "µL pheromoneConcentrate=" + pheromoneConcentrate + "µL hotPheromone=" + hotPheromone
@@ -1041,7 +1097,7 @@ namespace PrecisionLab
                         && clean && conc && hydrolysis && digestion && cultivatorOk
                         && adrenalineOk && adrenalineItemsOk && recycleOk && naloxoneOk && pillOk
                         && synaprestOk && apothecaryOk && immunivaxOk && blueBloodOk && ordnanceOk
-                        && mysteryOk && perfumeOk ? "OK" : "FAILED")
+                        && mysteryOk && perfumeOk && bioOk ? "OK" : "FAILED")
                     + " exact=" + exact + " refuseOverdose=" + refuseOverdose + " window=" + hasWindow
                     + " slider=" + sliderWorks + " modes=" + modes + " manual=" + manualOk
                     + " cleanWater=" + clean + " concentrate=" + conc
@@ -1049,7 +1105,7 @@ namespace PrecisionLab
                     + " adrenaline=" + adrenalineOk + " adrenalineItems=" + adrenalineItemsOk
                     + " tourniquet=" + tourniquetOk
                     + " recycle=" + recycleOk + " naloxone=" + naloxoneOk + " pills=" + pillOk + " synaprest=" + synaprestOk + " apothecary=" + apothecaryOk + " immunivax=" + immunivaxOk + " blueBlood=" + blueBloodOk + " ordnance=" + ordnanceOk
-                    + " mystery=" + mysteryOk + " perfume=" + perfumeOk);
+                    + " mystery=" + mysteryOk + " perfume=" + perfumeOk + " bioPharma=" + bioOk);
             }
             catch (Exception e)
             {
@@ -1108,6 +1164,9 @@ namespace PrecisionLab
                 DestroyQuietly(pheromoneCup);
                 DestroyQuietly(pheromoneHotCup);
                 DestroyQuietly(perfumeKitItem);
+                DestroyQuietly(phageCup);
+                DestroyQuietly(stemCup);
+                DestroyQuietly(stemHotCup);
             }
         }
 

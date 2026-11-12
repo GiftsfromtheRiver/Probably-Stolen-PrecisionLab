@@ -70,7 +70,15 @@ namespace PrecisionLab
         internal const string PurifiedPheromone = "purified_pheromone";
         internal const string PheromoneConcentrate = "pheromone_concentrate";
         internal const string PheromoneByproduct = "pheromone_waste";
-        internal const string PheromoneWaste = "denatured_pheromone_waste"; // 肾上腺素药液
+        internal const string PheromoneWaste = "denatured_pheromone_waste";
+        internal const string PhageCulture = "phage_culture";
+        internal const string FungalExtract = "fungal_extract";
+        internal const string SymbioticCulture = "symbiotic_culture";
+        internal const string PureAntibioticApi = "pure_antibiotic_api";
+        internal const string StemCell = "stem_cell";
+        internal const string ActiveCellSuspension = "active_cell_suspension";
+        internal const string EssenceConcentrate = "essence_concentrate";
+        internal const string DeadCellWaste = "dead_cell_waste"; // 肾上腺素药液
 
         private static bool _registered;
 
@@ -136,7 +144,15 @@ namespace PrecisionLab
                 AddLiquid(PheromoneConcentrate, "liquid.pheromone_concentrate", "Pheromone Concentrate", "f0d8c0", false);
                 AddLiquid(PheromoneByproduct, "liquid.pheromone_byproduct", "Pheromone Byproduct", "8a7a6a", true);
                 AddLiquid(PheromoneWaste, "liquid.pheromone_waste", "Denatured Pheromone Waste", "6a5a5a", true);
-                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 53 + ")");
+                AddLiquid(PhageCulture, "liquid.phage_culture", "Bacteriophage Culture", "c8e8d8", false);
+                AddLiquid(FungalExtract, "liquid.fungal_extract", "Fungal Extract", "d8c8a8", false);
+                AddLiquid(SymbioticCulture, "liquid.symbiotic_culture", "Symbiotic Culture", "d8e8c0", false);
+                AddLiquid(PureAntibioticApi, "liquid.pure_antibiotic_api", "Pure Antibiotic Powder Suspension", "f0f0e0", false);
+                AddLiquid(StemCell, "liquid.stem_cell", "Stem Cell Stock", "f0d8e0", false);
+                AddLiquid(ActiveCellSuspension, "liquid.active_cell_suspension", "Active Cell Suspension", "f8e0e8", false);
+                AddLiquid(EssenceConcentrate, "liquid.essence_concentrate", "Eternal Essence Concentrate", "f8e8f0", false);
+                AddLiquid(DeadCellWaste, "liquid.dead_cell_waste", "Dead Cell Waste", "7a6a6a", true);
+                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 61 + ")");
             }
             catch (Exception e)
             {
@@ -202,6 +218,14 @@ namespace PrecisionLab
                 SetName(PheromoneConcentrate, "liquid.pheromone_concentrate", "Pheromone Concentrate");
                 SetName(PheromoneByproduct, "liquid.pheromone_byproduct", "Pheromone Byproduct");
                 SetName(PheromoneWaste, "liquid.pheromone_waste", "Denatured Pheromone Waste");
+                SetName(PhageCulture, "liquid.phage_culture", "Bacteriophage Culture");
+                SetName(FungalExtract, "liquid.fungal_extract", "Fungal Extract");
+                SetName(SymbioticCulture, "liquid.symbiotic_culture", "Symbiotic Culture");
+                SetName(PureAntibioticApi, "liquid.pure_antibiotic_api", "Pure Antibiotic Powder Suspension");
+                SetName(StemCell, "liquid.stem_cell", "Stem Cell Stock");
+                SetName(ActiveCellSuspension, "liquid.active_cell_suspension", "Active Cell Suspension");
+                SetName(EssenceConcentrate, "liquid.essence_concentrate", "Eternal Essence Concentrate");
+                SetName(DeadCellWaste, "liquid.dead_cell_waste", "Dead Cell Waste");
             }
             catch (Exception e)
             {
@@ -232,6 +256,9 @@ namespace PrecisionLab
                 || liquidId == AromaticExtract || liquidId == ActivatedFragrance || liquidId == NeuroConcentrate
                 || liquidId == CrudePheromone || liquidId == PurifiedPheromone || liquidId == PheromoneConcentrate
                 || liquidId == PheromoneByproduct || liquidId == PheromoneWaste
+                || liquidId == PhageCulture || liquidId == FungalExtract || liquidId == SymbioticCulture
+                || liquidId == PureAntibioticApi || liquidId == StemCell || liquidId == ActiveCellSuspension
+                || liquidId == EssenceConcentrate || liquidId == DeadCellWaste
                 || liquidId == Thebaine || liquidId == ContraceptiveApi || liquidId == SannaiApi;
         }
 

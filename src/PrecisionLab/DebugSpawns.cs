@@ -58,6 +58,7 @@ namespace PrecisionLab
             SpawnItem(ItemIds.ImmunivaxBox);
             SpawnItem(ItemIds.OrdnanceBox);
             SpawnItem(ItemIds.PerfumeBox);
+            SpawnItem(ItemIds.BioPharmaBox);
         }
 
         private static void SpawnReagentCrate()
