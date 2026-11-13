@@ -343,3 +343,49 @@ item.biopharma_box.name,生物制药原料盒
 item.biopharma_box.desc,激活拆开得到一批生物制药原料：噬菌体培养液 20 毫升、真菌提取物 20 毫升、水 20 毫升 ×2、干细胞原液 20 毫升 ×2、酒精 20 毫升、脂合剂 20 毫升。
 item.biopharma_box.flavor,冷藏运输。里面有活的，也有不能算活的。
 phone.wilde.not_enough,先凑够 800 信用点再来，别浪费我时间。
+item.first_aid_box.name,Star Quilers Med 急救盒
+item.first_aid_box.desc,标准 3×3 急救盒。内部应有肾上腺素笔、止血带、免疫宁、纳洛通注射器、医用酒精和血袋；双击拆开可单卖内部物品。医用酒精可在药剂师/退休化学家处购买。
+item.first_aid_box.flavor,Star Quilers Med：前线急救标准配置。
+item.first_aid_box.fake_flavor,包装看着挺像，但总觉得哪里不对。
+item.first_aid_shell.name,急救盒外壳（空）
+item.first_aid_shell.desc,3×3 空急救盒外壳。放入药品后，把密封贴拖到外壳上即可封装。
+item.first_aid_shell.flavor,没有密封贴的急救盒只是一个铁皮盒子。
+item.first_aid_seal.name,急救盒密封贴
+item.first_aid_seal.desc,手工密封贴。把密封贴拖到装有药品的急救盒外壳上即可封装；消耗贴纸，完整/高级有 10% 溢价，未配齐 ×0.9，拆开只返还空外壳。
+item.first_aid_seal.flavor,原厂不会承认这个。
+item.first_aid_box.manual_name,急救盒（手工密封）
+item.first_aid_box.advanced_name,高级急救盒
+item.first_aid_box.incomplete_desc,手工密封急救盒：未配齐。价格按内部物品价值的 90% 计算。
+item.first_aid_box.manual_desc,手工密封急救盒。可直接双击拆开，把内部物品单卖。
+ui.first_aid.title,急救盒鉴定
+ui.first_aid.item,物品：
+ui.first_aid.serial,编号：
+ui.first_aid.serial_ok,（7 位：3 位批次 + 4 位序号）
+ui.first_aid.serial_bad,（编号格式不符）
+ui.first_aid.red_cross,红十字：
+ui.first_aid.sticker,包装贴纸：
+ui.first_aid.brand,品牌字样 Star Quilers Med：
+ui.first_aid.yes,一致
+ui.first_aid.no,不一致
+ui.first_aid.contents,内部物品数：
+ui.first_aid.advanced,高级（蓝血）：
+ui.first_aid.value,估值：
+ui.first_aid.credits, 信用点
+ui.first_aid.genuine,结论：正品。包装、编号、红十字和贴纸全部一致。
+ui.first_aid.fake,结论：赝品。至少一项防伪特征不一致，只能按假货价格出售。
+ui.first_aid.manual,手工密封：不是 Star Quiler 原厂，无法鉴定真伪。
+ui.first_aid.manual_incomplete,手工密封，未配齐：不是 Star Quiler 原厂，无法鉴定真伪。
+ui.first_aid.close,关闭
+ui.first_aid.error,鉴定失败，请重试。
+ui.first_aid.verify_hint,四项防伪特征全部一致才是正品。
+ui.first_aid.tier_category,急救盒品级
+ui.first_aid.tier_first_aid_incomplete,未配齐
+ui.first_aid.tier_first_aid_complete,完整
+ui.first_aid.tier_first_aid_advanced,高级
+ui.first_aid.tier_name_incomplete,未配齐
+ui.first_aid.tier_name_complete,完整
+ui.first_aid.tier_name_advanced,高级
+ui.first_aid.question,这个拎起来怎么感觉重量不对啊……
+ui.first_aid.question_report,顾客拆开检查：标签「{0}」，实际「{1}」。
+ui.first_aid.question_ok,符合标签，额外加价 10%。
+ui.first_aid.question_bad,不符合标签，交易价格 -15%，阵营好感下降。

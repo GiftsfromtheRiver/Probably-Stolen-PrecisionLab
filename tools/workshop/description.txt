@@ -5,33 +5,27 @@
 - 精确取液器、提纯机器、微生物培养机、淀粉水解
 - 肾上腺素注射笔、纳洛酮（纳洛通）、避孕药、山奈德片、赛纳普斯/免疫宁注射器、蓝血生物凝胶生产线
 - 军需生产线：闪光弹/烟雾弹/塑性炸药，成型机直接压制原版成品
-- 香水生产线（无需搅拌机）：神经活性香水「同步」150、费洛蒙香水「本源」200，均为原版 5 次使用；总液量 + 成分配比双重校验
-- 生物制药线：噬菌霉素片（持乔·王尔德助手处购买的执照 + 纯度≥99% 产正品，否则无证品）、「永恒」焕活精华液（干细胞低温培养，纯度≥99%）
-- 简易止血带、药剂师（电话预约，随机原料盒/散装试剂瓶/随机品质成品药）
-- 密封药剂原料箱：4×3 物资箱外观，购买前锁定且不显示内容，购买后双击查看 5–10 瓶随机原料药剂
-- 《精密实验室配方手册》：15 页配方
+- 香水生产线（无需搅拌机）：神经活性香水「同步」150、费洛蒙香水「本源」200，原版 5 次使用；总量+配比双校验
+- 生物制药线：噬菌霉素片（执照+纯度≥99% 或 无证品）、「永恒」焕活精华液（5mL、纯度≥99%）
+- 完整急救盒（3×3）：肾上腺素笔、止血带、免疫宁、纳洛通、医用酒精、血袋；可拆开单卖，可买空外壳+密封贴手工封装
+- 急救盒标签与顾客质疑：标签机可贴「未配齐/完整/高级」；顾客按标签虚实概率拆检，符合 +10% 价格/好感，不符 -15%/好感下降
+- 简易止血带、药剂师（电话预约）、密封药剂原料箱、15 页配方书
 
-[b]纯度与成分[/b]
-- 纳洛通 / 赛纳普斯 / 蓝血 / 军需成品要求主成分 ≥99%，成分不匹配拒绝输出
-- 免疫宁 ≥99% 为正品，低于 99% 随机 1–4 个鉴别缺陷
-- 噬菌霉素片：执照 + 纯度 ≥99% 才产正品；无执照或纯度不足产无证品
-- 「永恒」焕活精华液：灌装要求纯度 ≥99%
-- 成型机输出空间不足时拒绝输出，不扣原料
+[b]急救盒规则[/b]
+- 内容 6 件齐全=完整；蓝血袋=高级；免疫宁是赝品/过期/损坏=未配齐（即使其他齐全或蓝血）
+- 未密封外壳不是可整体出售的急救盒；密封贴拖到外壳上消耗并封装
+- 完整/高级密封盒 +10% 溢价，未配齐 ×0.9；高级 ×2
+- 拆开返回空外壳，不返还密封贴；已拥有盒子可放入其他容器
 
-[b]获取方式[/b]
-- 机器不再从垃圾堆/医疗池掉落；只能通过黑网升级解锁（首台免费）和杰克逊博士购买
-- 原料由退休化学家、药剂师供应；调试面板 Modding 分类提供测试按钮
-- 噬菌霉素执照：拨打「乔·王尔德的助手」，对话选择「我想弄点合法的门路」，800 信用点一次买断，永久被动、不占格子
-
-[b]平衡[/b]
-- 香水原料盒 2000 信用点、2 级违禁品；芳香萃取液 300、粗制信息素 600
-- 生物制药原料盒 1500；噬菌体培养液 250、真菌提取物 200、干细胞原液 350
-- 噬菌霉素片 1mL/片；永恒焕活精华液 5mL/瓶
+[b]获取[/b]
+- 机器不再从垃圾堆/医疗池掉落；黑网升级和杰克逊博士购买
+- 原料由退休化学家、药剂师供应；医用酒精也在两处出售
+- 噬菌霉素执照：乔·王尔德助手，800 信用点永久被动
 
 [b]安装[/b]
-Steam 创意工坊订阅后，在游戏内 Mods 菜单启用并信任；需要游戏版本 0.46D。
+Steam 创意工坊订阅后，在 Mods 菜单启用并信任；需要 0.46D。
 
 [b]English[/b]
-A local content mod for Probably Stolen 0.46D with precision machines, pharmaceutical/ordnance/perfume/bio-pharma production lines, direct-press vanilla items, a sealed reagent crate, phone-booked apothecary, Joe Wilde licence service and a 15-page recipe book. Machines no longer drop from junk/medical loot.
+Local content mod for Probably Stolen 0.46D: precision machines, pharmaceutical/ordnance/perfume/bio-pharma lines, vanilla final products, full first aid kit with editable tier label and customer questioning, sealed reagent crate, apothecary and a 15-page recipe book. Machines no longer drop from junk/medical loot.
 
-Version 1.17.4 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab
+Version 1.22.1 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab

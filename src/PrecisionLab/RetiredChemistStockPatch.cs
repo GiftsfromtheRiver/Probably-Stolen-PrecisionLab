@@ -320,6 +320,10 @@ namespace PrecisionLab
                 store.AddDirectSellingItemToTable(ItemIds.FungalExtractBottle);
                 store.AddDirectSellingItemToTable(ItemIds.StemCellBottle);
                 store.AddDirectSellingItemToTable(ItemIds.BioPharmaBox);
+                store.AddDirectSellingItemToTable(ItemIds.FirstAidShell);
+                store.AddDirectSellingItemToTable(ItemIds.FirstAidSeal);
+                store.AddDirectSellingItemToTable(FirstAidBox.CreateStockBox());
+                store.AddDirectSellingItemToTable("rubbing_alcohol");
                 Debug.Log("[PrecisionLab] retired chemist offers bio-pharma precursors");
             }
             catch (Exception e)

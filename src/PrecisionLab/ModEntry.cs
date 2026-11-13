@@ -179,6 +179,9 @@ namespace PrecisionLab
                 bool fungalBottle = directory.Has(ItemIds.FungalExtractBottle) || directory.Add(ItemIds.FungalExtractBottle, BioPharmaContent.CreateFungalExtractBottle);
                 bool stemBottle = directory.Has(ItemIds.StemCellBottle) || directory.Add(ItemIds.StemCellBottle, BioPharmaContent.CreateStemCellBottle);
                 bool bioPharmaBox = directory.Has(ItemIds.BioPharmaBox) || directory.Add(ItemIds.BioPharmaBox, BioPharmaContent.CreateSupplyBox);
+                bool firstAidBox = directory.Has(ItemIds.FirstAidBox) || directory.Add(ItemIds.FirstAidBox, FirstAidBox.CreateBox);
+                bool firstAidShell = directory.Has(ItemIds.FirstAidShell) || directory.Add(ItemIds.FirstAidShell, FirstAidBox.CreateShell);
+                bool firstAidSeal = directory.Has(ItemIds.FirstAidSeal) || directory.Add(ItemIds.FirstAidSeal, FirstAidBox.CreateSeal);
                 bool oxidizerBottle = directory.Has(ItemIds.OxidizerBottle) || directory.Add(ItemIds.OxidizerBottle, OrdnanceContent.CreateOxidizerBottle);
                 bool metalPowderBottle = directory.Has(ItemIds.MetalPowderBottle) || directory.Add(ItemIds.MetalPowderBottle, OrdnanceContent.CreateMetalPowderBottle);
                 bool nitratingAcidBottle = directory.Has(ItemIds.NitratingAcidBottle) || directory.Add(ItemIds.NitratingAcidBottle, OrdnanceContent.CreateNitratingAcidBottle);
@@ -186,7 +189,7 @@ namespace PrecisionLab
                 if (extractor || purifier || cultivator || supplyBox || api || pen || waste || tourniquet || resolvingBottle || resolvingRefill
                     || naloxoneBox || naloxoneApi || birthControlBox || sannaiBox
                     || synaprestBox || synaprestInjector || immuneSerum || bioGel || blueBloodBox || immunivaxBox || ordnanceBox || mysteryMedBox || aromaticBottle || crudePheromoneBottle || perfumeBox
-                    || phageBottle || fungalBottle || stemBottle || bioPharmaBox
+                    || phageBottle || fungalBottle || stemBottle || bioPharmaBox || firstAidBox || firstAidShell || firstAidSeal
                     || oxidizerBottle || metalPowderBottle || nitratingAcidBottle)
                 {
                     _log.Log("items registered in mod item directory: extractor=" + extractor
@@ -201,7 +204,7 @@ namespace PrecisionLab
                         + " immuneSerum=" + immuneSerum + " bioGel=" + bioGel + " blueBloodBox=" + blueBloodBox
                         + " immunivaxBox=" + immunivaxBox + " ordnanceBox=" + ordnanceBox + " mysteryMedBox=" + mysteryMedBox
                         + " perfume=" + (aromaticBottle && crudePheromoneBottle && perfumeBox)
-                        + " biopharma=" + (phageBottle && fungalBottle && stemBottle) + " bioBox=" + bioPharmaBox
+                        + " biopharma=" + (phageBottle && fungalBottle && stemBottle) + " bioBox=" + bioPharmaBox + " firstAid=" + (firstAidBox && firstAidShell && firstAidSeal)
                         + " oxidizer=" + oxidizerBottle + " metalPowder=" + metalPowderBottle
                         + " nitratingAcid=" + nitratingAcidBottle);
                 }
@@ -384,6 +387,8 @@ namespace PrecisionLab
                 OrdnanceContent.EnsureRecipes();
                 PerfumeContent.EnsureRecipes();
                 BioPharmaContent.EnsureRecipes();
+                FirstAidBox.EnsureRegistered();
+                FirstAidCleanup.ClaimStaleUnownedItems();
                 PhagimycinLicense.Register();
                 DebugSpawns.Register();
                 TourniquetCraft.OnUnlocked();
@@ -453,6 +458,8 @@ namespace PrecisionLab
                 OrdnanceContent.EnsureRecipes();
                 PerfumeContent.EnsureRecipes();
                 BioPharmaContent.EnsureRecipes();
+                FirstAidBox.EnsureRegistered();
+                FirstAidCleanup.ClaimStaleUnownedItems();
                 PhagimycinLicense.Register();
                 Apothecary.EnsureUnlockedState();
                 RecipeBook.EnsureDelivered();

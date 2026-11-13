@@ -24,6 +24,7 @@ namespace PrecisionLab
                 ModHelper.AddDebugFunction(Loc.ModId, "Modding", "PrecisionLab: 测试大礼包（机器/原料盒/打印芯片/药剂箱）", SpawnTestingBundle);
                 ModHelper.AddDebugFunction(Loc.ModId, "Modding", "PrecisionLab: 全部原料盒 ×9", SpawnAllKits);
                 ModHelper.AddDebugFunction(Loc.ModId, "Modding", "PrecisionLab: 密封药剂原料箱", SpawnReagentCrate);
+                ModHelper.AddDebugFunction(Loc.ModId, "Modding", "PrecisionLab: 急救盒（真/假/外壳/密封贴）", SpawnFirstAidTest);
                 Debug.Log("[PrecisionLab] debug spawn buttons registered");
             }
             catch (Exception e)
@@ -59,6 +60,25 @@ namespace PrecisionLab
             SpawnItem(ItemIds.OrdnanceBox);
             SpawnItem(ItemIds.PerfumeBox);
             SpawnItem(ItemIds.BioPharmaBox);
+            SpawnItem(ItemIds.FirstAidShell);
+            SpawnItem(ItemIds.FirstAidSeal);
+        }
+
+        private static void SpawnFirstAidTest()
+        {
+            SpawnItem(ItemIds.FirstAidShell);
+            SpawnItem(ItemIds.FirstAidSeal);
+            try
+            {
+                GameItem genuine = FirstAidBox.CreateStockBox();
+                GameItem fake = FirstAidBox.CreateStockBox();
+                if (genuine != null) { GeneralHelper.SetItemOwned(genuine, true); GraphUtils.EmporiumTryAdd(genuine); }
+                if (fake != null) { GeneralHelper.SetItemOwned(fake, true); GraphUtils.EmporiumTryAdd(fake); }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] debug first aid spawn failed: " + e.Message);
+            }
         }
 
         private static void SpawnReagentCrate()

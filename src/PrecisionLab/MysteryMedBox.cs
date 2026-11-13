@@ -90,7 +90,34 @@ namespace PrecisionLab
                 return inventory.childItems.Count;
             }
             FillRandomReagents(inventory);
+            FillFirstAidParts(inventory);
             return inventory.childItems.Count;
+        }
+
+        private static void FillFirstAidParts(GameInventory inventory)
+        {
+            try
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    GameItem shell = DirectoryMaster.Item(ItemIds.FirstAidShell);
+                    GameItem seal = DirectoryMaster.Item(ItemIds.FirstAidSeal);
+                    if (shell != null)
+                    {
+                        GeneralHelper.SetItemOwned(shell, true);
+                        if (GraphUtils.TryAcceptAll(inventory, shell) != 0) shell.Destroy();
+                    }
+                    if (seal != null)
+                    {
+                        GeneralHelper.SetItemOwned(seal, true);
+                        if (GraphUtils.TryAcceptAll(inventory, seal) != 0) seal.Destroy();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] adding first aid parts to crate failed: " + e.Message);
+            }
         }
 
         private static void FillRandomReagents(GameInventory inventory)

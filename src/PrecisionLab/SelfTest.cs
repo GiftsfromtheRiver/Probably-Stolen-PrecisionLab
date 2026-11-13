@@ -773,7 +773,14 @@ namespace PrecisionLab
                     for (int mi = 0; mi < mysteryContents.Count; mi++)
                     {
                         GameItem content = mysteryContents[mi];
-                        if (content == null || !content.IsTag(MysteryMedBox.ReagentBottleTag))
+                        if (content == null)
+                        {
+                            mysteryContentsOk = false;
+                            break;
+                        }
+                        bool firstAidPart = content.identifier == ItemIds.FirstAidShell
+                            || content.identifier == ItemIds.FirstAidSeal;
+                        if (!content.IsTag(MysteryMedBox.ReagentBottleTag) && !firstAidPart)
                         {
                             mysteryContentsOk = false;
                             break;
@@ -787,7 +794,7 @@ namespace PrecisionLab
                     && mysteryCrateItem.unitValue == 1500
                     && mysteryCrateItem.contentWindow != null
                     && mysteryCount >= MysteryMedBox.MinItems
-                    && mysteryCount <= MysteryMedBox.MaxItems
+                    && mysteryCount <= MysteryMedBox.MaxItems + 4
                     && mysteryContentsOk
                     && !mysteryCrateItem.IsTag("CONTAINER_TOOLTIP_TAG");
 

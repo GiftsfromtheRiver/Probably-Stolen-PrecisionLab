@@ -344,3 +344,49 @@ item.biopharma_box.name,Bio-Pharma Precursor Kit
 item.biopharma_box.desc,Unpacks bio-pharma materials: bacteriophage culture 20 mL, fungal extract 20 mL, water 20 mL x2, stem cell stock 20 mL x2, alcohol 20 mL, lipobond 20 mL.
 item.biopharma_box.flavor,Ship cold. Some of it is alive; some of it is not.
 phone.wilde.not_enough,Come back when you have 800 credits. Do not waste my time.
+item.first_aid_box.name,Star Quilers Med First Aid Box
+item.first_aid_box.desc,A standard 3x3 first aid box. Contents: adrenaline pen, tourniquet, Immunivax, Naloxone injector, rubbing alcohol, blood bag. Double-click to dismantle; medical alcohol is sold by the apothecary/retired chemist.
+item.first_aid_box.flavor,Star Quilers Med: frontline first aid standard.
+item.first_aid_box.fake_flavor,The packaging looks close, but something is off.
+item.first_aid_shell.name,First Aid Box Shell (Empty)
+item.first_aid_shell.desc,Empty 3x3 first aid box shell. Put medicine inside, then drag a seal sticker onto it.
+item.first_aid_shell.flavor,Without a seal sticker it is just a tin box.
+item.first_aid_seal.name,First Aid Box Seal Sticker
+item.first_aid_seal.desc,Hand-applied seal. Drag the seal onto a filled first aid shell to seal it; consumes the sticker, complete/advanced +10% premium, incomplete 90%, dismantle returns only the empty shell.
+item.first_aid_seal.flavor,The original manufacturer will not acknowledge this.
+item.first_aid_box.manual_name,First Aid Box (Hand-Sealed)
+item.first_aid_box.advanced_name,Advanced First Aid Box
+item.first_aid_box.incomplete_desc,Hand-sealed first aid box: incomplete. Value is 90% of the contents.
+item.first_aid_box.manual_desc,Hand-sealed first aid box. Double-click to dismantle and sell the contents.
+ui.first_aid.title,First Aid Box Inspection
+ui.first_aid.item,Item: 
+ui.first_aid.serial,Serial: 
+ui.first_aid.serial_ok,(7 digits: 3-digit batch + 4-digit serial)
+ui.first_aid.serial_bad,(invalid serial format)
+ui.first_aid.red_cross,Red cross: 
+ui.first_aid.sticker,Package sticker: 
+ui.first_aid.brand,Brand text Star Quilers Med: 
+ui.first_aid.yes,matches
+ui.first_aid.no,does not match
+ui.first_aid.contents,Contents: 
+ui.first_aid.advanced,Advanced (blue blood): 
+ui.first_aid.value,Value: 
+ui.first_aid.credits, credits
+ui.first_aid.genuine,Verdict: GENUINE. Packaging, serial, red cross and sticker all match.
+ui.first_aid.fake,Verdict: COUNTERFEIT. At least one authenticity feature does not match; only worth the fake price.
+ui.first_aid.manual,Hand-sealed: not an original Star Quiler product; authenticity cannot be verified.
+ui.first_aid.manual_incomplete,Hand-sealed and incomplete: not an original Star Quiler product; authenticity cannot be verified.
+ui.first_aid.close,Close
+ui.first_aid.error,Inspection failed, try again.
+ui.first_aid.verify_hint,All four authenticity features must match for a genuine box.
+ui.first_aid.tier_category,First Aid Box Tier
+ui.first_aid.tier_first_aid_incomplete,Incomplete
+ui.first_aid.tier_first_aid_complete,Complete
+ui.first_aid.tier_first_aid_advanced,Advanced
+ui.first_aid.tier_name_incomplete,Incomplete
+ui.first_aid.tier_name_complete,Complete
+ui.first_aid.tier_name_advanced,Advanced
+ui.first_aid.question,Why does this feel the wrong weight...?
+ui.first_aid.question_report,The customer opens it: label "{0}", actual "{1}".
+ui.first_aid.question_ok,It matches the label; they pay 10% extra.
+ui.first_aid.question_bad,It does not match; price -15% and faction reputation drops.

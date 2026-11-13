@@ -254,12 +254,15 @@ namespace PrecisionLab
             {
                 // 0) One sealed random medicine crate (contents hidden until purchased/opened).
                 PlayerStore.Instance.AddDirectSellingItemToTable(MysteryMedBox.CreateStockItem());
+                // 0b) First aid parts first so they do not get crowded off the front counter.
+                AddFirstAidStock();
                 // 1) Precursor kits: only a random few each visit, so the counter is not crowded out.
                 AddRandomPrecursorKits();
                 // 2) Loose 20 mL reagent bottles (random selection each visit).
                 AddLooseReagentBottles();
                 // 3) A small number of finished medicines with random quality.
                 AddRandomQualityMedicines();
+
             }
             catch (Exception e)
             {
@@ -281,6 +284,21 @@ namespace PrecisionLab
             ItemIds.PerfumeBox,
             ItemIds.BioPharmaBox
         };
+
+        private static void AddFirstAidStock()
+        {
+            try
+            {
+                PlayerStore.Instance.AddDirectSellingItemToTable(ItemIds.FirstAidShell);
+                PlayerStore.Instance.AddDirectSellingItemToTable(ItemIds.FirstAidSeal);
+                PlayerStore.Instance.AddDirectSellingItemToTable(FirstAidBox.CreateStockBox());
+                PlayerStore.Instance.AddDirectSellingItemToTable("rubbing_alcohol");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] apothecary first aid stock failed: " + e.Message);
+            }
+        }
 
         private static void AddRandomPrecursorKits()
         {

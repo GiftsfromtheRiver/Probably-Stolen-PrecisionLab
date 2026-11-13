@@ -34,6 +34,9 @@ namespace PrecisionLab
         internal const string FungalExtractBottle = "fungal_extract_bottle";
         internal const string StemCellBottle = "stem_cell_bottle";
         internal const string BioPharmaBox = "biopharma_supply_box";
+        internal const string FirstAidBox = "star_quiler_first_aid_box";
+        internal const string FirstAidShell = "first_aid_box_shell";
+        internal const string FirstAidSeal = "first_aid_box_seal";
         internal const string OxidizerBottle = "oxidizer_bottle";
         internal const string MetalPowderBottle = "metal_powder_bottle";
         internal const string NitratingAcidBottle = "nitrating_acid_bottle";
@@ -58,6 +61,9 @@ namespace PrecisionLab
         internal const string MysteryMedCrate = "mystery_med_crate";
         internal const string ReagentKitPerfume = "reagent_kit_perfume";
         internal const string ReagentKitBioPharma = "reagent_kit_biopharma";
+        internal const string FirstAidBoxSprite = "first_aid_box";
+        internal const string FirstAidShellSprite = "first_aid_shell";
+        internal const string FirstAidSealSprite = "first_aid_seal";
         internal const string FillingFlash = "filling_flash";
         internal const string FillingSmoke = "filling_smoke";
         internal const string FillingExplosive = "filling_explosive";
@@ -96,6 +102,9 @@ namespace PrecisionLab
         internal const string FungalExtractBottle = "fungal_extract_bottle";
         internal const string StemCellBottle = "stem_cell_bottle";
         internal const string BioPharmaBox = "biopharma_supply_box";
+        internal const string FirstAidBox = "star_quiler_first_aid_box";
+        internal const string FirstAidShell = "first_aid_box_shell";
+        internal const string FirstAidSeal = "first_aid_box_seal";
         internal const string OxidizerBottle = "oxidizer_bottle";
         internal const string MetalPowderBottle = "metal_powder_bottle";
         internal const string NitratingAcidBottle = "nitrating_acid_bottle";
@@ -120,6 +129,9 @@ namespace PrecisionLab
         internal const string MysteryMedCrate = "mystery_med_crate";
         internal const string ReagentKitPerfume = "reagent_kit_perfume";
         internal const string ReagentKitBioPharma = "reagent_kit_biopharma";
+        internal const string FirstAidBoxSprite = "first_aid_box";
+        internal const string FirstAidShellSprite = "first_aid_shell";
+        internal const string FirstAidSealSprite = "first_aid_seal";
         internal const string FillingFlash = "filling_flash";
         internal const string FillingSmoke = "filling_smoke";
         internal const string FillingExplosive = "filling_explosive";
@@ -159,6 +171,24 @@ namespace PrecisionLab
             {
                 return false;
             }
+        }
+
+        internal static Sprite Get(string spriteKey)
+        {
+            try
+            {
+                LoadedMod mod = ModLoader.Mods.Find(m => m != null && m.Manifest != null && m.Manifest.ID == Loc.ModId);
+                Sprite sprite;
+                if (mod != null && mod.Sprites != null && mod.Sprites.TryGetValue(spriteKey, out sprite))
+                {
+                    return sprite;
+                }
+            }
+            catch (Exception)
+            {
+                // Fall through.
+            }
+            return null;
         }
 
         internal static void Apply(GameItem item, string spriteKey, string fallbackAtlas, string fallbackSprite)
