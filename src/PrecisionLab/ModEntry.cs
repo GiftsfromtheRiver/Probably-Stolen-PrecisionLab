@@ -141,6 +141,7 @@ namespace PrecisionLab
             }
             try
             {
+                NightingaleContent.EnsurePlantRegistered();
                 // If another directory instance already carries the factories, keep them there
                 // instead of registering a second factory set.
                 if (DirectoryMaster.Has<GameItem>(ItemIds.Extractor)
@@ -182,6 +183,10 @@ namespace PrecisionLab
                 bool firstAidBox = directory.Has(ItemIds.FirstAidBox) || directory.Add(ItemIds.FirstAidBox, FirstAidBox.CreateBox);
                 bool firstAidShell = directory.Has(ItemIds.FirstAidShell) || directory.Add(ItemIds.FirstAidShell, FirstAidBox.CreateShell);
                 bool firstAidSeal = directory.Has(ItemIds.FirstAidSeal) || directory.Add(ItemIds.FirstAidSeal, FirstAidBox.CreateSeal);
+                bool aloeLeaf = directory.Has("modified_aloe_leaf") || directory.Add("modified_aloe_leaf", NightingaleContent.CreateLeaf);
+                bool honeyBottle = directory.Has("medical_honey_bottle") || directory.Add("medical_honey_bottle", NightingaleContent.CreateHoneyBottle);
+                bool aloeSeed = directory.Has("nightingale_aloe_seed") || directory.Add("nightingale_aloe_seed", NightingaleContent.CreateSeed);
+                bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("nightingale_supply_box", NightingaleContent.CreateSupplyBox);
                 bool oxidizerBottle = directory.Has(ItemIds.OxidizerBottle) || directory.Add(ItemIds.OxidizerBottle, OrdnanceContent.CreateOxidizerBottle);
                 bool metalPowderBottle = directory.Has(ItemIds.MetalPowderBottle) || directory.Add(ItemIds.MetalPowderBottle, OrdnanceContent.CreateMetalPowderBottle);
                 bool nitratingAcidBottle = directory.Has(ItemIds.NitratingAcidBottle) || directory.Add(ItemIds.NitratingAcidBottle, OrdnanceContent.CreateNitratingAcidBottle);
@@ -189,7 +194,7 @@ namespace PrecisionLab
                 if (extractor || purifier || cultivator || supplyBox || api || pen || waste || tourniquet || resolvingBottle || resolvingRefill
                     || naloxoneBox || naloxoneApi || birthControlBox || sannaiBox
                     || synaprestBox || synaprestInjector || immuneSerum || bioGel || blueBloodBox || immunivaxBox || ordnanceBox || mysteryMedBox || aromaticBottle || crudePheromoneBottle || perfumeBox
-                    || phageBottle || fungalBottle || stemBottle || bioPharmaBox || firstAidBox || firstAidShell || firstAidSeal
+                    || phageBottle || fungalBottle || stemBottle || bioPharmaBox || firstAidBox || firstAidShell || firstAidSeal || aloeLeaf || honeyBottle || aloeSeed || nightingaleBox
                     || oxidizerBottle || metalPowderBottle || nitratingAcidBottle)
                 {
                     _log.Log("items registered in mod item directory: extractor=" + extractor
@@ -205,6 +210,7 @@ namespace PrecisionLab
                         + " immunivaxBox=" + immunivaxBox + " ordnanceBox=" + ordnanceBox + " mysteryMedBox=" + mysteryMedBox
                         + " perfume=" + (aromaticBottle && crudePheromoneBottle && perfumeBox)
                         + " biopharma=" + (phageBottle && fungalBottle && stemBottle) + " bioBox=" + bioPharmaBox + " firstAid=" + (firstAidBox && firstAidShell && firstAidSeal)
+                        + " nightingale=" + (aloeLeaf && honeyBottle && aloeSeed) + " nightingaleBox=" + nightingaleBox
                         + " oxidizer=" + oxidizerBottle + " metalPowder=" + metalPowderBottle
                         + " nitratingAcid=" + nitratingAcidBottle);
                 }
@@ -387,6 +393,7 @@ namespace PrecisionLab
                 OrdnanceContent.EnsureRecipes();
                 PerfumeContent.EnsureRecipes();
                 BioPharmaContent.EnsureRecipes();
+                NightingaleContent.EnsureRecipes();
                 FirstAidBox.EnsureRegistered();
                 FirstAidCleanup.ClaimStaleUnownedItems();
                 PhagimycinLicense.Register();
@@ -458,6 +465,7 @@ namespace PrecisionLab
                 OrdnanceContent.EnsureRecipes();
                 PerfumeContent.EnsureRecipes();
                 BioPharmaContent.EnsureRecipes();
+                NightingaleContent.EnsureRecipes();
                 FirstAidBox.EnsureRegistered();
                 FirstAidCleanup.ClaimStaleUnownedItems();
                 PhagimycinLicense.Register();

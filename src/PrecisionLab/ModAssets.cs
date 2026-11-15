@@ -37,6 +37,7 @@ namespace PrecisionLab
         internal const string FirstAidBox = "star_quiler_first_aid_box";
         internal const string FirstAidShell = "first_aid_box_shell";
         internal const string FirstAidSeal = "first_aid_box_seal";
+        internal const string NightingaleBox = "nightingale_supply_box";
         internal const string OxidizerBottle = "oxidizer_bottle";
         internal const string MetalPowderBottle = "metal_powder_bottle";
         internal const string NitratingAcidBottle = "nitrating_acid_bottle";
@@ -64,6 +65,9 @@ namespace PrecisionLab
         internal const string FirstAidBoxSprite = "first_aid_box";
         internal const string FirstAidShellSprite = "first_aid_shell";
         internal const string FirstAidSealSprite = "first_aid_seal";
+        internal const string ModifiedAloeLeafSprite = "modified_aloe_leaf";
+        internal const string NightingaleAloeSeedSprite = "nightingale_aloe_seed";
+        internal const string ReagentKitNightingale = "reagent_kit_nightingale";
         internal const string FillingFlash = "filling_flash";
         internal const string FillingSmoke = "filling_smoke";
         internal const string FillingExplosive = "filling_explosive";
@@ -105,6 +109,7 @@ namespace PrecisionLab
         internal const string FirstAidBox = "star_quiler_first_aid_box";
         internal const string FirstAidShell = "first_aid_box_shell";
         internal const string FirstAidSeal = "first_aid_box_seal";
+        internal const string NightingaleBox = "nightingale_supply_box";
         internal const string OxidizerBottle = "oxidizer_bottle";
         internal const string MetalPowderBottle = "metal_powder_bottle";
         internal const string NitratingAcidBottle = "nitrating_acid_bottle";
@@ -132,6 +137,9 @@ namespace PrecisionLab
         internal const string FirstAidBoxSprite = "first_aid_box";
         internal const string FirstAidShellSprite = "first_aid_shell";
         internal const string FirstAidSealSprite = "first_aid_seal";
+        internal const string ModifiedAloeLeafSprite = "modified_aloe_leaf";
+        internal const string NightingaleAloeSeedSprite = "nightingale_aloe_seed";
+        internal const string ReagentKitNightingale = "reagent_kit_nightingale";
         internal const string FillingFlash = "filling_flash";
         internal const string FillingSmoke = "filling_smoke";
         internal const string FillingExplosive = "filling_explosive";

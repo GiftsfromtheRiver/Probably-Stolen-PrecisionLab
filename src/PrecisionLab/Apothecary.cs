@@ -293,6 +293,10 @@ namespace PrecisionLab
                 PlayerStore.Instance.AddDirectSellingItemToTable(ItemIds.FirstAidSeal);
                 PlayerStore.Instance.AddDirectSellingItemToTable(FirstAidBox.CreateStockBox());
                 PlayerStore.Instance.AddDirectSellingItemToTable("rubbing_alcohol");
+                PlayerStore.Instance.AddDirectSellingItemToTable("modified_aloe_leaf");
+                PlayerStore.Instance.AddDirectSellingItemToTable("medical_honey_bottle");
+                PlayerStore.Instance.AddDirectSellingItemToTable("nightingale_aloe_seed");
+                PlayerStore.Instance.AddDirectSellingItemToTable("nightingale_supply_box");
             }
             catch (Exception e)
             {

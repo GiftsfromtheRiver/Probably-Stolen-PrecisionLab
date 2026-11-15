@@ -389,3 +389,24 @@ ui.first_aid.question,这个拎起来怎么感觉重量不对啊……
 ui.first_aid.question_report,顾客拆开检查：标签「{0}」，实际「{1}」。
 ui.first_aid.question_ok,符合标签，额外加价 10%。
 ui.first_aid.question_bad,不符合标签，交易价格 -15%，阵营好感下降。
+item.modified_aloe_leaf.name,改性芦荟叶
+item.modified_aloe_leaf.desc,基因改良芦荟的厚实叶片。可购买或水培收获；搅拌/溶解出芦荟浆，是南丁格尔软膏的原料。
+item.medical_honey_bottle.name,医用蜂蜜瓶（20 毫升）
+item.medical_honey_bottle.desc,一整瓶 20 毫升医用级蜂蜜。与芦荟提取液、干细胞原液常温乳化。
+item.nightingale_aloe_seed.name,芦荟种子
+item.nightingale_aloe_seed.desc,基因改良芦荟种子，可放入原版水培机。生长特性类似韧棉，可食用，收获改性芦荟叶。
+plant.nightingale_aloe.name,夜莺芦荟
+liquid.aloe_pulp,芦荟糊
+liquid.aloe_extract,高纯芦荟提取液
+liquid.medical_honey,医用蜂蜜
+liquid.ointment_base,活性软膏基质
+liquid.purified_ointment_base,精制软膏基质
+liquid.ointment_waste,变性软膏废液
+item.nightingale_salve.name,南丁格尔软膏
+ui.nightingale.need,南丁格尔软膏需要精制软膏基质 ≥5000 微升 + 微量碱，且总液量足够。
+item.nightingale_box.name,南丁格尔药剂包
+item.nightingale_box.desc,激活拆开得到一批软膏原料：改性芦荟叶 ×2、医用蜂蜜瓶、芦荟种子、酒精瓶、干细胞原液瓶。
+item.nightingale_box.flavor,从叶子到药膏，只差一点耐心和一台搅拌机。
+plant_trait.aloe_paste.name,芦荟糊生成
+plant_trait.aloe_paste.desc,收获物中含有纯净的改性芦荟糊，可写入填料草等作物种子。
+plant_trait.aloe_paste.effect,每株收获物内部加入纯净芦荟糊（50级约2毫升，单株最多3毫升；不影响填料草数量）

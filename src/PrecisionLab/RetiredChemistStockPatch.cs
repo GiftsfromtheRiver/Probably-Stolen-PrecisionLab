@@ -324,6 +324,10 @@ namespace PrecisionLab
                 store.AddDirectSellingItemToTable(ItemIds.FirstAidSeal);
                 store.AddDirectSellingItemToTable(FirstAidBox.CreateStockBox());
                 store.AddDirectSellingItemToTable("rubbing_alcohol");
+                store.AddDirectSellingItemToTable("modified_aloe_leaf");
+                store.AddDirectSellingItemToTable("medical_honey_bottle");
+                store.AddDirectSellingItemToTable("nightingale_aloe_seed");
+                store.AddDirectSellingItemToTable("nightingale_supply_box");
                 Debug.Log("[PrecisionLab] retired chemist offers bio-pharma precursors");
             }
             catch (Exception e)

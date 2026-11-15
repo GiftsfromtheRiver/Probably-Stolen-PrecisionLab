@@ -60,6 +60,7 @@ namespace PrecisionLab
             SpawnItem(ItemIds.OrdnanceBox);
             SpawnItem(ItemIds.PerfumeBox);
             SpawnItem(ItemIds.BioPharmaBox);
+            SpawnItem("nightingale_supply_box");
             SpawnItem(ItemIds.FirstAidShell);
             SpawnItem(ItemIds.FirstAidSeal);
         }

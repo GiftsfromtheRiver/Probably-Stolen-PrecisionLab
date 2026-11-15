@@ -390,3 +390,24 @@ ui.first_aid.question,Why does this feel the wrong weight...?
 ui.first_aid.question_report,The customer opens it: label "{0}", actual "{1}".
 ui.first_aid.question_ok,It matches the label; they pay 10% extra.
 ui.first_aid.question_bad,It does not match; price -15% and faction reputation drops.
+item.modified_aloe_leaf.name,Modified Aloe Leaf
+item.modified_aloe_leaf.desc,A thick leaf from modified aloe. Buy or grow it; blend/dissolve it into aloe pulp for Nightingale's Salve.
+item.medical_honey_bottle.name,Medical Honey Bottle (20 mL)
+item.medical_honey_bottle.desc,A 20 mL bottle of medical-grade honey for room-temperature emulsification.
+item.nightingale_aloe_seed.name,Aloe Seed
+item.nightingale_aloe_seed.desc,Modified aloe seed for the vanilla hydroponic machine; Kotton-like growth, edible, harvests modified aloe leaves.
+plant.nightingale_aloe.name,Nightingale Aloe
+liquid.aloe_pulp,Aloe Paste
+liquid.aloe_extract,High-purity Aloe Extract
+liquid.medical_honey,Medical-grade Honey
+liquid.ointment_base,Active Ointment Base
+liquid.purified_ointment_base,Purified Ointment Base
+liquid.ointment_waste,Denatured Ointment Waste
+item.nightingale_salve.name,Nightingale's Salve
+ui.nightingale.need,Nightingale's Salve needs 5000 uL purified ointment base + a trace of base.
+item.nightingale_box.name,Nightingale Supply Kit
+item.nightingale_box.desc,Unpacks modified aloe leaves x2, medical honey, aloe seed, alcohol and stem cell stock.
+item.nightingale_box.flavor,From leaf to salve: all it needs is patience and a blender.
+plant_trait.aloe_paste.name,Aloe Paste Production
+plant_trait.aloe_paste.desc,Harvested produce contains pure modified aloe paste.
+plant_trait.aloe_paste.effect,Adds pure aloe paste inside each harvested item (rank50 ≈2 mL, max 3 mL per item; does not affect fillerweed count).

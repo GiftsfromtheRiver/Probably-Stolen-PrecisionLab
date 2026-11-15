@@ -32,6 +32,7 @@ namespace PrecisionLab
             OrdnanceChemistry.React(container);
             PerfumeChemistry.React(container);
             BioPharmaChemistry.React(container);
+            NightingaleChemistry.React(container);
         }
     }
 

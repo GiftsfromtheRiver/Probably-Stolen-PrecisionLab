@@ -78,7 +78,13 @@ namespace PrecisionLab
         internal const string StemCell = "stem_cell";
         internal const string ActiveCellSuspension = "active_cell_suspension";
         internal const string EssenceConcentrate = "essence_concentrate";
-        internal const string DeadCellWaste = "dead_cell_waste"; // 肾上腺素药液
+        internal const string DeadCellWaste = "dead_cell_waste";
+        internal const string AloePulp = "modified_aloe_pulp";
+        internal const string AloeExtract = "modified_aloe_extract";
+        internal const string MedicalHoney = "medical_honey";
+        internal const string OintmentBase = "ointment_base";
+        internal const string PurifiedOintmentBase = "purified_ointment_base";
+        internal const string OintmentWaste = "ointment_waste"; // 肾上腺素药液
 
         private static bool _registered;
 
@@ -152,6 +158,12 @@ namespace PrecisionLab
                 AddLiquid(ActiveCellSuspension, "liquid.active_cell_suspension", "Active Cell Suspension", "f8e0e8", false);
                 AddLiquid(EssenceConcentrate, "liquid.essence_concentrate", "Eternal Essence Concentrate", "f8e8f0", false);
                 AddLiquid(DeadCellWaste, "liquid.dead_cell_waste", "Dead Cell Waste", "7a6a6a", true);
+                AddLiquid(AloePulp, "liquid.aloe_pulp", "Modified Aloe Pulp", "a8d878", false);
+                AddLiquid(AloeExtract, "liquid.aloe_extract", "High-purity Aloe Extract", "b8e888", false);
+                AddLiquid(MedicalHoney, "liquid.medical_honey", "Medical-grade Honey", "e8c858", false);
+                AddLiquid(OintmentBase, "liquid.ointment_base", "Active Ointment Base", "e8d8b8", false);
+                AddLiquid(PurifiedOintmentBase, "liquid.purified_ointment_base", "Purified Ointment Base", "f0e8d8", false);
+                AddLiquid(OintmentWaste, "liquid.ointment_waste", "Denatured Ointment Waste", "8a7a6a", true);
                 Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 61 + ")");
             }
             catch (Exception e)
@@ -226,6 +238,12 @@ namespace PrecisionLab
                 SetName(ActiveCellSuspension, "liquid.active_cell_suspension", "Active Cell Suspension");
                 SetName(EssenceConcentrate, "liquid.essence_concentrate", "Eternal Essence Concentrate");
                 SetName(DeadCellWaste, "liquid.dead_cell_waste", "Dead Cell Waste");
+                SetName(AloePulp, "liquid.aloe_pulp", "Modified Aloe Pulp");
+                SetName(AloeExtract, "liquid.aloe_extract", "High-purity Aloe Extract");
+                SetName(MedicalHoney, "liquid.medical_honey", "Medical-grade Honey");
+                SetName(OintmentBase, "liquid.ointment_base", "Active Ointment Base");
+                SetName(PurifiedOintmentBase, "liquid.purified_ointment_base", "Purified Ointment Base");
+                SetName(OintmentWaste, "liquid.ointment_waste", "Denatured Ointment Waste");
             }
             catch (Exception e)
             {
@@ -259,6 +277,8 @@ namespace PrecisionLab
                 || liquidId == PhageCulture || liquidId == FungalExtract || liquidId == SymbioticCulture
                 || liquidId == PureAntibioticApi || liquidId == StemCell || liquidId == ActiveCellSuspension
                 || liquidId == EssenceConcentrate || liquidId == DeadCellWaste
+                || liquidId == AloePulp || liquidId == AloeExtract || liquidId == MedicalHoney
+                || liquidId == OintmentBase || liquidId == PurifiedOintmentBase || liquidId == OintmentWaste
                 || liquidId == Thebaine || liquidId == ContraceptiveApi || liquidId == SannaiApi;
         }
 
