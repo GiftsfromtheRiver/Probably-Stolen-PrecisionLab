@@ -2,10 +2,14 @@
 
 《深空当铺：可能是偷的》/ *Probably Stolen* **0.46D** 的本地 mod：**精确取液器** · **提纯机器** · **微生物培养机** · **淀粉水解** · **肾上腺素注射笔生产线**。
 
+
 ![肾上腺素注射笔与原料盒](docs/images/adrenaline-pen.png)
 
+> **1.25–1.26 更新**：七条五阶段药品线（颠茄/抗抑郁/胺碘酮/加压素/舒张素/促凝剂/抗凝剂）、离心机、南丁格尔软膏完整链、药剂师电话预约与夜间「药剂师原料工坊」；成型不再需要额外 0.1mL 添加剂。
+
+
 > 适配游戏版本：**0.46D**（Unity 2021.3.45f2，Mono）。纯本地 mod，不修改游戏文件，不依赖第三方 mod 框架。
-> Mod ID：`precision_lab` · 当前版本：**1.8.9** · [Steam 创意工坊](https://steamcommunity.com/sharedfiles/filedetails/?id=3831705578)
+> Mod ID：`precision_lab` · 当前版本：**1.26.49** · [Steam 创意工坊](https://steamcommunity.com/sharedfiles/filedetails/?id=3831705578)
 
 ---
 
