@@ -25,6 +25,8 @@ namespace PrecisionLab
 
         internal const int ExtractorUpgradeCost = 1200;
         internal const int PurifierUpgradeCost = 2400;
+        internal const int CultivatorUpgradeCost = 1800;
+        internal const int MedsUpgradeCost = 1600;
         internal const string UpgradeTab = "precision_lab";
 
         private static ModManifest _manifest;
@@ -107,6 +109,7 @@ namespace PrecisionLab
             ModHook.OnModAssetsLoaded += OnModAssetsLoaded;
             ModHook.OnGameLoadedInit += OnGameLoadedInit;
             ModHook.OnGameLoadedNormal += OnGameLoadedNormal;
+            ModHook.OnGameLoadedLate += OnGameLoadedLate;
             ModHook.OnNewGameStarted += OnNewGameStarted;
             ModHook.OnWakingUpLate += OnWakingUpLate;
             ModHook.OnCreateTooltipLate += OnCreateTooltipLate;
@@ -120,6 +123,7 @@ namespace PrecisionLab
             ModHook.OnModAssetsLoaded -= OnModAssetsLoaded;
             ModHook.OnGameLoadedInit -= OnGameLoadedInit;
             ModHook.OnGameLoadedNormal -= OnGameLoadedNormal;
+            ModHook.OnGameLoadedLate -= OnGameLoadedLate;
             ModHook.OnNewGameStarted -= OnNewGameStarted;
             ModHook.OnWakingUpLate -= OnWakingUpLate;
             ModHook.OnCreateTooltipLate -= OnCreateTooltipLate;
@@ -137,17 +141,94 @@ namespace PrecisionLab
             }
             try
             {
+                NightingaleContent.EnsurePlantRegistered();
+                BelladonnaContent.EnsurePlantRegistered();
                 // If another directory instance already carries the factories, keep them there
                 // instead of registering a second factory set.
-                if (DirectoryMaster.Has<GameItem>(ItemIds.Extractor) && DirectoryMaster.Has<GameItem>(ItemIds.Purifier))
+                if (DirectoryMaster.Has<GameItem>(ItemIds.Extractor)
+                    && DirectoryMaster.Has<GameItem>(ItemIds.Purifier)
+                    && DirectoryMaster.Has<GameItem>(ItemIds.Cultivator)
+                    && DirectoryMaster.Has<GameItem>(ItemIds.SupplyBox)
+                    && DirectoryMaster.Has<GameItem>(Centrifuge.Id))
                 {
                     return;
                 }
                 bool extractor = directory.Has(ItemIds.Extractor) || directory.Add(ItemIds.Extractor, ItemFactory.CreateExtractor);
                 bool purifier = directory.Has(ItemIds.Purifier) || directory.Add(ItemIds.Purifier, ItemFactory.CreatePurifier);
-                if (extractor || purifier)
+                bool cultivator = directory.Has(ItemIds.Cultivator) || directory.Add(ItemIds.Cultivator, ItemFactory.CreateCultivator);
+                bool centrifuge = directory.Has(Centrifuge.Id) || directory.Add(Centrifuge.Id, Centrifuge.Create);
+                bool supplyBox = directory.Has(ItemIds.SupplyBox) || directory.Add(ItemIds.SupplyBox, AdrenalineContent.CreateSupplyBox);
+                bool api = directory.Has(ItemIds.Api) || directory.Add(ItemIds.Api, AdrenalineContent.CreateApi);
+                bool pen = directory.Has(ItemIds.Pen) || directory.Add(ItemIds.Pen, AdrenalineContent.CreatePen);
+                bool waste = directory.Has(ItemIds.DextroWaste) || directory.Add(ItemIds.DextroWaste, AdrenalineContent.CreateWasteItem);
+                bool tourniquet = directory.Has(ItemIds.Tourniquet) || directory.Add(ItemIds.Tourniquet, TourniquetCraft.CreateTourniquet);
+                bool resolvingBottle = directory.Has(ItemIds.ResolvingBottle) || directory.Add(ItemIds.ResolvingBottle, AdrenalineContent.CreateResolvingAgentBottle);
+                bool resolvingRefill = directory.Has(ItemIds.ResolvingRefill) || directory.Add(ItemIds.ResolvingRefill, AdrenalineContent.CreateResolvingAgentRefillPack);
+                bool naloxoneBox = directory.Has(ItemIds.NaloxoneBox) || directory.Add(ItemIds.NaloxoneBox, NaloxoneContent.CreateSupplyBox);
+                bool naloxoneApi = directory.Has(ItemIds.NaloxoneApi) || directory.Add(ItemIds.NaloxoneApi, NaloxoneContent.CreateApi);
+                bool birthControlBox = directory.Has(ItemIds.BirthControlBox) || directory.Add(ItemIds.BirthControlBox, PillContent.CreateBirthControlBox);
+                bool sannaiBox = directory.Has(ItemIds.SannaiBox) || directory.Add(ItemIds.SannaiBox, PillContent.CreateSannaiBox);
+                bool synaprestBox = directory.Has(ItemIds.SynaprestBox) || directory.Add(ItemIds.SynaprestBox, SynaprestContent.CreateSupplyBox);
+                bool synaprestInjector = directory.Has(ItemIds.SynaprestInjector) || directory.Add(ItemIds.SynaprestInjector, SynaprestContent.CreateInjector);
+                bool immuneSerum = directory.Has(ItemIds.ImmuneSerumBottle) || directory.Add(ItemIds.ImmuneSerumBottle, ImmunivaxContent.CreateImmuneSerumBottle);
+                bool bioGel = directory.Has(ItemIds.BioGelBottle) || directory.Add(ItemIds.BioGelBottle, BlueBloodContent.CreateBioGelBottle);
+                bool blueBloodBox = directory.Has(ItemIds.BlueBloodBox) || directory.Add(ItemIds.BlueBloodBox, BlueBloodContent.CreateSupplyBox);
+                bool immunivaxBox = directory.Has(ItemIds.ImmunivaxBox) || directory.Add(ItemIds.ImmunivaxBox, ImmunivaxContent.CreateSupplyBox);
+                bool ordnanceBox = directory.Has(ItemIds.OrdnanceBox) || directory.Add(ItemIds.OrdnanceBox, OrdnanceContent.CreateSupplyBox);
+                bool mysteryMedBox = directory.Has(ItemIds.MysteryMedBox) || directory.Add(ItemIds.MysteryMedBox, MysteryMedBox.CreateCrate);
+                bool aromaticBottle = directory.Has(ItemIds.AromaticBottle) || directory.Add(ItemIds.AromaticBottle, PerfumeContent.CreateAromaticBottle);
+                bool crudePheromoneBottle = directory.Has(ItemIds.CrudePheromoneBottle) || directory.Add(ItemIds.CrudePheromoneBottle, PerfumeContent.CreateCrudePheromoneBottle);
+                bool perfumeBox = directory.Has(ItemIds.PerfumeBox) || directory.Add(ItemIds.PerfumeBox, PerfumeContent.CreateSupplyBox);
+                bool phageBottle = directory.Has(ItemIds.PhageCultureBottle) || directory.Add(ItemIds.PhageCultureBottle, BioPharmaContent.CreatePhageCultureBottle);
+                bool fungalBottle = directory.Has(ItemIds.FungalExtractBottle) || directory.Add(ItemIds.FungalExtractBottle, BioPharmaContent.CreateFungalExtractBottle);
+                bool stemBottle = directory.Has(ItemIds.StemCellBottle) || directory.Add(ItemIds.StemCellBottle, BioPharmaContent.CreateStemCellBottle);
+                bool bioPharmaBox = directory.Has(ItemIds.BioPharmaBox) || directory.Add(ItemIds.BioPharmaBox, BioPharmaContent.CreateSupplyBox);
+                bool firstAidBox = directory.Has(ItemIds.FirstAidBox) || directory.Add(ItemIds.FirstAidBox, FirstAidBox.CreateBox);
+                bool firstAidShell = directory.Has(ItemIds.FirstAidShell) || directory.Add(ItemIds.FirstAidShell, FirstAidBox.CreateShell);
+                bool firstAidSeal = directory.Has(ItemIds.FirstAidSeal) || directory.Add(ItemIds.FirstAidSeal, FirstAidBox.CreateSeal);
+                bool aloeLeaf = directory.Has("modified_aloe_leaf") || directory.Add("modified_aloe_leaf", NightingaleContent.CreateLeaf);
+                bool honeyBottle = directory.Has("medical_honey_bottle") || directory.Add("medical_honey_bottle", NightingaleContent.CreateHoneyBottle);
+                bool aloeSeed = directory.Has("nightingale_aloe_seed") || directory.Add("nightingale_aloe_seed", NightingaleContent.CreateSeed);
+                                bool belladonnaSeed = directory.Has("belladonna_seed") || directory.Add("belladonna_seed", BelladonnaContent.CreateSeed);
+                bool belladonnaHerb = directory.Has("belladonna_herb") || directory.Add("belladonna_herb", BelladonnaContent.CreateHerb);
+                bool belladonnaInjector = directory.Has("belladonna_injector") || directory.Add("belladonna_injector", BelladonnaContent.CreateInjector);
+                bool drugKits = DrugKitContent.EnsureRegistered(directory);
+                bool glandPowder = directory.Has("animal_gland_powder") || directory.Add("animal_gland_powder", DrugLabContent.CreateGlandPowder);
+                bool aromaticCompound = directory.Has("aromatic_compound") || directory.Add("aromatic_compound", DrugLabContent.CreateAromatic);
+                bool potassiumIodide = directory.Has("potassium_iodide_crystal") || directory.Add("potassium_iodide_crystal", DrugLabContent.CreateIodide);
+                bool antidepressant = directory.Has("antidepressant_pill") || directory.Add("antidepressant_pill", DrugLabContent.CreateAntidepressant);
+                bool amiodarone = directory.Has("amiodarone_pill") || directory.Add("amiodarone_pill", DrugLabContent.CreateAmiodarone);
+                bool vasopressin = directory.Has("vasopressin_injector") || directory.Add("vasopressin_injector", DrugLabContent.CreateVasopressin);
+                bool vasodilator = directory.Has("vasodilator_injector") || directory.Add("vasodilator_injector", DrugLabContent.CreateVasodilator);
+                bool coagulant = directory.Has("coagulant_dressing") || directory.Add("coagulant_dressing", DrugLabContent.CreateCoagulant);
+                bool anticoagulant = directory.Has("anticoagulant_injector") || directory.Add("anticoagulant_injector", DrugLabContent.CreateAnticoagulant);
+bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("nightingale_supply_box", NightingaleContent.CreateSupplyBox);
+                bool oxidizerBottle = directory.Has(ItemIds.OxidizerBottle) || directory.Add(ItemIds.OxidizerBottle, OrdnanceContent.CreateOxidizerBottle);
+                bool metalPowderBottle = directory.Has(ItemIds.MetalPowderBottle) || directory.Add(ItemIds.MetalPowderBottle, OrdnanceContent.CreateMetalPowderBottle);
+                bool nitratingAcidBottle = directory.Has(ItemIds.NitratingAcidBottle) || directory.Add(ItemIds.NitratingAcidBottle, OrdnanceContent.CreateNitratingAcidBottle);
+
+                if (extractor || purifier || cultivator || supplyBox || api || pen || waste || tourniquet || resolvingBottle || resolvingRefill
+                    || naloxoneBox || naloxoneApi || birthControlBox || sannaiBox
+                    || synaprestBox || synaprestInjector || immuneSerum || bioGel || blueBloodBox || immunivaxBox || ordnanceBox || mysteryMedBox || aromaticBottle || crudePheromoneBottle || perfumeBox
+                    || phageBottle || fungalBottle || stemBottle || bioPharmaBox || firstAidBox || firstAidShell || firstAidSeal || aloeLeaf || honeyBottle || aloeSeed || nightingaleBox || glandPowder || aromaticCompound || potassiumIodide || antidepressant || amiodarone || vasopressin || vasodilator || coagulant || anticoagulant || drugKits || centrifuge
+                    || oxidizerBottle || metalPowderBottle || nitratingAcidBottle)
                 {
-                    _log.Log("items registered in mod item directory: extractor=" + extractor + " purifier=" + purifier);
+                    _log.Log("items registered in mod item directory: extractor=" + extractor
+                        + " purifier=" + purifier + " cultivator=" + cultivator
+                        + " supplyBox=" + supplyBox + " api=" + api + " pen=" + pen
+                        + " waste=" + waste + " tourniquet=" + tourniquet
+                        + " resolvingBottle=" + resolvingBottle
+                        + " resolvingRefill=" + resolvingRefill
+                        + " naloxoneBox=" + naloxoneBox + " naloxoneApi=" + naloxoneApi
+                        + " birthControlBox=" + birthControlBox + " sannaiBox=" + sannaiBox
+                        + " synaprestBox=" + synaprestBox + " synaprestInjector=" + synaprestInjector
+                        + " immuneSerum=" + immuneSerum + " bioGel=" + bioGel + " blueBloodBox=" + blueBloodBox
+                        + " immunivaxBox=" + immunivaxBox + " ordnanceBox=" + ordnanceBox + " mysteryMedBox=" + mysteryMedBox
+                        + " perfume=" + (aromaticBottle && crudePheromoneBottle && perfumeBox)
+                        + " biopharma=" + (phageBottle && fungalBottle && stemBottle) + " bioBox=" + bioPharmaBox + " firstAid=" + (firstAidBox && firstAidShell && firstAidSeal)
+                        + " nightingale=" + (aloeLeaf && honeyBottle && aloeSeed) + " nightingaleBox=" + nightingaleBox + " belladonna=" + (belladonnaSeed && belladonnaHerb && belladonnaInjector) + " drugs=" + (glandPowder && aromaticCompound && potassiumIodide && antidepressant && amiodarone && vasopressin && vasodilator && coagulant && anticoagulant) + " drugKits=" + drugKits + " centrifuge=" + centrifuge
+                        + " oxidizer=" + oxidizerBottle + " metalPowder=" + metalPowderBottle
+                        + " nitratingAcid=" + nitratingAcidBottle);
                 }
             }
             catch (Exception e)
@@ -174,6 +255,16 @@ namespace PrecisionLab
                     () => GiveItem(ItemIds.Extractor));
                 ModHelper.AddDebugFunction(ModId, ModHelper.DEBUG_CATEGORY_SPAWN, "PrecisionLab: spawn purifier",
                     () => GiveItem(ItemIds.Purifier));
+                ModHelper.AddDebugFunction(ModId, ModHelper.DEBUG_CATEGORY_SPAWN, "PrecisionLab: spawn microbial cultivator",
+                    () => GiveItem(ItemIds.Cultivator));
+                ModHelper.AddDebugFunction(ModId, ModHelper.DEBUG_CATEGORY_SPAWN, "PrecisionLab: spawn adrenaline kit",
+                    () => GiveItem(ItemIds.SupplyBox));
+                ModHelper.AddDebugFunction(ModId, ModHelper.DEBUG_CATEGORY_SPAWN, "PrecisionLab: spawn adrenaline API",
+                    () => GiveItem(ItemIds.Api));
+                ModHelper.AddDebugFunction(ModId, ModHelper.DEBUG_CATEGORY_SPAWN, "PrecisionLab: spawn adrenaline pen",
+                    () => GiveItem(ItemIds.Pen));
+                ModHelper.AddDebugFunction(ModId, ModHelper.DEBUG_CATEGORY_SPAWN, "PrecisionLab: spawn dextro waste",
+                    () => GiveItem(ItemIds.DextroWaste));
             }
             catch (Exception e)
             {
@@ -185,6 +276,26 @@ namespace PrecisionLab
         // Acquisition
         // ------------------------------------------------------------------
         private static bool _upgradesRegistered;
+
+        /// <summary>
+        /// Registers the custom liquids and localized liquid names. Called once a real run is
+        /// being loaded: Liquid.InitLiquid (which runs on the first Liquid access) uses the game
+        /// localization tables, so it must not be triggered from IMod.Init during ModLoader.Awake.
+        /// </summary>
+        private static void EnsureCustomContentRegistered()
+        {
+            try
+            {
+                CustomLiquids.EnsureRegistered();
+                SynaprestEffects.RegisterPerks();
+                Apothecary.Register();
+                CustomLiquids.RefreshLocalizedNames();
+            }
+            catch (Exception e)
+            {
+                _log.Warning("custom chemistry content registration failed: " + e.Message);
+            }
+        }
 
         /// <summary>
         /// Registers the two black-market upgrades. MUST only run once a real PlayerStore
@@ -250,13 +361,93 @@ namespace PrecisionLab
                 () => Loc.Get("upgrade.purifier.bought", "Ordered. Check your store inventory."),
                 false);
 
-            _log.Log("network upgrades registered (tab " + UpgradeTab + ")");
+            ModHelper.AddNetworkUpgrade(
+                ModId,
+                "PRECISION_LAB_CULTIVATOR",
+                CultivatorUpgradeCost,
+                "Precision Lab",
+                () => Loc.Get("upgrade.cultivator.title", "Microbial Cultivator"),
+                () => Loc.Get("upgrade.cultivator.desc", "A bioreactor that cultures sugar-eating microbes. Insert a sugary liquid container and it digests the sugar into a little organic waste every night. Delivered to your inventory."),
+                () => GiveItem(ItemIds.Cultivator),
+                UpgradeTab,
+                null,
+                null,
+                0,
+                () => Loc.Get("upgrade.cardtitle", "Precision Lab"),
+                () => Loc.Get("upgrade.cultivator.bought", "Ordered. Check your store inventory."),
+                false);
+
+            ModHelper.AddNetworkUpgrade(
+                ModId,
+                "PRECISION_LAB_MEDS",
+                MedsUpgradeCost,
+                "Precision Lab",
+                () => Loc.Get("upgrade.meds.title", "More Medicines: Adrenaline"),
+                () => Loc.Get("upgrade.meds.desc", "Unlocks the adrenaline injection pen production line: a recipe note in your store plus precursor kits sold by the retired chemist."),
+                () => GrantMedsUnlock(),
+                UpgradeTab,
+                null,
+                null,
+                0,
+                () => Loc.Get("upgrade.cardtitle", "Precision Lab"),
+                () => Loc.Get("upgrade.meds.bought", "Ordered. Check your store inventory for the recipe note."),
+                false);
+
+            _log.Log("network upgrades registered (tab " + UpgradeTab + "): extractor, purifier, cultivator, meds");
+        }
+
+        private static void GrantMedsUnlock()
+        {
+            try
+            {
+                AdrenalineContent.EnsureRecipes();
+                NaloxoneContent.EnsureRecipes();
+                PillContent.EnsureRecipes();
+                SynaprestContent.EnsureRecipes();
+                ImmunivaxContent.EnsureRecipes();
+                BlueBloodContent.EnsureRecipes();
+                OrdnanceContent.EnsureRecipes();
+                PerfumeContent.EnsureRecipes();
+                BioPharmaContent.EnsureRecipes();
+                NightingaleContent.EnsureRecipes();
+                BelladonnaContent.EnsureRecipes();
+                DrugLabContent.EnsureRecipes();
+                FirstAidBox.EnsureRegistered();
+                FirstAidCleanup.ClaimStaleUnownedItems();
+                PhagimycinLicense.Register();
+                DebugSpawns.Register();
+                TourniquetCraft.OnUnlocked();
+                RecipeBook.EnsureDelivered();
+            }
+            catch (Exception e)
+            {
+                _log.Warning("granting the adrenaline unlock failed: " + e.Message);
+            }
+        }
+
+        internal static bool IsUpgradeUnlocked(string upgradeId)
+        {
+            if (!PlayerStore.HasInstance)
+            {
+                return false;
+            }
+            PlayerStore store = PlayerStore.Instance;
+            if (store == null || store.networkUpgrade == null)
+            {
+                return false;
+            }
+            NetworkUpgrade upgrade;
+            return store.networkUpgrade.TryGetValue(upgradeId, out upgrade)
+                && upgrade != null
+                && upgrade.IsUnlocked();
         }
 
         private void OnGameLoadedInit()
         {
             try
             {
+                ApothecaryWorkshopLocation.EnsureRegistered();
+                EnsureCustomContentRegistered();
                 // Fires inside PlayerStore.LoadGame before NetworkUpgrade.AddMissingAfterLoad,
                 // so anything registered here ends up in the loaded run's upgrade dictionary.
                 TryRegisterUpgrades();
@@ -267,12 +458,54 @@ namespace PrecisionLab
             }
         }
 
+        /// <summary>
+        /// Runs after the save inventories have been decoded (OnGameLoadedNormal fires before
+        /// DecodeSaveItem). Recipe notes are delivered/refreshed here so existing notes are
+        /// found first and never duplicated by a pre-decode delivery.
+        /// </summary>
+        private static void OnGameLoadedLate()
+        {
+            try
+            {
+                TourniquetCraft.AttachToStoreItems();
+                ReagentKitVisuals.MigrateExistingKits();
+                // Cheat/debug spawn buttons must exist even before the MEDS unlock.
+                DebugSpawns.Register();
+                if (!IsUpgradeUnlocked("PRECISION_LAB_MEDS"))
+                {
+                    return;
+                }
+                AdrenalineContent.EnsureRecipes();
+                NaloxoneContent.EnsureRecipes();
+                PillContent.EnsureRecipes();
+                SynaprestContent.EnsureRecipes();
+                ImmunivaxContent.EnsureRecipes();
+                BlueBloodContent.EnsureRecipes();
+                OrdnanceContent.EnsureRecipes();
+                PerfumeContent.EnsureRecipes();
+                BioPharmaContent.EnsureRecipes();
+                NightingaleContent.EnsureRecipes();
+                BelladonnaContent.EnsureRecipes();
+                DrugLabContent.EnsureRecipes();
+                FirstAidBox.EnsureRegistered();
+                FirstAidCleanup.ClaimStaleUnownedItems();
+                PhagimycinLicense.Register();
+                Apothecary.EnsureUnlockedState();
+                RecipeBook.EnsureDelivered();
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] post-load note delivery failed: " + e.Message);
+            }
+        }
         private void OnNewGameStarted(string scenarioId)
         {
             try
             {
+                EnsureCustomContentRegistered();
                 TryRegisterUpgrades();
                 EnsureItemsRegisteredForGameplay();
+                PhagimycinLicense.Register();
             }
             catch (Exception e)
             {
@@ -284,6 +517,11 @@ namespace PrecisionLab
         {
             // Catch-up for purifiers that were loaded/created without their instruction note.
             PurifierManualHelper.EnsureAllInStore();
+            // Retry recipe-note deliveries that had no free inventory space earlier.
+            NoteDelivery.EnsureAll();
+            // Expire anhedonia / trigger Synaprest dependency cravings at the start of the day.
+            SynaprestEffects.OnWakingUpLate();
+            Apothecary.StripLegacyBookingLogs();
         }
 
         private static void GiveItem(string itemId)
@@ -295,6 +533,7 @@ namespace PrecisionLab
                     // Defensive: a fresh run may reach the black market before any save-load
                     // hook ran. Make sure the factories are attached before spawning.
                     EnsureItemsRegisteredForGameplay();
+                PhagimycinLicense.Register();
                 }
                 GameItem item = ItemSpawner.Spawn(itemId);
                 if (item == null)
@@ -347,6 +586,26 @@ namespace PrecisionLab
             }
             try
             {
+                if (item.identifier == ItemIds.Tourniquet)
+                {
+                    ItemFeature condition = item.FindItemFeatureByCategory("CATEGORY_TOURNIQUET_CONDITION");
+                    if (condition != null && condition.realCondition != null)
+                    {
+                        int mod = condition.realCondition.modValue;
+                        string sign = mod > 0 ? "+" : "";
+                        builder.AddLine(
+                            Loc.Fmt("tooltip.tourniquet.condition", "Condition: {0} ({2}{1}% value)", condition.realCondition.display, mod, sign),
+                            true,
+                            mod >= 0 ? RenderHandler.ColorPalette.LightGreen : RenderHandler.ColorPalette.LightOrange);
+                    }
+                }
+                if (item.identifier == "kotton_fabric" || item.identifier == "scrap_metal" || item.identifier == "metal_ingot")
+                {
+                    builder.AddLine(
+                        Loc.Get("tooltip.tourniquet.hint", "Makeshift tourniquet: drag tough cotton fabric onto scrap metal or a metal ingot."),
+                        true,
+                        RenderHandler.ColorPalette.LightOrange);
+                }
                 if (item.identifier == ItemIds.Extractor)
                 {
                     int dose = LiquidTools.GetDose(item);
@@ -404,12 +663,150 @@ namespace PrecisionLab
                             RenderHandler.ColorPalette.LightGreen);
                     }
                     AppendPurifierSlotInfo(builder, item);
+                    builder.AddLine(
+                        Loc.Get("tooltip.purifier.turbo", "Turbo boost: drag a turbo booster (advanced/hypertech) onto this machine while it is READY to run one extra cycle."),
+                        true,
+                        RenderHandler.ColorPalette.Gray);
+                }
+                else if (item.identifier == ItemIds.Cultivator)
+                {
+                    int activity = ItemFactory.GetCultivatorActivity(item);
+                    int performance = MachineryHelper.GetCurrentPerformanceBonus(item);
+                    int throughput = LiquidTools.GetCultivatorThroughput(performance, activity);
+                    builder.AddLine(
+                        activity <= 0
+                            ? Loc.Get("tooltip.cultivator.dormant", "Culture: DORMANT (0%) — add nutrifruit to wake it up and sugar to feed it.")
+                            : Loc.Fmt("tooltip.cultivator.activity", "Culture activity: {0}% (digests {1} mL sugar per night)", activity, LiquidTools.FormatUl(throughput)),
+                        false,
+                        activity <= 0 ? RenderHandler.ColorPalette.Orange : RenderHandler.ColorPalette.LightCyan);
+                    builder.AddLine(
+                        Loc.Get("tooltip.cultivator.rule", "Eats sugar: the sugar is consumed and a little organic waste is left behind. Quality modules reduce the waste. Nutrifruit keeps the culture active; without sugar it goes dormant."),
+                        true,
+                        RenderHandler.ColorPalette.LightGreen);
+                    GameSlotInventory nutrientSlot = MachineHelper.GetSlot(item, 3) as GameSlotInventory;
+                    GameItem fruit = nutrientSlot != null ? nutrientSlot.childItem : null;
+                    if (fruit != null)
+                    {
+                        builder.AddLine(
+                            Loc.Fmt("tooltip.cultivator.fruit", "Nutrient slot: {0} (pressing it feeds the culture +{1}% activity)",
+                                fruit.name, ItemFactory.GetNutrifruitNutrition(fruit)),
+                            true,
+                            RenderHandler.ColorPalette.LightGreen);
+                    }
+                    else
+                    {
+                        builder.AddLine(
+                            Loc.Get("tooltip.cultivator.nofruit", "Nutrient slot: empty (add nutrifruit to keep the culture active)"),
+                            true,
+                            RenderHandler.ColorPalette.Gray);
+                    }
+                    int processed = item.GetTagReadonly(Tags.CultivatorProcessed).GetInt();
+                    if (processed > 0)
+                    {
+                        builder.AddLine(
+                            Loc.Fmt("tooltip.cultivator.processed", "Sugar digested last night: {0:0.###} mL", processed / 1000.0),
+                            true,
+                            RenderHandler.ColorPalette.LightGreen);
+                    }
+                    AppendCultivatorSlotInfo(builder, item);
+                    builder.AddLine(
+                        Loc.Get("tooltip.cultivator.turbo", "Turbo boost: drag a turbo booster (advanced/hypertech) onto this machine while it is READY to run one extra cycle."),
+                        true,
+                        RenderHandler.ColorPalette.Gray);
+                }
+                else if (item.identifier == ItemIds.SupplyBox)
+                {
+                    builder.AddLine(
+                        Loc.Get("tooltip.adrenaline_box.contents", "Contains one batch of reagents: catechol, N-hydroxymethyl base solution, lipobond agent, reducing agent, resolving agent and acid."),
+                        true,
+                        RenderHandler.ColorPalette.LightCyan);
+                    builder.AddLine(
+                        Loc.Get("tooltip.adrenaline_box.hint", "Activate to unpack. Follow the adrenaline injection pen recipe note (granted by the 'More Medicines' unlock) for the six production steps."),
+                        true,
+                        RenderHandler.ColorPalette.Gray);
+                }
+                else if (item.identifier == ItemIds.Api)
+                {
+                    double purity = ChemicalProductHelper.GetPurity(item);
+                    builder.AddLine(
+                        Loc.Fmt("tooltip.adrenaline_api.purity", "Active ingredient purity: {0:0.#}%", purity),
+                        false,
+                        RenderHandler.ColorPalette.LightCyan);
+                    builder.AddLine(
+                        Loc.Get("tooltip.adrenaline_api.hint", "Dissolve the API in an equal amount of water, then press the dry solution in the Chem Finisher to fill an injection pen."),
+                        true,
+                        RenderHandler.ColorPalette.Gray);
+                }
+                else if (item.identifier == ItemIds.Pen)
+                {
+                    builder.AddLine(
+                        Loc.Get("tooltip.adrenaline_pen.effect", "Combat stim: +20% accuracy and +33% critical chance for 3 turns."),
+                        false,
+                        RenderHandler.ColorPalette.LightGreen);
+                    builder.AddLine(
+                        Loc.Get("tooltip.adrenaline_pen.tag", "Medical item — single use, usable in combat."),
+                        true,
+                        RenderHandler.ColorPalette.LightCyan);
+                }
+                else if (item.identifier == ItemIds.DextroWaste)
+                {
+                    builder.AddLine(
+                        Loc.Get("tooltip.dextro_waste.hint", "Waste from the chiral resolution step. The purifier's waste output slot collects this; sell/discard it or dissolve it back into a container."),
+                        true,
+                        RenderHandler.ColorPalette.Gray);
+                }
+                else if (item.IsTag(Tags.LiquidContainer))
+                {
+                    int starch = LiquidTools.GetLiquidAmount(item, "starch");
+                    int acid = LiquidTools.GetLiquidAmount(item, "acid");
+                    int sugar = LiquidTools.GetLiquidAmount(item, "sugar");
+                    if (starch > 0 && acid > 0)
+                    {
+                        builder.AddLine(
+                            Loc.Get("tooltip.hydrolysis.hint", "Tip: starch in an acidic liquid hydrolyses into sugar at 40-60 °C (heating plate)."),
+                            true,
+                            RenderHandler.ColorPalette.Gray);
+                    }
+                    else if (sugar > 0)
+                    {
+                        builder.AddLine(
+                            Loc.Get("tooltip.sugar.hint", "Tip: the Microbial Cultivator eats sugar and leaves a little organic waste."),
+                            true,
+                            RenderHandler.ColorPalette.Gray);
+                    }
                 }
             }
             catch (Exception e)
             {
                 Debug.LogWarning("[PrecisionLab] tooltip hook failed: " + e.Message);
             }
+        }
+
+        private static void AppendCultivatorSlotInfo(RichTextBuilder builder, GameItem machine)
+        {
+            GameSlotInventory slot = MachineHelper.GetSlot(machine, 2) as GameSlotInventory;
+            GameItem container = slot != null ? slot.childItem : null;
+            if (container == null)
+            {
+                builder.AddLine(
+                    Loc.Get("tooltip.cultivator.empty", "Insert a liquid container with sugar into the machine. The culture runs every night as long as the battery has charge."),
+                    true,
+                    RenderHandler.ColorPalette.Gray);
+                return;
+            }
+            int sugar = LiquidTools.GetLiquidAmount(container, "sugar");
+            if (sugar <= 0)
+            {
+                builder.AddLine(
+                    Loc.Get("tooltip.cultivator.nosugar", "The container has no sugar: the culture is going dormant until it gets sugar again."),
+                    true,
+                    RenderHandler.ColorPalette.Gray);
+                return;
+            }
+            builder.AddLine(
+                Loc.Fmt("tooltip.cultivator.container", "Container sugar: {0} mL", LiquidTools.FormatUl(sugar)),
+                true,
+                RenderHandler.ColorPalette.LightBlue);
         }
 
         private static void AppendPurifierSlotInfo(RichTextBuilder builder, GameItem machine)
@@ -474,6 +871,24 @@ namespace PrecisionLab
                     : Loc.Get("tooltip.purifier.mode_conc", "Mode: concentrate (removed contamination is discarded, valuable liquids are kept)."),
                 true,
                 RenderHandler.ColorPalette.LightGreen);
+            int dextro = LiquidTools.GetLiquidAmount(container, CustomLiquids.DextroWaste);
+            if (dextro > 0)
+            {
+                builder.AddLine(
+                    Loc.Fmt("tooltip.purifier.dextro", "Contains {0} mL dextro waste: the waste output slot collects it as a waste item during the cycle.",
+                        LiquidTools.FormatUl(dextro)),
+                    true,
+                    RenderHandler.ColorPalette.Orange);
+            }
+            GameSlotInventory wasteSlot = MachineHelper.GetSlot(machine, 3) as GameSlotInventory;
+            GameItem wasteItem = wasteSlot != null ? wasteSlot.childItem : null;
+            if (wasteItem != null)
+            {
+                builder.AddLine(
+                    Loc.Get("tooltip.purifier.waste_full", "Waste output slot is occupied — empty it to collect more dextro waste."),
+                    true,
+                    RenderHandler.ColorPalette.Gray);
+            }
         }
 
         private void OnModConfigApplied(string modId)
@@ -491,8 +906,14 @@ namespace PrecisionLab
         {
             try
             {
+                EnsureCustomContentRegistered();
                 TryRegisterUpgrades();
                 EnsureItemsRegisteredForGameplay();
+                PhagimycinLicense.Register();
+                if (IsUpgradeUnlocked("PRECISION_LAB_MEDS"))
+                {
+                    AdrenalineContent.EnsureRecipes();
+                }
             }
             catch (Exception e)
             {
@@ -520,7 +941,10 @@ namespace PrecisionLab
         /// </summary>
         private static void EnsureItemsRegisteredForGameplay()
         {
-            if (DirectoryMaster.Has<GameItem>(ItemIds.Extractor) && DirectoryMaster.Has<GameItem>(ItemIds.Purifier))
+            if (DirectoryMaster.Has<GameItem>(ItemIds.Extractor)
+                && DirectoryMaster.Has<GameItem>(ItemIds.Purifier)
+                && DirectoryMaster.Has<GameItem>(ItemIds.Cultivator)
+                && DirectoryMaster.Has<GameItem>(Centrifuge.Id))
             {
                 return;
             }

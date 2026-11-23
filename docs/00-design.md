@@ -178,3 +178,100 @@ Mod ID：`precision_lab`　名称：精密实验室设备 / Precision Lab Equipm
   最终构建 58,368 B / sha256 `1785da97…` / combinedHash `7982709f…`；日志 `tools/verify/logs/final23.log` +
   `final-clean-boot12.log`；截图 `tools/verify/evidence/ingame-24-purifier-cap9915.png`；
   SELFTEST `OK ... manual=True ...`，`Harmony: 4 method(s) patched`。- 证据与详细报告：`docs/04-verification.md`、`tools/verify/logs/final-clean-boot7.log`、`tools/verify/evidence/`。
+
+## 新增内容（2026-10-31，用户需求第二批）
+
+### 淀粉水解反应 / Starch hydrolysis
+
+- Harmony postfix 挂到 `ChemicalHelper.HandleTemperatureReaction(GameItem)`（容器每秒 tick：
+  `containerTempTick → HandleAmbientTempDrop + HandleTemperatureReaction`）。
+- 条件：`CONTAINER_TEMP_TAG` 在 **40–60 °C**、容器内 **starch > 0** 且 **acid > 0**；
+- 每 tick 转化 `max(5, 2% × 剩余淀粉)` µL，单 tick 上限 5000 µL，1:1 转成 sugar；
+- **酸不消耗**（催化剂），总体积不变；离开温度窗口立即停止；换算后刷新 WaterFeature（纯度/贴图/估价）；
+- 工具提示：含“淀粉+酸”的液体容器会显示提示（加热板保温 40–60 °C）；
+- 温度来源：原版 `MachineHeatingPlate`（升级 2 个化学模块后可调 26–? 目标温度；0/1 个模块固定 99/160 °C）。
+
+### 微生物培养机 / Microbial Cultivator
+
+- 新物品 ID `precision_microbe_cultivator`（贴图 `precision_cultivator` 48×64 3×4，工作态 48×64 3×4）；
+- 黑网升级 `PRECISION_LAB_CULTIVATOR`（1800 信用点，precision_lab 页签）→ 赠送 1 台；
+  解锁后杰克逊博士柜台 +1 台/普通来访、+2 台/特殊库存夜（Harmony postfix 到原版两个库存方法）；
+  废品战利品池低概率（weight 8）；
+- 机器窗口单行 6 面板：电源｜模块｜液体容器｜**营养果**｜**菌群活性**｜便签；
+  存储索引 power=0 / module=1 / container=2 / nutrient=3 / note=4（显示型文本面板不占存储索引）；
+- **营养果槽**只接受 `nutrifruit`（原版营养果：小/正常/大/巨型，按 unitValue 区分 8/12/18/32）；
+  每夜压榨一个果子成汁水喂菌群：活性 +15/+25/+40/+60（`ItemFactory.PressNutrientFruit`，果子被销毁）；
+- **低糖分 → 休眠**：容器糖分为 0 时菌群活性每夜 −25，降到 0 进入休眠（面板显示“休眠 · 需要营养果”），
+  休眠时 `DigestSugar` 直接返回 0；重新喂营养果可恢复活性，补糖后继续分解；
+- 夜间周期（`onCycleEndSlotItemFunc`，耗电 8）：容器糖分被消耗，其中约 20% 生成 organic_waste
+  （质量模块把副产物比例从 20% 降到最低 5%），其余体积被微生物消耗掉（总体积下降）；
+  性能模块提高每夜处理量（基础 2000 µL/夜 ×（1+性能%））；有糖但未处理/无果子时活性 −10/夜；
+- 菌群活性 tag `PRECISION_CULTIVATOR_ACTIVITY_INT`：新机器 100；分解成功 +5（上限 100）；
+  活性按 25%–100% 缩放处理量（活性面板实时显示 `xx% · y mL/night`）；
+- 便签槽自动附带“微生物培养机说明”（DOCUMENT，仿蒸发器版式），由
+  `PurifierManualHelper.TryEnsure`（`DirectoryMaster.Item` postfix，创建后再插入）统一处理两种机器；
+- 工具提示：菌群活性/每夜处理量、糖→有机废物规则、昨夜处理量、容器内糖量；
+- 每次周期后调用 `MachineHelper.OnMachineActioned`（模块磨损/经验），并刷新液体 UI。
+
+### 退休化学家处补购移液枪
+
+- 原版 `StoreClientListSpec.CreateRetiredChemist` 的库存是在 `mainDialogue.endAction` 里硬编码添加的；
+  Harmony postfix 包装 `endAction`：先执行原版库存，再调用 `RetiredChemistStock.TryAddExtractor`；
+- 条件：`PRECISION_LAB_EXTRACTOR` 已解锁 **且** `PlayerStore.IsPlayerOwnThisItem` 为 false（当前不拥有取液器）；
+- 加物品到柜台（`AddDirectSellingItemToTable`），因此最多同时拥有一把；黑网升级仍赠送第一把。
+
+### 其他
+
+- 本地化：en/zh 各 76 键（新增培养机、水解提示、升级卡等）；
+- 自检扩展：starch hydrolysis（50 °C 转化 / 30 °C 不反应 / 酸不变 / 总体积不变）、
+  糖消化（2000 µL 处理、400 µL 有机废物、总体积 −1600）、培养机工厂 + 说明纸条 + 活性 100；
+- 静态检查：ModScanner methods=204、capabilities=none；本地化键集一致；战利品表 junkTable 新增培养机；
+- 构建：`PrecisionLab.dll` 75,264 B / sha256 `4d06f67b…` / combinedHash `94f41094…`（待游戏内最终验证）。
+
+## 肾上腺素注射笔生产线（2026-10-31，v1.2.0）
+
+### 自定义液体（10 种）
+
+`Liquid.Liquids` / `LiquidDict` 是 public static 容器，可在运行期追加；但 `Liquid.InitLiquid` 会读取
+游戏本地化，所以注册**不能**放在 `IMod.Init`（ModLoader.Awake 阶段），改为在
+`OnGameLoadedInit` / `OnNewGameStarted` / `OnGameLoadedNormal` 首次触发时调用
+`CustomLiquids.EnsureRegistered()` + `RefreshLocalizedNames()`（幂等）。
+注册的液体：catechol（邻苯二酚）、hydroxymethyl_base（N-羟甲基碱溶液）、resolving_agent（拆分剂）、
+amination_intermediate、racemic_adrenaline、levo_adrenaline_salt、dextro_waste、adrenaline_freebase、
+adrenaline_hcl、adrenaline_solution。全部 `canBeRemovedByPurifier=false`（避免被过滤器/提纯机当污染物处理）。
+
+### 六步反应（复用 `ChemicalHelper.HandleTemperatureReaction` tick）
+
+在已有 starch 水解的 Harmony postfix 里追加 `AdrenalineChemistry.React(container)`，每秒结算：
+1. 胺化 26–60 °C：catechol + hydroxymethyl_base + lipobond_agent → amination_intermediate（1:1:1 消耗）
+2. 还原 60–80 °C：amination_intermediate + reducing_agent → racemic_adrenaline（1:1）
+3. 拆分 40–60 °C + 酸催化：racemic_adrenaline + resolving_agent → levo_adrenaline_salt + dextro_waste；
+   对映体分配按“累计产量四舍五入”保证 50/50（误差 ≤1 µL），酸不消耗
+4. 成盐 26–60 °C：levo_salt + base → adrenaline_freebase（1:1）；freebase + acid → adrenaline_hcl（1:1）
+5. 配液：adrenaline_hcl + water → adrenaline_solution（1:1）
+6. 化学制剂成型机：两条 `ChemFinisherRecipe`（dry，750 µL）：
+   `adrenaline_api`（active=adrenaline_hcl）→ 盐酸肾上腺素原料药；
+   `adrenaline_pen`（active=adrenaline_solution）→ 肾上腺素注射笔
+   配方只在“更多药品”解锁后追加到 `chemFinisherRecipes`。
+转化速率：每 tick 2%，剩余 ≤50 µL 时一次性转化（避免整数余数残留）。
+
+### 物品与获取
+
+- 原料盒 `adrenaline_supply_box`（退休化学家出售，MEDS 解锁后每次来访 1 盒；激活拆成 7 瓶试剂：
+  catechol 3000 / hmb 3000 / lipobond 3000 / reducing 3000 / resolving 3000 / base 1500 / acid 1500 µL）
+- `adrenaline_api`（CHEMICAL_SUPPLIES，可溶解回收）、`adrenaline_pen`（MEDICAL / ITEM_MEDICAL_TAG /
+  injector 熟练度；战斗兴奋剂：命中 +20%、暴击 +33%，持续 3 回合；效果对象直接 new，避免目录未就绪时变 dummy）
+- `dextro_waste_item`（右旋废料）
+- 黑网升级 `PRECISION_LAB_MEDS`（1600 信用点）：追加两条成型机配方 + 发放配方纸条（vanilla handnote 文档，
+  无署名）+ 解锁退休化学家原料盒
+- 提纯机新增**废料输出位**（第 6 面板）：周期结束时把容器内 dextro_waste 收集成右旋废料物品
+  （存储索引：power0/manule1/container2/waste3/note4；便签辅助器改为两种机器都用 4）
+
+### 验证
+
+- 最终构建（v1.2.0）：见 docs/04-verification.md；自检 `SELFTEST OK ... adrenaline=True adrenalineItems=True`，
+  链式数值 amination/racemic/hcl/solution 全 3000/1500 对齐，拆分 1500/1500。
+
+### v1.2.1 小修
+
+提纯机废料输出空槽位的背景图标（原版 chemical2，看起来像纸条）已移除，空槽显示为普通暗色槽位；非功能变更。

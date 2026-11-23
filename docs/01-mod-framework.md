@@ -4,7 +4,7 @@
 **AppID:** 4348910 · **Installed version analysed:** `0.46D` · **Unity:** `2021.3.45f2` (Mono)
 **Sources of truth:** ILSpy output of `Assembly-CSharp.dll` in
 `probably-stolen-mod/decompiled/Assembly-CSharp` (all `File.cs:line` refs below are that folder),
-a **real installed Steam Workshop mod** (`<steam-workshop-mod>`,
+a **real installed Steam Workshop mod** (`F:\SteamLibrary\steamapps\workshop\content\4348910\3828868413`,
 *Item Details / 物品详情* 0.6.2, decompiled to `probably-stolen-mod/decompiled/ItemDetails`), the live
 `Player.log` of this machine, and an open-source mod project (see §9).
 
@@ -51,7 +51,7 @@ and validation tooling in `skeleton/tools/`: `verify-mod-folder.ps1` (static com
 ### 1.1 Mods folder
 
 `ModLoader.ModsPath` (`ModLoader.cs:50`) = `Path.Combine(Application.dataPath, "..", "Mods")` →
-**`<game>\Mods`** (the game log prints it as
+**`F:\SteamLibrary\steamapps\common\Probably Stolen\Mods`** (the game log prints it as
 `.../Probably Stolen_Data\..\Mods`). If missing, `LoadAllMods` creates it (`ModLoader.cs:722-728`).
 
 Discovery (`ModLoader.cs:722-738`, `:874-1014`):
@@ -599,7 +599,7 @@ Working `.csproj` (`skeleton/src/ExampleMod/ExampleMod.csproj`):
     <GenerateDependencyFile>false</GenerateDependencyFile>
     <DebugType>none</DebugType>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <GameDir Condition="'$(GameDir)' == ''"><game></GameDir>
+    <GameDir Condition="'$(GameDir)' == ''">F:\SteamLibrary\steamapps\common\Probably Stolen</GameDir>
     <ManagedDir>$(GameDir)\Probably Stolen_Data\Managed</ManagedDir>
     <OutputPath>..\..\ExampleMod\</OutputPath>
   </PropertyGroup>
@@ -620,13 +620,13 @@ Working `.csproj` (`skeleton/src/ExampleMod/ExampleMod.csproj`):
 ### 8.3 Build command / output (verified)
 
 ```powershell
-cd <workspace>\skeleton
+cd F:\deepseek harness workbench\probably-stolen-mod\skeleton
 powershell -ExecutionPolicy Bypass -File .\build.ps1
 # or: dotnet build .\src\ExampleMod\ExampleMod.csproj -c Release
 ```
 
 * Result: `Build succeeded. 0 Warning(s) 0 Error(s)`; DLL:
-  **`<workspace>\skeleton\ExampleMod\ExampleMod.dll`** (8192 bytes).
+  **`F:\deepseek harness workbench\probably-stolen-mod\skeleton\ExampleMod\ExampleMod.dll`** (8192 bytes).
 * Static checks done on the artifact: assembly references = `netstandard 2.1.0.0, Assembly-CSharp,
   UnityEngine.CoreModule, UnityEngine.AudioModule` — **all present in `Managed`** → no `unlisted-reference`
   hard flag; bytes contain `IMod\0` → passes `IsWellFormed`; no `System.IO`/reflection/network/process
@@ -650,7 +650,7 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1
 ## 9. Real-world evidence (folder layouts, manifests)
 
 1. **Steam Workshop — Item Details / 物品详情 v0.6.2** by Nwflower, installed at
-   `<steam-workshop-mod>` (AppID 4348910 per
+   `F:\SteamLibrary\steamapps\workshop\content\4348910\3828868413` (AppID 4348910 per
    `ModWorkshop.MAIN_APP_ID`, `ModWorkshop.cs:15`). Real layout:
 
    ```
@@ -854,7 +854,7 @@ the game’s actual code paths **without launching the game**, using the tooling
   `combinedHash b40efc5a…`). Re-copy `dist\PrecisionLab\*` over the deployed folder.
 * The live `SaveFile.es3` (`modOrder` = `item_details, zz_verify_hello` at the time of writing) has **no
   `precision_lab` record**, so a fresh launch would register it inactive (`Unknown`). Seed it with
-  `skeleton/seed-trust.ps1 -ModFolder "<workspace>\dist\PrecisionLab"` **while the game is closed** (it backs
+  `skeleton/seed-trust.ps1 -ModFolder "F:\...\dist\PrecisionLab"` **while the game is closed** (it backs
   the file up), or enable it once in the Mods panel.
 * The game must be restarted after copying/seeding (mods load only in `ModLoader.Awake`); expected log
   lines: `[ModLoader] Loading: PrecisionLab.dll`, `[ModLoader]   Harmony: 0 method(s) patched`,

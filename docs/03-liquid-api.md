@@ -6,8 +6,8 @@
 2. **提纯机器** (Purification Machine): remove physical / chemical / biological contaminant classes from liquid containers without destroying valuable product liquids.
 
 **Sources of truth (read-only):**
-- Decompiled game C#: `<workspace>\decompiled\Assembly-CSharp\` (928 files). All `file.cs:line` references below are relative to that directory.
-- Game install: `<game>\` (never modified; game never launched by this task).
+- Decompiled game C#: `F:\deepseek harness workbench\probably-stolen-mod\decompiled\Assembly-CSharp\` (928 files). All `file.cs:line` references below are relative to that directory.
+- Game install: `F:\SteamLibrary\steamapps\common\Probably Stolen\` (never modified; game never launched by this task).
 - Corroboration only (not authority): decompiled real mod `decompiled\ItemDetails\ItemDetails\WaterInfo.cs`, `WaterAdvice.cs`, `PurifySources.cs`.
 
 **Verification of the helper code:** the two C# files in §10 were compiled with Roslyn (`csc` from .NET SDK 9.0.318) against the game's real `Probably Stolen_Data\Managed\Assembly-CSharp.dll`, `UnityEngine.CoreModule.dll`, `mscorlib.dll`, `netstandard.dll`, `System.Runtime.dll`, `System.Core.dll`, with `-langversion:latest` and `-warnaserror+`: **0 errors, 0 warnings** (`-target:library`, output 18 KB). They reference only types that exist in the shipped assemblies.
@@ -1701,7 +1701,7 @@ namespace ProbablyStolen.LiquidApi
 ### 10.3 Compile verification (reproducible)
 
 ```powershell
-$managed = "<game>\Probably Stolen_Data\Managed"
+$managed = "F:\SteamLibrary\steamapps\common\Probably Stolen\Probably Stolen_Data\Managed"
 $csc     = "C:\Program Files\dotnet\sdk\9.0.318\Roslyn\bincore\csc.dll"
 dotnet $csc -nologo -target:library -langversion:latest -nostdlib+ -warnaserror+ `
   -r:"$managed\mscorlib.dll" -r:"$managed\netstandard.dll" -r:"$managed\System.dll" `

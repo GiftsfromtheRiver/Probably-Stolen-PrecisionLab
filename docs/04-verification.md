@@ -1,7 +1,7 @@
 # 04 — Verification: launching, logging, mod loading, trust and item spawning
 
 Status: **PASS (2026-10-30, game 0.46D / Unity 2021.3.45f2, Windows, Steam running)**
-Verifier: agent "verifier". Game install: `<game>`, Steam appid **4348910**.
+Verifier: agent "verifier". Game install: `F:\SteamLibrary\steamapps\common\Probably Stolen`, Steam appid **4348910**.
 Final frozen mod build verified: `PrecisionLab.dll` 50688 B, sha256
 `77f2720b4308928ec60f3e0ea7f6bea1279646c7515f5e3f08d2d6996f31c847`, combinedHash
 `35687f61f5bfed9faa9380cc7861d329eda875899baca56043398ab3db6b0a0f` (input-box CustomUI
@@ -68,7 +68,7 @@ file first (see §8).
 ## 3. Exact launch recipe (PowerShell 5.1, proven)
 
 ```powershell
-$game = '<game>'
+$game = 'F:\SteamLibrary\steamapps\common\Probably Stolen'
 $log  = 'C:\Temp\psmod\run.log'                 # no-space path is safest
 $argsString = '-logFile "' + $log + '"'         # ONE string, quoted path
 $p = Start-Process -FilePath "$game\Probably Stolen.exe" -ArgumentList $argsString `
@@ -264,7 +264,7 @@ With `dev.txt` present (verified, screenshots in `tools/verify/evidence/`):
 1. Normal play path (no dev tools): in-game **phone → Wild Network → "Precision Lab" tab**, buy
    *精确取液器 / Precision Liquid Extractor* (1200 credits) or *提纯机器 / Purification Machine*
    (2400) — delivered to the store inventory. Also low chance in `medicalTable` / `junkTable` loot
-   (the mod patches those loot tables), and existing saves get the items added on load.
+   (loot-table drops were removed after balance feedback; machines come from unlocks/Jackson), and existing saves get the items added on load.
 2. Verification/dev path: add empty `dev.txt` next to `Probably Stolen.exe`, load a save, press
    **F9 → Spawn → "PrecisionLab: spawn extractor"** (or *Open Debug Spawner* and search
    `precision_liquid_extractor` / `precision_purifier`). Both were confirmed spawnable in a loaded
@@ -335,7 +335,7 @@ is loaded"* at Init and *"network upgrades registered (tab precision_lab)"* afte
 
 ## 8. Verification protocol / checklist
 
-Run from `<workspace>\tools\verify`.
+Run from `F:\deepseek harness workbench\probably-stolen-mod\tools\verify`.
 
 **A. Before any launch/test (always):**
 1. No `Probably Stolen` process already running (`run-game.ps1` enforces this).
@@ -393,7 +393,7 @@ Rebuild the throwaway helper mods (optional, for a future re-run):
 
 ```powershell
 $csc='C:\Program Files\dotnet\sdk\9.0.318\Roslyn\bincore\csc.dll'
-$m='<game>\Probably Stolen_Data\Managed'
+$m='F:\SteamLibrary\steamapps\common\Probably Stolen\Probably Stolen_Data\Managed'
 & dotnet $csc -nologo -nostdlib -target:library -out .\autoload-mod\build\zz_verify_autoload.dll `
   -r:"$m\mscorlib.dll" -r:"$m\netstandard.dll" -r:"$m\Assembly-CSharp.dll" `
   -r:"$m\UnityEngine.CoreModule.dll" -r:"$m\UnityEngine.dll" -r:"$m\0Harmony.dll" `
@@ -430,3 +430,225 @@ $m='<game>\Probably Stolen_Data\Managed'
   spawnable, Wild Network tab+upgrades, and the visible CustomUI metering window with working slider,
   sync, preset buttons and Apply→tag pipeline. Cosmetic only: window centre sits slightly right of
   the viewport centre (right border near the screen edge; no content cut).
+
+## v1.1.0 功能验证（2026-10-31）
+
+新增：淀粉水解反应、微生物培养机（含营养果/休眠机制）、退休化学家补购移液枪。
+构建：`PrecisionLab.dll` 79,360 B，sha256 `601dbc48…`，combinedHash `c41955a8…`（manifest 1.0.0 时）。
+
+- **加载/信任**：`Harmony: 6 method(s) patched`（双击 + Jackson×2 + DirectoryMaster.Item + 淀粉水解 + 退休化学家）；
+  5 个物品贴图；2 语言 162 条本地化（81 键/语言）；`running=True trust=Match`。
+- **SELFTEST**：`OK ... hydrolysis=True digestion=True cultivator=True`；
+  `starch hydrolysis converted=20µL（50°C）/ coldTick=0`；`digest digested=2000µL organicWaste=400µL total -1600`；
+  `cultivator machine window=True power=8 manual=True nutrientSlot=True fruitAccepted=True pressed=+60% activityAfterFeed=60% fruitConsumed=True`。
+- **真实化学 tick**：50 °C 淀粉 1000→980、糖 0→20、酸不变、总体积 4200 不变；70 °C 不反应；回到 50 °C 继续 → 960/40。
+- **培养机实测**：6 面板单行（电源｜模块｜容器｜营养果｜菌群活性｜便签）；便签索引 4 有“微生物培养机说明”；
+  营养果槽拒绝非营养果；巨型营养果压榨 +60%（0→60）并被消耗；
+  活性 60 时消化 1400 µL 糖、+280 有机废物、总体积 −1120、耗电 8、面板 `65% · 1.475 mL/night`；
+  无糖 3 夜：活性 65→40→15→0，面板 `休眠 · 需要营养果`；补充营养果+糖后恢复 0→60→65 并继续消化。
+- **杰克逊博士**：培养机解锁后 `stocks 1 microbial cultivator`（特殊库存 2）；未解锁无供货。
+- **退休化学家（数值验证）**：用 instrumented 计数探针确认——解锁且不拥有取液器 → 恰好 1 次添加尝试
+  （原版 endAction 的 blender/heating_plate/evaporator/chem_finisher 库存同时保留）；已拥有一把 → 0 次；
+  未解锁 → 0 次。临时存档前柜台处于引擎“不可接收”状态，物品被原版 “front counter full” 流程丢弃，
+  因此只验证了尝试次数；正常柜台会出现在他的柜台上。
+- **回归**：提纯机器便签索引 3、单行窗口、提纯上限面板；取液器窗口/即时生效/方向模式；旧存档加载正常。
+- 截图：`tools/verify/evidence/ingame-28-cultivator-window.png`、`ingame-29-cultivator-dormant.png`。
+### v1.1.0 最终门禁（2026-10-31）
+
+- manifest 升级到 **1.1.0**（DLL 不变）：manifestHash `eeecb49f…`，combinedHash `2aba4619…`；
+- 最终启动日志：`Initialized: Precision Lab Equipment v1.1.0`、`Harmony: 6`、5 贴图、2 语言 162 条、
+  `running=True trust=Match hash=2aba4619…`、`SELFTEST OK ... hydrolysis=True digestion=True cultivator=True`；
+- 最终交付状态：`Mods` 仅 PrecisionLab（manifest 1.1.0 + DLL 79,360 B），SaveFile.es3 可写且信任匹配、
+  dev=false；无 dev.txt/helper/scratch；slot 43 用户存档未被测试写入；
+- 日志：`tools/verify/logs/final-gate-v110.log`、`final-clean-boot16.log`。
+## v1.2.0 功能验证（2026-10-31，肾上腺素注射笔生产线）
+
+新增 10 种自定义液体、6 步肾上腺素反应链、肾上腺素原料盒/原料药/注射笔/右旋废料物品、
+化学制剂成型机 2 条新配方、“更多药品”升级、退休化学家原料盒、提纯机废料输出位。
+
+- 构建：`PrecisionLab.dll` 106,496 B，sha256 `5d7e5415…`，manifestHash `72adaa1a…`，
+  combinedHash `2e5edaee…`（manifest v1.2.0）。
+- 加载：`Harmony: 6 method(s) patched`；9 个物品贴图；2 语言 × 128 键；`registered 46 liquids (custom chain=10)`；
+  两条成型机配方注册；`running=True trust=Match`；0 异常、0 dummy effect 警告。
+- 自检：`SELFTEST OK ... adrenaline=True adrenalineItems=True`；
+  `amination=3000µL catecholLeft=0 lipobondLeft=0 | racemic=3000 reducingLeft=0 |
+  levoSalt=1500 dextro=1500 acidLeft=1500 | freebase=1500 hcl=1500 baseLeft2=0 acidLeft2=0 |
+  wasteCollected=1500 dextroLeft=0 wasteItem='右旋废料' | solution=1500 hclLeft=0 waterLeft=0 |
+  recipes=True items=True`。
+- 独立链式测试（逐步隔离）：resolution levo/dextro = 1500/1500（Δ=0）；freebase 1500/base 0；
+  hcl 1500/acid 0；注射笔效果为真实 buff（命中 +20%/3 回合、暴击 +33%/3 回合，无 dummy）。
+- 提纯机：6 面板单行（power|module|container|waste|purity|note），便签索引 4；废料输出位收集右旋废料。
+- 配方纸条：handnote 文档，`HANDNOTE_BODY` 存在，署名已清空（`signature=''`）。
+- 原料盒：拆开得到 7 瓶试剂（catechol/hmb/resolving 各 3000 已观测；lipobond/reducing 3000、base/acid 1500 由代码常量保证）。
+- 退休化学家：MEDS 解锁后原料盒添加尝试 >0；未解锁 0；取液器逻辑不变。
+- 未决/说明：自定义液体存档持久化测试因测试存档无法挂载可保存容器而未能确认（游戏内逻辑无异常）。
+- 最终交付状态：`Mods` 仅 PrecisionLab（manifest v1.2.0 + DLL），SaveFile.es3 可写且信任匹配、dev=false；
+  无 dev.txt/helper/scratch；slot 43 用户存档未被测试写入。
+  日志：`tools/verify/logs/final39.log`、`final-clean-boot20.log`。
+## v1.2.1 小修（2026-10-31）
+
+用户反馈提纯机“废料输出”空槽位看起来像塞了一张纸条。原因：该槽位空背景使用了原版 chemical2
+化学品图标（外形像橙色纸条），并非真的插入了物品（说明便签仍在 note 槽位）。修复：移除该槽位背景图标，
+空槽显示为普通暗色槽位；面板标题“废料输出”不变。版本号 1.2.1。
+## v1.2.2 文本修复（2026-10-31）
+
+配方纸条里用的“→”箭头在原版手写便签字体中没有字形，游戏内显示为空白。改为文字表述“会生成”（英文用 gives），六步流程更易读；同时确认物品名“盐酸肾上腺素原料药”为规范用词（原料药=API），非拼写错误（全项目搜索“原科药”0 处）。
+## v1.2.3 文本调整（2026-10-31）
+
+原版手写便签字体的“米”字旁会把“料”写得像“科”，导致配方纸条里的“原料药/原料配比”看着像错字。
+为避免误读，纸条措辞改为“压制成盐酸肾上腺素成品”“把盐酸肾上腺素成品溶于等量水”“每盒试剂配比”；
+物品名（普通 UI 字体）仍为“盐酸肾上腺素原料药”（规范术语）。另加 `RefreshRecipeNotesInStore()`：
+读档时若“更多药品”已解锁，会把旧版本生成的手写便签正文刷新为新措辞并清空署名。
+## v1.2.4 / v1.2.5 右旋废料回收（2026-10-31）
+
+- v1.2.4：新增回收反应 `StepDextroRecycle`——右旋废料 + 还原剂，60–80°C，按 1:1 再消旋成消旋肾上腺素，
+  可回到第 3 步重新拆分；配方纸条追加“回收再消旋”段落；右旋废料描述提示回收路线；
+  自检新增 `adrenaline recycle: racemic=1000µL dextroLeft=0µL reducingLeft=0µL` 与 `recycle=True`。
+  游戏内实测：1000+1000 @70°C → 消旋 1000；再 +拆分剂 1000 +酸 1000 @50°C → 左旋 500 / 右旋 500，重新进入拆分。
+- v1.2.5：按用户要求去掉面向玩家的“方案B/plan B”字样（纸条、物品描述、README），机制不变；
+  旧纸条读档自动刷新为新文案。
+## v1.2.6 试剂瓶满瓶显示（2026-10-31）
+
+玩家反馈原料盒里的试剂瓶只装了几毫升、看起来几乎空瓶。修复：`TryAddBottle` 在加液前把瓶子的
+`LIQUID_CONTAINER_CAPACITY` 覆盖为该批用量，使每个瓶子正好装满（catechol/hmb/lipobond/reducing/resolving 各 3000/3000，
+base/acid 各 1500/1500 µL），水位显示 100%、提示写明“满瓶…正好一份配比量”；纸条补充“每瓶试剂都是满瓶”一句。
+配方/数值不变（一盒=一份配比）。
+## v1.2.7 等比例放大耗材（2026-10-31）
+
+玩家要求“一支肾上腺素注射笔消耗 5 毫升”并等比例增加原料盒耗材：
+试剂瓶改为满瓶 20 mL/20 mL/20 mL/20 mL/20 mL/10 mL/10 mL（catechol/hmb/lipobond/reducing/resolving/base/acid）；
+成型机两条配方 requiredVolume 750 → 5000 µL；一盒原料仍然产出 2 支注射笔（每支 5000 µL 药液）。
+纸条配比、物品描述同步更新；旧纸条读档自动刷新。
+## v1.2.8 注射笔奢侈品分类（2026-10-31）
+
+玩家指出肾上腺素注射笔单支 1200+ 信用点，应视为奢侈品。修复：注射笔同时拥有 `MEDICAL` 与 `LUXURY_ITEM`
+物品类型/tag（原版大型注射器等也有此分类），可被上层奢侈品客户（upperLowerVisitorLuxury，购买 tag LUXURY_ITEM）
+与展示台系统识别；提示与物品描述改为“医疗物 / 奢侈品”，价值不变。自检新增奢侈品类型/tag 断言。
+## v1.2.9 涡轮增压提示（2026-11-01）
+
+玩家反馈“高级涡轮增压机不能对提纯机用”。诊断结论：机器侧无问题——提纯机具备 STANDARD_MACHINE_TAG，
+`IsTurboBoostEligible/CanBoostNow=true`，高级/超级涡轮增压器 `MayTarget/CanTarget=true`，真实 Target 路径
+可正常触发额外周期（电池 100→94、污染物 microbe 1000→38，日志 "purifier removed 1732 µL"）；与净水器行为一致。
+常见原因是增压器自身未充能到 READY（`IsTurboReady` 读 modifiedState，需 15/15 就绪）时拖拽无目标高亮。
+v1.2.9 增加：提纯机/培养机显式 EnableTag("TURBO_BOOST_ELIGIBLE_TAG")（冗余保险），机器提示新增
+“涡轮加速：拖涡轮增压器到本机器，增压器需显示就绪”说明。
+## v1.2.10 废料瓶累积（2026-11-01）
+
+玩家确认增压器已就绪，但增压后右旋杂质没被收集。原因：废料输出位只在**空槽**时收集；槽里已有右旋废料瓶时，
+后续周期（含涡轮加速）会静默跳过。修复：`CollectDextroWaste` 在槽内已有废料瓶时，用
+`ChemicalHelper.AddChemContentUL` 把新废料累加进同一瓶，并 `GradeProduct` 刷新品质；液体中的废料照常清空；
+移除瓶子后下一轮会新建一瓶。说明文案补充“多批废料会累积在同一个废料瓶里”。
+## v1.3.0 简易止血带（2026-11-01）
+
+玩家提出：用「韧棉织物」+「废金属」拖拽合成「简易止血带」，并要求在购买「更多药品」升级后才收到配方纸条、解锁前不能合成。
+
+实现：
+- 新物品 `makeshift_tourniquet`（简易止血带）：MEDICAL + ITEM_MEDICAL_TAG + 医疗熟练度，价值 24；
+  使用效果镜像止血绷带（稳定伤势 + 伤势 -1，单次消耗）；16x16 程序生成像素贴图。
+- 合成：把 `kotton_fabric`（韧棉织物）拖到 `scrap_metal`（废金属）上 → 消耗各 1、在目标所在库存生成 1 条止血带；
+  放置失败则不消耗；通过 `DirectoryMaster.Item` postfix 给织物实例挂接目标委托（幂等防重复），存档加载时同样生效。
+- 解锁门控：`CanCraft` 检查 `PRECISION_LAB_MEDS`，未解锁时 may/can 返回 false（无拖拽高亮），无法合成。
+- 配方纸条：解锁时/读档时额外发放「简易止血带配方」手写便签（署名空、正文含合成方式与解锁条件），旧存档自动补发。
+- 自检新增：物品类型/激活委托/挂接检查，日志 `tourniquet=True`。
+## v1.3.1 简易止血带新图标（2026-11-01）
+
+玩家提供止血带图片，要求去掉背景并作为游戏内物品图标、占 3×2 格。
+- 去背景：按绿色背景色抠图（含阴影）、清除右下角 AI 水印、修补抠图小洞，输出全分辨率透明 PNG；
+  另导出 48×32 游戏图标。
+- `makeshift_tourniquet` 改用 48×32 贴图并**强制 3×2 矩形 GridShape**（因为透明图角会导致按 alpha 推导的形状残缺）；
+  读档时把旧 1×1 版物品迁移为 3×2（try/catch 保护）。
+- 自检增加 shape 3×2 / useSpriteFromMod 断言。
+## v1.3.2 止血带图标改 2×2（2026-11-01）
+
+玩家反馈 3×2 版把圆形旋钮横向拉伸得怪。改为 **32×32（2×2 格）**，按原图比例缩放（不拉伸旋钮），
+强制 2×2 矩形形状；旧 3×2 / 1×1 物品读档时迁移为 2×2 新外观。自检断言 shape 2×2。
+## v1.3.3 止血带合成可达性修复（2026-11-01）
+
+真实玩家存档诊断：MEDS 已解锁、配方纸条已在 store.mainInventory、织物实例已挂接委托且 CanCraft=True，
+但 `fabric.Target(scrap)` 无结果——原因是产物 2×2 在目标所在库存放不下，旧代码静默放弃。
+修复：
+- 放置顺序：目标库存 → 来源库存 → `GraphUtils.EmporiumTryAdd`（遍历其他店内库存）；全部放满才放弃，
+  且**不消耗材料**，并写入夜间报告提示。
+- 新增金属锭 `metal_ingot` 作为替代目标（织物侧检查，金属锭自身委托不动）。
+- 织物/废金属/金属锭在解锁后显示合成提示 tooltip；纸条发放时写夜间报告提示避免错过。
+## v1.3.4 止血带材料品质标签（2026-11-01）
+
+按玩家设计：材料决定成品标签与价值。
+- 废金属 → 破旧（value −50%）；金属锭纯度 ≥ 中等（INGOT_PURITY_FAIR，level 7）→ 极佳（+25%）；
+  金属锭低于中等（LOW 6 / VERY_LOW 5 / 未知）→ 陈旧（−25%）。
+- 实现：合成时给产物加自定义 `ItemFeature`（CATEGORY_TOURNIQUET_CONDITION，useCondition=true，
+  fake=real 自定义 ItemCondition，modValue -50/-25/+25，isFeatureMatch=true），由游戏价格管线按百分比修正；
+  协商界面显示条件，物品提示新增“标签：破旧（价值 -50%）”行。
+- 纸条正文/物品描述/README 补充材料-标签-价值对照表；自检断言 worn=-50、excellent=25、aged=-25。
+## v1.3.5 配方纸条可见投放（2026-11-01）
+
+玩家建议：纸条放不下时可以放到柜台外/开门就能看到。实现 `NoteDelivery`：
+- 新发放的配方纸条（肾上腺素 + 简易止血带）优先放进**前台柜台**（frontInvinvElement，开门可见），
+  其次后柜台 → 主库存 → 展示台 → 打烊库存 → 原 EmporiumTryAdd；
+- 全部放满时不静默丢失：本次放弃并在次日 `OnWakingUpLate` / 下次读档时重试（按标题查重，不重复发）；
+- 已存在的纸条不自动搬家，避免意外移动玩家物品；旧存档读档刷新正文但保持位置。
+## v1.3.6 纸条投放时机修正（2026-11-01）
+
+验证发现 `OnGameLoadedNormal` 在 `PlayerStore.LoadGame` 的 DecodeSaveItem **之前**触发，v1.3.5 在此时补发纸条
+可能先创建新纸条、随后存档纸条又被解码，造成重复/被移动的风险。修正：所有纸条补发与正文刷新移到新的
+`OnGameLoadedLate`（解码与 feature 恢复之后）；已有纸条按标题先查到→只刷新正文，不重建、不移动。
+前台柜台仍是优先投放位置（开门可见），日终 `SwapInv()` 会把前台物品移入可存档的后柜台，因此不会丢失；
+全部放满时仅警告并在下次读档/次日重试（按标题查重，不会重复发）。
+## v1.3.7 培养机活性面板实时刷新（2026-11-02）
+
+玩家反馈：培养机“菌群活性”面板只有放入营养果（槽位事件触发刷新）时才显示真实状态；一直不喂会停留在初始 100%。
+原因：活性 tag 每夜会衰减，但面板文本只在槽位添加/夜间循环末尾用捕获的 MachineryText 更新，从未被玩家触碰的机器显示会一直停在旧字符串。
+修复：给培养机挂 `onOneSecondItemFunc`，每秒用 `FormatCulturePanel` 生成实时文本并仅在变化时 SetText（避免布局抖动）；
+新增自检断言：onOneSecondItemFunc 存在、喂食后显示 60%、活性 0 时显示休眠文本（cultureDisplay=True）。
+## v1.3.8 拆分剂补充装 + 肾上腺素价格 ×0.1（2026-11-02）
+
+玩家指出右旋废料回收循环会持续消耗拆分剂，一盒原料的拆分剂不足；并希望原料与产品价格都缩到 0.1。
+- 新增 **`resolving_agent_refill`（拆分剂补充装（20 毫升））**：密封的非液体 CHEMICAL_SUPPLIES 物品，
+  unitValue 32；激活后在可用库存中生成一瓶满瓶 `resolving_agent_bottle`（20000 µL），放不下时**不消耗补充装**并夜间提示。
+- 退休化学家在「更多药品」解锁后每次来访：原料盒 + 拆分剂补充装各 1 个到前台柜台。
+- 价格整体 ×0.1：原料盒 150、拆分剂补充装 32、拆分剂瓶 12、盐酸肾上腺素原料药 50、肾上腺素注射笔 120（保留奢侈品标签）。
+- 自检：resolvingBottle / resolvingRefill / box 150 / api 50 / pen 120 断言。
+## v1.3.9 配方改为手册（2026-11-02）
+
+按玩家建议：配方不再用散装纸条，改为游戏原版纸张书籍框架（Mod 的 `Books/*.json` + `PaperBookRegistry`）：
+- 新增 `Books/precision_lab_recipes.json`（notebook_manual 背景，2 页：肾上腺素注射笔 / 简易止血带），
+  书籍 item `precision_lab_recipe_book`（精密实验室配方手册，DOCUMENT/IMPORTANT，激活打开 PaperUI 翻阅）；
+- 解锁「更多药品」/读档/次日重试时发放一册到前台柜台（按 item id 去重）；旧存档里的旧纸条不销毁不移动，只是不再新发；
+- 以后新增药品（如纳洛酮）只需在 JSON 里加一页，不占额外纸条物品位置；自检新增 recipeBook 断言。
+## v1.4.0 纳洛酮（纳洛通）生产线（2026-11-02）
+
+并入「更多药品」解锁。新增 6 种液体（thebaine/还原中间体/水解中间体/粗品/盐酸纳洛酮/药液）、5 步反应、
+纳洛酮原料盒（蒂巴因/酸/还原剂/脂合剂/N-羟甲基碱/酒精各 20 mL，蒂巴因为唯一采购原料）、
+盐酸纳洛酮原料药物品 + 成型机配方（API 5000 与最终 `pure_white_injector` 5000，active=naloxone_solution）、
+退休化学家上架原料盒、配方手册第 3 页。酒精作可回收溶剂不被消耗；脂合剂被消耗；一盒 4 支纳洛通。
+自检新增 naloxone 链式断言与 naloxone 标志。
+## v1.5.0 避孕药 / 山奈德片生产线（2026-11-02）
+
+新增 7 种液体（steroid_raw/水解物/中间体/避孕药API液；sannai_raw/提取液/山奈德API液）与两条链：
+避孕药 B1 水解 60–80 → B2 还原 50–70 → B3 纯化 26–60 → 成型机压成原版 birth_control_pill；
+山奈德 S1 酒精提取 50–70（酒精可回收）→ S2 酸催化纯化 26–60 → 成型机压成原版 zyanide_pill（毒药）。
+新增两个原料盒（各 120c）由退休化学家在 MEDS 解锁后出售；配方手册加第 4/5 页；一盒各 4 片。
+说明：成型机只能处理液体，故原“原料药＋微量碱/水压片”合并为成型机最终压制配方。
+自检新增两条链断言与 pills 标志。
+## v1.6.0 赛纳普斯链 + 反应速度（2026-11-02）
+
+新增 4 种液体（neural_ligand/activated_ligand/synaprest_crude/synaprest_api）、C1–C4 反应、
+赛纳普斯原料盒（500c，6 瓶）、赛纳普斯注射器（350，MEDICAL+LUXURY）：随机清除一项成瘾（与原版一致），
+附 3 天「快感缺失」perk（好运 -15，逐日递减/移除），3 次使用后形成依赖 perk（每天 10% 概率
+重新获得药物成瘾）。mod perk 通过 StartingPerkList.RegisterModPerk 注册；GetLuck Harmony postfix。
+所有链每 tick 转化率由 2% 提升至 20%（最后 100 µL 收尾）。
+自检新增 synaprest 链、配方、perk、速度断言与 synaprest 标志。
+## v1.7.0 药剂师 + 止血带调整（2026-11-02）
+
+止血带基础价值 24→150，移除「更多药品」合成门槛（tooltip/书页/配方纸条文案同步）。
+新增 NetworkUpgrade `PRECISION_APOTHECARY`（药剂师，1800，Referral）+ 电话联系人 7742：
+解锁后电话簿出现联系人，通话可预约；UseService 冷却 3 天，预约日期写入 contact.stockType；
+Harmony postfix StoreClientManager.GenerateClient 在预约日把药剂师客户端插入 clientStack[0]（第一位），
+出售本 mod 全部药剂/原料盒；客户端工厂/通话对话函数/升级定义均在 ModEntry.Init 注册，
+旧存档读过 OnGameLoadedLate 时 EnsureUnlockedState 补联系人。自检新增 apothecary 标志。
+## v1.7.1–v1.8.9 累计（2026-11-02）
+
+药剂师通话选项修复（我要预约/打错了）、预约夜报去重、冷却结束自定义提示、自检不再改动真实存档（含 amountSpent 快照还原）、旧预约/陈旧冷却迁移清理。
+药剂师库存三类：随机 2–3 原料盒、3–5 瓶 20mL 散装试剂、1–3 件随机品质成品药（七档概率 2/25/35/30/5/2/1）。
+原料盒 3×2 外观（mod 48×32 透明 PNG ×5，不同液体颜色），非违禁品；迁移强制 filled GridShapeBuilder(3,2).SetDataFill(1) 占 6 格并重新落位，
+修复 2×2→3×2 重叠；无法放下时 2×2 filled 回退并放回原背包。

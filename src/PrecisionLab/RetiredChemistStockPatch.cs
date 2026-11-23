@@ -1,0 +1,358 @@
+using System;
+using HarmonyLib;
+using UnityEngine;
+
+namespace PrecisionLab
+{
+    /// <summary>
+    /// The retired chemist is a vanilla supplier client (StoreClientListSpec.CreateRetiredChemist)
+    /// who puts a hard-coded stock list on the counter in his main dialogue's end action.
+    ///
+    /// Once the player has unlocked the Precision Liquid Extractor upgrade, the retired chemist
+    /// also offers a replacement extractor — but only if the player currently owns none (lost it),
+    /// so a player can never own more than one through him. The Wild Network upgrade itself still
+    /// delivers the first extractor.
+    /// </summary>
+    [HarmonyPatch(typeof(StoreClientListSpec), "CreateRetiredChemist")]
+    internal static class RetiredChemistExtractorPatch
+    {
+        private static void Postfix(StoreClient __result)
+        {
+            try
+            {
+                if (__result == null || __result.mainDialogue == null)
+                {
+                    return;
+                }
+                Dialogue dialogue = __result.mainDialogue;
+                Action original = dialogue.endAction;
+                dialogue.endAction = delegate
+                {
+                    if (original != null)
+                    {
+                        original();
+                    }
+                    RetiredChemistStock.TryAddExtractor();
+                    RetiredChemistStock.TryAddAdrenalineKit();
+                    RetiredChemistStock.TryAddNaloxoneKit();
+                    RetiredChemistStock.TryAddPillKits();
+                    RetiredChemistStock.TryAddSynaprestKit();
+                    RetiredChemistStock.TryAddImmunivaxStock();
+                    RetiredChemistStock.TryAddBlueBloodStock();
+                    RetiredChemistStock.TryAddOrdnanceStock();
+                    RetiredChemistStock.TryAddPerfumeStock();
+                    RetiredChemistStock.TryAddBioPharmaStock();
+                };
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist stock hook failed: " + e.Message);
+            }
+        }
+    }
+
+    internal static class RetiredChemistStock
+    {
+        private const string ExtractorUpgradeId = "PRECISION_LAB_EXTRACTOR";
+
+        internal static void TryAddExtractor()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || !IsExtractorUnlocked(store))
+                {
+                    return;
+                }
+                if (store.IsPlayerOwnThisItem(ItemIds.Extractor))
+                {
+                    // At most one extractor: only sell a replacement after the old one is lost.
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.Extractor);
+                Debug.Log("[PrecisionLab] retired chemist offers a replacement extractor");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist extractor stock failed: " + e);
+            }
+        }
+
+        private static bool IsExtractorUnlocked(PlayerStore store)
+        {
+            if (store.networkUpgrade == null)
+            {
+                return false;
+            }
+            NetworkUpgrade upgrade;
+            return store.networkUpgrade.TryGetValue(ExtractorUpgradeId, out upgrade)
+                && upgrade != null
+                && upgrade.IsUnlocked();
+        }
+
+        /// <summary>After the "更多药品" unlock the retired chemist sells adrenaline precursor kits.</summary>
+        internal static void TryAddAdrenalineKit()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.SupplyBox);
+                store.AddDirectSellingItemToTable(ItemIds.ResolvingRefill);
+                Debug.Log("[PrecisionLab] retired chemist offers an adrenaline precursor kit and a resolving agent refill");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist adrenaline kit stock failed: " + e);
+            }
+        }
+
+        /// <summary>After the "More Medicines" unlock the retired chemist also sells naloxone precursor kits.</summary>
+        internal static void TryAddNaloxoneKit()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.NaloxoneBox);
+                Debug.Log("[PrecisionLab] retired chemist offers a naloxone precursor kit");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist naloxone kit stock failed: " + e);
+            }
+        }
+
+        /// <summary>After the "More Medicines" unlock the retired chemist also sells the two pill precursor kits.</summary>
+        internal static void TryAddPillKits()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.BirthControlBox);
+                store.AddDirectSellingItemToTable(ItemIds.SannaiBox);
+                Debug.Log("[PrecisionLab] retired chemist offers birth control and sannai precursor kits");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist pill kit stock failed: " + e);
+            }
+        }
+
+        /// <summary>After the "More Medicines" unlock the retired chemist also sells Synaprest precursor kits.</summary>
+        internal static void TryAddSynaprestKit()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.SynaprestBox);
+                Debug.Log("[PrecisionLab] retired chemist offers a Synaprest precursor kit");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist synaprest kit stock failed: " + e);
+            }
+        }
+
+        /// <summary>After the "More Medicines" unlock the retired chemist also sells immune serum.</summary>
+        internal static void TryAddImmunivaxStock()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.ImmuneSerumBottle);
+                store.AddDirectSellingItemToTable(ItemIds.ImmunivaxBox);
+                Debug.Log("[PrecisionLab] retired chemist offers immune serum");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist immune serum stock failed: " + e);
+            }
+        }
+
+        /// <summary>After the "More Medicines" unlock the retired chemist also sells bio-gel matrix.</summary>
+        internal static void TryAddBlueBloodStock()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.BioGelBottle);
+                store.AddDirectSellingItemToTable(ItemIds.BlueBloodBox);
+                Debug.Log("[PrecisionLab] retired chemist offers bio-gel matrix and blue blood kit");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist bio-gel stock failed: " + e);
+            }
+        }
+
+        /// <summary>After the "More Medicines" unlock the retired chemist sells ordnance precursors.</summary>
+        internal static void TryAddOrdnanceStock()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.OxidizerBottle);
+                store.AddDirectSellingItemToTable(ItemIds.MetalPowderBottle);
+                store.AddDirectSellingItemToTable(ItemIds.NitratingAcidBottle);
+                store.AddDirectSellingItemToTable(ItemIds.OrdnanceBox);
+                Debug.Log("[PrecisionLab] retired chemist offers ordnance precursors");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist ordnance stock failed: " + e);
+            }
+        }
+
+        /// <summary>After the "More Medicines" unlock the retired chemist sells perfume precursors.</summary>
+        internal static void TryAddPerfumeStock()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null)
+                {
+                    return;
+                }
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null
+                    || !upgrade.IsUnlocked())
+                {
+                    return;
+                }
+                store.AddDirectSellingItemToTable(ItemIds.AromaticBottle);
+                store.AddDirectSellingItemToTable(ItemIds.CrudePheromoneBottle);
+                store.AddDirectSellingItemToTable(ItemIds.PerfumeBox);
+                Debug.Log("[PrecisionLab] retired chemist offers perfume precursors");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist perfume stock failed: " + e);
+            }
+        }
+
+        internal static void TryAddBioPharmaStock()
+        {
+            try
+            {
+                PlayerStore store = PlayerStore.Instance;
+                if (store == null || store.networkUpgrade == null) return;
+                NetworkUpgrade upgrade;
+                if (!store.networkUpgrade.TryGetValue("PRECISION_LAB_MEDS", out upgrade)
+                    || upgrade == null || !upgrade.IsUnlocked()) return;
+                store.AddDirectSellingItemToTable(ItemIds.PhageCultureBottle);
+                store.AddDirectSellingItemToTable(ItemIds.FungalExtractBottle);
+                store.AddDirectSellingItemToTable(ItemIds.StemCellBottle);
+                store.AddDirectSellingItemToTable(ItemIds.BioPharmaBox);
+                store.AddDirectSellingItemToTable(ItemIds.FirstAidShell);
+                store.AddDirectSellingItemToTable(ItemIds.FirstAidSeal);
+                store.AddDirectSellingItemToTable(FirstAidBox.CreateStockBox());
+                store.AddDirectSellingItemToTable("rubbing_alcohol");
+                store.AddDirectSellingItemToTable("modified_aloe_leaf");
+                store.AddDirectSellingItemToTable("medical_honey_bottle");
+                store.AddDirectSellingItemToTable("nightingale_aloe_seed");
+                store.AddDirectSellingItemToTable("nightingale_supply_box");
+                store.AddDirectSellingItemToTable("belladonna_seed");
+                store.AddDirectSellingItemToTable("belladonna_herb");
+                store.AddDirectSellingItemToTable("precision_centrifuge");
+                StockOverflow.Add("belladonna_supply_box");
+                StockOverflow.Add("antidepressant_supply_box");
+                StockOverflow.Add("amiodarone_supply_box");
+                StockOverflow.Add("vasopressin_supply_box");
+                StockOverflow.Add("vasodilator_supply_box");
+                StockOverflow.Add("coagulant_supply_box");
+                StockOverflow.Add("anticoagulant_supply_box");
+                store.AddDirectSellingItemToTable("animal_gland_powder");
+                store.AddDirectSellingItemToTable("aromatic_compound");
+                store.AddDirectSellingItemToTable("potassium_iodide_crystal");
+                Debug.Log("[PrecisionLab] retired chemist offers bio-pharma precursors");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] retired chemist bio-pharma stock failed: " + e);
+            }
+        }
+
+        /// <summary>True when the player currently owns no extractor (used by diagnostics).</summary>
+        internal static bool PlayerOwnsExtractor(PlayerStore store)
+        {
+            return store != null && store.IsPlayerOwnThisItem(ItemIds.Extractor);
+        }
+    }
+}

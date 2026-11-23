@@ -1,6 +1,6 @@
 # 精密实验室设备 / Precision Lab Equipment
 
-《深空当铺：可能是偷的》/ *Probably Stolen* 0.46D 的 mod。新增两件可获取、可正常使用的实验设备。
+《深空当铺：可能是偷的》/ *Probably Stolen* 0.46D 的 mod。新增 3 台可获取、可正常使用的实验设备、淀粉水解与肾上腺素生产线，以及可合成的简易止血带。
 
 ---
 
@@ -55,20 +55,161 @@
 
 ---
 
-## 获取方式
+### 3. 淀粉水解（新增化学反应） / Starch hydrolysis
 
+游戏原本无法处理淀粉。现在新增真实反应：
+
+```
+淀粉 --(酸催化, 40–60 °C)--> 糖
+```
+
+- 把含 **淀粉 + 酸** 的液体容器放在 **加热板** 上，把目标温度调到 40–60 °C 并保温；
+- 每秒会把一部分淀粉转化为等量糖（酸是催化剂、不消耗，总体积不变）；
+- 提示：加热板需要至少 2 个化学模块才能自由调节温度区间（0/1 个模块时固定 99/160 °C）。
+
+### 4. 微生物培养机 / Microbial Cultivator
+
+培养“吃糖”微生物的机器：机器窗口单行六格：电源｜模块｜液体容器｜**营养果**｜**菌群活性**｜便签。
+
+- 把含糖液体容器放进液体槽，把 **营养果**（小 / 正常 / 大 / 巨型）放进营养果槽；
+- 每夜机器会**压榨一个营养果成汁水**喂菌群（小 +15 / 正常 +25 / 大 +40 / 巨型 +60 活性），
+  然后分解糖：约 20% 的糖变成有机废物（其余被微生物消耗掉），总体积下降；
+- **低糖分 → 休眠**：容器里没有糖时菌群会进入休眠（活性掉到 0，面板显示“休眠 · 需要营养果”），
+  不再分解；重新放入营养果并补充糖即可唤醒；
+- **性能模块**：提高每夜糖分解量；**质量模块**：减少残留的有机废物（20% → 最低约 5%）；**效率模块**：降低耗电；
+- 菌群活性面板实时显示 `xx% · y mL/夜`，休眠时显示提示；
+- 耗电 8/周期，需要电池；机器右侧便签槽自带「微生物培养机说明」；
+- 解锁后杰克逊博士处也会供货（普通来访 +1、特殊库存夜 +2）。
+
+### 5. 肾上腺素注射笔生产线 / Adrenaline injection pen（“更多药品”解锁）
+
+黑网新增升级 **更多药品：肾上腺素**（1600 信用点）。解锁后：
+- 店内库存获得一本**《精密实验室配方手册》**（可翻阅，每页一份配方，六步流程）；
+- **退休化学家**开始出售「**肾上腺素原料盒**」（150 信用点，激活拆开得到 7 瓶试剂：邻苯二酚 3000 / N-羟甲基碱溶液 3000 / 脂合剂 3000 / 还原剂 3000 / 拆分剂 3000 / 碱液 1500 / 酸液 1500 µL），以及「**拆分剂补充装（2 × 20 毫升）**」（64 信用点，激活得到两瓶满瓶拆分剂，用于补充右旋废料回收循环的消耗）；
+- 化学制剂成型机（Chem Finisher）新增两个配方：**盐酸肾上腺素原料药**、**肾上腺素注射笔**；
+
+六步流程（中间体全部由反应自动生成，反应每秒按容器温度结算）：
+1. **胺化**（26–60 °C）：邻苯二酚 + N-羟甲基碱溶液 + 脂合剂 → 胺化中间体
+2. **还原**（60–80 °C）：胺化中间体 + 还原剂 → 消旋肾上腺素
+3. **拆分**（40–60 °C，酸催化）：消旋肾上腺素 + 拆分剂 + 酸 → 左旋肾上腺素盐 + **右旋废料**
+4. **成盐**（26–60 °C）：左旋盐 + 碱 → 游离碱；游离碱 + 酸 → 盐酸肾上腺素；
+   干燥后放入化学制剂成型机 → **盐酸肾上腺素原料药**（品质按有效成分比例分级）
+5. **配液**：原料药溶于等量水 → 肾上腺素药液（多余水用蒸发器除去）
+6. **灌装**：干燥药液放入化学制剂成型机 → **肾上腺素注射笔**（每支需要 5000 µL＝5 毫升药液；一盒原料可做 2 支）
+
+其他：
+- 提纯机器新增**废料输出位**：液体里的右旋废料会在周期结束时被收集成「右旋废料」物品；多批废料会累积在同一个废料瓶里；
+- **右旋废料回收**：把右旋废料溶回容器，加入还原剂并加热到 **60–80 °C**，会生成消旋肾上腺素，
+  可以回到第 3 步再次拆分——提高总收率（配方手册里也写了这条回收路线）；
+- 注射笔是**医疗物 + 奢侈品**（ITEM_MEDICAL_TAG / MEDICAL / LUXURY_ITEM 类型，单支价值 120，会吸引上层奢侈客户与展示台系统），战斗中使用：3 回合内命中 +20%、暴击率 +33%（蓝色自动注射笔外观）；
+- 注射笔/原料药也支持溶解回收（可重新溶入容器继续加工）。
+
+### 6. 简易止血带 / Makeshift Tourniquet（“更多药品”解锁，v1.3.0 新增）
+
+- 解锁“更多药品：肾上腺素”后，店内会额外收到一本**《精密实验室配方手册》**（每页一份配方：肾上腺素注射笔 / 简易止血带；以后新增药品只需加一页）：优先放在**前台柜台**（开门就能看到），柜台/库存放不下时自动改放其他店内位置，全满则次日再试（不会丢失）；发放时夜间报告也会提示；
+- 把**韧棉织物（kotton_fabric）拖到废金属（scrap_metal）或金属锭（metal_ingot）上**：消耗 1 份韧棉织物 + 1 块金属，合成 **1 条简易止血带**；
+- 未解锁“更多药品”前无法合成（拖拽不会出现目标提示）；完成后若目标库存放不下，会自动尝试其他店内库存；全部放满时会提示且**不消耗材料**；
+- 简易止血带是**医疗物**：受伤（伤势未稳定）时使用，稳定伤势并把伤势等级 -1，相当于一条止血绷带。
+  物品占 **2×2 格**，贴图为作者提供的止血带图（32×32 透明背景、保持比例不拉伸），基础价值 24；
+- **材料决定标签与价值**：
+  - 废金属做的：**破旧**（价值 -50%）
+  - 金属锭做的、纯度中等及以上：**极佳**（价值 +25%）
+  - 金属锭做的、纯度低于中等：**陈旧**（价值 -25%）
+
+### 7. 纳洛酮（纳洛通）生产线 / Naloxone（v1.4.0 新增）
+
+并入「更多药品」升级：解锁后**退休化学家**会出售「**纳洛酮原料盒**」（120 信用点），激活拆开得到一批原料：
+蒂巴因 20 毫升、**酸 3 瓶（共 60 毫升）**、还原剂 20 毫升、脂合剂 20 毫升、N-羟甲基碱溶液 20 毫升、酒精 20 毫升（**蒂巴因是唯一新增采购原料**）。
+
+5 步反应（中间体自动生成，按容器温度每秒结算）：
+1. **氧化还原**（40–60°C）：蒂巴因 + 酸 + 还原剂 + 脂合剂或酒精 → 还原中间体
+2. **水解**（80–100°C）：还原中间体 + 酸 + 水 → 水解中间体
+3. **N-烯丙基化**（50–80°C）：水解中间体 + N-羟甲基碱溶液 + 脂合剂或酒精 → 纳洛酮粗品
+4. **成盐**（26–60°C）：纳洛酮粗品 + 酸 + 水 → 盐酸纳洛酮（可用提纯机去杂质，再在化学制剂成型机压成盐酸纳洛酮原料药）
+5. **配液**（26–60°C）：盐酸纳洛酮原料药溶于等量水 → 纳洛酮药液（多余水用蒸发器除去，**禁止加酒精**）
+6. **灌装**：化学制剂成型机 → **纳洛通注射剂**（游戏原版医疗物）
+
+- 脂合剂作溶剂时会被消耗；**酒精是可回收溶剂**——留在液体里，用原版蒸发器即可回收。
+- 一盒原料可做 **4 支纳洛通注射剂**（20000 µL 盐酸纳洛酮 → 4 份原料药 × 5000）。
+- 配方写在《精密实验室配方手册》**第 3 页**。
+### 8. 避孕药 / 山奈德片生产线（v1.5.0 新增）
+
+并入「更多药品」升级，退休化学家新增两个原料盒（各 120 信用点）：
+
+**避孕药链（B1–B4）**
+1. **水解**（60–80°C）：甾体原料 + 酸 + 水 + 酒精 → 甾体水解物
+2. **还原修饰**（50–70°C）：甾体水解物 + 还原剂 + 脂合剂或酒精 → 甾体中间体
+3. **纯化**（26–60°C）：甾体中间体 → 避孕激素（用提纯机过一遍可提高品质）
+4. **压片**：干燥的避孕激素（5000 µL）在化学制剂成型机压成 **避孕药片**（原版医疗物）
+原料盒：甾体原料/酸/水/酒精/还原剂/脂合剂 各 20 毫升；一盒做 4 片。
+
+**山奈德片链（S1–S3，毒药）**
+1. **提取**（50–70°C）：山奈原料 + 约 2 倍酒精 → 山奈提取液；酒精可回收（蒸发器浓缩）
+2. **纯化成毒**（26–60°C）：山奈提取液 + 少量酸（催化）→ 山奈德（提纯机可选）
+3. **压片**：干燥原料药溶液（5000 µL）在化学制剂成型机压成 **山奈德片**（原版毒药）
+原料盒：山奈原料 20 毫升 + 酒精 2×20 毫升 + 酸 10 毫升；一盒做 4 片。
+
+说明：游戏里的化学制剂成型机只能处理液体，所以把「原料药 + 微量碱/水」的压片步骤合并成成型机的最终压制配方（碱/水计入压片过程）；中间体全部自动生成，不用采购。
+### 9. 赛纳普斯注射器生产线（v1.6.0 新增）
+
+并入「更多药品」升级；退休化学家新增 **赛纳普斯原料盒（500 信用点）**：神经受体配体 / 甾体原料 / 酸 / 水 / 还原剂 / 酒精 各 20 毫升。
+1. **结构修饰**（60–80°C）：神经受体配体 + 酸 + 水 → 活化配体
+2. **靶向合成**（50–70°C）：活化配体 + 甾体原料 + 还原剂 → 赛纳普斯粗品
+3. **高纯度提纯**（26–60°C）：粗品 + 酒精洗脱 → 赛纳普斯原料药溶液（提纯机可选）
+4. **压制注射器**：干燥原料药溶液（5000 微升）在化学制剂成型机 → **赛纳普斯注射器**
+
+效果：**随机清除一项成瘾**（药物/酒精/尼古丁/赌博，与原版赛纳普斯一致）。代价：
+- 使用后获得「快感缺失」3 天：**好运 -15**；
+- 连续使用 3 次形成「赛纳普斯依赖」，每天醒来有概率重新出现药物成瘾。
+一盒原料做 4 支，酒精可回收，甾体原料与避孕药线共用。配方在手册第 6 页。
+
+### 反应速度调整（v1.6.0）
+
+所有化学链的转化速度从每 tick 2% 提高到 **每 tick 20%**（最后 100 µL 一次收尾），
+一批 20000 微升的原料现在约 15–20 秒即可反应完，不再需要等十几分钟。
+### 10. 药剂师（v1.7.0 新增）
+
+新的黑网解锁项目「药剂师」（1800 信用点，电话预约制）：
+- 解锁后电话簿出现「药剂师」联系人；
+- 打电话预约 → 药剂师在**第二天开门时第一个到店**（顾客队伍第一位）；
+- 预约冷却 **3 天**；
+- 出售本 mod 新增的药剂与原料盒：肾上腺素注射笔、纳洛酮注射剂、避孕药片、山奈德片、赛纳普斯注射器、简易止血带，以及各生产线原料盒/拆分剂补充装；使用退休化学家的模型。
+
+### 11. 简易止血带调整（v1.7.0）
+
+- 基础价值从 24 提升到 **150**（材料条件仍按百分比修正：废金属 -50%、金属锭极佳 +25%、陈旧 -25%）；
+- **不再需要解锁「更多药品」**，开局即可用韧棉织物拖金属合成。
+
+### 12. 近期更新（v1.7.1 – v1.8.9）
+
+- 药剂师：电话选项「我要预约。」/「打错了。」；预约不再重复写夜报，冷却结束显示「药剂师已准备好更多药品。」；修复自检吞预约、过期冷却卡死、旧夜报残留。
+- 药剂师库存：随机 2–3 种原料盒 + 随机 3–5 瓶 20mL 散装试剂 + 随机 1–3 件成品药；成品药品质：实验室纯 2% / 制药级 25% / 接近制药级 35% / 街头 30% / 稀释 5% / 废品 2% / 淀粉 1%。
+- 原料盒：**3×2 格**管制化学品瓶架外观（透明底、五条药剂线不同液体颜色）、**非违禁品**；老存档自动迁移并重新落位，修复叠放/占位问题（实际占 6 格）。
+
+### 13. 免疫宁注射器生产线（v1.10.0 新增）
+
+新增采购物品：**免疫血清瓶（20 毫升，120 信用点）**，解锁「更多药品」后由退休化学家出售，也会出现在药剂师的散装试剂瓶池中。
+1. **冷酒精沉淀（26–40°C）**：免疫血清 ×2 + 酒精 ×2 → 免疫球蛋白悬浊液
+2. **精准温控浓缩**：26–40°C → 粗制免疫球蛋白液 + 回收酒精；**超过 40°C 蛋白质变性** → 变性蛋白废液（只能处理掉）
+3. **透析提纯（26–40°C）**：粗制免疫球蛋白液 + 等量水 → 免疫宁原料药溶液（提纯机不处理水，水只作缓冲液）
+4. **无菌灌装**：干燥的免疫宁原料药溶液 5000 微升在化学制剂成型机压成 **免疫宁注射器**（游戏原版 `large_purple_injector`）
+> I2 后酒精留在容器里：灌装前先用蒸发器把酒精蒸出回收，否则会稀释药液，注射器有效成分不足。`r`n> **灌装纯度**：≥99% 压出完整正品；低于 99% 也能压，但瓶体会随机出现鉴别问题（指示灯/序号/标签/颜色/瓶体裂纹），纯度越低问题越多（1–4 个）。
+## 获取方式
 1. **黑市/暗网（游戏内手机 → Wild Network）新增“精密实验室”页签**：
    - 精确取液器：1200 信用点
+   - 微生物培养机：1800 信用点
    - 提纯机器：2400 信用点
-   - 购买后物品直接进入**店内库存**。老存档也会自动出现这两件商品。
-2. **杰克逊博士（Dr. Jackson）**：解锁黑网的提纯机器后，他每次来访的柜台上会多出 1 台提纯机器（“特殊库存”夜晚为 2 台），可重复购买更多。
-3. **战利品**：低概率出现在医疗 / 废品战利品池中，可以随进货或拾取获得。
-3. **调试生成**（仅测试用）：游戏根目录放一个空的 `dev.txt` 后启动，F9 调试面板 → “Spawn” 分类里有两个生成按钮。
+   - 更多药品：肾上腺素（解锁肾上腺素注射笔生产线 + 配方手册：肾上腺素注射笔 / 简易止血带页）：1600 信用点
+   - 购买后物品直接进入**店内库存**。老存档也会自动出现这些商品。
+2. **杰克逊博士（Dr. Jackson）**：解锁对应机器后，他每次来访柜台上会多出 1 台（“特殊库存”夜晚为 2 台），可重复购买更多。
+3. **退休化学家**（来店里的供应商客人）：解锁取液器后，如果你当前**不拥有**取液器（丢了），他柜台会卖一把替补充；最多同时拥有一把。解锁“更多药品”后他开始出售肾上腺素原料盒。
+4. **战利品**：低概率出现在医疗 / 废品战利品池中，可以随进货或拾取获得。
+5. **调试生成**（仅测试用）：游戏根目录放一个空的 `dev.txt` 后启动，F9 调试面板 → “Spawn” 分类里有多个生成按钮（含原料盒/原料药/注射笔/右旋废料）。
 
 ## 安装 / 卸载
 
 - 安装：把整个 `PrecisionLab` 文件夹复制到
-  `<游戏安装目录>\Mods\`（例如 `<游戏安装目录>\Mods\PrecisionLab`），
+  `<游戏安装目录>\Mods\`（例如 `F:\SteamLibrary\steamapps\common\Probably Stolen\Mods\PrecisionLab`），
   然后启动游戏，在 **Mods 菜单**中启用并信任本 mod（游戏会显示一次确认）。
 - 卸载：从 `Mods` 文件夹删除 `PrecisionLab` 文件夹即可。已存在于存档中的本 mod 物品会变成
   普通无效物品（建议卸载前先卖掉/丢弃）。
@@ -79,14 +220,19 @@
 
 - 机器与原版机器一样在夜间结算时工作，白天可用涡轮增压器追加速度。
 - 精确取液器不会经过滤网（保证计量精确），如需过滤请使用原版过滤器后再计量。
+- 提纯机器只去除污染物，不会去除糖/淀粉/酒精等有效成分；糖请用微生物培养机处理，淀粉请先酸水解成糖。
 - 本 mod 的数值是为单机娱乐平衡的：取液器价格低、提纯机器价格约为原版净水器的 10 倍但功能更强。
 
 ---
 
 ## English quick reference
 
-**Precision Liquid Extractor** — handheld metering tool (10 mL tank). Drag onto a liquid container: empty → draws exactly N µL; filled → injects exactly N µL. N is shown in the tooltip; activate the item to cycle presets (1–10000 µL) or set the default in the mod options. 1 µL resolution, no loss, composition preserved.
+**Precision Liquid Extractor** — handheld metering tool (10 mL tank, 1 µL resolution). Double-click to open the metering window: exact number input, slider and presets; changes apply immediately. Direction modes: auto (empty draws / filled injects), force draw, force inject. Refuses when less than the requested volume is available. The first one comes with the Wild Network upgrade; the retired chemist sells a single replacement after you lose yours.
 
-**Purification Machine** — placeable machine with battery/module/container/note slots. Runs one cycle per night (or via turbo booster), removes physical (physical contaminant, microplastic, debris, mineral), chemical (chemical contaminant, heavy metal) and biological (microbe, organic waste) contamination from **any** liquid container (wine containers excluded), and never touches valuable ingredients. Accounting is automatic: water-only vessels are cleaned into water (volume unchanged), vessels with valuable liquids are concentrated by discarding the removed contamination (volume drops). Purity cap 99.00% base, up to 100.00% with quality modules. Uses 6 power per cycle.
+**Purification Machine** — placeable machine with battery/module/container/note slots. Runs one cycle per night (or via turbo booster), removes physical (physical contaminant, microplastic, debris, mineral), chemical (chemical contaminant, heavy metals) and biological (microbe, organic waste) contamination from any liquid container (wine containers excluded), never touches valuable ingredients. Water-only vessels are cleaned into water (volume unchanged); vessels with valuable liquids are concentrated (volume drops). Purity cap 99.00% base, higher with quality modules; live purity panel + instruction note in the machine window. Uses 6 power per cycle.
 
-**Obtaining** — Wild Network (in-game phone) → "Precision Lab" tab: extractor 1200 credits, purifier 2400 credits, delivered to your store inventory. Also low chance in medical/junk loot. Mod id: `precision_lab`.
+**Microbial Cultivator** — placeable machine that runs sugar-eating microbes. Six panels in one row: power | modules | liquid container | **nutrifruit** | culture | note. Put a sugary container in the liquid slot and nutrifruit (small/normal/large/huge) in the nutrient slot: each night the machine presses one fruit into juice (+15/+25/+40/+60 activity) and digests sugar into a little organic waste (about 20%, down to ~5% with quality modules). When the liquid runs out of sugar the culture goes **dormant** (activity 0, panel shows "Dormant · needs nutrifruit") and stops until fed nutrifruit and given more sugar. Performance modules digest more per night, efficiency modules cut power draw. Uses 8 power per cycle.
+
+**Starch hydrolysis** — new chemistry: starch in an acidic liquid hydrolyses into sugar at 40–60 °C. Heat the container on a heating plate (needs 2+ chem modules to reach the low temperature range). Acid is a catalyst and is not consumed.
+
+**Obtaining** — Wild Network (in-game phone) → "Precision Lab" tab: extractor 1200, cultivator 1800, purifier 2400 credits, delivered to your store inventory. Dr. Jackson stocks extra machines after the corresponding unlock (1 per regular visit, 2 during special stock nights). The retired chemist sells a replacement extractor only when you own none. Low chance in medical/junk loot. Mod id: `precision_lab`.

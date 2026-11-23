@@ -56,4 +56,503 @@ tooltip.purifier.modules,Module bonuses: performance +{0}% (more per cycle) / po
 ui.purifier.cap_label,Purity cap
 item.purifier.manual.name,Purification Machine Notes
 item.purifier.manual.flavor,Someone scribbled the important parts on a sticky note and taped it to the filter stack.
-item.purifier.manual.desc,"[Module effects]:\n- Efficiency: power draw\n- Performance: amount processed per night\n- Quality: purity cap (purity +x%, up to 100%)\n\nProvide power and a liquid container and the machine runs at night. Removes physical, chemical (including heavy metals) and biological contamination; valuable ingredients are kept."
+item.purifier.manual.desc,"[Module effects]:\n- Efficiency: power draw\n- Performance: amount processed per night\n- Quality: purity cap (purity +x%, up to 100%)\n\nProvide power and a liquid container and the machine runs at night. Removes physical, chemical (including heavy metals) and biological contamination; valuable ingredients are kept.\nWaste output: collects dextro waste from the liquid; several batches accumulate in the same waste bottle."
+item.cultivator.name,Microbial Cultivator
+item.cultivator.flavor,A sealed fermenter humming with something that eats sugar. Do not open the lid during a night shift.
+item.cultivator.desc,Cultures sugar-eating microbes in a sealed vat. Put a sugary liquid container in the liquid slot and nutrifruit (small / normal / large / huge) in the nutrient slot: the machine presses the fruit into juice that keeps the culture active, and each night the culture digests sugar into a little organic waste (the rest is burned off). When the liquid runs low on sugar the culture goes dormant until it is fed nutrifruit again. Performance modules digest more sugar per night, quality modules reduce the waste, efficiency modules reduce power draw.
+item.cultivator.manual.name,Microbial Cultivator Notes
+item.cultivator.manual.flavor,A lab note covered in coffee rings and a warning about not licking the culture.
+item.cultivator.manual.desc,"[Module effects]:\n- Efficiency: power draw\n- Performance: more sugar digested per night\n- Quality: less organic waste left behind\n\nPut a sugary liquid container in the liquid slot and nutrifruit (small / normal / large / huge) in the nutrient slot. Each night the machine presses one nutrifruit into juice to feed the culture (+15 / +25 / +40 / +60 activity) and digests sugar into a little organic waste. When the liquid runs out of sugar the culture goes dormant (activity 0) and stops until it is fed nutrifruit and given more sugar."
+machine.cultivator.module,Modules
+machine.cultivator.container,Liquid Container
+ui.cultivator.culture_label,Culture
+upgrade.cultivator.title,Microbial Cultivator
+upgrade.cultivator.desc,A bioreactor that cultures sugar-eating microbes. Keep it fed with nutrifruit (small / normal / large / huge) and insert a sugary liquid container; each night it presses one fruit into culture juice and digests sugar into a little organic waste. Without sugar the culture goes dormant. Delivered to your inventory.
+upgrade.cultivator.bought,Ordered. Check your store inventory.
+tooltip.cultivator.activity,Culture activity: {0}% (digests {1} mL sugar per night)
+tooltip.cultivator.rule,Eats sugar: the sugar is consumed and a little organic waste is left behind. Quality modules reduce the waste. Nutrifruit keeps the culture active; without sugar it goes dormant.
+tooltip.cultivator.processed,Sugar digested last night: {0:0.###} mL
+tooltip.cultivator.empty,Insert a liquid container with sugar into the machine. The culture runs every night as long as the battery has charge.
+tooltip.cultivator.nosugar,The container has no sugar: the culture is going dormant until it gets sugar again.
+tooltip.cultivator.container,Container sugar: {0} mL
+tooltip.hydrolysis.hint,Tip: starch in an acidic liquid hydrolyses into sugar at 40-60 °C (heating plate).
+tooltip.sugar.hint,Tip: the Microbial Cultivator eats sugar and leaves a little organic waste.
+tooltip.cultivator.dormant,Culture: DORMANT (0%) — add nutrifruit to wake it up and sugar to feed it.
+tooltip.cultivator.dormant_panel,Dormant · needs nutrifruit
+tooltip.cultivator.fruit,Nutrient slot: {0} (pressing it feeds the culture +{1}% activity)
+tooltip.cultivator.nofruit,Nutrient slot: empty (add nutrifruit to keep the culture active)
+machine.cultivator.nutrient,Nutrifruit
+liquid.catechol,Catechol
+liquid.hydroxymethyl_base,N-Hydroxymethyl Base Solution
+liquid.resolving_agent,Chiral Resolving Agent
+liquid.amination_intermediate,Amination Intermediate
+liquid.racemic_adrenaline,Racemic Adrenaline
+liquid.levo_adrenaline_salt,Levo-Adrenaline Salt
+liquid.dextro_waste,Dextro Waste
+liquid.adrenaline_freebase,Adrenaline Free Base
+liquid.adrenaline_hcl,Adrenaline HCl
+liquid.adrenaline_solution,Adrenaline Solution
+item.catechol_bottle.name,Catechol Reagent Bottle
+item.hydroxymethyl_bottle.name,N-Hydroxymethyl Base Solution Bottle
+item.lipobond_bottle.name,Lipobond Agent Bottle
+item.reducing_bottle.name,Reducing Agent Bottle
+item.resolving_bottle.name,Chiral Resolving Agent Bottle (20 mL)
+item.base_bottle.name,Base Reagent Bottle
+item.acid_bottle.name,Acid Reagent Bottle
+tooltip.reagent_bottle.desc,A full vial containing {0} mL of {1} (exactly one batch).
+item.adrenaline_box.name,Adrenaline Precursor Kit
+item.adrenaline_box.flavor,"A pharmacist's sealed reagent kit. The label is deliberately vague."
+item.adrenaline_box.desc,Activate to unpack: catechol N-hydroxymethyl base solution lipobond agent reducing agent chiral resolving agent base and acid. All intermediates are produced by the recipes themselves - only the starting reagents are supplied.
+item.adrenaline_api.name,Adrenaline HCl API
+item.adrenaline_api.flavor,Pharmaceutical-grade adrenaline hydrochloride. Handle with gloves and a steady hand.
+item.adrenaline_api.desc,Active pharmaceutical ingredient pressed by the Chem Finisher from 5000 uL of dry adrenaline HCl liquid. Quality is graded from the active fraction. Dissolve one API in an equal amount of water to prepare the solution for one injection pen.
+item.adrenaline_pen.name,Adrenaline Injection Pen
+item.adrenaline_pen.flavor,"A single-use auto-injector. The label says EPINEPHRINE in blue letters then a smaller warning nobody reads."
+item.adrenaline_pen.desc,A combat stim auto-injector: sharp short burst of accuracy and critical chance. Medical item and luxury item. Each pen is pressed from 5000 uL (5 mL) of adrenaline solution; quality is graded from the active fraction.
+item.dextro_waste.name,Dextro Waste
+item.dextro_waste.flavor,"The useless half of the resolution. Sticky bitter and best not handled bare-handed."
+item.dextro_waste.desc,Waste collected by the purification machine waste output slot when a liquid contains dextro waste from the chiral resolution step; several batches accumulate in the same waste bottle. Dissolve it back into a container, add reducing agent and heat to 60-80 C to racemise it back into racemic adrenaline (improves total yield).
+tooltip.adrenaline_box.contents,"Contains one batch of reagents: catechol N-hydroxymethyl base solution lipobond agent reducing agent resolving agent base and acid."
+tooltip.adrenaline_box.hint,Activate to unpack. Follow the adrenaline injection pen recipe note (granted by the More Medicines unlock) for the six production steps.
+tooltip.adrenaline_api.purity,Active ingredient purity: {0:0.#}%
+tooltip.adrenaline_api.hint,Dissolve the API in an equal amount of water then press the dry solution in the Chem Finisher to fill an injection pen.
+tooltip.adrenaline_pen.effect,"Combat stim: +20% accuracy and +33% critical chance for 3 turns."
+tooltip.adrenaline_pen.tag,Medical item / luxury item - single use, usable in combat.
+tooltip.dextro_waste.hint,Waste from the chiral resolution step. The purifier waste output slot collects it; dissolve it back into a container + reducing agent at 60-80 C to recycle it into racemic adrenaline.
+upgrade.meds.title,More Medicines: Adrenaline
+upgrade.meds.desc,Unlocks the adrenaline injection pen production line plus two recipe notes (adrenaline pen + makeshift tourniquet), and makes the retired chemist sell adrenaline precursor kits.
+upgrade.meds.bought,Ordered. Check your store inventory for the recipe note.
+machine.purifier.waste,Waste Output
+tooltip.purifier.dextro,"Contains {0} mL dextro waste: the waste output slot collects it as a waste item during the cycle."
+tooltip.purifier.waste_full,Waste output slot is occupied - empty it to collect more dextro waste.
+item.adrenaline_recipe.name,Adrenaline Injection Pen Recipe
+item.adrenaline_recipe.title,Adrenaline Injection Pen
+item.adrenaline_recipe.sign,Li Beven
+item.adrenaline_recipe.body,"ADRENALINE INJECTION PEN - six steps.\n\nSTEP 1 Amination (26-60 C): catechol + N-hydroxymethyl base solution + lipobond agent gives amination intermediate\nSTEP 2 Reduction (60-80 C): amination intermediate + reducing agent gives racemic adrenaline\nSTEP 3 Resolution (40-60 C acid catalyst): racemic adrenaline + resolving agent + acid gives levo-adrenaline salt + dextro waste. Remove the waste with the purifier waste slot.\nSTEP 4 Salt formation (26-60 C): levo salt + base gives free base; free base + acid gives adrenaline HCl. Evaporate water then press the dry liquid in the Chem Finisher to get the API\nSTEP 5 Solution: dissolve the API in an equal amount of water gives adrenaline solution (evaporate excess water)\nSTEP 6 Filling: press the dry adrenaline solution in the Chem Finisher gives the injection pen\n\nPer precursor kit: catechol 20000 / base sol 20000 / lipobond 20000 / reducing 20000 / resolving 20000 / base 10000 / acid 10000 uL. Stir and heat each step. Each reagent vial is full and holds exactly one batch, so pour in the listed ratios. One injection pen needs 5000 uL (5 mL) of solution; one kit yields two pens.\n\nRECYCLING: dissolve the dextro waste back into a container, add reducing agent and heat to 60-80 C so it racemises into racemic adrenaline, which can be resolved again in step 3."
+tooltip.purifier.turbo,Turbo boost: drag a turbo booster (advanced / hypertech) onto this machine while the booster is READY to run one extra cycle.
+tooltip.cultivator.turbo,Turbo boost: drag a turbo booster (advanced / hypertech) onto this machine while the booster is READY to run one extra cycle.
+item.makeshift_tourniquet.name,Makeshift Tourniquet
+item.makeshift_tourniquet.desc,A strip of tough cotton fabric with a scrap-metal (or metal-ingot) buckle. Medical item: use it while wounded to stabilise the wound and lower the wound level by one (like a hemostatic bandage). Material decides condition/value: scrap=Worn(-50%); ingot fair purity or better=Excellent(+25%); below fair=Aged(-25%).
+item.tourniquet_recipe.name,Makeshift Tourniquet Recipe
+item.tourniquet_recipe.title,Makeshift Tourniquet
+item.tourniquet_recipe.body,"Makeshift Tourniquet - emergency medical recipe (available from the start, no unlock required).\n\nDrag tough cotton fabric (kotton_fabric) onto scrap metal (scrap_metal) or a metal ingot: consumes 1 fabric + 1 metal and crafts 1 makeshift tourniquet (base value 150).\n\nMaterial condition: scrap metal -50%, metal ingot fair or better +25%, metal ingot below fair -25%.\n\nUse while wounded to stabilise the wound and lower the wound level by one."
+tooltip.tourniquet.hint,"Makeshift tourniquet: drag tough cotton fabric onto scrap metal or a metal ingot (available from the start)."
+mech.tourniquet.no_space,No room to place the crafted makeshift tourniquet: the fabric and metal were NOT consumed. Free up a 2x2 spot and try again.
+mech.tourniquet.note_delivered,A "Makeshift Tourniquet Recipe" note was added to your store inventory.
+condition.tourniquet.worn,Worn
+condition.tourniquet.aged,Aged
+condition.tourniquet.excellent,Excellent
+tooltip.tourniquet.condition,Condition: {0} ({2}{1}% value)
+item.resolving_bottle.flavor,A resolving-agent refill kept behind the retired chemist counter for people who keep recycling their dextro waste.
+item.resolving_refill.name,Resolving Agent Refill Pack (2 × 20 mL)
+item.resolving_refill.desc,A sealed refill pack containing two full 20 mL vials of chiral resolving agent. Activate it to unpack both vials; useful when recycling dextro waste back into racemic adrenaline.
+item.resolving_refill.flavor,The retired chemist keeps a crate of these behind the counter for people who keep recycling their dextro waste.
+mech.resolving_refill.no_space,No room to unpack both resolving agent vials; the refill pack was not used and nothing was lost.
+item.recipe_book.name,Precision Lab Recipe Book
+item.recipe_book.desc,A collection of Precision Lab recipes: one page per recipe (adrenaline pen, makeshift tourniquet, ...). Future medicines only add pages. Activate to read.
+mech.recipe_book.delivered,A Precision Lab recipe book was added to your store (front counter first).
+liquid.thebaine,Thebaine
+liquid.naloxone_reduction_intermediate,Naloxone Reduction Intermediate
+liquid.naloxone_hydrolysis_intermediate,Naloxone Hydrolysis Intermediate
+liquid.naloxone_crude,Naloxone Crude
+liquid.naloxone_hcl,Naloxone HCl
+liquid.naloxone_solution,Naloxone Solution
+item.naloxone_box.name,Naloxone Precursor Kit
+item.naloxone_box.desc,Activate to unpack one naloxone batch: thebaine 20 mL, acid 3 bottles (60 mL total), reducing agent 20 mL, lipobond agent 20 mL, N-hydroxymethyl base solution 20 mL and alcohol 20 mL. Thebaine is the only ingredient you cannot obtain elsewhere.
+item.naloxone_box.flavor,A sealed kit from the retired chemist; the label only lists half of the reagents.
+item.naloxone_api.name,Naloxone HCl API
+item.naloxone_api.desc,Active pharmaceutical ingredient pressed by the Chem Finisher from 5000 uL of dry naloxone HCl liquid. Dissolve one API in an equal amount of water to prepare the solution for one Naloxgone injector.
+item.naloxone_api.flavor,The opioid antidote, pressed into a dry pellet. Do not confuse it with the party drugs.
+item.naloxone_injector.name,Naloxgone Injector
+item.thebaine_bottle.name,Thebaine Reagent Bottle (20 mL)
+item.alcohol_bottle.name,Alcohol Reagent Bottle (20 mL)
+liquid.steroid_raw,Steroid Raw Material
+liquid.steroid_hydrolysate,Steroid Hydrolysate
+liquid.steroid_intermediate,Steroid Intermediate
+liquid.contraceptive_api,Contraceptive API Solution
+liquid.sannai_raw,Sannai Raw Material
+liquid.sannai_extract,Sannai Extract
+liquid.sannai_api,Sannai API Solution
+item.birth_control_box.name,Birth Control Precursor Kit
+item.birth_control_box.desc,Activate to unpack one contraceptive batch: steroid raw material, acid, water, alcohol, reducing agent and lipobond agent (20 mL each).
+item.birth_control_box.flavor,A sealed precursor kit for the contraceptive line.
+item.sannai_box.name,Sannai Precursor Kit
+item.sannai_box.desc,Activate to unpack one Sannai batch: Sannai raw material (20 mL), alcohol (2 x 20 mL) and a small acid bottle (10 mL).
+item.sannai_box.flavor,A sealed precursor kit for the Sannai line. Handle with gloves.
+item.steroid_bottle.name,Steroid Raw Material Bottle (20 mL)
+item.sannai_bottle.name,Sannai Raw Material Bottle (20 mL)
+item.water_bottle.name,Water (20 mL)
+item.birth_control_pill.recipe_name,Birth Control Pill
+item.sannai_pill.recipe_name,Zyanide Pill (Sannai)
+liquid.neural_ligand,Neural Receptor Ligand
+liquid.activated_ligand,Activated Ligand
+liquid.synaprest_crude,Synaprest Crude
+liquid.synaprest_api,Synaprest API Solution
+item.synaprest_box.name,Synaprest Precursor Kit
+item.synaprest_box.desc,Activate to unpack one Synaprest batch: neural receptor ligand, steroid raw material, acid, water, reducing agent and alcohol (20 mL each).
+item.synaprest_box.flavor,A sealed high-value precursor kit. The label reads: suppress the reward, suppress yourself.
+item.neural_ligand_bottle.name,Neural Receptor Ligand Bottle (20 mL)
+item.synaprest_injector.name,Synaprest Injector
+item.synaprest_injector.desc,Next-generation addiction treatment: clears one random drug/alcohol/nicotine/gambling addiction (same as the vanilla Synaprest). The price is suppressed reward circuitry - anhedonia for 3 days (Luck -15), and dependency after 3 uses.
+item.synaprest_injector.flavor,A next-generation therapy for drug addiction that suppresses the brains reward mechanism, easing withdrawal and supporting long-term recovery.
+perk.synaprest_anhedonia.name,Anhedonia / 快感缺失
+perk.synaprest_anhedonia.desc,Synaprest suppressed the reward system: Luck -15 for 3 days.
+perk.synaprest_dependency.name,Synaprest Dependency
+perk.synaprest_dependency.desc,Mild dependency after more than 3 consecutive uses; each morning may bring back narcotic addiction.
+perk.synaprest_use_count.name,Synaprest Uses
+perk.synaprest_use_count.desc,Total Synaprest uses; reaching 3 forms a dependency.
+mech.synaprest.use,Synaprest injector: cleared {0} random addiction(s) (vanilla behaviour), but the reward system is suppressed (anhedonia for 3 days, Luck -15).
+mech.synaprest.anhedonia_over,The Synaprest effect fades: anhedonia ends.
+mech.synaprest.craving,Synaprest dependency kicks in: the craving returns (gained narcotic addiction).
+network.PRECISION_APOTHECARY.title,Apothecary
+network.PRECISION_APOTHECARY.desc,Unlocks the Apothecary phone contact. Call to book an appointment: the Apothecary arrives first thing next day and sells this mod's new medicines and precursor kits. 3-day booking cooldown.
+client.apothecary.name,Apothecary
+dialog.apothecary.generic_1,Everything is on the counter: precursor kits, loose reagent bottles, and a few finished medicines of varying quality. Take your pick.
+phone.apothecary.regular,This is the Apothecary. Do you need a house call? I carry more than the retired chemist, but by appointment only.
+phone.apothecary.book,Book a visit (3-day cooldown)
+phone.apothecary.cancel_choice,Maybe later
+phone.apothecary.confirmed,Fine. I will be the first one at your door tomorrow morning. Have the credits ready.
+phone.apothecary.cancel,Sure, call me when you make up your mind.
+phone.apothecary.cooldown,I cannot make house calls right now. Try again in {0} day(s).
+mech.apothecary.unlocked,New phone contact "Apothecary": call to book, first customer next day (3-day cooldown).
+mech.apothecary.booked,Apothecary booked: first through the door today.
+mech.apothecary.arrived,The Apothecary arrived first today and is waiting at the counter.
+phone.apothecary.book_line,I want to book a visit.
+phone.apothecary.cancel_line,Wrong number.
+mech.apothecary.ready,The Apothecary is ready with more medicines.
+item.apothecary.loose_bottle.name,{0} · 20 mL
+mech.chem.purity_too_low,Purity too low: main ingredient is {0:F1}%; requires >=99% to press. Remove the impurities first.
+liquid.immune_serum,Immune Serum
+liquid.immunoglobulin_suspension,Immunoglobulin Suspension
+liquid.crude_immunoglobulin,Crude Immunoglobulin
+liquid.immunoglobulin_api,Immunivax API Solution
+liquid.denatured_waste,Denatured Protein Waste
+item.immune_serum_bottle.name,Immune Serum Bottle (20 mL)
+item.immune_serum_bottle.desc,A full 20 mL vial of immune serum, the starting material for the Immunivax chain. Purchased directly from the retired chemist.
+item.immune_serum_bottle.flavor,Keep cold. Do not shake.
+item.immunivax_injector.recipe_name,Immunivax Injector
+liquid.bio_gel_base,Bio-Gel Matrix
+liquid.acidic_gel,Acidic Gel
+liquid.crude_blue_gel,Crude Blue Gel
+liquid.medical_blue_gel,Medical-Grade Blue Gel
+liquid.denatured_blue_gel_waste,Denatured Gel Waste
+item.bio_gel_bottle.name,Bio-Gel Matrix Bottle (20 mL)
+item.bio_gel_bottle.desc,A full 20 mL vial of bio-gel matrix, the starting material for the Blue Blood chain. Purchased from the retired chemist; handle at room temperature.
+item.bio_gel_bottle.flavor,Not blood. Do not let the customers read the label.
+item.blue_blood.recipe_name,Blue Blood
+item.blue_blood_box.name,Blue Blood Precursor Kit
+item.blue_blood_box.desc,Activate to unpack exactly one Blue Blood batch: bio-gel matrix 20 mL, water 10 mL, trace acid 50 uL, reducing agent 10 mL, lipobond agent 10 mL.
+item.blue_blood_box.flavor,The label simply says "bio-gel material".
+liquid.oxidizer,Oxidizer
+liquid.metal_powder,Metal Powder
+liquid.nitrating_acid,Nitrating Acid
+liquid.flash_powder,Flash Composition
+liquid.smoke_composition,Smoke Composition
+liquid.nitro_base,Nitro Base
+liquid.plastic_putty,Plastic Explosive Putty
+liquid.ordnance_waste,Burnt Ordnance Waste
+item.oxidizer_bottle.name,Oxidizer Bottle (20 mL)
+item.oxidizer_bottle.desc,A 20 mL bottle of oxidizer used by flash and smoke compositions.
+item.metal_powder_bottle.name,Metal Powder Bottle (20 mL)
+item.metal_powder_bottle.desc,A 20 mL suspension of finely divided metal powder for flash compositions.
+item.nitrating_acid_bottle.name,Nitrating Acid Bottle (20 mL)
+item.nitrating_acid_bottle.desc,A 20 mL bottle of nitrating acid. Keep below 40 C or the batch runs away.
+item.flashbang_chip.name,3D Printer Chip: Flashbang Shell
+item.flashbang_chip.desc,Item ID: printer_chip_flashbang_shell. Put it in a 3D printer to print an empty flashbang shell.
+item.smoke_chip.name,3D Printer Chip: Smoke Grenade Shell
+item.smoke_chip.desc,Item ID: printer_chip_smoke_shell. Put it in a 3D printer to print an empty smoke grenade shell.
+item.charge_chip.name,3D Printer Chip: Explosive Charge Shell
+item.charge_chip.desc,Item ID: printer_chip_explosive_shell. Put it in a 3D printer to print an empty explosive charge shell.
+item.flashbang_shell.name,Empty Flashbang Shell
+item.flashbang_shell.desc,An empty printed flashbang shell. Drag a flash filling onto it to finish the grenade.
+item.smoke_shell.name,Empty Smoke Grenade Shell
+item.smoke_shell.desc,An empty printed smoke grenade shell. Drag a smoke filling onto it to finish the grenade.
+item.charge_shell.name,Empty Explosive Charge Shell
+item.charge_shell.desc,An empty printed explosive charge shell. Drag an explosive filling onto it to finish the charge.
+item.flash_filling.name,Flash Filling
+item.flash_filling.desc,The active filling for a printed flashbang shell. Drag it onto the shell.
+item.smoke_filling.name,Smoke Filling
+item.smoke_filling.desc,The active filling for a printed smoke grenade shell. Drag it onto the shell.
+item.explosive_filling.name,Plastic Explosive Filling
+item.explosive_filling.desc,The active filling for a printed explosive charge shell. Drag it onto the shell.
+item.flash_filling.recipe_name,Flash Filling
+item.smoke_filling.recipe_name,Smoke Filling
+item.explosive_filling.recipe_name,Plastic Explosive Filling
+item.plastic_explosive.name,Plastic Explosive Charge
+item.plastic_explosive.desc,A military-grade plastic explosive charge, moulded around a detonator. Plant it on a target and get clear.
+item.plastic_explosive.flavor,No serial number. No manufacturer. Just enough putty to ruin someone's day.
+item.immunivax_box.name,Immunivax Precursor Kit
+item.immunivax_box.desc,Activate to unpack one Immunivax batch: immune serum 20 mL x2, alcohol 20 mL x2, water 10 mL.
+item.immunivax_box.flavor,Keep cold. Do not ask what is in it.
+item.ordnance_box.name,Ordnance Precursor Kit
+item.ordnance_box.desc,Activate to unpack ordnance materials: oxidizer 20 mL x2, metal powder 20 mL, nitrating acid 20 mL, sugar 20 mL, alcohol 20 mL, lipobond 20 mL x2, stabilizing agent 20 mL.
+item.ordnance_box.flavor,High contraband. No army will admit this crate exists.
+item.mystery_med_box.name,Sealed Reagent Crate
+item.mystery_med_box.desc,A sealed reagent crate. Contents are locked before purchase; after buying it, double-click to open and get 5-10 random raw reagent bottles for the production lines.
+item.mystery_med_box.flavor,Manifest says: assorted laboratory reagents. The seal says: no refunds.
+item.sugar_bottle.name,Sugar Bottle (20 mL)
+item.sugar_bottle.desc,A 20 mL bottle of sugar used in smoke composition.
+item.stabilizing_bottle.name,Stabilizing Agent Bottle (20 mL)
+item.stabilizing_bottle.desc,A 20 mL bottle of stabilizing agent used in plastic explosive putty.
+mech.ordnance.wrong_composition,Wrong composition: this filling does not match the shell; assembly refused.
+mech.chem.output_space,Output grid full: clear the Chem Finisher output first; the input will not be consumed.
+liquid.aromatic_extract,Aromatic Extract
+liquid.activated_fragrance,Activated Fragrance
+liquid.neuro_concentrate,Neuroactive Concentrate
+liquid.crude_pheromone,Crude Pheromone
+liquid.purified_pheromone,Purified Pheromone
+liquid.pheromone_concentrate,Pheromone Concentrate
+liquid.pheromone_waste,Denatured Pheromone Waste
+item.aromatic_bottle.name,Aromatic Extract Bottle (20 mL)
+item.aromatic_bottle.desc,A 20 mL bottle of aromatic extract / plant oil, the starting material for neuroactive perfume.
+item.crude_pheromone_bottle.name,Crude Pheromone Bottle (20 mL)
+item.crude_pheromone_bottle.desc,A 20 mL bottle of black-market crude pheromone. Extremely heat-sensitive.
+item.perfume_box.name,Perfume Precursor Kit
+item.perfume_box.desc,Contraband. Unpacks aromatic extract, crude pheromone, water, acid, alcohol x2, N-hydroxymethyl base and lipobond agent.
+item.perfume_box.flavor,Contraband: contains pheromone. Half fragrance, half trouble.
+item.neuroactive_perfume.recipe_name,Neuroactive Perfume "Sync"
+item.pheromone_perfume.recipe_name,Pheromone Perfume "Origin"
+liquid.pheromone_byproduct,Pheromone Byproduct
+liquid.phage_culture,Bacteriophage Culture
+liquid.fungal_extract,Fungal Extract
+liquid.symbiotic_culture,Symbiotic Culture
+liquid.pure_antibiotic_api,Pure Antibiotic Powder Suspension
+liquid.stem_cell,Stem Cell Stock
+liquid.active_cell_suspension,Active Cell Suspension
+liquid.essence_concentrate,Eternal Essence Concentrate
+liquid.dead_cell_waste,Dead Cell Waste
+item.phage_culture_bottle.name,Bacteriophage Culture Bottle (20 mL)
+item.phage_culture_bottle.desc,A 20 mL bottle of bacteriophage culture, the starting material for phagimycin.
+item.fungal_extract_bottle.name,Fungal Extract Bottle (20 mL)
+item.fungal_extract_bottle.desc,A 20 mL bottle of fungal extract for symbiotic culture.
+item.stem_cell_bottle.name,Stem Cell Stock Bottle (20 mL)
+item.stem_cell_bottle.desc,A 20 mL bottle of stem cell stock; keep cold.
+item.phagimycin.recipe_name,Phagimycin Pill
+item.eternal.recipe_name,Eternal Revitalizing Essence
+phone.wilde.name,Joe Wilde
+phone.wilde.intro,Joe Wilde. Want a legal phagimycin licence? 800 credits, one-time.
+phone.wilde.buy,I want to do this legally.
+phone.wilde.cancel_line,Wrong number.
+phone.wilde.bought,Paperwork done, licence active. Do not make me regret this.
+phone.wilde.cancel,Call me when you decide.
+phone.wilde.already,You already hold the licence.
+phone.wilde.no_cash,Not enough cash: the licence costs 800 credits.
+phone.wilde.log,You obtained the phagimycin manufacturing licence from Joe Wilde.
+perk.phagimycin_license.name,Phagimycin Manufacturing Licence
+perk.phagimycin_license.desc,Allows legal production of phagimycin pills; permanent passive.
+item.biopharma_box.name,Bio-Pharma Precursor Kit
+item.biopharma_box.desc,Unpacks bio-pharma materials: bacteriophage culture 20 mL, fungal extract 20 mL, water 20 mL x2, stem cell stock 20 mL x2, alcohol 20 mL, lipobond 20 mL.
+item.biopharma_box.flavor,Ship cold. Some of it is alive; some of it is not.
+phone.wilde.not_enough,Come back when you have 800 credits. Do not waste my time.
+item.first_aid_box.name,Star Quilers Med First Aid Box
+item.first_aid_box.desc,A standard 3x3 first aid box. Contents: adrenaline pen, tourniquet, Immunivax, Naloxone injector, rubbing alcohol, blood bag. Double-click to dismantle; medical alcohol is sold by the apothecary/retired chemist.
+item.first_aid_box.flavor,Star Quilers Med: frontline first aid standard.
+item.first_aid_box.fake_flavor,The packaging looks close, but something is off.
+item.first_aid_shell.name,First Aid Box Shell (Empty)
+item.first_aid_shell.desc,Empty 3x3 first aid box shell. Put medicine inside, then drag a seal sticker onto it.
+item.first_aid_shell.flavor,Without a seal sticker it is just a tin box.
+item.first_aid_seal.name,First Aid Box Seal Sticker
+item.first_aid_seal.desc,Hand-applied seal. Drag the seal onto a filled first aid shell to seal it; consumes the sticker, complete/advanced +10% premium, incomplete 90%, dismantle returns only the empty shell.
+item.first_aid_seal.flavor,The original manufacturer will not acknowledge this.
+item.first_aid_box.manual_name,First Aid Box (Hand-Sealed)
+item.first_aid_box.advanced_name,Advanced First Aid Box
+item.first_aid_box.incomplete_desc,Hand-sealed first aid box: incomplete. Value is 90% of the contents.
+item.first_aid_box.manual_desc,Hand-sealed first aid box. Double-click to dismantle and sell the contents.
+ui.first_aid.title,First Aid Box Inspection
+ui.first_aid.item,Item: 
+ui.first_aid.serial,Serial: 
+ui.first_aid.serial_ok,(7 digits: 3-digit batch + 4-digit serial)
+ui.first_aid.serial_bad,(invalid serial format)
+ui.first_aid.red_cross,Red cross: 
+ui.first_aid.sticker,Package sticker: 
+ui.first_aid.brand,Brand text Star Quilers Med: 
+ui.first_aid.yes,matches
+ui.first_aid.no,does not match
+ui.first_aid.contents,Contents: 
+ui.first_aid.advanced,Advanced (blue blood): 
+ui.first_aid.value,Value: 
+ui.first_aid.credits, credits
+ui.first_aid.genuine,Verdict: GENUINE. Packaging, serial, red cross and sticker all match.
+ui.first_aid.fake,Verdict: COUNTERFEIT. At least one authenticity feature does not match; only worth the fake price.
+ui.first_aid.manual,Hand-sealed: not an original Star Quiler product; authenticity cannot be verified.
+ui.first_aid.manual_incomplete,Hand-sealed and incomplete: not an original Star Quiler product; authenticity cannot be verified.
+ui.first_aid.close,Close
+ui.first_aid.error,Inspection failed, try again.
+ui.first_aid.verify_hint,All four authenticity features must match for a genuine box.
+ui.first_aid.tier_category,First Aid Box Tier
+ui.first_aid.tier_first_aid_incomplete,Incomplete
+ui.first_aid.tier_first_aid_complete,Complete
+ui.first_aid.tier_first_aid_advanced,Advanced
+ui.first_aid.tier_name_incomplete,Incomplete
+ui.first_aid.tier_name_complete,Complete
+ui.first_aid.tier_name_advanced,Advanced
+ui.first_aid.question,Why does this feel the wrong weight...?
+ui.first_aid.question_report,The customer opens it: label "{0}", actual "{1}".
+ui.first_aid.question_ok,It matches the label; they pay 10% extra.
+ui.first_aid.question_bad,It does not match; price -15% and faction reputation drops.
+item.modified_aloe_leaf.name,Modified Aloe Leaf
+item.modified_aloe_leaf.desc,A thick leaf from modified aloe. Buy or grow it; blend/dissolve it into aloe pulp for Nightingale's Salve.
+item.medical_honey_bottle.name,Medical Honey Bottle (20 mL)
+item.medical_honey_bottle.desc,A 20 mL bottle of medical-grade honey for room-temperature emulsification.
+item.nightingale_aloe_seed.name,Aloe Seed
+item.nightingale_aloe_seed.desc,Modified aloe seed for the vanilla hydroponic machine; Kotton-like growth, edible, harvests modified aloe leaves.
+plant.nightingale_aloe.name,Nightingale Aloe
+liquid.aloe_pulp,Aloe Paste
+liquid.aloe_extract,High-purity Aloe Extract
+liquid.medical_honey,Medical-grade Honey
+liquid.ointment_base,Active Ointment Base
+liquid.purified_ointment_base,Purified Ointment Base
+liquid.ointment_waste,Denatured Ointment Waste
+item.nightingale_salve.name,Nightingale's Salve
+ui.nightingale.need,Nightingale's Salve needs 5000 uL purified ointment base + a trace of base.
+item.nightingale_box.name,Nightingale Supply Kit
+item.nightingale_box.desc,Unpacks modified aloe leaves x2, medical honey, aloe seed, alcohol and stem cell stock.
+item.nightingale_box.flavor,From leaf to salve: all it needs is patience and a blender.
+plant_trait.aloe_paste.name,Aloe Paste Production
+plant_trait.aloe_paste.desc,Harvested produce contains pure modified aloe paste.
+plant_trait.aloe_paste.effect,Adds pure aloe paste inside each harvested item (rank50 ≈2 mL, max 3 mL per item; does not affect fillerweed count).
+corpo_name_xingquan,Xingquan Medical
+item.belladonna_seed.name,Belladonna Seed
+item.belladonna_seed.desc,Plantable in the vanilla hydroponic machine; Kotton-like growth, harvests belladonna herb, inherits genes.
+item.belladonna_herb.name,Belladonna Herb
+item.belladonna_herb.desc,Dried belladonna leaves; blend/dissolve into belladonna extract.
+item.belladonna_injector.name,Belladonna Injector
+item.belladonna_injector.desc,Intermediate-contraband medical item. Belladonna alkaloid injector; poison and medicine in one. Trade/medical collectible only — no combat effects.
+item.belladonna_injector.flavor,Xingquan Medical black ampoule. The dose decides medicine or poison.
+plant.belladonna.name,Belladonna
+liquid.belladonna_extract,Belladonna Herb Extract
+liquid.belladonna_crude,Crude Belladonna Extract
+liquid.belladonna_acidic,Acidic Belladonna Solution
+liquid.belladonna_alkaloid,Belladonna Alkaloid Precipitate
+liquid.belladonna_pure,High-purity Belladonna Alkaloid
+liquid.belladonna_waste,Belladonna Waste
+item.animal_gland_powder.name,Animal Gland Powder
+item.animal_gland_powder.desc,Dried animal gland powder; dissolve/blend into gland extract.
+item.aromatic_compound.name,Aromatic Compound
+item.aromatic_compound.desc,Aromatic feedstock for antidepressant and amiodarone precursors.
+item.potassium_iodide_crystal.name,Potassium Iodide Crystal
+item.potassium_iodide_crystal.desc,Potassium iodide crystals for iodination and anticoagulant filling.
+item.antidepressant_pill.name,Antidepressant Pill
+item.antidepressant_pill.desc,High-level contraband. Xingquan Medical antidepressant; trade/medical collectible only. Long-term use may cause dependence.
+item.amiodarone_pill.name,Amiodarone Pill
+item.amiodarone_pill.desc,Xingquan Medical amiodarone tablet, cardiovascular medicine; trade/medical collectible only.
+item.vasopressin_injector.name,Vasopressin Injector
+item.vasopressin_injector.desc,Xingquan Medical vasopressin injector for pressure support and hemostasis; trade/medical collectible only.
+item.vasodilator_injector.name,Vasodilator Injector
+item.vasodilator_injector.desc,Xingquan Medical vasodilator injector; trade/medical collectible only.
+item.coagulant_dressing.name,Coagulant Bottle
+item.coagulant_dressing.desc,Xingquan Medical coagulant vial/ampoule for rapid clotting; trade/medical collectible only.
+item.anticoagulant_injector.name,Anticoagulant Bottle
+item.anticoagulant_injector.desc,Xingquan Medical anticoagulant vial/ampoule; priced below Blue Blood; trade/medical collectible only.
+ui.apothecary_order.title,Apothecary · Standing Order
+ui.apothecary_order.header,Standing Order
+ui.apothecary_order.hint,Lock up to 3 items for a {0}-credit fee; tomorrow the apothecary guarantees them, plus normal filler stock.
+ui.apothecary_order.max,You can lock at most 3 items.
+ui.apothecary_order.picked,Picked
+ui.apothecary_order.fee,Lock fee: {0}
+ui.apothecary_order.confirm,Lock & book
+ui.apothecary_order.book_only,Book only
+ui.apothecary_order.close,Close
+ui.apothecary_order.note,Pickup tomorrow; fee is non-refundable; items are bought at normal price.
+ui.apothecary_order.none,Pick at least 1 item.
+ui.apothecary_order.no_cash,Not enough credits for the lock fee.
+ui.apothecary_order.fail,Booking failed; try again.
+ui.apothecary_order.done,Locked. The apothecary will bring these tomorrow.
+ui.apothecary_order.error,Could not open the order page.
+ui.apothecary_order.no_ui,Order page unavailable.
+item.belladonna_injector.order_name,Belladonna Injector
+item.birth_control_supply_box.order_name,Birth Control Supply Box
+item.black_injector.order_name,Synaprest Injector
+item.zyanide_pill.order_name,Sannai Pill
+item.immunivax_supply_box.order_name,Immunivax Supply Box
+item.birth_control_pill.order_name,Birth Control Pill
+item.naloxone_supply_box.order_name,Naloxone Supply Box
+item.antidepressant_pill.order_name,Antidepressant Pill
+item.large_purple_injector.order_name,Immunivax Injector
+item.vasodilator_injector.order_name,Vasodilator Injector
+item.synaprest_supply_box.order_name,Synaprest Supply Box
+item.adrenaline_pen.order_name,Adrenaline Pen
+item.pure_white_injector.order_name,Naloxone Injector
+item.adrenaline_supply_box.order_name,Adrenaline Supply Box
+item.blue_blood_supply_box.order_name,Blue Blood Supply Box
+item.nightingale_supply_box.order_name,Nightingale Supply Box
+item.biopharma_supply_box.order_name,Bio-Pharma Supply Box
+item.anticoagulant_injector.order_name,Anticoagulant Bottle
+item.vasopressin_injector.order_name,Vasopressin Injector
+item.coagulant_dressing.order_name,Coagulant Bottle
+item.sannai_supply_box.order_name,Sannai Supply Box
+item.star_quiler_first_aid_box.order_name,Complete First Aid Box
+item.amiodarone_pill.order_name,Amiodarone Pill
+item.vasopressin_supply_box.name,Vasopressin Supply Kit
+item.vasopressin_supply_box.desc,Animal gland powder x2, acid x2, water, base.
+item.vasopressin_supply_box.order_name,Vasopressin Supply Kit
+item.anticoagulant_supply_box.name,Anticoagulant Supply Kit
+item.anticoagulant_supply_box.desc,Animal gland powder, base x3, water, acid.
+item.anticoagulant_supply_box.order_name,Anticoagulant Supply Kit
+item.coagulant_supply_box.name,Coagulant Supply Kit
+item.coagulant_supply_box.desc,Animal gland powder, water x2, alcohol x2, lipobond agent.
+item.coagulant_supply_box.order_name,Coagulant Supply Kit
+item.antidepressant_supply_box.name,Antidepressant Supply Kit
+item.antidepressant_supply_box.desc,Aromatic compound, reducing agent, acid, water, alcohol, base.
+item.antidepressant_supply_box.order_name,Antidepressant Supply Kit
+item.amiodarone_supply_box.name,Amiodarone Supply Kit
+item.amiodarone_supply_box.desc,Aromatic compound, potassium iodide, acid, lipobond agent, water, base.
+item.amiodarone_supply_box.order_name,Amiodarone Supply Kit
+item.belladonna_supply_box.name,Belladonna Supply Kit
+item.belladonna_supply_box.desc,Belladonna herb x2, alcohol x2, acid, base.
+item.belladonna_supply_box.order_name,Belladonna Supply Kit
+item.vasodilator_supply_box.name,Vasodilator Supply Kit
+item.vasodilator_supply_box.desc,Animal gland powder x2, base x2, water, lipobond agent.
+item.vasodilator_supply_box.order_name,Vasodilator Supply Kit
+liquid.belladonna_paste,Belladonna Paste
+item.belladonna_supply_box.bottle,Reagent Bottle
+item.antidepressant_supply_box.bottle,Reagent Bottle
+item.amiodarone_supply_box.bottle,Reagent Bottle
+item.vasopressin_supply_box.bottle,Reagent Bottle
+item.vasodilator_supply_box.bottle,Reagent Bottle
+item.coagulant_supply_box.bottle,Reagent Bottle
+item.anticoagulant_supply_box.bottle,Reagent Bottle
+item.antidepressant.name,Antidepressant Pill
+item.amiodarone.name,Amiodarone Pill
+item.vasopressin.name,Vasopressin Injector
+item.vasodilator.name,Vasodilator Injector
+item.coagulant.name,Coagulant Bottle
+item.anticoagulant.name,Anticoagulant Bottle
+plant_trait.belladonna_paste.name,Belladonna Paste Production
+plant_trait.belladonna_paste.desc,Harvested produce contains belladonna paste.
+item.flashbang.recipe_name,Flashbang recipe
+item.smoke_grenade.recipe_name,Smoke grenade recipe
+item.plastic_explosive.recipe_name,Plastic explosive recipe
+liquid.aromatic,Aromatic Compounds
+liquid.antidepressant_intermediate,Antidepressant Intermediate
+liquid.antidepressant_salt,Antidepressant Salt Solution
+liquid.antidepressant_concentrate,Antidepressant Concentrate
+liquid.antidepressant_api,Antidepressant API
+liquid.potassium_iodide,Potassium Iodide Solution
+liquid.iodination_mix,Iodination Reaction Liquid
+liquid.organic_iodide,Organic Iodide Phase
+liquid.crude_amiodarone,Crude Amiodarone
+liquid.amiodarone_api,Amiodarone API
+liquid.gland_extract,Animal Gland Extract
+liquid.acidic_pituitary,Acidic Pituitary Extract
+liquid.vasopressin_crude,Crude Vasopressin
+liquid.vasopressin_pure,High-purity Vasopressin
+liquid.vasopressin_solution,Vasopressin Solution
+liquid.alkaline_gland,Alkaline Gland Extract
+liquid.vasodilator_complex,Vasodilator Complex
+liquid.vasodilator_pure,High-purity Vasodilator
+liquid.vasodilator_solution,Vasodilator Solution
+liquid.thrombin_active,Active Thrombin
+liquid.thrombin_precipitate,Thrombin Precipitate
+liquid.thrombin_pure,High-purity Thrombin
+liquid.coagulant_gel,Coagulant Gel
+liquid.heparin_crude,Crude Heparin
+liquid.anticoagulant_crude,Crude Anticoagulant
+liquid.anticoagulant_active,Active Anticoagulant
+liquid.anticoagulant_solution,Anticoagulant Solution
+liquid.pituitary_waste,Denatured Pituitary Waste
+item.precision_centrifuge.name,Centrifuge
+item.precision_centrifuge.desc,Separates mixed liquids: input container, empty output container, choose one component to output. Base contamination 20%, 0% with four chemistry modules.
+item.precision_centrifuge.flavor,Spin fast enough and impurities cannot catch you.
+location.precision_apothecary_workshop,Apothecary Workshop
+location.precision_apothecary_workshop.leave,Anything you leave behind will be carried back by Xingquan, hired by the apothecary.

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace PrecisionLab
 {
     /// <summary>
-    /// After the player unlocks the Precision Lab purifier through the Wild Network, Dr. Jackson
+    /// After the player unlocks a Precision Lab machine through the Wild Network, Dr. Jackson
     /// also stocks it on his counter: one machine on a regular visit, two during his
     /// "special stock" night. The Wild Network unlock still delivers the first machine for free.
     ///
@@ -17,7 +17,7 @@ namespace PrecisionLab
     {
         private static void Postfix()
         {
-            JacksonStock.AddPurifierToJackson(1);
+            JacksonStock.AddMachinesToJackson(1);
         }
     }
 
@@ -26,19 +26,23 @@ namespace PrecisionLab
     {
         private static void Postfix()
         {
-            JacksonStock.AddPurifierToJackson(2);
+            JacksonStock.AddMachinesToJackson(2);
         }
     }
 
     internal static class JacksonStock
     {
-        private const string PurifierUpgradeId = "PRECISION_LAB_PURIFIER";
+        private static readonly string[,] Machines =
+        {
+            { ItemIds.Purifier, "PRECISION_LAB_PURIFIER", "purification machine" },
+            { ItemIds.Cultivator, "PRECISION_LAB_CULTIVATOR", "microbial cultivator" }
+        };
 
-        internal static void AddPurifierToJackson(int count)
+        internal static void AddMachinesToJackson(int count)
         {
             try
             {
-                if (count <= 0 || !IsPurifierUnlocked())
+                if (count <= 0)
                 {
                     return;
                 }
@@ -47,29 +51,39 @@ namespace PrecisionLab
                 {
                     return;
                 }
-                int added = 0;
-                for (int i = 0; i < count; i++)
+                for (int m = 0; m < Machines.GetLength(0); m++)
                 {
-                    GameItem machine = ItemSpawner.Spawn(ItemIds.Purifier);
-                    if (machine == null)
+                    string itemId = Machines[m, 0];
+                    string upgradeId = Machines[m, 1];
+                    string label = Machines[m, 2];
+                    if (!IsUnlocked(upgradeId))
                     {
-                        break;
+                        continue;
                     }
-                    store.AddDirectSellingItemToTable(machine);
-                    added++;
-                }
-                if (added > 0)
-                {
-                    Debug.Log("[PrecisionLab] Dr. Jackson stocks " + added + " purification machine(s)");
+                    int added = 0;
+                    for (int i = 0; i < count; i++)
+                    {
+                        GameItem machine = ItemSpawner.Spawn(itemId);
+                        if (machine == null)
+                        {
+                            break;
+                        }
+                        store.AddDirectSellingItemToTable(machine);
+                        added++;
+                    }
+                    if (added > 0)
+                    {
+                        Debug.Log("[PrecisionLab] Dr. Jackson stocks " + added + " " + label + "(s)");
+                    }
                 }
             }
             catch (Exception e)
             {
-                Debug.LogWarning("[PrecisionLab] adding the purifier to Dr. Jackson's stock failed: " + e);
+                Debug.LogWarning("[PrecisionLab] adding machines to Dr. Jackson's stock failed: " + e);
             }
         }
 
-        private static bool IsPurifierUnlocked()
+        private static bool IsUnlocked(string upgradeId)
         {
             PlayerStore store = PlayerStore.Instance;
             if (store == null || store.networkUpgrade == null)
@@ -77,7 +91,7 @@ namespace PrecisionLab
                 return false;
             }
             NetworkUpgrade upgrade;
-            return store.networkUpgrade.TryGetValue(PurifierUpgradeId, out upgrade)
+            return store.networkUpgrade.TryGetValue(upgradeId, out upgrade)
                 && upgrade != null
                 && upgrade.IsUnlocked();
         }

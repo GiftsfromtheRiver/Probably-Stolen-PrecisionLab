@@ -55,4 +55,503 @@ tooltip.purifier.modules,模块加成：性能 +{0}%（每周期处理量）/ �
 ui.purifier.cap_label,提纯上限
 item.purifier.manual.name,提纯机器说明
 item.purifier.manual.flavor,有人把要点草草写在便签上，又贴到了滤芯堆上。
-item.purifier.manual.desc,"[模组影响]:\n效率影响功耗\n性能影响每晚处理量\n质量影响提纯上限（纯度 +x%，最高 100%）\n\n提供电力和液体容器后，机器会在夜间运作。\n物理、化学（含重金属）与生物污染物会被去除，有效成分保留。"
+item.purifier.manual.desc,"[模块效果]：\n- 效率：降低耗电\n- 性能：每夜处理量\n- 质量：提纯上限（纯度 +x%，最高 100%）\n\n装上电池和液体容器，机器会在夜间运转；可移除物理、化学（含重金属）和生物污染物，保留贵重成分。\n废料输出位：会收走液体里的右旋废料，多批废料会累积在同一个废料瓶里（不会溢出）。"
+item.cultivator.name,微生物培养机
+item.cultivator.flavor,一个密封的发酵罐，里面养着某种会吃掉糖的东西。夜班时别开盖。
+item.cultivator.desc,培养分解糖的微生物。把含糖液体容器放进液体槽，把营养果（小/正常/大/巨型）放进营养果槽：机器会把果子压榨成汁水来维持菌群活性，每夜分解糖并留下少量有机废物（其余被微生物消耗掉）。液体里糖分不足时菌群会进入休眠，直到重新喂入营养果和糖。性能模块提高每夜分解量，质量模块减少残留有机废物，效率模块降低耗电。
+item.cultivator.manual.name,微生物培养机说明
+item.cultivator.manual.flavor,一张沾满咖啡渍的实验室便签，还写着“不要舔培养物”。
+item.cultivator.manual.desc,"[模组影响]:\n效率影响功耗\n性能影响每夜分解的糖量\n质量影响残留有机废物（质量越高残留越少）\n\n把含糖液体容器放进液体槽，营养果（小/正常/大/巨型）放进营养果槽。每夜机器压榨一个营养果成汁水喂养菌群（活性 +15 / +25 / +40 / +60），并分解糖、留下少量有机废物。液体里没有糖时菌群会休眠（活性 0），直到重新喂营养果并补充糖才恢复。"
+machine.cultivator.module,模块
+machine.cultivator.container,液体容器
+ui.cultivator.culture_label,菌群活性
+upgrade.cultivator.title,微生物培养机
+upgrade.cultivator.desc,用于培养分解糖的微生物。用营养果（小/正常/大/巨型）喂养菌群，并放入含糖液体容器；每夜压榨一个果子成菌液并分解一部分糖，留下少量有机废物。没有糖时菌群会休眠。购买后直接送达店内库存。
+upgrade.cultivator.bought,已下单，请在店内库存查收。
+tooltip.cultivator.activity,菌群活性：{0}%（每夜可分解 {1} mL 糖）
+tooltip.cultivator.rule,吃糖：糖被消耗，并留下少量有机废物。质量模块可减少残留。营养果维持菌群活性；没有糖时菌群会休眠。
+tooltip.cultivator.processed,昨夜分解糖：{0:0.###} 毫升
+tooltip.cultivator.empty,把含糖液体容器放进槽位；只要电池有电，菌群每夜都会工作。
+tooltip.cultivator.nosugar,容器里没有糖：菌群会休眠，直到重新获得糖。
+tooltip.cultivator.container,容器内糖：{0} 毫升
+tooltip.hydrolysis.hint,提示：含酸的淀粉液在 40–60°C 下会水解成糖（用加热板保温）。
+tooltip.sugar.hint,提示：微生物培养机可以分解糖，并留下少量有机废物。
+tooltip.cultivator.dormant,菌群：休眠（0%）——加入营养果可唤醒，并需要糖来喂养。
+tooltip.cultivator.dormant_panel,休眠 · 需要营养果
+tooltip.cultivator.fruit,营养果槽：{0}（压榨后菌群活性 +{1}%）
+tooltip.cultivator.nofruit,营养果槽：空（加入营养果可维持菌群活性）
+machine.cultivator.nutrient,营养果
+liquid.catechol,邻苯二酚
+liquid.hydroxymethyl_base,N-羟甲基碱溶液
+liquid.resolving_agent,拆分剂
+liquid.amination_intermediate,胺化中间体
+liquid.racemic_adrenaline,消旋肾上腺素
+liquid.levo_adrenaline_salt,左旋肾上腺素盐
+liquid.dextro_waste,右旋废料
+liquid.adrenaline_freebase,游离肾上腺素碱
+liquid.adrenaline_hcl,盐酸肾上腺素
+liquid.adrenaline_solution,肾上腺素药液
+item.catechol_bottle.name,邻苯二酚试剂瓶
+item.hydroxymethyl_bottle.name,N-羟甲基碱溶液瓶
+item.lipobond_bottle.name,脂合剂瓶
+item.reducing_bottle.name,还原剂瓶
+item.resolving_bottle.name,拆分剂瓶（20 毫升）
+item.base_bottle.name,碱液瓶
+item.acid_bottle.name,酸液瓶
+tooltip.reagent_bottle.desc,满瓶试剂，含 {0} 毫升{1}（正好一份配比量）。
+item.adrenaline_box.name,肾上腺素原料盒
+item.adrenaline_box.flavor,一个药剂师密封的试剂盒。标签故意写得很含糊。
+item.adrenaline_box.desc,双击拆开：邻苯二酚、N-羟甲基碱溶液、脂合剂、还原剂、拆分剂、碱液和酸液。所有中间体都由配方自动生成，这里只提供起始原料。
+item.adrenaline_api.name,盐酸肾上腺素原料药
+item.adrenaline_api.flavor,药用级盐酸肾上腺素。请戴手套并保持手稳。
+item.adrenaline_api.desc,化学制剂成型机从干燥的盐酸肾上腺素液体中压制出的原料药（每份 5000 微升）。品质按有效成分比例分级。把一份原料药溶于等量水即可配成一支注射笔所需的药液。
+item.adrenaline_pen.name,肾上腺素注射笔
+item.adrenaline_pen.flavor,一次性自动注射笔。标签上用蓝字写着 EPINEPHRINE，下面还有一行没人会读的小字警告。
+item.adrenaline_pen.desc,战斗兴奋剂自动注射笔：短时间爆发式提升命中与暴击率。医疗物 / 奢侈品，单次使用，可在战斗中使用。每支由 5000 微升（5 毫升）肾上腺素药液压制而成；品质按压制所用溶液的有效成分比例分级。
+item.dextro_waste.name,右旋废料
+item.dextro_waste.flavor,拆分反应里没用的那一半。又黏又苦，最好别徒手处理。
+item.dextro_waste.desc,液体中含有手性拆分产生的右旋废料时，提纯机会在周期结束时把它收集到废料输出位；多批废料会累积在同一个废料瓶里。把废料溶回容器、加入还原剂并加热到 60–80°C，可以再消旋成消旋肾上腺素，提高总收率。
+tooltip.adrenaline_box.contents,内含一整批试剂：邻苯二酚、N-羟甲基碱溶液、脂合剂、还原剂、拆分剂、碱液和酸液。
+tooltip.adrenaline_box.hint,双击拆开。按“更多药品”解锁时获得的肾上腺素注射笔配方纸条操作六步流程。
+tooltip.adrenaline_api.purity,有效成分纯度：{0:0.#}%
+tooltip.adrenaline_api.hint,把原料药溶于等量水，等蒸发掉多余水分后放进化学制剂成型机，即可灌装注射笔。
+tooltip.adrenaline_pen.effect,战斗兴奋剂：3 回合内命中 +20%、暴击率 +33%。
+tooltip.adrenaline_pen.tag,医疗物 / 奢侈品——单次使用，可在战斗中使用。
+tooltip.dextro_waste.hint,手性拆分步骤产生的废料。提纯机废料输出位会收集它；溶回容器 + 还原剂加热 60–80°C 可再消旋回收为消旋肾上腺素。
+upgrade.meds.title,更多药品：肾上腺素
+upgrade.meds.desc,解锁肾上腺素注射笔生产线，并附送两张配方纸条（肾上腺素注射笔 + 简易止血带），同时让退休化学家开始出售肾上腺素原料盒。
+upgrade.meds.bought,已下单，请在店内库存查收配方纸条。
+machine.purifier.waste,废料输出
+tooltip.purifier.dextro,含 {0} 毫升右旋废料：周期结束时会被收集到废料输出位。
+tooltip.purifier.waste_full,废料输出位已占用——清空后才能继续收集右旋废料。
+item.adrenaline_recipe.name,肾上腺素注射笔配方
+item.adrenaline_recipe.title,肾上腺素注射笔
+item.adrenaline_recipe.sign,李北文
+item.adrenaline_recipe.body,"肾上腺素注射笔——六步流程。\n\n第1步 胺化（26–60°C）：邻苯二酚 + N-羟甲基碱溶液 + 脂合剂，会生成胺化中间体\n第2步 还原（60–80°C）：胺化中间体 + 还原剂，会生成消旋肾上腺素\n第3步 拆分（40–60°C，酸催化）：消旋肾上腺素 + 拆分剂 + 酸，会生成左旋肾上腺素盐 + 右旋废料。用提纯机废料输出位移除废料。\n第4步 成盐（26–60°C）：左旋盐 + 碱会生成游离碱；游离碱 + 酸会生成盐酸肾上腺素。蒸发掉水分后放进化学制剂成型机，压制成盐酸肾上腺素成品。\n第5步 配液：把盐酸肾上腺素成品溶于等量水，会生成肾上腺素药液（多余水分用蒸发器除去）。\n第6步 灌装：把干燥的药液放进化学制剂成型机，压制成注射笔。\n\n每盒试剂配比：邻苯二酚 20000 / 碱溶液 20000 / 脂合剂 20000 / 还原剂 20000 / 拆分剂 20000 / 碱液 10000 / 酸液 10000（微升）。每一步搅拌并加热到指定温度。每瓶试剂都是满瓶，容量正好是一份配比量，直接按配比倒出即可。一支注射笔需要 5000 微升（5 毫升）药液，一盒原料可做 2 支注射笔。\n\n回收再消旋：把右旋废料溶回容器，加入还原剂，60–80°C，会生成消旋肾上腺素，可回到第3步再次拆分。"
+tooltip.purifier.turbo,涡轮加速：把“涡轮增压器 / 高级涡轮增压机”拖到本机器上（增压器需显示“就绪”）可以额外运转一个周期。
+tooltip.cultivator.turbo,涡轮加速：把“涡轮增压器 / 高级涡轮增压机”拖到本机器上（增压器需显示“就绪”）可以额外运转一个周期。
+item.makeshift_tourniquet.name,简易止血带
+item.makeshift_tourniquet.desc,用韧棉织物和废金属（或金属锭）拼成的应急止血带。医疗物：受伤（伤势未稳定）时使用，会稳定伤势并把伤势等级 -1（相当于止血绷带）。材料决定标签与价值：废金属=破旧(-50%)；金属锭纯度中等以上=极佳(+25%)；低于中等=陈旧(-25%)。
+item.tourniquet_recipe.name,简易止血带配方
+item.tourniquet_recipe.title,简易止血带
+item.tourniquet_recipe.body,"简易止血带——应急医疗配方（开局即可使用，不需要解锁）。\n\n把「韧棉织物」拖到「废金属」或「金属锭」上：会消耗 1 份韧棉织物 + 1 块金属，合成为 1 条简易止血带（基础价值 150）。\n\n材料决定成品标签与价值：\n- 废金属做的：破旧（价值 -50%）\n- 金属锭做的，纯度中等及以上：极佳（价值 +25%）\n- 金属锭做的，纯度低于中等：陈旧（价值 -25%）\n\n简易止血带是医疗物：受伤（伤势未稳定）时使用，会稳定伤势并把伤势等级 -1，相当于一条止血绷带。"
+tooltip.tourniquet.hint,"简易止血带：把「韧棉织物」拖到「废金属」或「金属锭」上即可合成（开局即可，无需解锁）。"
+mech.tourniquet.no_space,没有空间放置做好的简易止血带：韧棉织物和金属都没有被消耗，请先腾出 2×2 的空位再试。
+mech.tourniquet.note_delivered,“简易止血带配方”纸条已放进店内库存（可翻页阅读）。
+condition.tourniquet.worn,破旧
+condition.tourniquet.aged,陈旧
+condition.tourniquet.excellent,极佳
+tooltip.tourniquet.condition,标签：{0}（价值 {2}{1}%）
+item.resolving_bottle.flavor,退休化学家私藏的拆分剂补充瓶；他把这些放在柜台后面，专门卖给需要反复拆分/回收右旋废料的人。
+item.resolving_refill.name,拆分剂补充装（2 × 20 毫升）
+item.resolving_refill.desc,密封的拆分剂补充装，内含 2 瓶满瓶（各 20 毫升）手性拆分剂。激活后同时拆出 2 瓶，用于补充右旋废料回收循环的消耗。
+item.resolving_refill.flavor,退休化学家在柜台后面囤了一箱，专门卖给需要反复拆分/回收右旋废料的人。
+mech.resolving_refill.no_space,没有足够空间同时放下 2 瓶拆分剂：补充装没有被使用，物品都保留。
+item.recipe_book.name,精密实验室配方手册
+item.recipe_book.desc,精密实验室的配方合集：每一页是一份配方（肾上腺素注射笔、简易止血带等），以后新增药品只需增加页数。激活可翻阅。
+mech.recipe_book.delivered,一本《精密实验室配方手册》已放进店内（优先前台柜台）。
+liquid.thebaine,蒂巴因
+liquid.naloxone_reduction_intermediate,纳洛酮还原中间体
+liquid.naloxone_hydrolysis_intermediate,纳洛酮水解中间体
+liquid.naloxone_crude,纳洛酮粗品
+liquid.naloxone_hcl,盐酸纳洛酮
+liquid.naloxone_solution,纳洛酮药液
+item.naloxone_box.name,纳洛酮原料盒
+item.naloxone_box.desc,激活拆开得到一批纳洛酮原料：蒂巴因 20 毫升、酸 3 瓶共 60 毫升、还原剂 20 毫升、脂合剂 20 毫升、N-羟甲基碱溶液 20 毫升、酒精 20 毫升。蒂巴因是唯一无法从别处获得的原料。
+item.naloxone_box.flavor,退休化学家给的密封原料盒；标签上只写了一半试剂名。
+item.naloxone_api.name,盐酸纳洛酮原料药
+item.naloxone_api.desc,化学制剂成型机从 5000 微升干燥的盐酸纳洛酮液体中压制出的原料药。把一份原料药溶于等量水即可配成一支纳洛通注射剂所需的药液。
+item.naloxone_api.flavor,阿片类解毒剂，压成干燥药片；别和派对药物搞混。
+item.naloxone_injector.name,纳洛通注射剂
+item.thebaine_bottle.name,蒂巴因瓶（20 毫升）
+item.alcohol_bottle.name,酒精瓶（20 毫升）
+liquid.steroid_raw,甾体原料
+liquid.steroid_hydrolysate,甾体水解物
+liquid.steroid_intermediate,甾体中间体
+liquid.contraceptive_api,避孕药原料药溶液
+liquid.sannai_raw,山奈原料
+liquid.sannai_extract,山奈提取液
+liquid.sannai_api,山奈德原料药溶液
+item.birth_control_box.name,避孕药原料盒
+item.birth_control_box.desc,激活拆开得到一批避孕药原料：甾体原料、酸、水、酒精、还原剂、脂合剂各 20 毫升。
+item.birth_control_box.flavor,密封的避孕药原料盒，标签上是一串缩写。
+item.sannai_box.name,山奈原料盒
+item.sannai_box.desc,激活拆开得到一批山奈原料：山奈原料 20 毫升、酒精 2 瓶（共 40 毫升）、酸 10 毫升。
+item.sannai_box.flavor,密封的山奈原料盒。请戴手套处理。
+item.steroid_bottle.name,甾体原料瓶（20 毫升）
+item.sannai_bottle.name,山奈原料瓶（20 毫升）
+item.water_bottle.name,水（20 毫升）
+item.birth_control_pill.recipe_name,避孕药片
+item.sannai_pill.recipe_name,山奈德片
+liquid.neural_ligand,神经受体配体
+liquid.activated_ligand,活化配体
+liquid.synaprest_crude,赛纳普斯粗品
+liquid.synaprest_api,赛纳普斯原料药溶液
+item.synaprest_box.name,赛纳普斯原料盒
+item.synaprest_box.desc,激活拆开得到一批赛纳普斯原料：神经受体配体、甾体原料、酸、水、还原剂、酒精各 20 毫升。
+item.synaprest_box.flavor,密封的高价值原料盒。标签上写着：抑制奖励，也抑制你自己。
+item.neural_ligand_bottle.name,神经受体配体瓶（20 毫升）
+item.synaprest_injector.name,赛纳普斯注射器
+item.synaprest_injector.desc,次世代成瘾治疗注射器：随机清除一项药物/酒精/尼古丁/赌博成瘾（与原版赛纳普斯一致）。代价是奖励机制被抑制——快感缺失 3 天（好运 -15），连续使用 3 次会形成依赖。
+item.synaprest_injector.flavor,治疗药物成瘾的次世代疗法，抑制大脑奖励机制，减轻药瘾，辅助长期康复。
+perk.synaprest_anhedonia.name,快感缺失 / Anhedonia
+perk.synaprest_anhedonia.desc,赛纳普斯抑制了大脑奖励机制：好运 -15，持续 3 天。
+perk.synaprest_dependency.name,赛纳普斯依赖 / Synaprest Dependency
+perk.synaprest_dependency.desc,连续使用赛纳普斯超过 3 次形成的轻度依赖；每天醒来有概率重新出现药物成瘾。
+perk.synaprest_use_count.name,赛纳普斯使用次数 / Synaprest Uses
+perk.synaprest_use_count.desc,累计使用赛纳普斯的次数；达到 3 次会形成依赖。
+mech.synaprest.use,赛纳普斯注射器：随机清除了 {0} 项成瘾（原版效果），但奖励机制被抑制（快感缺失 3 天，好运 -15）。
+mech.synaprest.anhedonia_over,赛纳普斯的影响消退了：快感缺失结束。
+mech.synaprest.craving,赛纳普斯依赖发作：你又对药物产生了渴望（获得药物成瘾）。
+network.PRECISION_APOTHECARY.title,药剂师 / Apothecary
+network.PRECISION_APOTHECARY.desc,解锁药剂师电话。打电话预约后，药剂师会在第二天第一个到店，出售本 mod 新增的药剂与原料盒；预约冷却 3 天。
+client.apothecary.name,药剂师
+dialog.apothecary.generic_1,货都在台面上：原料盒、散装试剂瓶，还有几支成色不一的成品药。挑好了叫我。
+phone.apothecary.regular,我是药剂师。需要我上门吗？我卖的东西比退休化学家更全，但只接受预约。
+phone.apothecary.book,预约上门（冷却 3 天）
+phone.apothecary.cancel_choice,改天再说
+phone.apothecary.confirmed,好，明天开门时我会第一个到店。准备好信用点。
+phone.apothecary.cancel,行，想好了再打给我。
+phone.apothecary.cooldown,最近不方便出诊，{0} 天后才能再预约。
+mech.apothecary.unlocked,新联系人「药剂师」已加入电话簿：打电话预约，第二天第一个到店（冷却 3 天）。
+mech.apothecary.booked,药剂师预约成功：今天开门时第一个到店。
+mech.apothecary.arrived,药剂师今天第一个到店，正在柜台等你。
+phone.apothecary.book_line,我要预约。
+phone.apothecary.cancel_line,打错了。
+mech.apothecary.ready,药剂师已准备好更多药品。
+item.apothecary.loose_bottle.name,{0} · 20 毫升
+mech.chem.purity_too_low,纯度过低：主成分 {0:F1}%，需要 ≥99% 才能压制（先把杂质去掉）。
+liquid.immune_serum,免疫血清
+liquid.immunoglobulin_suspension,免疫球蛋白悬浊液
+liquid.crude_immunoglobulin,粗制免疫球蛋白液
+liquid.immunoglobulin_api,免疫宁原料药溶液
+liquid.denatured_waste,变性蛋白废液
+item.immune_serum_bottle.name,免疫血清瓶（20 毫升）
+item.immune_serum_bottle.desc,一整瓶 20 毫升免疫血清，免疫宁生产线的起始原料，可直接向退休化学家购买。
+item.immune_serum_bottle.flavor,保持低温，请勿摇晃。
+item.immunivax_injector.recipe_name,免疫宁注射器
+liquid.bio_gel_base,生物胶基
+liquid.acidic_gel,酸性胶液
+liquid.crude_blue_gel,粗制蓝色凝胶
+liquid.medical_blue_gel,医用级蓝色凝胶
+liquid.denatured_blue_gel_waste,变性凝胶废液
+item.bio_gel_bottle.name,生物胶基瓶（20 毫升）
+item.bio_gel_bottle.desc,一整瓶 20 毫升生物胶基，蓝血生产线的起始原料，可直接向退休化学家购买；常温操作。
+item.bio_gel_bottle.flavor,不是血液。别让顾客看到标签。
+item.blue_blood.recipe_name,蓝血
+item.blue_blood_box.name,蓝血原料盒
+item.blue_blood_box.desc,激活拆开得到刚好一锅蓝血原料：生物胶基 20 毫升、水 10 毫升、微量酸 50 微升、还原剂 10 毫升、脂合剂 10 毫升。
+item.blue_blood_box.flavor,标签只写“生物凝胶原料”。
+liquid.oxidizer,氧化剂
+liquid.metal_powder,金属粉末
+liquid.nitrating_acid,硝化酸
+liquid.flash_powder,闪光药剂
+liquid.smoke_composition,发烟剂
+liquid.nitro_base,硝化基质
+liquid.plastic_putty,塑性炸药膏
+liquid.ordnance_waste,烧毁的军需废液
+item.oxidizer_bottle.name,氧化剂瓶（20 毫升）
+item.oxidizer_bottle.desc,一整瓶 20 毫升氧化剂，用于闪光药剂与发烟剂。
+item.metal_powder_bottle.name,金属粉末瓶（20 毫升）
+item.metal_powder_bottle.desc,一整瓶 20 毫升金属粉末悬浮液，用于闪光药剂。
+item.nitrating_acid_bottle.name,硝化酸瓶（20 毫升）
+item.nitrating_acid_bottle.desc,一整瓶 20 毫升硝化酸。温度高于 40°C 会失控。
+item.flashbang_chip.name,3D打印芯片：闪光弹外壳
+item.flashbang_chip.desc,物品 ID：printer_chip_flashbang_shell。放进 3D 打印机可打印闪光弹空壳，消耗打印塑料与废金属。
+item.smoke_chip.name,3D打印芯片：烟雾弹外壳
+item.smoke_chip.desc,物品 ID：printer_chip_smoke_shell。放进 3D 打印机可打印烟雾弹空壳，消耗打印塑料与废金属。
+item.charge_chip.name,3D打印芯片：塑性炸药外壳
+item.charge_chip.desc,物品 ID：printer_chip_explosive_shell。放进 3D 打印机可打印塑性炸药空壳，消耗打印塑料与废金属。
+item.flashbang_shell.name,闪光弹空壳
+item.flashbang_shell.desc,打印出来的空壳。把闪光药剂芯拖到它上面完成组装。
+item.smoke_shell.name,烟雾弹空壳
+item.smoke_shell.desc,打印出来的空壳。把发烟药剂芯拖到它上面完成组装。
+item.charge_shell.name,塑性炸药空壳
+item.charge_shell.desc,打印出来的空壳。把塑性炸药药芯拖到它上面完成组装。
+item.flash_filling.name,闪光药剂芯
+item.flash_filling.desc,闪光弹的有效装药。拖到打印的闪光弹空壳上完成组装。
+item.smoke_filling.name,发烟药剂芯
+item.smoke_filling.desc,烟雾弹的有效装药。拖到打印的烟雾弹空壳上完成组装。
+item.explosive_filling.name,塑性炸药药芯
+item.explosive_filling.desc,塑性炸药的有效装药。拖到打印的塑性炸药空壳上完成组装。
+item.flash_filling.recipe_name,闪光药剂芯
+item.smoke_filling.recipe_name,发烟药剂芯
+item.explosive_filling.recipe_name,塑性炸药药芯
+item.plastic_explosive.name,塑性炸药包
+item.plastic_explosive.desc,军用级塑性炸药，已装入雷管。安放在目标上后立刻撤离。
+item.plastic_explosive.flavor,没有编号，没有厂商，只有足够毁掉某人一天的药量。
+item.immunivax_box.name,免疫宁原料盒
+item.immunivax_box.desc,激活拆开得到一批免疫宁原料：免疫血清 20 毫升 ×2、酒精 20 毫升 ×2、水 10 毫升。
+item.immunivax_box.flavor,冷藏保存，别问里面是什么。
+item.ordnance_box.name,军需原料盒
+item.ordnance_box.desc,激活拆开得到一批军需原料：氧化剂 20 毫升 ×2、金属粉末 20 毫升、硝化酸 20 毫升、糖 20 毫升、酒精 20 毫升、脂合剂 20 毫升 ×2、稳定剂 20 毫升。
+item.ordnance_box.flavor,高违禁品。没有军队会承认这个箱子存在。
+item.mystery_med_box.name,密封药剂原料箱
+item.mystery_med_box.desc,密封的药剂原料箱，购买前无法查看内容；购买后双击打开，里面随机装有 5–10 瓶生产用原料药剂。
+item.mystery_med_box.flavor,清单写着：各类实验室原料。封条写着：概不退换。
+item.sugar_bottle.name,糖浆瓶（20 毫升）
+item.sugar_bottle.desc,一整瓶 20 毫升糖浆，用于发烟剂。
+item.stabilizing_bottle.name,稳定剂瓶（20 毫升）
+item.stabilizing_bottle.desc,一整瓶 20 毫升稳定剂，用于塑性炸药塑化。
+mech.ordnance.wrong_composition,成分不对：这个药芯与外壳不匹配，拒绝组装。
+mech.chem.output_space,输出空间不足：请先清理成型机的输出格，输入原料不会被消耗。
+liquid.aromatic_extract,芳香萃取液
+liquid.activated_fragrance,活化香精液
+liquid.neuro_concentrate,神经活性浓缩液
+liquid.crude_pheromone,粗制信息素
+liquid.purified_pheromone,纯净信息素液
+liquid.pheromone_concentrate,费洛蒙原液
+liquid.pheromone_waste,变性信息素废液
+item.aromatic_bottle.name,芳香萃取液瓶（20 毫升）
+item.aromatic_bottle.desc,一整瓶 20 毫升芳香萃取液/植物精油，是神经活性香水的起始原料。
+item.crude_pheromone_bottle.name,粗制信息素瓶（20 毫升）
+item.crude_pheromone_bottle.desc,一整瓶 20 毫升粗制信息素，黑市来源，极度怕热。
+item.perfume_box.name,香水原料盒
+item.perfume_box.desc,违禁品。激活拆开得到一批香水原料：芳香萃取液、粗制信息素、水、酸、酒精 ×2、N-羟甲基碱溶液、脂合剂。
+item.perfume_box.flavor,违禁品：含有信息素成分。一半是香气，一半是麻烦。
+item.neuroactive_perfume.recipe_name,神经活性香水「同步」
+item.pheromone_perfume.recipe_name,费洛蒙香水「本源」
+liquid.pheromone_byproduct,信息素废液（副产物）
+liquid.phage_culture,噬菌体培养液
+liquid.fungal_extract,真菌提取物
+liquid.symbiotic_culture,共生菌液
+liquid.pure_antibiotic_api,高纯抗生素粉悬液
+liquid.stem_cell,干细胞原液
+liquid.active_cell_suspension,活性细胞悬液
+liquid.essence_concentrate,焕活精华原液
+liquid.dead_cell_waste,死细胞废液
+item.phage_culture_bottle.name,噬菌体培养液瓶（20 毫升）
+item.phage_culture_bottle.desc,一整瓶 20 毫升噬菌体培养液，噬菌霉素的起始原料。
+item.fungal_extract_bottle.name,真菌提取物瓶（20 毫升）
+item.fungal_extract_bottle.desc,一整瓶 20 毫升真菌提取物，与噬菌体共生培养。
+item.stem_cell_bottle.name,干细胞原液瓶（20 毫升）
+item.stem_cell_bottle.desc,一整瓶 20 毫升干细胞原液，必须低温保存。
+item.phagimycin.recipe_name,噬菌霉素片
+item.eternal.recipe_name,永恒焕活精华液
+phone.wilde.name,乔·王尔德
+phone.wilde.intro,我是乔·王尔德。想要合法生产噬菌霉素？执照 800 信用点，一次买断。
+phone.wilde.buy,我想弄点合法的门路。
+phone.wilde.cancel_line,打错了。
+phone.wilde.bought,手续办好了，执照生效。别让我后悔。
+phone.wilde.cancel,想好了再打给我。
+phone.wilde.already,执照已经在你名下了。别拿去干蠢事。
+phone.wilde.no_cash,钱不够：执照需要 800 信用点。
+phone.wilde.log,你从乔·王尔德处拿到了制药执照：噬菌霉素。
+perk.phagimycin_license.name,制药执照：噬菌霉素
+perk.phagimycin_license.desc,允许合法生产噬菌霉素片；永久被动生效。
+item.biopharma_box.name,生物制药原料盒
+item.biopharma_box.desc,激活拆开得到一批生物制药原料：噬菌体培养液 20 毫升、真菌提取物 20 毫升、水 20 毫升 ×2、干细胞原液 20 毫升 ×2、酒精 20 毫升、脂合剂 20 毫升。
+item.biopharma_box.flavor,冷藏运输。里面有活的，也有不能算活的。
+phone.wilde.not_enough,先凑够 800 信用点再来，别浪费我时间。
+item.first_aid_box.name,Star Quilers Med 急救盒
+item.first_aid_box.desc,标准 3×3 急救盒。内部应有肾上腺素笔、止血带、免疫宁、纳洛通注射器、医用酒精和血袋；双击拆开可单卖内部物品。医用酒精可在药剂师/退休化学家处购买。
+item.first_aid_box.flavor,Star Quilers Med：前线急救标准配置。
+item.first_aid_box.fake_flavor,包装看着挺像，但总觉得哪里不对。
+item.first_aid_shell.name,急救盒外壳（空）
+item.first_aid_shell.desc,3×3 空急救盒外壳。放入药品后，把密封贴拖到外壳上即可封装。
+item.first_aid_shell.flavor,没有密封贴的急救盒只是一个铁皮盒子。
+item.first_aid_seal.name,急救盒密封贴
+item.first_aid_seal.desc,手工密封贴。把密封贴拖到装有药品的急救盒外壳上即可封装；消耗贴纸，完整/高级有 10% 溢价，未配齐 ×0.9，拆开只返还空外壳。
+item.first_aid_seal.flavor,原厂不会承认这个。
+item.first_aid_box.manual_name,急救盒（手工密封）
+item.first_aid_box.advanced_name,高级急救盒
+item.first_aid_box.incomplete_desc,手工密封急救盒：未配齐。价格按内部物品价值的 90% 计算。
+item.first_aid_box.manual_desc,手工密封急救盒。可直接双击拆开，把内部物品单卖。
+ui.first_aid.title,急救盒鉴定
+ui.first_aid.item,物品：
+ui.first_aid.serial,编号：
+ui.first_aid.serial_ok,（7 位：3 位批次 + 4 位序号）
+ui.first_aid.serial_bad,（编号格式不符）
+ui.first_aid.red_cross,红十字：
+ui.first_aid.sticker,包装贴纸：
+ui.first_aid.brand,品牌字样 Star Quilers Med：
+ui.first_aid.yes,一致
+ui.first_aid.no,不一致
+ui.first_aid.contents,内部物品数：
+ui.first_aid.advanced,高级（蓝血）：
+ui.first_aid.value,估值：
+ui.first_aid.credits, 信用点
+ui.first_aid.genuine,结论：正品。包装、编号、红十字和贴纸全部一致。
+ui.first_aid.fake,结论：赝品。至少一项防伪特征不一致，只能按假货价格出售。
+ui.first_aid.manual,手工密封：不是 Star Quiler 原厂，无法鉴定真伪。
+ui.first_aid.manual_incomplete,手工密封，未配齐：不是 Star Quiler 原厂，无法鉴定真伪。
+ui.first_aid.close,关闭
+ui.first_aid.error,鉴定失败，请重试。
+ui.first_aid.verify_hint,四项防伪特征全部一致才是正品。
+ui.first_aid.tier_category,急救盒品级
+ui.first_aid.tier_first_aid_incomplete,未配齐
+ui.first_aid.tier_first_aid_complete,完整
+ui.first_aid.tier_first_aid_advanced,高级
+ui.first_aid.tier_name_incomplete,未配齐
+ui.first_aid.tier_name_complete,完整
+ui.first_aid.tier_name_advanced,高级
+ui.first_aid.question,这个拎起来怎么感觉重量不对啊……
+ui.first_aid.question_report,顾客拆开检查：标签「{0}」，实际「{1}」。
+ui.first_aid.question_ok,符合标签，额外加价 10%。
+ui.first_aid.question_bad,不符合标签，交易价格 -15%，阵营好感下降。
+item.modified_aloe_leaf.name,改性芦荟叶
+item.modified_aloe_leaf.desc,基因改良芦荟的厚实叶片。可购买或水培收获；搅拌/溶解出芦荟浆，是南丁格尔软膏的原料。
+item.medical_honey_bottle.name,医用蜂蜜瓶（20 毫升）
+item.medical_honey_bottle.desc,一整瓶 20 毫升医用级蜂蜜。与芦荟提取液、干细胞原液常温乳化。
+item.nightingale_aloe_seed.name,芦荟种子
+item.nightingale_aloe_seed.desc,基因改良芦荟种子，可放入原版水培机。生长特性类似韧棉，可食用，收获改性芦荟叶。
+plant.nightingale_aloe.name,夜莺芦荟
+liquid.aloe_pulp,芦荟糊
+liquid.aloe_extract,高纯芦荟提取液
+liquid.medical_honey,医用蜂蜜
+liquid.ointment_base,活性软膏基质
+liquid.purified_ointment_base,精制软膏基质
+liquid.ointment_waste,变性软膏废液
+item.nightingale_salve.name,南丁格尔软膏
+ui.nightingale.need,南丁格尔软膏需要精制软膏基质 ≥5000 微升 + 微量碱，且总液量足够。
+item.nightingale_box.name,南丁格尔药剂包
+item.nightingale_box.desc,激活拆开得到一批软膏原料：改性芦荟叶 ×2、医用蜂蜜瓶、芦荟种子、酒精瓶、干细胞原液瓶。
+item.nightingale_box.flavor,从叶子到药膏，只差一点耐心和一台搅拌机。
+plant_trait.aloe_paste.name,芦荟糊生成
+plant_trait.aloe_paste.desc,收获物中含有纯净的改性芦荟糊，可写入填料草等作物种子。
+plant_trait.aloe_paste.effect,每株收获物内部加入纯净芦荟糊（50级约2毫升，单株最多3毫升；不影响填料草数量）
+corpo_name_xingquan,星泉医疗
+item.belladonna_seed.name,颠茄种子
+item.belladonna_seed.desc,可放入原版水培机。生长特性接近韧棉，收获颠茄草；子代继承基因。
+item.belladonna_herb.name,颠茄草
+item.belladonna_herb.desc,颠茄的干燥草叶。可搅拌/溶解出颠茄草提取物，是颠茄注射器的原料。
+item.belladonna_injector.name,颠茄注射器
+item.belladonna_injector.desc,中级违禁医疗品。颠茄生物碱注射剂，兼具毒性与医疗用途；游戏无战斗，仅作为交易/医疗收藏品。
+item.belladonna_injector.flavor,星泉医疗的黑色安瓿。剂量是药还是毒，只取决于推入多少。
+plant.belladonna.name,颠茄
+liquid.belladonna_extract,颠茄草提取物
+liquid.belladonna_crude,颠茄粗提液
+liquid.belladonna_acidic,酸性颠茄液
+liquid.belladonna_alkaloid,颠茄生物碱沉淀
+liquid.belladonna_pure,高纯度颠茄碱液
+liquid.belladonna_waste,颠茄废液
+item.animal_gland_powder.name,动物腺体粉末
+item.animal_gland_powder.desc,干燥动物腺体粉末，可溶解/搅拌成腺体提取液。
+item.aromatic_compound.name,芳香族化合物
+item.aromatic_compound.desc,芳香族化合物原料，用于抗抑郁药和胺碘酮前体。
+item.potassium_iodide_crystal.name,碘化钾晶体
+item.potassium_iodide_crystal.desc,碘化钾晶体，用于胺碘酮碘化和抗凝剂灌装。
+item.antidepressant_pill.name,抗抑郁药片
+item.antidepressant_pill.desc,高级违禁品。星泉医疗的抗抑郁药片；仅作交易/医疗收藏品。长期使用可能产生依赖。
+item.amiodarone_pill.name,胺碘酮片
+item.amiodarone_pill.desc,星泉医疗的胺碘酮片，循环系统急救医疗品；仅作交易/医疗收藏品。
+item.vasopressin_injector.name,血管加压素注射器
+item.vasopressin_injector.desc,星泉医疗的血管加压素注射器，用于升压与止血；仅作交易/医疗收藏品。
+item.vasodilator_injector.name,血管舒张素注射器
+item.vasodilator_injector.desc,星泉医疗的血管舒张素注射器，用于扩血管与降压；仅作交易/医疗收藏品。
+item.coagulant_dressing.name,促凝剂瓶
+item.coagulant_dressing.desc,星泉医疗的促凝剂瓶/安瓿，用于快速凝血；仅作交易/医疗收藏品。
+item.anticoagulant_injector.name,抗凝剂瓶
+item.anticoagulant_injector.desc,星泉医疗的抗凝剂瓶/安瓿，用于抗凝血；价格低于蓝血；仅作交易/医疗收藏品。
+ui.apothecary_order.title,药剂师 · 定向采购
+ui.apothecary_order.header,定向采购 / Standing Order
+ui.apothecary_order.hint,最多锁定 3 件。锁定费 {0} 信用点；第二天药剂师到店时必定带上所选物品，其余正常补位。
+ui.apothecary_order.max,最多只能锁定 3 件。
+ui.apothecary_order.picked,已选
+ui.apothecary_order.fee,锁定费：{0}
+ui.apothecary_order.confirm,确认锁定并预约
+ui.apothecary_order.book_only,仅预约
+ui.apothecary_order.close,关闭
+ui.apothecary_order.note,锁定后第二天到店取货，费用不退；物品按正常价格购买。
+ui.apothecary_order.none,请至少选择 1 件。
+ui.apothecary_order.no_cash,信用点不足，无法支付锁定费。
+ui.apothecary_order.fail,预约失败，请稍后再试。
+ui.apothecary_order.done,已锁定，明天药剂师会带来所选物品。
+ui.apothecary_order.error,订购页面打开失败。
+ui.apothecary_order.no_ui,订购页面不可用。
+item.belladonna_injector.order_name,颠茄注射器
+item.birth_control_supply_box.order_name,避孕药药剂包
+item.black_injector.order_name,赛纳普斯注射器
+item.zyanide_pill.order_name,山奈德片
+item.immunivax_supply_box.order_name,免疫宁药剂包
+item.birth_control_pill.order_name,避孕药
+item.naloxone_supply_box.order_name,纳洛酮药剂包
+item.antidepressant_pill.order_name,抗抑郁药片
+item.large_purple_injector.order_name,免疫宁注射器
+item.vasodilator_injector.order_name,血管舒张素注射器
+item.synaprest_supply_box.order_name,赛纳普斯药剂包
+item.adrenaline_pen.order_name,肾上腺素注射笔
+item.pure_white_injector.order_name,纳洛通注射器
+item.adrenaline_supply_box.order_name,肾上腺素药剂包
+item.blue_blood_supply_box.order_name,蓝血药剂包
+item.nightingale_supply_box.order_name,南丁格尔药剂包
+item.biopharma_supply_box.order_name,生物制药药剂包
+item.anticoagulant_injector.order_name,抗凝剂瓶
+item.vasopressin_injector.order_name,血管加压素注射器
+item.coagulant_dressing.order_name,促凝剂瓶
+item.sannai_supply_box.order_name,山奈德药剂包
+item.star_quiler_first_aid_box.order_name,完整急救盒
+item.amiodarone_pill.order_name,胺碘酮片
+item.vasopressin_supply_box.name,加压素药剂包
+item.vasopressin_supply_box.desc,动物腺体粉末×2、酸×2、水、碱。
+item.vasopressin_supply_box.order_name,加压素药剂包
+item.anticoagulant_supply_box.name,抗凝剂药剂包
+item.anticoagulant_supply_box.desc,动物腺体粉末、碱×3、水、酸。
+item.anticoagulant_supply_box.order_name,抗凝剂药剂包
+item.coagulant_supply_box.name,促凝剂药剂包
+item.coagulant_supply_box.desc,动物腺体粉末、水×2、酒精×2、脂合剂。
+item.coagulant_supply_box.order_name,促凝剂药剂包
+item.antidepressant_supply_box.name,抗抑郁药剂包
+item.antidepressant_supply_box.desc,芳香族化合物、还原剂、酸、水、酒精、碱。
+item.antidepressant_supply_box.order_name,抗抑郁药剂包
+item.amiodarone_supply_box.name,胺碘酮药剂包
+item.amiodarone_supply_box.desc,芳香族化合物、碘化钾晶体、酸、脂合剂、水、碱。
+item.amiodarone_supply_box.order_name,胺碘酮药剂包
+item.belladonna_supply_box.name,颠茄药剂包
+item.belladonna_supply_box.desc,颠茄草×2、酒精×2、酸、碱；用于颠茄注射器原料。
+item.belladonna_supply_box.order_name,颠茄药剂包
+item.vasodilator_supply_box.name,舒张素药剂包
+item.vasodilator_supply_box.desc,动物腺体粉末×2、碱×2、水、脂合剂。
+item.vasodilator_supply_box.order_name,舒张素药剂包
+liquid.belladonna_paste,颠茄糊
+item.belladonna_supply_box.bottle,药剂原料瓶
+item.antidepressant_supply_box.bottle,药剂原料瓶
+item.amiodarone_supply_box.bottle,药剂原料瓶
+item.vasopressin_supply_box.bottle,药剂原料瓶
+item.vasodilator_supply_box.bottle,药剂原料瓶
+item.coagulant_supply_box.bottle,药剂原料瓶
+item.anticoagulant_supply_box.bottle,药剂原料瓶
+item.antidepressant.name,抗抑郁药片
+item.amiodarone.name,胺碘酮片
+item.vasopressin.name,血管加压素注射器
+item.vasodilator.name,血管舒张素注射器
+item.coagulant.name,促凝剂瓶
+item.anticoagulant.name,抗凝剂瓶
+plant_trait.belladonna_paste.name,颠茄糊生成
+plant_trait.belladonna_paste.desc,收获物内部生成颠茄糊。
+item.flashbang.recipe_name,闪光弹配方
+item.smoke_grenade.recipe_name,烟雾弹配方
+item.plastic_explosive.recipe_name,塑性炸药配方
+liquid.aromatic,芳香族化合物
+liquid.antidepressant_intermediate,抗抑郁还原中间体
+liquid.antidepressant_salt,抗抑郁盐溶液
+liquid.antidepressant_concentrate,抗抑郁浓缩液
+liquid.antidepressant_api,抗抑郁原料药
+liquid.potassium_iodide,碘化钾溶液
+liquid.iodination_mix,碘化反应液
+liquid.organic_iodide,有机相碘化物
+liquid.crude_amiodarone,粗制胺碘酮
+liquid.amiodarone_api,胺碘酮原料药
+liquid.gland_extract,动物腺体提取液
+liquid.acidic_pituitary,酸性垂体提取液
+liquid.vasopressin_crude,加压素粗沉淀
+liquid.vasopressin_pure,高纯度加压素
+liquid.vasopressin_solution,加压素精制液
+liquid.alkaline_gland,碱性腺体提取液
+liquid.vasodilator_complex,舒张素络合物
+liquid.vasodilator_pure,高纯度舒张素
+liquid.vasodilator_solution,舒张素精制液
+liquid.thrombin_active,凝血酶活性液
+liquid.thrombin_precipitate,凝血酶沉淀
+liquid.thrombin_pure,高纯度凝血酶
+liquid.coagulant_gel,促凝凝胶
+liquid.heparin_crude,肝素粗提液
+liquid.anticoagulant_crude,抗凝粗品沉淀
+liquid.anticoagulant_active,抗凝有效成分
+liquid.anticoagulant_solution,抗凝精制液
+liquid.pituitary_waste,变性废渣
+item.precision_centrifuge.name,离心机
+item.precision_centrifuge.desc,分离混合液体：输入槽放混合液体，输出槽放空容器，选择一种液体分离输出。基础污染20%，4个化学模组降为0%。
+item.precision_centrifuge.flavor,转得够快，杂质就追不上你。
+location.precision_apothecary_workshop,药剂师原料工坊
+location.precision_apothecary_workshop.leave,所有你遗弃的物品，药剂师会雇佣星泉帮你搬回去。
