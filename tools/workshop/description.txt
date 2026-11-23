@@ -39,6 +39,7 @@ Steam 创意工坊订阅后，在 Mods 菜单启用并信任；需要 0.46D。
 Local content mod for Probably Stolen 0.46D: precision machines, pharmaceutical/ordnance/perfume/bio-pharma lines, vanilla final products, full first aid kit with editable tier label and customer questioning, sealed reagent crate, Nightingale's Salve production chain (aloe seed/hydro, honey, ambient extraction/fusion, 99% purification), aloe-paste gene for fillerweed, apothecary and a recipe book.
 
 [b]1.25–1.26 更新[/b]
+- 售货机医疗品周抽：全店铺共享每周一次；≤1000信用点80%，>1000信用点20%；最低医疗品价格>250时普通周50%不成交；医疗短缺每晚额外抽一次，短缺期间不成交率25%（75%成交）
 - 原版嗅盐生产线：氨水+酒精+水直接反应 → 嗅盐挥发液；水培芦苇过滤芯→纤维浆；成型机两种成分各≥40%、总量≥1mL；成品售价54
 - 药剂包改为可整包完成；药品成型不再需要额外0.1mL添加剂；修复输出空间误判
 - 药剂师原料工坊：全部药剂包+机器+化学模组+种子+原料，周一9折/周五150%全上架
@@ -48,4 +49,4 @@ Local content mod for Probably Stolen 0.46D: precision machines, pharmaceutical/
 - 药剂师系统：白天电话预约（预定药包 + 随机成品药）、夜间探索商店「药剂师原料工坊」（全部药剂包、随机机器/化学模组/种子/原料；周一9折、周五150%全上架）
 - 药剂包内含全部原料；成型不再需要额外0.1mL添加剂，只要求总量≥5mL、有效成分≥2mL且≥40%
 - 修复药品成型输出空间误判；药剂师工坊使用带背景场景图与正确的返回/金额布局
-Version 1.26.58 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab
+Version 1.26.59 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab

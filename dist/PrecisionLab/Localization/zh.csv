@@ -567,3 +567,5 @@ item.smelling_salt.desc,原版嗅盐。玻璃管封装，不可回收。
 item.smelling_salt_supply_box.name,嗅盐药剂包
 item.smelling_salt_supply_box.desc,氨水、酒精×2、水、水培芦苇过滤芯。
 item.smelling_salt_supply_box.order_name,嗅盐药剂包
+mech.vending.medical_rule,每周进行一次医疗品定向抽选：≤1000信用点80%，>1000信用点20%；最低医疗品价格>250时，50%不成交。
+mech.vending.medical_shortage,医疗短缺：每晚额外抽一次，最低医疗品价格>250时75%成交。

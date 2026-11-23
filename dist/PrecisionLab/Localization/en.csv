@@ -568,3 +568,5 @@ item.smelling_salt.desc,Vanilla smelling salts. Sealed in a glass tube and canno
 item.smelling_salt_supply_box.name,Smelling Salts Supply Kit
 item.smelling_salt_supply_box.desc,Ammonia water, alcohol x2, water, and one hydroreed filter.
 item.smelling_salt_supply_box.order_name,Smelling Salts Supply Kit
+mech.vending.medical_rule,Weekly medical draw: 80% for items <=1000 credits, 20% for >1000; if the cheapest medical item is >250, 50% chance of no sale.
+mech.vending.medical_shortage,Medical shortage: one extra nightly draw; if the cheapest medical item is >250, 75% chance of a sale.
