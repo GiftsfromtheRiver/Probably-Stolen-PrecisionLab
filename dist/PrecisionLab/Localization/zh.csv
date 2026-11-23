@@ -555,3 +555,15 @@ item.precision_centrifuge.desc,分离混合液体：输入槽放混合液体，�
 item.precision_centrifuge.flavor,转得够快，杂质就追不上你。
 location.precision_apothecary_workshop,药剂师原料工坊
 location.precision_apothecary_workshop.leave,所有你遗弃的物品，药剂师会雇佣星泉帮你搬回去。
+item.ammonia_water.name,氨水瓶（20 毫升）
+item.ammonia_water.desc,刺鼻的氨水。常温下与酒精、水混合可制得嗅盐挥发液；加热会让氨气逸出。
+item.ammonia_water.flavor,别加热。真的。
+liquid.ammonia_water,氨水
+liquid.smelling_salt_volatile,嗅盐挥发液
+liquid.reed_fiber,芦苇纤维浆
+liquid.smelling_salt_waste,氨废水
+item.smelling_salt.name,嗅盐
+item.smelling_salt.desc,原版嗅盐。玻璃管封装，不可回收。
+item.smelling_salt_supply_box.name,嗅盐药剂包
+item.smelling_salt_supply_box.desc,氨水、酒精×2、水、水培芦苇过滤芯。
+item.smelling_salt_supply_box.order_name,嗅盐药剂包

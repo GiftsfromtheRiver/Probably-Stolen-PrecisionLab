@@ -178,7 +178,7 @@ namespace PrecisionLab
             "blue_blood_supply_box", "biopharma_supply_box", "nightingale_supply_box",
             "belladonna_supply_box", "antidepressant_supply_box", "amiodarone_supply_box",
             "vasopressin_supply_box", "vasodilator_supply_box", "coagulant_supply_box",
-            "anticoagulant_supply_box"
+            "anticoagulant_supply_box", "smelling_salt_supply_box"
         };
 
         private static readonly string[] MachinePool =
@@ -203,9 +203,13 @@ namespace PrecisionLab
         {
             try
             {
+                // Make sure the expanded sale counter exists even when stock is placed directly
+                // (e.g. by a debug/QA path) rather than through Arrive().
+                try { EmporiumEntry.Instance.ExpandFrontCounterGrid(); } catch (Exception) { }
                 Debug.Log("[PrecisionLab] workshop stock placement start");
                 int weekday = StoreStation.GetDayCounter() % 7;
                 bool friday = weekday == 5; // 0=Sunday, 1=Monday, 5=Friday
+                Place("ammonia_water");
                 for (int i = 0; i < KitPool.Length; i++) Place(KitPool[i]);
                 if (friday)
                 {
@@ -241,9 +245,12 @@ namespace PrecisionLab
             if (store == null) return false;
             // Use the vanilla direct-selling path so the item is registered as a purchasable
             // counter offer (selection/price tags work); plain TryAcceptAll only moves the grid item.
-            if (PlayerStore.Instance != null && PlayerStore.Instance.TryAddDirectSellingItemToTable(item, false))
+            if (store.frontInvinvElement.CanTakeAnything())
             {
-                return true;
+                if (PlayerStore.Instance != null && PlayerStore.Instance.TryAddDirectSellingItemToTable(item, false))
+                {
+                    return true;
+                }
             }
             if (GraphUtils.TryAcceptAll(store.frontInvinvElement, item) == 0) return true;
             if (GraphUtils.TryAcceptAll(store.backInvinvElement, item) == 0)

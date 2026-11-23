@@ -32,7 +32,9 @@ namespace PrecisionLab
             K("coagulant_supply_box", "drug_kit_coagulant", "促凝剂药剂包", "动物腺体粉末、水×2、酒精×2、脂合剂", 400,
                 new[] { "animal_gland_powder" }, new[] { "water", "water", "alcohol", "alcohol", "lipobond_agent" }),
             K("anticoagulant_supply_box", "drug_kit_anticoagulant", "抗凝剂药剂包", "动物腺体粉末、碱×3、水、酸", 430,
-                new[] { "animal_gland_powder" }, new[] { "base", "base", "base", "water", "acid", "potassium_iodide", "alcohol" })
+                new[] { "animal_gland_powder" }, new[] { "base", "base", "base", "water", "acid", "potassium_iodide", "alcohol" }),
+            K("smelling_salt_supply_box", "drug_kit_smelling_salt", "嗅盐药剂包", "氨水、酒精×2、水、水培芦苇过滤芯", 260,
+                new[] { "hydroreed_filter" }, new[] { "ammonia_water", "alcohol", "alcohol", "water" })
         };
 
         private static Def K(string id, string sprite, string name, string desc, long value, string[] solids, string[] bottles)

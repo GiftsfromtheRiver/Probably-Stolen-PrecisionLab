@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Builds and runs the Steam Workshop uploader for Precision Lab (Probably Stolen, appid 4348910).
 

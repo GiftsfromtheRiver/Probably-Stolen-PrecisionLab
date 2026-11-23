@@ -29,6 +29,7 @@ namespace PrecisionLab
             E("vasodilator_supply_box", "舒张素药剂包"),
             E("coagulant_supply_box", "促凝剂药剂包"),
             E("anticoagulant_supply_box", "抗凝剂药剂包"),
+            E("smelling_salt_supply_box", "嗅盐药剂包"),
 
             E("naloxone_supply_box", "纳洛酮药剂包"),
             E("birth_control_supply_box", "避孕药药剂包"),

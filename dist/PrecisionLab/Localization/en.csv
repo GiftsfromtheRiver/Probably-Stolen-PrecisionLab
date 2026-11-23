@@ -556,3 +556,15 @@ item.precision_centrifuge.desc,Separates mixed liquids: input container, empty o
 item.precision_centrifuge.flavor,Spin fast enough and impurities cannot catch you.
 location.precision_apothecary_workshop,Apothecary Workshop
 location.precision_apothecary_workshop.leave,Anything you leave behind will be carried back by Xingquan, hired by the apothecary.
+item.ammonia_water.name,Ammonia Water Bottle (20 mL)
+item.ammonia_water.desc,Pungent ammonia water. Mixed with alcohol and water at room temperature it yields smelling-salts volatile liquid; heating drives the ammonia off.
+item.ammonia_water.flavor,Do not heat. Really.
+liquid.ammonia_water,Ammonia Water
+liquid.smelling_salt_volatile,Smelling Salts Volatile Liquid
+liquid.reed_fiber,Hydroreed Fiber Slurry
+liquid.smelling_salt_waste,Ammonia Wastewater
+item.smelling_salt.name,Smelling Salts
+item.smelling_salt.desc,Vanilla smelling salts. Sealed in a glass tube and cannot be reclaimed.
+item.smelling_salt_supply_box.name,Smelling Salts Supply Kit
+item.smelling_salt_supply_box.desc,Ammonia water, alcohol x2, water, and one hydroreed filter.
+item.smelling_salt_supply_box.order_name,Smelling Salts Supply Kit

@@ -1,4 +1,4 @@
-[b]Precision Lab / 精密实验室[/b]
+﻿[b]Precision Lab / 精密实验室[/b]
 《深空当铺：可能是偷的》/ Probably Stolen 0.46D 的本地 mod。
 
 [b]内容[/b]
@@ -29,6 +29,9 @@
 - 原料由退休化学家、药剂师供应；医用酒精也在两处出售
 - 噬菌霉素执照：乔·王尔德助手，800 信用点永久被动
 
+[b]反馈[/b]
+QQ群：478289220
+
 [b]安装[/b]
 Steam 创意工坊订阅后，在 Mods 菜单启用并信任；需要 0.46D。
 
@@ -36,10 +39,13 @@ Steam 创意工坊订阅后，在 Mods 菜单启用并信任；需要 0.46D。
 Local content mod for Probably Stolen 0.46D: precision machines, pharmaceutical/ordnance/perfume/bio-pharma lines, vanilla final products, full first aid kit with editable tier label and customer questioning, sealed reagent crate, Nightingale's Salve production chain (aloe seed/hydro, honey, ambient extraction/fusion, 99% purification), aloe-paste gene for fillerweed, apothecary and a recipe book.
 
 [b]1.25–1.26 更新[/b]
+- 原版嗅盐生产线：氨水+酒精+水直接反应 → 嗅盐挥发液；水培芦苇过滤芯→纤维浆；成型机两种成分各≥40%、总量≥1mL；成品售价54
+- 药剂包改为可整包完成；药品成型不再需要额外0.1mL添加剂；修复输出空间误判
+- 药剂师原料工坊：全部药剂包+机器+化学模组+种子+原料，周一9折/周五150%全上架
 - 七条五阶段药品线：颠茄注射器、抗抑郁药片、胺碘酮片、血管加压素注射器、血管舒张素注射器、促凝剂安瓿、抗凝剂安瓿；含专用药剂包、中间体、成型产品
 - 离心机：输入混合液体，按所选成分分离到输出容器；化学模组降低污染（0–4 模组 = 20/15/10/5/0%）
 - 南丁格尔软膏完整链：改性芦荟叶/种子、水培、三段式萃取/乳化/提纯、原版软膏成型
 - 药剂师系统：白天电话预约（预定药包 + 随机成品药）、夜间探索商店「药剂师原料工坊」（全部药剂包、随机机器/化学模组/种子/原料；周一9折、周五150%全上架）
 - 药剂包内含全部原料；成型不再需要额外0.1mL添加剂，只要求总量≥5mL、有效成分≥2mL且≥40%
 - 修复药品成型输出空间误判；药剂师工坊使用带背景场景图与正确的返回/金额布局
-Version 1.26.49 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab
+Version 1.26.58 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab

@@ -119,6 +119,10 @@ namespace PrecisionLab
         internal const string AnticoagulantCrude = "anticoagulant_crude";
         internal const string AnticoagulantActive = "anticoagulant_active";
         internal const string AnticoagulantSolution = "anticoagulant_solution"; // 肾上腺素药液
+        internal const string AmmoniaWater = "ammonia_water";
+        internal const string SmellingSaltVolatile = "smelling_salt_volatile";
+        internal const string ReedFiber = "reed_fiber";
+        internal const string SmellingSaltWaste = "smelling_salt_waste";
 
         private static bool _registered;
 
@@ -233,6 +237,10 @@ namespace PrecisionLab
                 AddLiquid(AnticoagulantCrude, "liquid.anticoagulant_crude", "Crude Anticoagulant", "98b8d8", false);
                 AddLiquid(AnticoagulantActive, "liquid.anticoagulant_active", "Active Anticoagulant", "a8c8e8", false);
                 AddLiquid(AnticoagulantSolution, "liquid.anticoagulant_solution", "Anticoagulant Solution", "c8e0f8", false);
+                AddLiquid(AmmoniaWater, "liquid.ammonia_water", "Ammonia Water", "a8d8e8", false);
+                AddLiquid(SmellingSaltVolatile, "liquid.smelling_salt_volatile", "Smelling Salts Volatile Liquid", "d8f0e8", false);
+                AddLiquid(ReedFiber, "liquid.reed_fiber", "Hydroreed Fiber Slurry", "b8c898", false);
+                AddLiquid(SmellingSaltWaste, "liquid.smelling_salt_waste", "Ammonia Wastewater", "7a8a8a", true);
                 Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 61 + ")");
             }
             catch (Exception e)
@@ -348,6 +356,10 @@ namespace PrecisionLab
                 SetName(AnticoagulantCrude, "liquid.anticoagulant_crude", "Crude Anticoagulant");
                 SetName(AnticoagulantActive, "liquid.anticoagulant_active", "Active Anticoagulant");
                 SetName(AnticoagulantSolution, "liquid.anticoagulant_solution", "Anticoagulant Solution");
+                SetName(AmmoniaWater, "liquid.ammonia_water", "Ammonia Water");
+                SetName(SmellingSaltVolatile, "liquid.smelling_salt_volatile", "Smelling Salts Volatile Liquid");
+                SetName(ReedFiber, "liquid.reed_fiber", "Hydroreed Fiber Slurry");
+                SetName(SmellingSaltWaste, "liquid.smelling_salt_waste", "Ammonia Wastewater");
             }
             catch (Exception e)
             {

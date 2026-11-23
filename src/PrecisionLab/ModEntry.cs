@@ -206,12 +206,13 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
                 bool oxidizerBottle = directory.Has(ItemIds.OxidizerBottle) || directory.Add(ItemIds.OxidizerBottle, OrdnanceContent.CreateOxidizerBottle);
                 bool metalPowderBottle = directory.Has(ItemIds.MetalPowderBottle) || directory.Add(ItemIds.MetalPowderBottle, OrdnanceContent.CreateMetalPowderBottle);
                 bool nitratingAcidBottle = directory.Has(ItemIds.NitratingAcidBottle) || directory.Add(ItemIds.NitratingAcidBottle, OrdnanceContent.CreateNitratingAcidBottle);
+                bool ammoniaWater = directory.Has("ammonia_water") || directory.Add("ammonia_water", SmellingSaltsContent.CreateAmmoniaBottle);
 
                 if (extractor || purifier || cultivator || supplyBox || api || pen || waste || tourniquet || resolvingBottle || resolvingRefill
                     || naloxoneBox || naloxoneApi || birthControlBox || sannaiBox
                     || synaprestBox || synaprestInjector || immuneSerum || bioGel || blueBloodBox || immunivaxBox || ordnanceBox || mysteryMedBox || aromaticBottle || crudePheromoneBottle || perfumeBox
                     || phageBottle || fungalBottle || stemBottle || bioPharmaBox || firstAidBox || firstAidShell || firstAidSeal || aloeLeaf || honeyBottle || aloeSeed || nightingaleBox || glandPowder || aromaticCompound || potassiumIodide || antidepressant || amiodarone || vasopressin || vasodilator || coagulant || anticoagulant || drugKits || centrifuge
-                    || oxidizerBottle || metalPowderBottle || nitratingAcidBottle)
+                    || oxidizerBottle || metalPowderBottle || nitratingAcidBottle || ammoniaWater)
                 {
                     _log.Log("items registered in mod item directory: extractor=" + extractor
                         + " purifier=" + purifier + " cultivator=" + cultivator
@@ -412,6 +413,7 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
                 NightingaleContent.EnsureRecipes();
                 BelladonnaContent.EnsureRecipes();
                 DrugLabContent.EnsureRecipes();
+                  SmellingSaltsContent.EnsureRecipes();
                 FirstAidBox.EnsureRegistered();
                 FirstAidCleanup.ClaimStaleUnownedItems();
                 PhagimycinLicense.Register();
@@ -487,6 +489,7 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
                 NightingaleContent.EnsureRecipes();
                 BelladonnaContent.EnsureRecipes();
                 DrugLabContent.EnsureRecipes();
+                  SmellingSaltsContent.EnsureRecipes();
                 FirstAidBox.EnsureRegistered();
                 FirstAidCleanup.ClaimStaleUnownedItems();
                 PhagimycinLicense.Register();
