@@ -12,6 +12,8 @@
 - 南丁格尔软膏线：改性芦荟叶/芦荟种子（水培、韧棉特性+可食用）、医用蜂蜜、三段式提取/乳化/成型；酒精只做萃取剂不消耗；软膏基质≥99%后压成原版南丁格尔软膏
 - 芦荟糊生成基因：可写入填料草等种子，每株内部生成纯净芦荟糊；50级约2mL，单株上限3mL
 - 简易止血带、药剂师（电话预约）、密封药剂原料箱、南丁格尔药剂包、15+ 页配方书
+- 抗生素生产线：微生物培养机选生产菌→粗培养液→提纯浓缩→成型装瓶；广谱25、窄谱50、鸡尾酒=成分价值×1.1；含酸碱培养环境、旧存档迁移、光谱成分/药瓶美术
+- 冷却反应速度统一：六条新药线与颠茄链改为蓝血同速（20%/tick，最后100µL收尾）
 
 [b]急救盒规则[/b]
 - 内容 6 件齐全=完整；蓝血袋=高级；免疫宁是赝品/过期/损坏=未配齐（即使其他齐全或蓝血）
@@ -36,7 +38,7 @@ QQ群：478289220
 Steam 创意工坊订阅后，在 Mods 菜单启用并信任；需要 0.46D。
 
 [b]English[/b]
-Local content mod for Probably Stolen 0.46D: precision machines, pharmaceutical/ordnance/perfume/bio-pharma lines, vanilla final products, full first aid kit with editable tier label and customer questioning, sealed reagent crate, Nightingale's Salve production chain (aloe seed/hydro, honey, ambient extraction/fusion, 99% purification), aloe-paste gene for fillerweed, apothecary and a recipe book.
+Local content mod for Probably Stolen 0.46D: precision machines, pharmaceutical/ordnance/perfume/bio-pharma lines, vanilla final products, full first aid kit with editable tier label and customer questioning, sealed reagent crate, Nightingale's Salve production chain (aloe seed/hydro, honey, ambient extraction/fusion, 99% purification), aloe-paste gene for fillerweed, apothecary, a recipe book, and an antibiotic cultivation/purification/bottling line. New drug lines use the same 20%/tick reaction curve as Blue Blood.
 
 [b]1.25–1.26 更新[/b]
 - 售货机医疗品周抽：全店铺共享每周一次；≤1000信用点80%，>1000信用点20%；最低医疗品价格>250时普通周50%不成交；医疗短缺每晚额外抽一次，短缺期间不成交率25%（75%成交）
@@ -49,4 +51,12 @@ Local content mod for Probably Stolen 0.46D: precision machines, pharmaceutical/
 - 药剂师系统：白天电话预约（预定药包 + 随机成品药）、夜间探索商店「药剂师原料工坊」（全部药剂包、随机机器/化学模组/种子/原料；周一9折、周五150%全上架）
 - 药剂包内含全部原料；成型不再需要额外0.1mL添加剂，只要求总量≥5mL、有效成分≥2mL且≥40%
 - 修复药品成型输出空间误判；药剂师工坊使用带背景场景图与正确的返回/金额布局
-Version 1.26.59 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab
+[b]1.27 更新[/b]
+- 抗生素生产线：培养机选链霉菌/青霉菌/类芽孢杆菌，产粗培养液；提纯机一晚除杂浓缩；成型机装瓶；广谱25、窄谱50、鸡尾酒成分和×1.1
+- 窄谱培养环境：抗阳性需酸≥10%、抗阴性需碱≥10%；成功一轮消耗产量9%–11%；性能模块提高培养液产量
+- 培养机移除营养果槽；旧存档营养果自动退回柜台；菌群按钮固定、活性栏实时刷新
+- 鸡尾酒成分/纯度/价格迁移修复；刷出/NPC池鸡尾酒为65%有效+35%杂质街头标准
+- 新药线与颠茄链改为蓝血同速：20%/tick，最后100µL收尾
+- 药剂师离场提示修复、电话预约界面修复、培养机缺酸碱文本修复
+
+Version 1.27.8 · MIT · Source: https://github.com/GiftsfromtheRiver/Probably-Stolen-PrecisionLab

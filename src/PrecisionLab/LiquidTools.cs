@@ -642,9 +642,16 @@ namespace PrecisionLab
         /// <summary>How much sugar one nightly cycle can digest (µL), given modules + activity.</summary>
         internal static int GetCultivatorThroughput(int performanceBonus, int activity)
         {
+            // Sugar throughput is driven by activity only. Performance modules increase the
+            // culture yield per processed sugar (GetCultivatorCultureYield) instead.
             double activityFactor = 0.25 + 0.75 * (Mathf.Clamp(activity, 0, 100) / 100.0);
+            return Math.Max(1, (int)Math.Round(CultivatorBaseThroughput * activityFactor));
+        }
+
+        internal static int GetCultivatorCultureYield(int performanceBonus, int activity)
+        {
             double performanceFactor = 1.0 + Mathf.Clamp(performanceBonus, 0, 300) / 100.0;
-            return Math.Max(1, (int)Math.Round(CultivatorBaseThroughput * performanceFactor * activityFactor));
+            return Math.Max(1, (int)Math.Round(GetCultivatorThroughput(0, activity) * performanceFactor));
         }
 
         /// <summary>

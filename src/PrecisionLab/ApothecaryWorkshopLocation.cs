@@ -82,8 +82,21 @@ namespace PrecisionLab
 
         public override string GetLeaveWarning()
         {
-            // Use the vanilla bottom-right leave button without an extra confirmation popup;
-            // the Leave() handler still returns owned/left items to the back inventory.
+            try
+            {
+                EmporiumEntry store = EmporiumEntry.Instance;
+                if (store != null)
+                {
+                    bool hasGround = (store.frontInvinvElement != null && store.frontInvinvElement.childItems.Count > 0)
+                        || (store.backInvinvElement != null && store.backInvinvElement.childItems.Count > 0);
+                    if (hasGround)
+                    {
+                        return Loc.Get("apothecary.leave_warning",
+                            "地上还有没带走的东西。药剂师会雇炎烁帮忙搬回后仓，确定要离开吗？");
+                    }
+                }
+            }
+            catch (Exception) { }
             return "";
         }
 

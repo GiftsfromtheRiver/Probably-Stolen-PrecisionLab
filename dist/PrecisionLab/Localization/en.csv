@@ -59,29 +59,20 @@ item.purifier.manual.flavor,Someone scribbled the important parts on a sticky no
 item.purifier.manual.desc,"[Module effects]:\n- Efficiency: power draw\n- Performance: amount processed per night\n- Quality: purity cap (purity +x%, up to 100%)\n\nProvide power and a liquid container and the machine runs at night. Removes physical, chemical (including heavy metals) and biological contamination; valuable ingredients are kept.\nWaste output: collects dextro waste from the liquid; several batches accumulate in the same waste bottle."
 item.cultivator.name,Microbial Cultivator
 item.cultivator.flavor,A sealed fermenter humming with something that eats sugar. Do not open the lid during a night shift.
-item.cultivator.desc,Cultures sugar-eating microbes in a sealed vat. Put a sugary liquid container in the liquid slot and nutrifruit (small / normal / large / huge) in the nutrient slot: the machine presses the fruit into juice that keeps the culture active, and each night the culture digests sugar into a little organic waste (the rest is burned off). When the liquid runs low on sugar the culture goes dormant until it is fed nutrifruit again. Performance modules digest more sugar per night, quality modules reduce the waste, efficiency modules reduce power draw.
 item.cultivator.manual.name,Microbial Cultivator Notes
 item.cultivator.manual.flavor,A lab note covered in coffee rings and a warning about not licking the culture.
-item.cultivator.manual.desc,"[Module effects]:\n- Efficiency: power draw\n- Performance: more sugar digested per night\n- Quality: less organic waste left behind\n\nPut a sugary liquid container in the liquid slot and nutrifruit (small / normal / large / huge) in the nutrient slot. Each night the machine presses one nutrifruit into juice to feed the culture (+15 / +25 / +40 / +60 activity) and digests sugar into a little organic waste. When the liquid runs out of sugar the culture goes dormant (activity 0) and stops until it is fed nutrifruit and given more sugar."
 machine.cultivator.module,Modules
 machine.cultivator.container,Liquid Container
 ui.cultivator.culture_label,Culture
 upgrade.cultivator.title,Microbial Cultivator
-upgrade.cultivator.desc,A bioreactor that cultures sugar-eating microbes. Keep it fed with nutrifruit (small / normal / large / huge) and insert a sugary liquid container; each night it presses one fruit into culture juice and digests sugar into a little organic waste. Without sugar the culture goes dormant. Delivered to your inventory.
+upgrade.cultivator.desc,A bioreactor that cultures sugar-eating microbes. Insert a sugary liquid container (for example blended nutrifruit juice); each night it digests sugar and produces crude antibiotic culture plus contaminants. There is no nutrifruit slot; without sugar the culture goes dormant and wakes when sugar is added. Delivered to your inventory.
 upgrade.cultivator.bought,Ordered. Check your store inventory.
-tooltip.cultivator.activity,Culture activity: {0}% (digests {1} mL sugar per night)
-tooltip.cultivator.rule,Eats sugar: the sugar is consumed and a little organic waste is left behind. Quality modules reduce the waste. Nutrifruit keeps the culture active; without sugar it goes dormant.
 tooltip.cultivator.processed,Sugar digested last night: {0:0.###} mL
 tooltip.cultivator.empty,Insert a liquid container with sugar into the machine. The culture runs every night as long as the battery has charge.
 tooltip.cultivator.nosugar,The container has no sugar: the culture is going dormant until it gets sugar again.
 tooltip.cultivator.container,Container sugar: {0} mL
 tooltip.hydrolysis.hint,Tip: starch in an acidic liquid hydrolyses into sugar at 40-60 °C (heating plate).
 tooltip.sugar.hint,Tip: the Microbial Cultivator eats sugar and leaves a little organic waste.
-tooltip.cultivator.dormant,Culture: DORMANT (0%) — add nutrifruit to wake it up and sugar to feed it.
-tooltip.cultivator.dormant_panel,Dormant · needs nutrifruit
-tooltip.cultivator.fruit,Nutrient slot: {0} (pressing it feeds the culture +{1}% activity)
-tooltip.cultivator.nofruit,Nutrient slot: empty (add nutrifruit to keep the culture active)
-machine.cultivator.nutrient,Nutrifruit
 liquid.catechol,Catechol
 liquid.hydroxymethyl_base,N-Hydroxymethyl Base Solution
 liquid.resolving_agent,Chiral Resolving Agent
@@ -570,3 +561,56 @@ item.smelling_salt_supply_box.desc,Ammonia water, alcohol x2, water, and one hyd
 item.smelling_salt_supply_box.order_name,Smelling Salts Supply Kit
 mech.vending.medical_rule,Weekly medical draw: 80% for items <=1000 credits, 20% for >1000; if the cheapest medical item is >250, 50% chance of no sale.
 mech.vending.medical_shortage,Medical shortage: one extra nightly draw; if the cheapest medical item is >250, 75% chance of a sale.
+item.antibiotic_broad.name,Broad-Spectrum Antibiotic
+item.antibiotic_gram_pos.name,Narrow-Spectrum Antibiotic (Gram-positive)
+item.antibiotic_gram_neg.name,Narrow-Spectrum Antibiotic (Gram-negative)
+item.antibiotic_cocktail.name,Cocktail Antibiotic
+machine.cultivator.strain,Strain
+ui.cultivator.strain_button,Select strain
+ui.cultivator.strain_window,Select culture strain
+ui.cultivator.strain.none,Stop culturing / vanilla sugar digestion
+ui.cultivator.strain.none_desc,No antibiotic culture; keep vanilla sugar digestion only.
+ui.cultivator.strain.pick,Select: 
+ui.cultivator.strain.close,Close
+antibiotic.broad.label,Broad-spectrum
+antibiotic.gram_pos.label,Gram-positive narrow
+antibiotic.gram_neg.label,Gram-negative narrow
+item.antibiotic_broad.desc,Bottled broad-spectrum antibiotic. Crude culture is purified and concentrated, then bottled without binders.
+item.antibiotic_gram_pos.desc,Bottled narrow-spectrum Gram-positive antibiotic. Purified concentrate, no binders.
+item.antibiotic_gram_neg.desc,Bottled narrow-spectrum Gram-negative antibiotic. Purified concentrate, no binders.
+item.antibiotic_cocktail.desc,Bottled cocktail antibiotic. Contains multiple concentrated antibiotics; label lists all components.
+tooltip.cultivator.no_sugar_panel,No sugar: needs sugary liquid · empty bottle/pure water produces no culture
+tooltip.cultivator.rule,Eats sugar: use a sugary liquid such as blended nutrifruit juice. There is no nutrifruit slot; without sugar the culture goes dormant. Quality modules reduce waste.
+tooltip.cultivator.dormant,Culture: DORMANT (0%) — add sugar to wake it up.
+tooltip.cultivator.dormant_panel,Dormant · needs sugar
+tooltip.antibiotic.cocktail_price,Ingredient value total: {0} credits x 1.1 = {1}
+tooltip.antibiotic.cocktail_purity,Chemical purity: sum of all active ingredients (not a single component).
+liquid.antibiotic_culture_broad,Broad-spectrum Antibiotic Crude Culture
+liquid.antibiotic_culture_gram_pos,Anti-Gram-positive Antibiotic Crude Culture
+liquid.antibiotic_culture_gram_neg,Anti-Gram-negative Antibiotic Crude Culture
+liquid.antibiotic_concentrate_broad,Broad-spectrum Antibiotic Concentrate
+liquid.antibiotic_concentrate_gram_pos,Anti-Gram-positive Antibiotic Concentrate
+liquid.antibiotic_concentrate_gram_neg,Anti-Gram-negative Antibiotic Concentrate
+ui.cultivator.strain_header,Choose an antibiotic producer
+ui.cultivator.strain.broad,Streptomyces (actinomycete; broad-spectrum product)
+ui.cultivator.strain.gram_pos,Penicillium (fungus; mainly anti-Gram-positive product)
+ui.cultivator.strain.gram_neg,Paenibacillus (Gram-positive; mainly anti-Gram-negative product)
+ui.cultivator.strain.broad_desc,Streptomyces is itself Gram-positive but produces broad-spectrum crude culture.
+ui.cultivator.strain.gram_pos_desc,"Penicillium produces natural penicillin, mainly active against Gram-positive bacteria; broad-spectrum penicillins are semisynthetic derivatives."
+ui.cultivator.strain.gram_neg_desc,"Paenibacillus is itself Gram-positive, but its polymyxin mainly targets Gram-negative bacteria."
+ui.cultivator.strain_desc,"A producer's own Gram stain is not the product's target spectrum: Streptomyces and Paenibacillus are Gram-positive bacteria, but Streptomyces makes broad-spectrum antibiotics while Paenibacillus makes polymyxin, which mainly targets Gram-negative bacteria. Penicillium is a fungus. Narrow-spectrum cultures additionally need the matching acid/base environment (>=10% total) or they will not produce."
+panel.cultivator.yield,"{0}% · culture {1}mL/night{2} · {3}"
+panel.cultivator.none,"{0}% · sugar {1}mL/night · vanilla digestion"
+tooltip.cultivator.catalyst_acid,"acid"
+tooltip.cultivator.catalyst_base,"base"
+tooltip.cultivator.catalyst_cost," · {0} cost ~{1}mL/night"
+tooltip.cultivator.catalyst_tooltip,"Narrow culture requires {0} >=10% total before the cycle; a successful cycle consumes about 9-11% of the culture yield."
+tooltip.cultivator.activity,"Culture activity: {0}% (sugar throughput {1} mL/night; culture yield {2} mL/night)"
+item.cultivator.desc,"Cultures sugar-eating microbes in a sealed vat. Put a sugary liquid container (for example blended nutrifruit juice) in the liquid slot; each night the culture digests sugar and produces crude antibiotic culture plus contaminants. There is no nutrifruit slot. When the liquid runs out of sugar the culture goes dormant until sugar is added again. Performance modules increase culture yield per processed sugar, quality modules reduce contaminants, efficiency modules reduce power draw."
+item.cultivator.manual.desc,"[Module effects]:\n- Efficiency: power draw\n- Performance: higher culture yield per processed sugar (does not increase sugar throughput)\n- Quality: fewer chemical/physical contaminants\n\nPut a sugary liquid container (for example blended nutrifruit juice) in the liquid slot. No nutrifruit slot is needed. Narrow-spectrum cultures require the matching acid/base >=10% total; a successful cycle consumes about 9-11% of the actual culture yield. Turbo booster only triggers one extra cycle; it cannot replace sugar."
+tooltip.antibiotic.broad,"Broad-spectrum antibiotic: value 25; purified concentrate, requires >=4mL concentrate, >=5mL total, no contaminants."
+tooltip.antibiotic.gram_pos,"Gram-positive narrow antibiotic: value 50; cultivation liquid needs acid >=10% total. Pressing needs >=4mL concentrate, >=90% total, >=5mL total, no contaminants."
+tooltip.antibiotic.gram_neg,"Gram-negative narrow antibiotic: value 50; cultivation liquid needs base >=10% total. Pressing needs >=4mL concentrate, >=90% total, >=5mL total, no contaminants."
+tooltip.antibiotic.cocktail,"Cocktail antibiotic: at least two concentrates; label lists all components. Value = sum of ingredients x1.1 (broad 25, narrow 50)."
+tooltip.cultivator.no_catalyst_panel,{0}% · missing culture environment: {1} needs >=10% total
+apothecary.leave_warning,There are still items on the ground. The apothecary will hire Yanshuo to help move them back to the rear storage. Leave anyway?

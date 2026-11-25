@@ -33,8 +33,17 @@ namespace PrecisionLab
             {
                 // Storage indices (MachineryPanelRow.CollectStorage):
                 //   purifier : power=0, module=1, container=2, waste=3, note=4
-                //   cultivator: power=0, module=1, container=2, nutrient=3, note=4
+                //   new cultivator: power=0, module=1, container=2, note=3
+                //   legacy save cultivator: + nutrient slot => note=4
                 int noteIndex = 4;
+                if (machine.identifier == ItemIds.Cultivator
+                    && machine.contentWindow?.childElement is MachineryPanelRow row)
+                {
+                    bool hasNutrient = false;
+                    foreach (MachineryPanel panel in row.Panels)
+                        if (panel != null && panel.role == "nutrient") { hasNutrient = true; break; }
+                    noteIndex = hasNutrient ? 4 : 3;
+                }
                 GameSlotInventory noteSlot = MachineHelper.GetSlot(machine, noteIndex) as GameSlotInventory;
                 if (noteSlot == null || noteSlot.childItem != null)
                 {
@@ -103,6 +112,10 @@ namespace PrecisionLab
             if (identifier == ItemIds.Purifier || identifier == ItemIds.Cultivator)
             {
                 PurifierManualHelper.TryEnsure(__result);
+            }
+            if (identifier == AntibioticContent.CocktailId)
+            {
+                AntibioticOutputPatch.SeedSpawnedCocktail(__result);
             }
         }
     }

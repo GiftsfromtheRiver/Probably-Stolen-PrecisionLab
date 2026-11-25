@@ -270,11 +270,13 @@ namespace PrecisionLab
                     }
                     if (ratio <= 0) continue;
                     if (ratio > 1.0) ratio = 1.0;
+                    double stepRatio = ReactionMath.Fraction(ratio);
+                    if (stepRatio <= 0.0) return 0;
                     for (int k = 0; k < s.Inputs.Length; k++)
-                        Add(c, s.Inputs[k], -Math.Max(1, (int)Math.Floor(s.Amounts[k] * ratio)));
+                        Add(c, s.Inputs[k], -Math.Max(1, (int)Math.Floor(s.Amounts[k] * stepRatio)));
                     for (int k = 0; k < s.Outputs.Length; k++)
                     {
-                        int outAmt = (int)Math.Floor(s.OutAmounts[k] * ratio);
+                        int outAmt = (int)Math.Floor(s.OutAmounts[k] * stepRatio);
                         if (outAmt > 0) Add(c, s.Outputs[k], outAmt);
                     }
                     return 1;

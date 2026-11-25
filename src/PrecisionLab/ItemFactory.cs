@@ -364,7 +364,9 @@ namespace PrecisionLab
                     return;
                 }
                 int removed = LiquidTools.PurifyContaminants(container, machine, out LiquidTools.PurifyAccounting accounting);
-                if (removed <= 0)
+                // One night in the purifier both removes contamination and concentrates crude culture.
+                int concentrated = AntibioticPurify.Process(container);
+                if (removed <= 0 && concentrated <= 0)
                 {
                     return;
                 }
@@ -375,7 +377,7 @@ namespace PrecisionLab
                     state.Enable().SetInt(finalRemoved);
                 });
                 MachineHelper.OnMachineActioned(machine, moduleGrid);
-                Debug.Log("[PrecisionLab] purifier removed " + removed + " µL of contaminants (" + accounting + ")");
+                Debug.Log("[PrecisionLab] purifier removed " + removed + " µL of contaminants; antibiotic concentrated=" + concentrated);
             }
             catch (Exception e)
             {
@@ -474,23 +476,26 @@ namespace PrecisionLab
             GameSlotInventory powerSlot = new GameSlotInventory();
             GameGridInventory moduleGrid = new GameGridInventory(MachineHelper.DEFAULT_MODULE_BAY_CONFIG, MachineHelper.DEFAULT_MODULE_BAY_WIDTH);
             GameSlotInventory containerSlot = new GameSlotInventory();
-            GameSlotInventory nutrientSlot = new GameSlotInventory();
             GameSlotInventory noteSlot = new GameSlotInventory();
 
             MachineryText cultureText = new MachineryText();
             MachineryPanel culturePanel = MachineHelper.Panel(
                 Loc.Get("ui.cultivator.culture_label", "Culture"), cultureText, "culture");
+            MachineryButton strainButton = new MachineryButton(
+                Loc.Get("ui.cultivator.strain_button", "选择菌群"));
+            MachineryPanel strainPanel = MachineHelper.Panel(
+                Loc.Get("machine.cultivator.strain", "菌群"), strainButton, "strain");
 
-            // Panel order: power, module, container, nutrient fruit, culture, note — one row.
+            // Panel order: power, module, container, culture, note — one row.
             // Storage indices (display-only culture text adds none): power=0, module=1,
-            // container=2, nutrient=3, note=4.
+            // container=2, note=3.
             PixelWindow window = MachineHelper.CreateMachineryWindow(
                 true,
                 MachineHelper.PowerPanel(powerSlot),
                 MachineHelper.Panel(Loc.Get("machine.cultivator.module", "Modules"), moduleGrid, "module"),
                 MachineHelper.Panel(Loc.Get("machine.cultivator.container", "Liquid Container"), containerSlot, "container"),
-                MachineHelper.Panel(Loc.Get("machine.cultivator.nutrient", "Nutrifruit"), nutrientSlot, "nutrient"),
                 culturePanel,
+                strainPanel,
                 MachineHelper.NotePanel(noteSlot));
 
             GameItem machine = ItemDirectory.CreateEmptyItem().SetContentWindow(window);
@@ -500,7 +505,7 @@ namespace PrecisionLab
                 "A sealed fermenter humming with something that eats sugar. Do not open the lid during a night shift.");
             machine.shortDescription = Loc.Get(
                 "item.cultivator.desc",
-                "Cultures sugar-eating microbes in a sealed vat. Put a sugary liquid container in the liquid slot and nutrifruit (small / normal / large / huge) in the nutrient slot: the machine presses the fruit into juice that keeps the culture active, and each night the culture digests sugar into a little organic waste (the rest is burned off). When the liquid runs low on sugar the culture goes dormant until it is fed nutrifruit again. Performance modules digest more sugar per night, quality modules reduce the waste, efficiency modules reduce power draw.");
+                "Cultures sugar-eating microbes in a sealed vat. Put a sugary liquid container (for example blended nutrifruit juice) in the liquid slot: each night the culture digests sugar and produces crude antibiotic culture plus contaminants. No nutrifruit slot is needed. When the liquid runs out of sugar the culture goes dormant until sugar is added again. Performance modules increase the culture yield per processed sugar, quality modules reduce contaminants, efficiency modules reduce power draw.");
             machine.unitValue = CultivatorBasePrice;
             ModSprites.Apply(machine, SpriteKeys.Cultivator, "Items/items_tool2", "purifier");
             machine.SetGameItemType("MACHINE");
@@ -513,6 +518,12 @@ namespace PrecisionLab
             {
                 state.Enable().SetInt(100);
             });
+            CultivatorStrainUI.SetStrain(machine, AntibioticContent.StrainNone);
+            strainButton.SetCallback(delegate
+            {
+                GameItem liveMachine = CultivatorStrainUI.ResolveMachineFromButton(strainButton, machine);
+                CultivatorStrainUI.Open(liveMachine, cultureText, strainButton);
+            });
 
             MachineHelper.SetupBatterySlot(powerSlot, machine);
             MachineHelper.SetupModuleBay(moduleGrid, machine, delegate
@@ -520,19 +531,6 @@ namespace PrecisionLab
                 UpdateCulturePanel(cultureText, machine);
             });
             MachineHelper.SetupManualSlot(noteSlot);
-
-            // Nutrient slot: only nutrifruit (small / normal / large / huge) is accepted; the
-            // machine presses one fruit per nightly cycle into juice that feeds the culture.
-            nutrientSlot.mayInventoryAddItemFunc = (candidate, inventory) =>
-                GeneralHelper.IsItemOwned(candidate)
-                && candidate.identifier == "nutrifruit";
-            nutrientSlot.SetBackgroundFadeSprite("Items/items_hydroponic_plant", "nutrifruit");
-            nutrientSlot.onSlotAddItemFunc = (Action<GameItem, GameInventory, SlotMarker>)Delegate.Combine(
-                nutrientSlot.onSlotAddItemFunc,
-                (Action<GameItem, GameInventory, SlotMarker>)delegate (GameItem addedItem, GameInventory inventory, SlotMarker slot)
-                {
-                    UpdateCulturePanel(cultureText, machine);
-                });
 
             containerSlot.mayInventoryAddItemFunc = (candidate, inventory) =>
                 GeneralHelper.IsItemOwned(candidate)
@@ -554,7 +552,7 @@ namespace PrecisionLab
 
             machine.onCycleEndSlotItemFunc = delegate (GameItem self, GameInventory parentInventory, SlotMarker slot)
             {
-                RunCultivatorCycle(self, powerSlot, moduleGrid, containerSlot, nutrientSlot, cultureText);
+                RunCultivatorCycle(self, powerSlot, moduleGrid, containerSlot, cultureText);
             };
 
             // Keep the culture readout live: activity changes on the nightly cycle (and can go
@@ -564,7 +562,7 @@ namespace PrecisionLab
                 machine.onOneSecondItemFunc,
                 (Action<GameItem, GameInventory, SlotMarker>)delegate (GameItem self, GameInventory inventory, SlotMarker slotMarker)
                 {
-                    UpdateCulturePanel(cultureText, self);
+                    RefreshCulturePanel(self, cultureText);
                 });
 
             UpdateCulturePanel(cultureText, machine);
@@ -586,7 +584,7 @@ namespace PrecisionLab
                 "A lab note covered in coffee rings and a warning about not licking the culture.");
             manual.shortDescription = Loc.Get(
                 "item.cultivator.manual.desc",
-                "[Module effects]:\n- Efficiency: power draw\n- Performance: more sugar digested per night\n- Quality: less organic waste left behind\n\nPut a sugary liquid container in the liquid slot and nutrifruit (small / normal / large / huge) in the nutrient slot. Each night the machine presses one nutrifruit into juice to feed the culture (+15 / +25 / +40 / +60 activity) and digests sugar into a little organic waste. When the liquid runs out of sugar the culture goes dormant (activity 0) and stops until it is fed nutrifruit and given more sugar.");
+                "[Module effects]:\n- Efficiency: power draw\n- Performance: higher culture yield per processed sugar\n- Quality: fewer contaminants\n\nPut a **sugary liquid** container in the liquid slot, for example blended nutrifruit juice. There is no nutrifruit slot and no fruit feeding: the culture wakes from dormancy as soon as sugar is present. An empty bottle or pure water has no sugar and will NOT produce antibiotic culture. Turbo booster only triggers one extra nightly cycle; it does not replace the sugar.");
             manual.SetGameItemType("DOCUMENT");
             manual.EnableTag("IMPORTANT_TAG");
             manual.EnableTag("MACHINE_MANUAL_TAG");
@@ -610,15 +608,40 @@ namespace PrecisionLab
             int activity = GetCultivatorActivity(machine);
             if (activity <= 0)
             {
-                return Loc.Get("tooltip.cultivator.dormant_panel", "Dormant · needs nutrifruit");
+                return Loc.Get("tooltip.cultivator.dormant_panel", "Dormant · needs sugar");
             }
             int performance = MachineryHelper.GetCurrentPerformanceBonus(machine);
             int throughput = LiquidTools.GetCultivatorThroughput(performance, activity);
-            return string.Format(
-                System.Globalization.CultureInfo.InvariantCulture,
-                "{0}% · {1} mL/night",
-                activity,
-                LiquidTools.FormatUl(throughput));
+            int cultureYield = LiquidTools.GetCultivatorCultureYield(performance, activity);
+            string strain = CultivatorStrainUI.GetStrain(machine);
+            bool selected = !string.IsNullOrEmpty(strain) && strain != AntibioticContent.StrainNone;
+            if (selected)
+            {
+                try
+                {
+                    GameSlotInventory liquidSlot = MachineHelper.GetSlot(machine, 2) as GameSlotInventory;
+                    GameItem liquid = liquidSlot != null ? liquidSlot.childItem : null;
+                    int sugar = liquid != null ? LiquidTools.GetLiquidAmount(liquid, "sugar") : 0;
+                    if (sugar <= 0)
+                    {
+                        return Loc.Fmt("tooltip.cultivator.no_sugar_panel",
+                            "{0}% · 缺糖：需含糖液体 · 不产培养液", activity);
+                    }
+                    if (!AntibioticCultivation.EnvironmentOk(machine, liquid, out string catalyst))
+                    {
+                        return Loc.Fmt("tooltip.cultivator.no_catalyst_panel",
+                            "{0}% · 缺少培养环境：{1} 需≥总量10%", activity, catalyst == "acid" ? "酸" : "碱");
+                    }
+                    string catalystLabel = catalyst == null ? "" : Loc.Get(catalyst == "acid" ? "tooltip.cultivator.catalyst_acid" : "tooltip.cultivator.catalyst_base", catalyst == "acid" ? "酸" : "碱");
+                    string cost = catalyst == null ? "" : Loc.Fmt("tooltip.cultivator.catalyst_cost",
+                        " · {0}耗约{1}mL/夜", catalystLabel, LiquidTools.FormatUl((int)Math.Round(cultureYield * 0.10)));
+                    return Loc.Fmt("panel.cultivator.yield",
+                        "{0}% · 培养液{1}mL/夜{2} · {3}", activity, LiquidTools.FormatUl(cultureYield), cost, CultivatorStrainUI.DisplayFor(strain));
+                }
+                catch (Exception) { }
+            }
+            return Loc.Fmt("panel.cultivator.none",
+                "{0}% · 糖{1}mL/夜 · 原版糖消化", activity, LiquidTools.FormatUl(throughput));
         }
 
         /// <summary>Updates the culture panel: activity (or dormant state) + sugar throughput per night.</summary>
@@ -639,6 +662,33 @@ namespace PrecisionLab
             catch (Exception e)
             {
                 Debug.LogWarning("[PrecisionLab] culture panel update failed: " + e.Message);
+            }
+        }
+
+        /// <summary>Finds the live culture MachineryText inside the placed machine's panel row and updates it.</summary>
+        internal static void RefreshCulturePanel(GameItem machine, MachineryText fallback = null)
+        {
+            try
+            {
+                if (machine == null) return;
+                PixelWindow window = machine.contentWindow;
+                if (window != null && window.childElement is MachineryPanelRow row)
+                {
+                    foreach (MachineryPanel panel in row.Panels)
+                    {
+                        if (panel == null || panel.role != "culture") continue;
+                        if (panel.content is MachineryText live)
+                        {
+                            UpdateCulturePanel(live, machine);
+                            return;
+                        }
+                    }
+                }
+                if (fallback != null) UpdateCulturePanel(fallback, machine);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[PrecisionLab] live culture panel refresh failed: " + e.Message);
             }
         }
 
@@ -666,39 +716,7 @@ namespace PrecisionLab
         }
 
         /// <summary>
-        /// Presses one nutrifruit from the nutrient slot into juice and feeds the culture.
-        /// The fruit is consumed. Returns the activity points gained (0 when nothing happened).
-        /// </summary>
-        internal static int PressNutrientFruit(GameItem machine, GameSlotInventory nutrientSlot)
-        {
-            if (machine == null || nutrientSlot == null)
-            {
-                return 0;
-            }
-            GameItem fruit = nutrientSlot.childItem;
-            int nutrition = GetNutrifruitNutrition(fruit);
-            if (nutrition <= 0)
-            {
-                return 0;
-            }
-            int activity = GetCultivatorActivity(machine);
-            machine.ModifyTag(Tags.CultivatorActivity, delegate (TagState state)
-            {
-                state.Enable().SetInt(Math.Min(100, activity + nutrition));
-            });
-            try
-            {
-                fruit.Destroy();
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning("[PrecisionLab] consuming nutrifruit failed: " + e.Message);
-            }
-            Debug.Log("[PrecisionLab] pressed nutrifruit (+" + nutrition + "% culture activity)");
-            return nutrition;
-        }
-
-        private static void RunCultivatorCycle(GameItem machine, GameSlotInventory powerSlot, GameGridInventory moduleGrid, GameSlotInventory containerSlot, GameSlotInventory nutrientSlot, MachineryText cultureText)
+        private static void RunCultivatorCycle(GameItem machine, GameSlotInventory powerSlot, GameGridInventory moduleGrid, GameSlotInventory containerSlot, MachineryText cultureText)
         {
             try
             {
@@ -706,13 +724,25 @@ namespace PrecisionLab
                 {
                     state.Enable().SetInt(0);
                 });
-                int pressed = PressNutrientFruit(machine, nutrientSlot);
                 GameItem container = containerSlot != null ? containerSlot.childItem : null;
                 int sugar = container != null && !WaterHelper.IsEmpty(container)
                     ? LiquidTools.GetLiquidAmount(container, "sugar")
                     : 0;
                 int processed = 0;
                 int activity = GetCultivatorActivity(machine);
+                if (sugar > 0 && container != null && !AntibioticCultivation.EnvironmentOk(machine, container, out _))
+                {
+                    UpdateCulturePanel(cultureText, machine);
+                    return;
+                }
+                if (sugar > 0 && activity <= 0)
+                {
+                    activity = 25;
+                    machine.ModifyTag(Tags.CultivatorActivity, delegate (TagState state)
+                    {
+                        state.Enable().SetInt(activity);
+                    });
+                }
                 if (sugar > 0 && activity > 0)
                 {
                     int powerUsage = MachineryHelper.GetMachinePowerUsage(machine);
@@ -732,6 +762,7 @@ namespace PrecisionLab
                                 state.Enable().SetInt(processed);
                             });
                             MachineHelper.OnMachineActioned(machine, moduleGrid);
+                            AntibioticCultivation.Produce(machine, container, processed);
                             Debug.Log("[PrecisionLab] cultivator digested " + processed + " µL of sugar");
                         }
                     }
@@ -751,7 +782,7 @@ namespace PrecisionLab
                         Debug.Log("[PrecisionLab] culture went dormant (no sugar)");
                     }
                 }
-                else if (processed <= 0 && pressed <= 0)
+                else if (processed <= 0)
                 {
                     // Sugar available but nothing was processed (no power / dormant): slow decay.
                     int now = GetCultivatorActivity(machine);

@@ -9,8 +9,8 @@
   <ID>precision_lab</ID>
   <Name>Precision Lab Equipment / 精密实验室设备</Name>
   <Author>DeepSeek Harness Agent</Author>
-  <ModVersion>1.26.59</ModVersion>
-  <Description>新增三件实验设备与两个化学反应：精确取液器、提纯机器（含废料输出位，可收集右旋废料）、微生物培养机（营养果养菌、糖→有机废物、无糖休眠）；淀粉酸性水解成糖；以及“更多药品”肾上腺素注射笔生产线（六步化学链、原料盒、配方纸条、蓝色注射笔）。 / Adds a Precision Liquid Extractor, a Purification Machine (with a waste output slot for dextro waste), a Microbial Cultivator fed by nutrifruit, acid-catalysed starch hydrolysis, and a six-step adrenaline injection pen production line ("More Medicines" unlock, precursor kits, recipe note). After the same unlock, tough cotton fabric can be dragged onto scrap metal to craft a makeshift tourniquet, and a naloxone production chain (thebaine precursor kit -> Naloxgone injector) is available. All recipes live in an in-game recipe book. Includes a Synaprest injector production chain with anhedonia/dependency side effects.</Description>
+  <ModVersion>1.27.8</ModVersion>
+  <Description>新增三件实验设备：精确取液器、提纯机器、微生物培养机（用含糖液体培养菌群，无营养果槽；可产粗制抗生素培养液，再经提纯机浓缩、成型机装瓶）。新增淀粉酸性水解、肾上腺素注射笔、纳洛酮、赛纳普雷斯特、蓝血、抗生素等多条生产线，以及嗅盐、药剂师原料工坊、售货机医疗品周抽等系统。 / Adds a Precision Liquid Extractor, Purification Machine and Microbial Cultivator (sugary-liquid culture, no nutrifruit slot; crude antibiotic culture -> purifier -> bottled antibiotics), starch hydrolysis, and adrenaline/naloxone/Synaprest/blue-blood/antibiotic production lines, plus smelling salts, the apothecary ingredient workshop, and a weekly medical vending draw.</Description>
   <GameVersions>
     <Version>0.46</Version>
   </GameVersions>

@@ -36,10 +36,12 @@ namespace PrecisionLab
             double ratio = Math.Min((double)paste / 10000.0, (double)alcohol / 10000.0);
             if (ratio <= 0) return 0;
             if (ratio > 1.0) ratio = 1.0;
-            Add(c, CustomLiquids.BelladonnaPaste, -Math.Max(1, (int)Math.Floor(10000 * ratio)));
-            Add(c, "alcohol", -Math.Max(1, (int)Math.Floor(10000 * ratio)));
-            Add(c, CustomLiquids.BelladonnaExtract, Math.Max(1, (int)Math.Floor(5000 * ratio)));
-            Add(c, "plant_matter", Math.Max(1, (int)Math.Floor(5000 * ratio)));
+            double stepRatio = ReactionMath.Fraction(ratio);
+            if (stepRatio <= 0.0) return 0;
+            Add(c, CustomLiquids.BelladonnaPaste, -Math.Max(1, (int)Math.Floor(10000 * stepRatio)));
+            Add(c, "alcohol", -Math.Max(1, (int)Math.Floor(10000 * stepRatio)));
+            Add(c, CustomLiquids.BelladonnaExtract, Math.Max(1, (int)Math.Floor(5000 * stepRatio)));
+            Add(c, "plant_matter", Math.Max(1, (int)Math.Floor(5000 * stepRatio)));
             return 1;
         }
 
@@ -53,9 +55,11 @@ namespace PrecisionLab
             double ratio = Math.Min((double)a / inputAmt, (double)b / reagentAmt);
             if (ratio <= 0) return 0;
             if (ratio > 1.0) ratio = 1.0;
-            Add(c, input, -Math.Max(1, (int)Math.Floor(inputAmt * ratio)));
-            Add(c, reagent, -Math.Max(1, (int)Math.Floor(reagentAmt * ratio)));
-            int outAmt = (int)Math.Floor(outputAmt * ratio);
+            double stepRatio = ReactionMath.Fraction(ratio);
+            if (stepRatio <= 0.0) return 0;
+            Add(c, input, -Math.Max(1, (int)Math.Floor(inputAmt * stepRatio)));
+            Add(c, reagent, -Math.Max(1, (int)Math.Floor(reagentAmt * stepRatio)));
+            int outAmt = (int)Math.Floor(outputAmt * stepRatio);
             if (outAmt > 0) Add(c, output, outAmt);
             return 1;
         }

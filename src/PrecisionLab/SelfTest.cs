@@ -226,34 +226,12 @@ namespace PrecisionLab
                 cultivator.identifier = ItemIds.Cultivator;
                 GeneralHelper.SetItemOwned(cultivator, true);
                 PurifierManualHelper.TryEnsure(cultivator);
-                // Storage indices with the nutrient slot: power=0, module=1, container=2,
-                // nutrient=3, note=4 (the culture text panel is display-only).
-                GameSlotInventory cultivatorNoteSlot = MachineHelper.GetSlot(cultivator, 4) as GameSlotInventory;
+                // New cultivator layout has no nutrient slot: power=0, module=1, container=2,
+                // note=3 (culture/strain text panels are display-only).
+                GameSlotInventory cultivatorNoteSlot = MachineHelper.GetSlot(cultivator, 3) as GameSlotInventory;
                 GameItem cultivatorManual = cultivatorNoteSlot != null ? cultivatorNoteSlot.childItem : null;
                 bool cultivatorManualOk = cultivatorManual != null && cultivatorManual.IsTag("MACHINE_MANUAL_TAG");
                 int cultivatorActivity = ItemFactory.GetCultivatorActivity(cultivator);
-
-                // The nutrient slot only accepts nutrifruit; pressing a huge fruit (+60) wakes a
-                // dormant culture (activity 0 -> 60) and consumes it.
-                fruit = DirectoryMaster.Item("nutrifruit");
-                if (fruit != null)
-                {
-                    GeneralHelper.SetItemOwned(fruit, true);
-                    fruit.unitValue = 32L; // huge nutrifruit
-                }
-                GameSlotInventory nutrientSlot = MachineHelper.GetSlot(cultivator, 3) as GameSlotInventory;
-                if (nutrientSlot != null && fruit != null)
-                {
-                    GraphUtils.TryAcceptAll(nutrientSlot, fruit);
-                }
-                bool fruitAccepted = nutrientSlot != null && nutrientSlot.childItem == fruit;
-                cultivator.ModifyTag(Tags.CultivatorActivity, delegate (TagState state)
-                {
-                    state.Enable().SetInt(0);
-                });
-                int pressed = ItemFactory.PressNutrientFruit(cultivator, nutrientSlot);
-                int activityAfterFeed = ItemFactory.GetCultivatorActivity(cultivator);
-                bool fruitConsumed = nutrientSlot != null && nutrientSlot.childItem == null;
                 string cultureAt60 = ItemFactory.FormatCulturePanel(cultivator);
                 cultivator.ModifyTag(Tags.CultivatorActivity, delegate (TagState state)
                 {
@@ -265,15 +243,13 @@ namespace PrecisionLab
                     state.Enable().SetInt(100);
                 });
                 bool cultureDisplayOk = cultivator.onOneSecondItemFunc != null
-                    && cultureAt60 != null && cultureAt60.Contains("60%")
-                    && cultureDormant == Loc.Get("tooltip.cultivator.dormant_panel", "Dormant · needs nutrifruit");
+                    && cultureAt60 != null && cultureAt60.Contains("100%")
+                    && cultureDormant == Loc.Get("tooltip.cultivator.dormant_panel", "Dormant · needs sugar");
                 log.Log(Prefix + "cultivator machine: window=" + (cultivator.contentWindow != null)
                     + " power=" + MachineryHelper.GetMachinePowerUsage(cultivator)
                     + " activity=" + cultivatorActivity + "% manual=" + cultivatorManualOk
                     + " manualName='" + (cultivatorManual != null ? cultivatorManual.name : "-") + "'"
-                    + " nutrientSlot=" + (nutrientSlot != null) + " fruitAccepted=" + fruitAccepted
-                    + " pressed=+" + pressed + "% activityAfterFeed=" + activityAfterFeed + "%"
-                    + " fruitConsumed=" + fruitConsumed + " cultureDisplay=" + cultureDisplayOk);
+                    + " cultureDisplay=" + cultureDisplayOk);
 
                 // --- 7. Adrenaline production chain (six reaction steps) ---------------
                 adrenalineCup = ItemFactory.CreateExtractor();
@@ -1039,10 +1015,6 @@ namespace PrecisionLab
                 bool cultivatorOk = cultivator.contentWindow != null
                     && cultivatorManualOk
                     && cultivatorActivity == 100
-                    && fruitAccepted
-                    && pressed == 60
-                    && activityAfterFeed == 60
-                    && fruitConsumed
                     && cultureDisplayOk
                     && LiquidTools.GetCultivatorThroughput(0, 100) == LiquidTools.CultivatorBaseThroughput;
                 bool adrenalineOk = amination == 3000

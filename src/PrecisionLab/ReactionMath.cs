@@ -14,6 +14,18 @@ namespace PrecisionLab
     {
         internal const int FinalFlush = 100;
 
+        /// <summary>Converts available batch fraction (0..1) into the fraction converted this
+        /// tick, using the same 20% + final-flush curve as the chemical chains.</summary>
+        internal static double Fraction(double availableRatio)
+        {
+            if (availableRatio <= 0.0) return 0.0;
+            if (availableRatio > 1.0) availableRatio = 1.0;
+            int units = (int)Math.Round(availableRatio * 10000.0);
+            if (units <= 0) return 0.0;
+            int step = Step(units);
+            return step / (double)units;
+        }
+
         internal static int Step(int limiting)
         {
             if (limiting <= 0)

@@ -149,7 +149,8 @@ namespace PrecisionLab
                     && DirectoryMaster.Has<GameItem>(ItemIds.Purifier)
                     && DirectoryMaster.Has<GameItem>(ItemIds.Cultivator)
                     && DirectoryMaster.Has<GameItem>(ItemIds.SupplyBox)
-                    && DirectoryMaster.Has<GameItem>(Centrifuge.Id))
+                    && DirectoryMaster.Has<GameItem>(Centrifuge.Id)
+                    && DirectoryMaster.Has<GameItem>(AntibioticContent.BroadId))
                 {
                     return;
                 }
@@ -207,6 +208,10 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
                 bool metalPowderBottle = directory.Has(ItemIds.MetalPowderBottle) || directory.Add(ItemIds.MetalPowderBottle, OrdnanceContent.CreateMetalPowderBottle);
                 bool nitratingAcidBottle = directory.Has(ItemIds.NitratingAcidBottle) || directory.Add(ItemIds.NitratingAcidBottle, OrdnanceContent.CreateNitratingAcidBottle);
                 bool ammoniaWater = directory.Has("ammonia_water") || directory.Add("ammonia_water", SmellingSaltsContent.CreateAmmoniaBottle);
+                bool antibioticBroad = directory.Has(AntibioticContent.BroadId) || directory.Add(AntibioticContent.BroadId, AntibioticContent.CreateBroad);
+                bool antibioticGramPos = directory.Has(AntibioticContent.GramPosId) || directory.Add(AntibioticContent.GramPosId, AntibioticContent.CreateGramPos);
+                bool antibioticGramNeg = directory.Has(AntibioticContent.GramNegId) || directory.Add(AntibioticContent.GramNegId, AntibioticContent.CreateGramNeg);
+                bool antibioticCocktail = directory.Has(AntibioticContent.CocktailId) || directory.Add(AntibioticContent.CocktailId, AntibioticContent.CreateCocktail);
 
                 if (extractor || purifier || cultivator || supplyBox || api || pen || waste || tourniquet || resolvingBottle || resolvingRefill
                     || naloxoneBox || naloxoneApi || birthControlBox || sannaiBox
@@ -414,6 +419,7 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
                 BelladonnaContent.EnsureRecipes();
                 DrugLabContent.EnsureRecipes();
                   SmellingSaltsContent.EnsureRecipes();
+                  AntibioticContent.EnsureRecipes();
                 FirstAidBox.EnsureRegistered();
                 FirstAidCleanup.ClaimStaleUnownedItems();
                 PhagimycinLicense.Register();
@@ -470,6 +476,9 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
             try
             {
                 TourniquetCraft.AttachToStoreItems();
+                CultivatorStrainUI.RebindAll();
+                CultivatorNutrientMigration.EnsureAll();
+                AntibioticMigration.EnsureAll();
                 ReagentKitVisuals.MigrateExistingKits();
                 // Cheat/debug spawn buttons must exist even before the MEDS unlock.
                 DebugSpawns.Register();
@@ -490,6 +499,7 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
                 BelladonnaContent.EnsureRecipes();
                 DrugLabContent.EnsureRecipes();
                   SmellingSaltsContent.EnsureRecipes();
+                  AntibioticContent.EnsureRecipes();
                 FirstAidBox.EnsureRegistered();
                 FirstAidCleanup.ClaimStaleUnownedItems();
                 PhagimycinLicense.Register();
@@ -520,6 +530,9 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
         {
             // Catch-up for purifiers that were loaded/created without their instruction note.
             PurifierManualHelper.EnsureAllInStore();
+            CultivatorStrainUI.RebindAll();
+            CultivatorNutrientMigration.EnsureAll();
+            AntibioticMigration.EnsureAll();
             // Retry recipe-note deliveries that had no free inventory space earlier.
             NoteDelivery.EnsureAll();
             // Expire anhedonia / trigger Synaprest dependency cravings at the start of the day.
@@ -589,6 +602,11 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
             }
             try
             {
+                if (AntibioticContent.IsAntibiotic(item.identifier))
+                {
+                    AntibioticContent.AppendTooltip(builder, item);
+                    return;
+                }
                 if (item.identifier == ItemIds.Tourniquet)
                 {
                     ItemFeature condition = item.FindItemFeatureByCategory("CATEGORY_TOURNIQUET_CONDITION");
@@ -676,32 +694,25 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
                     int activity = ItemFactory.GetCultivatorActivity(item);
                     int performance = MachineryHelper.GetCurrentPerformanceBonus(item);
                     int throughput = LiquidTools.GetCultivatorThroughput(performance, activity);
+                    int cultureYield = LiquidTools.GetCultivatorCultureYield(performance, activity);
                     builder.AddLine(
                         activity <= 0
-                            ? Loc.Get("tooltip.cultivator.dormant", "Culture: DORMANT (0%) — add nutrifruit to wake it up and sugar to feed it.")
-                            : Loc.Fmt("tooltip.cultivator.activity", "Culture activity: {0}% (digests {1} mL sugar per night)", activity, LiquidTools.FormatUl(throughput)),
+                            ? Loc.Get("tooltip.cultivator.dormant", "Culture: DORMANT (0%) — add sugar to wake it up.")
+                            : Loc.Fmt("tooltip.cultivator.activity", "Culture activity: {0}% (sugar throughput {1} mL/night; culture yield {2} mL/night)", activity, LiquidTools.FormatUl(throughput), LiquidTools.FormatUl(cultureYield)),
                         false,
                         activity <= 0 ? RenderHandler.ColorPalette.Orange : RenderHandler.ColorPalette.LightCyan);
                     builder.AddLine(
-                        Loc.Get("tooltip.cultivator.rule", "Eats sugar: the sugar is consumed and a little organic waste is left behind. Quality modules reduce the waste. Nutrifruit keeps the culture active; without sugar it goes dormant."),
+                        Loc.Get("tooltip.cultivator.rule", "Eats sugar: use a sugary liquid such as blended nutrifruit juice. No nutrifruit slot is needed; without sugar the culture goes dormant. Quality modules reduce waste."),
                         true,
                         RenderHandler.ColorPalette.LightGreen);
-                    GameSlotInventory nutrientSlot = MachineHelper.GetSlot(item, 3) as GameSlotInventory;
-                    GameItem fruit = nutrientSlot != null ? nutrientSlot.childItem : null;
-                    if (fruit != null)
+                    string strain = CultivatorStrainUI.GetStrain(item);
+                    string catalyst = AntibioticCultivation.RequiredCatalyst(strain);
+                    if (catalyst != null)
                     {
-                        builder.AddLine(
-                            Loc.Fmt("tooltip.cultivator.fruit", "Nutrient slot: {0} (pressing it feeds the culture +{1}% activity)",
-                                fruit.name, ItemFactory.GetNutrifruitNutrition(fruit)),
-                            true,
-                            RenderHandler.ColorPalette.LightGreen);
-                    }
-                    else
-                    {
-                        builder.AddLine(
-                            Loc.Get("tooltip.cultivator.nofruit", "Nutrient slot: empty (add nutrifruit to keep the culture active)"),
-                            true,
-                            RenderHandler.ColorPalette.Gray);
+                        builder.AddLine(Loc.Fmt("tooltip.cultivator.catalyst_tooltip",
+                            "Narrow culture requires {0} >=10% total before the cycle; a successful cycle consumes about 9-11% of the culture yield.",
+                            catalyst == "acid" ? Loc.Get("tooltip.cultivator.catalyst_acid", "acid") : Loc.Get("tooltip.cultivator.catalyst_base", "base")),
+                            true, RenderHandler.ColorPalette.LightCyan);
                     }
                     int processed = item.GetTagReadonly(Tags.CultivatorProcessed).GetInt();
                     if (processed > 0)
@@ -926,6 +937,9 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
             // Purifiers loaded from a save (or spawned before the spawn patch ran) get their
             // instruction note here; spawns after this are handled by PurifierSpawnPatch.
             PurifierManualHelper.EnsureAllInStore();
+            CultivatorStrainUI.RebindAll();
+            CultivatorNutrientMigration.EnsureAll();
+            AntibioticMigration.EnsureAll();
 
             if (_selfTestDone)
             {

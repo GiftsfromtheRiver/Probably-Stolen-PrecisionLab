@@ -69,13 +69,10 @@
 
 ### 4. 微生物培养机 / Microbial Cultivator
 
-培养“吃糖”微生物的机器：机器窗口单行六格：电源｜模块｜液体容器｜**营养果**｜**菌群活性**｜便签。
-
-- 把含糖液体容器放进液体槽，把 **营养果**（小 / 正常 / 大 / 巨型）放进营养果槽；
-- 每夜机器会**压榨一个营养果成汁水**喂菌群（小 +15 / 正常 +25 / 大 +40 / 巨型 +60 活性），
-  然后分解糖：约 20% 的糖变成有机废物（其余被微生物消耗掉），总体积下降；
-- **低糖分 → 休眠**：容器里没有糖时菌群会进入休眠（活性掉到 0，面板显示“休眠 · 需要营养果”），
-  不再分解；重新放入营养果并补充糖即可唤醒；
+培养“吃糖”微生物的机器：机器窗口单行六格：电源｜模块｜液体容器｜**菌群活性**｜**菌群按钮**｜便签（旧存档的旧营养果槽会隐藏，果物自动退回柜台）。
+- 把**含糖液体**（例如搅拌机打出的营养果浆）装进液体容器，放进液体槽即可，不再需要营养果；
+- 每夜分解糖：约 20% 的糖变成有机废物（质量模块可降到约 5%），同时按所选菌群产出粗制抗生素培养液和杂质；
+- **低糖 → 休眠**：没有糖时菌群休眠（面板显示“休眠 · 需要糖”）；加入糖后自动恢复，不需要营养果；
 - **性能模块**：提高每夜糖分解量；**质量模块**：减少残留的有机废物（20% → 最低约 5%）；**效率模块**：降低耗电；
 - 菌群活性面板实时显示 `xx% · y mL/夜`，休眠时显示提示；
 - 耗电 8/周期，需要电池；机器右侧便签槽自带「微生物培养机说明」；
@@ -231,7 +228,7 @@
 
 **Purification Machine** — placeable machine with battery/module/container/note slots. Runs one cycle per night (or via turbo booster), removes physical (physical contaminant, microplastic, debris, mineral), chemical (chemical contaminant, heavy metals) and biological (microbe, organic waste) contamination from any liquid container (wine containers excluded), never touches valuable ingredients. Water-only vessels are cleaned into water (volume unchanged); vessels with valuable liquids are concentrated (volume drops). Purity cap 99.00% base, higher with quality modules; live purity panel + instruction note in the machine window. Uses 6 power per cycle.
 
-**Microbial Cultivator** — placeable machine that runs sugar-eating microbes. Six panels in one row: power | modules | liquid container | **nutrifruit** | culture | note. Put a sugary container in the liquid slot and nutrifruit (small/normal/large/huge) in the nutrient slot: each night the machine presses one fruit into juice (+15/+25/+40/+60 activity) and digests sugar into a little organic waste (about 20%, down to ~5% with quality modules). When the liquid runs out of sugar the culture goes **dormant** (activity 0, panel shows "Dormant · needs nutrifruit") and stops until fed nutrifruit and given more sugar. Performance modules digest more per night, efficiency modules cut power draw. Uses 8 power per cycle.
+**Microbial Cultivator** — placeable machine that runs sugar-eating microbes. Six panels in one row: power | modules | liquid container | culture activity | strain button | note. Put a **sugary liquid** container (for example blended nutrifruit juice) in the liquid slot; there is no nutrifruit slot. Each night the culture digests sugar into organic waste and produces crude antibiotic culture plus contaminants. When the liquid runs out of sugar the culture goes **dormant** (activity 0, panel shows "Dormant · needs sugar") and wakes automatically when sugar is added. Performance modules digest more per night, efficiency modules cut power draw. Uses 8 power per cycle.
 
 **Starch hydrolysis** — new chemistry: starch in an acidic liquid hydrolyses into sugar at 40–60 °C. Heat the container on a heating plate (needs 2+ chem modules to reach the low temperature range). Acid is a catalyst and is not consumed.
 

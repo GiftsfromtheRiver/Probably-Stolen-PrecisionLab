@@ -58,29 +58,20 @@ item.purifier.manual.flavor,有人把要点草草写在便签上，又贴到了�
 item.purifier.manual.desc,"[模块效果]：\n- 效率：降低耗电\n- 性能：每夜处理量\n- 质量：提纯上限（纯度 +x%，最高 100%）\n\n装上电池和液体容器，机器会在夜间运转；可移除物理、化学（含重金属）和生物污染物，保留贵重成分。\n废料输出位：会收走液体里的右旋废料，多批废料会累积在同一个废料瓶里（不会溢出）。"
 item.cultivator.name,微生物培养机
 item.cultivator.flavor,一个密封的发酵罐，里面养着某种会吃掉糖的东西。夜班时别开盖。
-item.cultivator.desc,培养分解糖的微生物。把含糖液体容器放进液体槽，把营养果（小/正常/大/巨型）放进营养果槽：机器会把果子压榨成汁水来维持菌群活性，每夜分解糖并留下少量有机废物（其余被微生物消耗掉）。液体里糖分不足时菌群会进入休眠，直到重新喂入营养果和糖。性能模块提高每夜分解量，质量模块减少残留有机废物，效率模块降低耗电。
 item.cultivator.manual.name,微生物培养机说明
 item.cultivator.manual.flavor,一张沾满咖啡渍的实验室便签，还写着“不要舔培养物”。
-item.cultivator.manual.desc,"[模组影响]:\n效率影响功耗\n性能影响每夜分解的糖量\n质量影响残留有机废物（质量越高残留越少）\n\n把含糖液体容器放进液体槽，营养果（小/正常/大/巨型）放进营养果槽。每夜机器压榨一个营养果成汁水喂养菌群（活性 +15 / +25 / +40 / +60），并分解糖、留下少量有机废物。液体里没有糖时菌群会休眠（活性 0），直到重新喂营养果并补充糖才恢复。"
 machine.cultivator.module,模块
 machine.cultivator.container,液体容器
 ui.cultivator.culture_label,菌群活性
 upgrade.cultivator.title,微生物培养机
-upgrade.cultivator.desc,用于培养分解糖的微生物。用营养果（小/正常/大/巨型）喂养菌群，并放入含糖液体容器；每夜压榨一个果子成菌液并分解一部分糖，留下少量有机废物。没有糖时菌群会休眠。购买后直接送达店内库存。
+upgrade.cultivator.desc,用于培养分解糖的微生物。把含糖液体容器（例如搅拌机打出的营养果浆）放入液体槽；每夜分解糖并产出粗制抗生素培养液和杂质。没有营养果槽；没有糖时菌群休眠，加入糖后自动苏醒。购买后直接送达店内库存。
 upgrade.cultivator.bought,已下单，请在店内库存查收。
-tooltip.cultivator.activity,菌群活性：{0}%（每夜可分解 {1} mL 糖）
-tooltip.cultivator.rule,吃糖：糖被消耗，并留下少量有机废物。质量模块可减少残留。营养果维持菌群活性；没有糖时菌群会休眠。
 tooltip.cultivator.processed,昨夜分解糖：{0:0.###} 毫升
 tooltip.cultivator.empty,把含糖液体容器放进槽位；只要电池有电，菌群每夜都会工作。
 tooltip.cultivator.nosugar,容器里没有糖：菌群会休眠，直到重新获得糖。
 tooltip.cultivator.container,容器内糖：{0} 毫升
 tooltip.hydrolysis.hint,提示：含酸的淀粉液在 40–60°C 下会水解成糖（用加热板保温）。
 tooltip.sugar.hint,提示：微生物培养机可以分解糖，并留下少量有机废物。
-tooltip.cultivator.dormant,菌群：休眠（0%）——加入营养果可唤醒，并需要糖来喂养。
-tooltip.cultivator.dormant_panel,休眠 · 需要营养果
-tooltip.cultivator.fruit,营养果槽：{0}（压榨后菌群活性 +{1}%）
-tooltip.cultivator.nofruit,营养果槽：空（加入营养果可维持菌群活性）
-machine.cultivator.nutrient,营养果
 liquid.catechol,邻苯二酚
 liquid.hydroxymethyl_base,N-羟甲基碱溶液
 liquid.resolving_agent,拆分剂
@@ -569,3 +560,56 @@ item.smelling_salt_supply_box.desc,氨水、酒精×2、水、水培芦苇过滤
 item.smelling_salt_supply_box.order_name,嗅盐药剂包
 mech.vending.medical_rule,每周进行一次医疗品定向抽选：≤1000信用点80%，>1000信用点20%；最低医疗品价格>250时，50%不成交。
 mech.vending.medical_shortage,医疗短缺：每晚额外抽一次，最低医疗品价格>250时75%成交。
+item.antibiotic_broad.name,广谱抗生素
+item.antibiotic_gram_pos.name,窄谱抗生素（革兰阳性）
+item.antibiotic_gram_neg.name,窄谱抗生素（革兰阴性）
+item.antibiotic_cocktail.name,鸡尾酒抗生素
+machine.cultivator.strain,菌群
+ui.cultivator.strain_button,选择菌群
+ui.cultivator.strain_window,选择培养菌群
+ui.cultivator.strain.none,停止培养 / 原版糖消化
+ui.cultivator.strain.none_desc,不产抗生素，只保留原版糖消化。
+ui.cultivator.strain.pick,选择：
+ui.cultivator.strain.close,关闭
+antibiotic.broad.label,广谱抗生素
+antibiotic.gram_pos.label,革兰阳性窄谱
+antibiotic.gram_neg.label,革兰阴性窄谱
+item.antibiotic_broad.desc,广谱抗生素药瓶。由粗制广谱培养液经提纯机浓缩后直接装瓶，不加粘合剂。
+item.antibiotic_gram_pos.desc,窄谱抗生素药瓶。由粗制革兰阳性培养液提纯浓缩后直接装瓶，不加粘合剂。
+item.antibiotic_gram_neg.desc,窄谱抗生素药瓶。由粗制革兰阴性培养液提纯浓缩后直接装瓶，不加粘合剂。
+item.antibiotic_cocktail.desc,鸡尾酒抗生素药瓶。含多种抗生素浓缩液，标签会列出所有成分。
+tooltip.cultivator.no_sugar_panel,缺糖：需含糖液体 · 空瓶/纯水不产培养液
+tooltip.cultivator.rule,吃糖：使用含糖液体（例如搅拌机打出的营养果浆）。没有营养果槽；没有糖时菌群休眠。质量模块可减少残留有机废物。
+tooltip.cultivator.dormant,菌群：休眠（0%）——加入糖即可苏醒。
+tooltip.cultivator.dormant_panel,休眠 · 需要糖
+tooltip.antibiotic.cocktail_price,成分价值总和：{0} 信用点 × 1.1 = {1}
+tooltip.antibiotic.cocktail_purity,化学纯度：所有有效成分合计（不是只取一种成分）。
+liquid.antibiotic_culture_broad,广谱抗生素粗培养液
+liquid.antibiotic_culture_gram_pos,抗革兰阳性抗生素粗培养液
+liquid.antibiotic_culture_gram_neg,抗革兰阴性抗生素粗培养液
+liquid.antibiotic_concentrate_broad,广谱抗生素浓缩液
+liquid.antibiotic_concentrate_gram_pos,抗革兰阳性抗生素浓缩液
+liquid.antibiotic_concentrate_gram_neg,抗革兰阴性抗生素浓缩液
+ui.cultivator.strain_header,选择抗生素生产菌
+ui.cultivator.strain.broad,链霉菌（放线菌；产物广谱）
+ui.cultivator.strain.gram_pos,青霉菌（真菌；产物主要抗革兰阳性）
+ui.cultivator.strain.gram_neg,类芽孢杆菌（革兰阳性；产物主要抗革兰阴性）
+ui.cultivator.strain.broad_desc,链霉菌本身是革兰阳性菌，产物为广谱抗生素粗培养液。
+ui.cultivator.strain.gram_pos_desc,青霉菌产天然青霉素，主要抗革兰阳性菌；广谱青霉素是后续半合成改造的产物。
+ui.cultivator.strain.gram_neg_desc,类芽孢杆菌本身是革兰阳性菌，但多黏菌素主要抗革兰阴性菌。
+ui.cultivator.strain_desc,生产菌自身的革兰染色与产物目标谱不是一回事：链霉菌/类芽孢杆菌都是革兰阳性菌，但链霉菌产广谱抗生素，类芽孢杆菌的多黏菌素主要抗革兰阴性菌；青霉菌是真菌。窄谱培养还要求培养液里含对应酸碱环境（≥总量10%），否则不产。
+panel.cultivator.yield,"{0}% · 培养液{1}mL/夜{2} · {3}"
+panel.cultivator.none,"{0}% · 糖{1}mL/夜 · 原版糖消化"
+tooltip.cultivator.catalyst_acid,"酸"
+tooltip.cultivator.catalyst_base,"碱"
+tooltip.cultivator.catalyst_cost," · {0}耗约{1}mL/夜"
+tooltip.cultivator.catalyst_tooltip,"窄谱培养需要培养液中{0}≥总量10%；成功一轮后约消耗培养液产量的9%–11%。"
+tooltip.cultivator.activity,"菌群活性：{0}%（糖处理 {1} mL/夜；培养液产量 {2} mL/夜）"
+item.cultivator.desc,"培养分解糖的微生物。把含糖液体容器（例如搅拌机打出的营养果浆）放进液体槽；机器每夜分解糖并产出粗制抗生素培养液和杂质，不再需要营养果槽。糖耗尽时菌群休眠，重新加入糖就会苏醒。性能模块提高每单位糖的培养液产量，质量模块减少杂质，效率模块降低耗电。"
+item.cultivator.manual.desc,"[模组影响]:\n效率影响功耗\n性能提高每单位糖的培养液产量（不增加糖处理量）\n质量减少化学/物理杂质\n\n把含糖液体容器（例如搅拌机打出的营养果浆）放进液体槽；没有营养果槽，也不需要喂营养果。窄谱培养要求培养液中对应酸碱≥总量10%，成功一轮消耗实际培养液产量的约9%–11%。涡轮加速器只是额外运转一个周期，不能代替糖。"
+tooltip.antibiotic.broad,"广谱抗生素：售价25；由粗培养液提纯浓缩后装瓶；需要广谱浓缩液≥4mL、总量≥5mL、无杂质。"
+tooltip.antibiotic.gram_pos,"革兰阳性窄谱抗生素：售价50；需在培养阶段让培养液含酸≥总量10%，成型阶段只需对应浓缩液≥4mL、≥总量90%、总量≥5mL、无杂质。"
+tooltip.antibiotic.gram_neg,"革兰阴性窄谱抗生素：售价50；需在培养阶段让培养液含碱≥总量10%，成型阶段只需对应浓缩液≥4mL、≥总量90%、总量≥5mL、无杂质。"
+tooltip.antibiotic.cocktail,"鸡尾酒抗生素：至少含两种抗生素；标签列出所有成分。售价=成分价值总和×1.1（广谱25，窄谱50）。"
+tooltip.cultivator.no_catalyst_panel,{0}% · 缺少培养环境：{1} 需≥总量10%
+apothecary.leave_warning,地上还有没带走的东西。药剂师会雇炎烁帮忙搬回后仓，确定要离开吗？

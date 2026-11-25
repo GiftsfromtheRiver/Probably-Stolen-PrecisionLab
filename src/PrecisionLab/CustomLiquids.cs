@@ -119,6 +119,12 @@ namespace PrecisionLab
         internal const string AnticoagulantCrude = "anticoagulant_crude";
         internal const string AnticoagulantActive = "anticoagulant_active";
         internal const string AnticoagulantSolution = "anticoagulant_solution"; // 肾上腺素药液
+        internal const string AntibioticCultureBroad = "antibiotic_culture_broad";
+        internal const string AntibioticCultureGramPos = "antibiotic_culture_gram_pos";
+        internal const string AntibioticCultureGramNeg = "antibiotic_culture_gram_neg";
+        internal const string AntibioticConcentrateBroad = "antibiotic_concentrate_broad";
+        internal const string AntibioticConcentrateGramPos = "antibiotic_concentrate_gram_pos";
+        internal const string AntibioticConcentrateGramNeg = "antibiotic_concentrate_gram_neg";
         internal const string AmmoniaWater = "ammonia_water";
         internal const string SmellingSaltVolatile = "smelling_salt_volatile";
         internal const string ReedFiber = "reed_fiber";
@@ -241,7 +247,13 @@ namespace PrecisionLab
                 AddLiquid(SmellingSaltVolatile, "liquid.smelling_salt_volatile", "Smelling Salts Volatile Liquid", "d8f0e8", false);
                 AddLiquid(ReedFiber, "liquid.reed_fiber", "Hydroreed Fiber Slurry", "b8c898", false);
                 AddLiquid(SmellingSaltWaste, "liquid.smelling_salt_waste", "Ammonia Wastewater", "7a8a8a", true);
-                Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 61 + ")");
+                                AddLiquid(AntibioticCultureBroad, "liquid.antibiotic_culture_broad", "Broad-spectrum Antibiotic Culture", "b8d8e8", false);
+                AddLiquid(AntibioticCultureGramPos, "liquid.antibiotic_culture_gram_pos", "Gram-positive Antibiotic Culture", "e8b8d8", false);
+                AddLiquid(AntibioticCultureGramNeg, "liquid.antibiotic_culture_gram_neg", "Gram-negative Antibiotic Culture", "b8e8c8", false);
+                AddLiquid(AntibioticConcentrateBroad, "liquid.antibiotic_concentrate_broad", "Concentrated Broad-spectrum Antibiotic", "6aa8d8", false);
+                AddLiquid(AntibioticConcentrateGramPos, "liquid.antibiotic_concentrate_gram_pos", "Concentrated Gram-positive Antibiotic", "c878b8", false);
+                AddLiquid(AntibioticConcentrateGramNeg, "liquid.antibiotic_concentrate_gram_neg", "Concentrated Gram-negative Antibiotic", "68c888", false);
+Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 61 + ")");
             }
             catch (Exception e)
             {
@@ -356,6 +368,12 @@ namespace PrecisionLab
                 SetName(AnticoagulantCrude, "liquid.anticoagulant_crude", "Crude Anticoagulant");
                 SetName(AnticoagulantActive, "liquid.anticoagulant_active", "Active Anticoagulant");
                 SetName(AnticoagulantSolution, "liquid.anticoagulant_solution", "Anticoagulant Solution");
+                SetName(AntibioticCultureBroad, "liquid.antibiotic_culture_broad", "Broad-spectrum Antibiotic Culture");
+                SetName(AntibioticCultureGramPos, "liquid.antibiotic_culture_gram_pos", "Gram-positive Antibiotic Culture");
+                SetName(AntibioticCultureGramNeg, "liquid.antibiotic_culture_gram_neg", "Gram-negative Antibiotic Culture");
+                SetName(AntibioticConcentrateBroad, "liquid.antibiotic_concentrate_broad", "Concentrated Broad-spectrum Antibiotic");
+                SetName(AntibioticConcentrateGramPos, "liquid.antibiotic_concentrate_gram_pos", "Concentrated Gram-positive Antibiotic");
+                SetName(AntibioticConcentrateGramNeg, "liquid.antibiotic_concentrate_gram_neg", "Concentrated Gram-negative Antibiotic");
                 SetName(AmmoniaWater, "liquid.ammonia_water", "Ammonia Water");
                 SetName(SmellingSaltVolatile, "liquid.smelling_salt_volatile", "Smelling Salts Volatile Liquid");
                 SetName(ReedFiber, "liquid.reed_fiber", "Hydroreed Fiber Slurry");

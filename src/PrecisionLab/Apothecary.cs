@@ -134,19 +134,19 @@ namespace PrecisionLab
                 StorePhoneClient client;
                 if (!PlayerStore.Instance.PhoneClientDict.TryGetValue(PhoneNumber, out client) || client == null)
                 {
-                    client = new StorePhoneClient
-                    {
-                        displayName = DisplayName,
-                        locID = "precision_apothecary",
-                        dialogFuncId = DialogFuncId,
-                        phoneClientType = StorePhoneClient.PhoneClientType.Supplier,
-                        cooldownDuration = AppointmentCooldownDays,
-                        phoneState = StorePhoneClient.PhoneState.Regular,
-                        dialedBefore = true
-                    };
+                    client = new StorePhoneClient();
                     PlayerStore.Instance.PhoneClientDict[PhoneNumber] = client;
                     Debug.Log("[PrecisionLab] apothecary phone contact added (" + PhoneNumber + ")");
                 }
+                // Repair old-save contacts that were created without the custom dialog binding.
+                client.displayName = DisplayName;
+                client.locID = "precision_apothecary";
+                client.dialogFuncId = DialogFuncId;
+                client.phoneClientType = StorePhoneClient.PhoneClientType.Supplier;
+                client.cooldownDuration = AppointmentCooldownDays;
+                if (client.phoneState == StorePhoneClient.PhoneState.None)
+                    client.phoneState = StorePhoneClient.PhoneState.Regular;
+                client.dialedBefore = true;
             }
             catch (Exception e)
             {
@@ -196,7 +196,7 @@ namespace PrecisionLab
                 "我是药剂师。需要我上门吗？我卖的东西比退休化学家更全，但只接受预约。"));
             dialogue.AddChoice(DirectoryMaster.Item("$"),
                 Loc.Get("phone.apothecary.book_line", "我要预约。"), "",
-                playerBook, delegate { BookAppointment(client); });
+                playerBook, delegate { OpenOrder(client); });
             dialogue.AddChoice(DirectoryMaster.Item("$"),
                 Loc.Get("phone.apothecary.cancel_line", "打错了。"), "",
                 playerCancel, null);
