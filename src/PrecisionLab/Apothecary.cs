@@ -344,7 +344,9 @@ namespace PrecisionLab
             ItemIds.ImmunivaxBox,
             ItemIds.OrdnanceBox,
             ItemIds.PerfumeBox,
-            ItemIds.BioPharmaBox
+            ItemIds.BioPharmaBox,
+            "anti_radiation_supply_box",
+            "nutrition_supply_box"
         };
 
         private static void AddFirstAidStock()
@@ -353,7 +355,11 @@ namespace PrecisionLab
             {
                 PlayerStore.Instance.AddDirectSellingItemToTable(ItemIds.FirstAidShell);
                 PlayerStore.Instance.AddDirectSellingItemToTable(ItemIds.FirstAidSeal);
+                PlayerStore.Instance.AddDirectSellingItemToTable(ItemIds.SupplyBox);
+                PlayerStore.Instance.AddDirectSellingItemToTable(ItemIds.ResolvingRefill);
                 PlayerStore.Instance.AddDirectSellingItemToTable(FirstAidBox.CreateStockBox());
+                if (DirectoryMaster.Has<GameItem>(ItemIds.MysteryMedBox))
+                    PlayerStore.Instance.AddDirectSellingItemToTable(MysteryMedBox.CreateStockItem());
                 PlayerStore.Instance.AddDirectSellingItemToTable("rubbing_alcohol");
                 PlayerStore.Instance.AddDirectSellingItemToTable("modified_aloe_leaf");
                 PlayerStore.Instance.AddDirectSellingItemToTable("medical_honey_bottle");
@@ -372,6 +378,12 @@ namespace PrecisionLab
                 PlayerStore.Instance.AddDirectSellingItemToTable("animal_gland_powder");
                 PlayerStore.Instance.AddDirectSellingItemToTable("aromatic_compound");
                 PlayerStore.Instance.AddDirectSellingItemToTable("potassium_iodide_crystal");
+            if (DirectoryMaster.Has<GameItem>("radioactive_isotope_waste"))
+                PlayerStore.Instance.AddDirectSellingItemToTable("radioactive_isotope_waste");
+            if (DirectoryMaster.Has<GameItem>("multivitamin_bottle"))
+                PlayerStore.Instance.AddDirectSellingItemToTable("multivitamin_bottle");
+            if (DirectoryMaster.Has<GameItem>("nutrition_iv_bag"))
+                PlayerStore.Instance.AddDirectSellingItemToTable("nutrition_iv_bag");
             }
             catch (Exception e)
             {

@@ -341,6 +341,10 @@ namespace PrecisionLab
                 store.AddDirectSellingItemToTable("animal_gland_powder");
                 store.AddDirectSellingItemToTable("aromatic_compound");
                 store.AddDirectSellingItemToTable("potassium_iodide_crystal");
+        if (DirectoryMaster.Has<GameItem>("radioactive_isotope_waste"))
+            store.AddDirectSellingItemToTable("radioactive_isotope_waste");
+        if (DirectoryMaster.Has<GameItem>("multivitamin_bottle"))
+            store.AddDirectSellingItemToTable("multivitamin_bottle");
                 Debug.Log("[PrecisionLab] retired chemist offers bio-pharma precursors");
             }
             catch (Exception e)

@@ -614,3 +614,26 @@ tooltip.antibiotic.gram_neg,"Gram-negative narrow antibiotic: value 50; cultivat
 tooltip.antibiotic.cocktail,"Cocktail antibiotic: at least two concentrates; label lists all components. Value = sum of ingredients x1.1 (broad 25, narrow 50)."
 tooltip.cultivator.no_catalyst_panel,{0}% · missing culture environment: {1} needs >=10% total
 apothecary.leave_warning,There are still items on the ground. The apothecary will hire Yanshuo to help move them back to the rear storage. Leave anyway?
+item.radioactive_isotope_waste.name,Radioactive Isotope Waste
+item.radioactive_isotope_waste.desc,Radioactive isotope waste. Used to extract chelators or as a reverse catalyst; process at 80 C.
+item.anti_radiation_pill.name,'Purified' Anti-radiation Tablet
+item.anti_radiation_pill.desc,Medical anti-radiation tablet for radioactive caesium/thallium contamination; low-temperature complex leaves toxic residue.
+liquid.radioactive_waste,Radioactive Isotope Waste
+liquid.iron_cyanide_complex,Iron Cyanide Complex Solution
+liquid.iron_cyanide_complex_low,Low-purity Iron Cyanide Complex
+liquid.sod_crude,Crude SOD Extract
+liquid.sod_extract,High-purity SOD Extract
+liquid.targeted_microcapsule,Targeted Repair Microcapsule
+liquid.anti_radiation_crude,Crude Anti-radiation Drug
+liquid.anti_radiation_api,Anti-radiation API
+tooltip.anti_radiation.effect,Anti-radiation tablet: clears radioactive caesium/thallium contamination (active once the expedition/radiation system is in).
+tooltip.anti_radiation.toxic,Toxic residue: incomplete low-temperature reaction; taking it causes toxic side effects.
+item.anti_radiation_supply_box.name,Anti-radiation Reagent Kit
+item.anti_radiation_supply_box.desc,"Contains radioactive waste, potassium iodide crystal, animal gland powder, acid, 2x alcohol, lipobond, N-hydroxymethyl base, base, water and reducing agent for the full anti-radiation line."
+item.multivitamin_bottle.name,"Multivitamin Tablet Bottle"
+item.multivitamin_bottle.desc,"Over-the-counter multivitamin tablets in a bottle, sold as a daily health supplement; no direct therapeutic dose."
+item.nutrition_iv_bag.name,Three-in-One Nutrition IV
+item.nutrition_iv_bag.desc,"Milky nutrition IV: honey glucose, coffee lipids/protein, vitamins and electrolytes. Counts as FOOD, PROCESSED_FOOD and MEDICAL."
+liquid.nutrition_emulsion,Three-in-One Nutrition Emulsion
+item.nutrition_supply_box.name,Three-in-One Nutrition Kit
+item.nutrition_supply_box.desc,"Coffee beans x2, multivitamin bottle, coffee emulsion, water and medical honey for one nutrition IV."

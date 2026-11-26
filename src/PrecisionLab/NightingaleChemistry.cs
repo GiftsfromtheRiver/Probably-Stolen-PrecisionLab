@@ -36,11 +36,11 @@ namespace PrecisionLab
         private static int StepExtraction(GameItem c)
         {
             double temp = Temp(c);
-            if (temp < 26.0) return 0;
+            if (temp < 20.0) return 0;
             int pulp = Amount(c, CustomLiquids.AloePulp);
             int alcohol = Amount(c, "alcohol");
             if (pulp <= 0 || alcohol <= 0) return 0;
-            if (temp > 30.0)
+            if (temp > 29.0)
             {
                 int hot = Math.Max(100, (int)Math.Round(pulp * 0.1));
                 hot = Math.Min(hot, pulp);
@@ -91,13 +91,13 @@ namespace PrecisionLab
         private static int StepFusion(GameItem c)
         {
             double temp = Temp(c);
-            if (temp < 26.0) return 0;
+            if (temp < 20.0) return 0;
             int extract = Amount(c, CustomLiquids.AloeExtract);
             int honey = Amount(c, CustomLiquids.MedicalHoney);
             int stem = Amount(c, CustomLiquids.StemCell);
             if (extract <= 0 || honey <= 0 || stem <= 0) return 0;
             int x = ReactionMath.Step(Math.Min(extract, honey));
-            if (temp > 30.0)
+            if (temp > 29.0)
             {
                 if (x <= 0) return 0;
                 Add(c, CustomLiquids.AloeExtract, -x);

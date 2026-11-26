@@ -6,6 +6,8 @@ namespace PrecisionLab
 {
     internal static class DrugKitContent
     {
+        internal const string AntiRadiationKitId = "anti_radiation_supply_box";
+        internal const string NutritionKitId = "nutrition_supply_box";
         private sealed class Def
         {
             public string Id;
@@ -34,7 +36,13 @@ namespace PrecisionLab
             K("anticoagulant_supply_box", "drug_kit_anticoagulant", "抗凝剂药剂包", "动物腺体粉末、碱×3、水、酸", 430,
                 new[] { "animal_gland_powder" }, new[] { "base", "base", "base", "water", "acid", "potassium_iodide", "alcohol" }),
             K("smelling_salt_supply_box", "drug_kit_smelling_salt", "嗅盐药剂包", "氨水、酒精×2、水、水培芦苇过滤芯", 260,
-                new[] { "hydroreed_filter" }, new[] { "ammonia_water", "alcohol", "alcohol", "water" })
+                new[] { "hydroreed_filter" }, new[] { "ammonia_water", "alcohol", "alcohol", "water" }),
+            K("anti_radiation_supply_box", "drug_kit_anti_radiation", "抗辐射药剂包", "放射性废料、碘化钾晶体、腺体粉末、酸、酒精×2、脂合剂、N-羟甲基碱、碱、水、还原剂", 620,
+                  new[] { "radioactive_isotope_waste", "potassium_iodide_crystal", "animal_gland_powder" },
+                  new[] { "acid", "alcohol", "alcohol", "lipobond_agent", "hydroxymethyl_base", "base", "water", "reducing_agent" }),
+            K("nutrition_supply_box", "drug_kit_nutrition", "三合一营养药剂包", "咖啡豆×2、复合维生素药片瓶、咖啡乳、水、医用蜂蜜", 300,
+                  new[] { "coffee_bean", "coffee_bean", "multivitamin_bottle" },
+                  new[] { "coffee_mush", "water", "medical_honey" })
         };
 
         private static Def K(string id, string sprite, string name, string desc, long value, string[] solids, string[] bottles)

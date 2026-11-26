@@ -22,7 +22,7 @@ namespace PrecisionLab
     {
         internal const double NeuroMinTemp = 30.0;
         internal const double NeuroMaxTemp = 50.0;
-        internal const double PheromoneMaxTemp = 30.0;
+        internal const double PheromoneMaxTemp = 29.0;
         internal const double NeuroMinPurity = 99.0;
 
         internal static int React(GameItem container)
@@ -116,7 +116,7 @@ namespace PrecisionLab
         internal static int StepPheromoneColdPurify(GameItem container)
         {
             double temp = Temp(container);
-            if (temp < 26.0)
+            if (temp < 20.0)
             {
                 return 0;
             }
@@ -145,7 +145,7 @@ namespace PrecisionLab
         internal static int StepPheromoneModify(GameItem container)
         {
             double temp = Temp(container);
-            if (temp < 26.0)
+            if (temp < 20.0)
             {
                 return 0;
             }

@@ -589,11 +589,11 @@ namespace PrecisionLab
                 GeneralHelper.SetItemOwned(immunivaxCup, true);
                 LiquidTools.SetLiquidRaw(immunivaxCup, CustomLiquids.ImmuneSerum, 2000);
                 LiquidTools.SetLiquidRaw(immunivaxCup, "alcohol", 2000);
-                SetTemperature(immunivaxCup, 30.0);
+                SetTemperature(immunivaxCup, 25.0);
                 PulseStep(immunivaxCup, ImmunivaxChemistry.StepPrecipitation);
                 int immSuspension = LiquidTools.GetLiquidAmount(immunivaxCup, CustomLiquids.ImmunoglobulinSuspension);
                 int immSerumLeft = LiquidTools.GetLiquidAmount(immunivaxCup, CustomLiquids.ImmuneSerum);
-                SetTemperature(immunivaxCup, 35.0);
+                SetTemperature(immunivaxCup, 25.0);
                 PulseStep(immunivaxCup, ImmunivaxChemistry.StepConcentration);
                 int immCrude = LiquidTools.GetLiquidAmount(immunivaxCup, CustomLiquids.CrudeImmunoglobulin);
                 int immRecoveredAlcohol = LiquidTools.GetLiquidAmount(immunivaxCup, "alcohol");
@@ -635,7 +635,7 @@ namespace PrecisionLab
                 LiquidTools.SetLiquidRaw(blueGelCup, CustomLiquids.BioGelBase, 2000);
                 LiquidTools.SetLiquidRaw(blueGelCup, "water", 1000);
                 LiquidTools.SetLiquidRaw(blueGelCup, "acid", 5);
-                SetTemperature(blueGelCup, 30.0);
+                SetTemperature(blueGelCup, 25.0);
                 PulseStep(blueGelCup, BlueBloodChemistry.StepSolubilise);
                 int acidicGel = LiquidTools.GetLiquidAmount(blueGelCup, CustomLiquids.AcidicGel);
                 LiquidTools.SetLiquidRaw(blueGelCup, "reducing_agent", 1000);
@@ -833,7 +833,7 @@ namespace PrecisionLab
                 LiquidTools.SetLiquidRaw(phageCup, CustomLiquids.PhageCulture, 1000);
                 LiquidTools.SetLiquidRaw(phageCup, CustomLiquids.FungalExtract, 1000);
                 LiquidTools.SetLiquidRaw(phageCup, "water", 1000);
-                SetTemperature(phageCup, 30.0);
+                SetTemperature(phageCup, 25.0);
                 PulseStep(phageCup, BioPharmaChemistry.StepSymbioticCulture);
                 int symbiotic = LiquidTools.GetLiquidAmount(phageCup, CustomLiquids.SymbioticCulture);
                 int bioContaminant = LiquidTools.GetLiquidAmount(phageCup, "chemical_contaminant");

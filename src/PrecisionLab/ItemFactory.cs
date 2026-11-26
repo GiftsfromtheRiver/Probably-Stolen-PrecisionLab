@@ -364,9 +364,12 @@ namespace PrecisionLab
                     return;
                 }
                 int removed = LiquidTools.PurifyContaminants(container, machine, out LiquidTools.PurifyAccounting accounting);
-                // One night in the purifier both removes contamination and concentrates crude culture.
-                int concentrated = AntibioticPurify.Process(container);
-                if (removed <= 0 && concentrated <= 0)
+                // Crude conversion capacity: base 2 mL per night, +1 mL for every +50% performance.
+                int performance = MachineryHelper.GetCurrentPerformanceBonus(machine);
+                int crudeCapacity = 2000 + Math.Max(0, performance / 50) * 1000;
+                int concentrated = AntibioticPurify.Process(container, crudeCapacity);
+                int antiRad = AntiRadiationPurify.Process(container, crudeCapacity);
+                if (removed <= 0 && concentrated <= 0 && antiRad <= 0)
                 {
                     return;
                 }
@@ -377,7 +380,7 @@ namespace PrecisionLab
                     state.Enable().SetInt(finalRemoved);
                 });
                 MachineHelper.OnMachineActioned(machine, moduleGrid);
-                Debug.Log("[PrecisionLab] purifier removed " + removed + " µL of contaminants; antibiotic concentrated=" + concentrated);
+                Debug.Log("[PrecisionLab] purifier removed " + removed + " µL of contaminants; antibiotic concentrated=" + concentrated + " anti-rad=" + antiRad);
             }
             catch (Exception e)
             {

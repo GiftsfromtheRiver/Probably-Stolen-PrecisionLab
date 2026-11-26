@@ -17,8 +17,8 @@ namespace PrecisionLab
     /// </summary>
     internal static class ImmunivaxChemistry
     {
-        internal const double AmbientTemp = 26.0;
-        internal const double MaxSafeTemp = 40.0;
+        internal const double AmbientTemp = 20.0;
+        internal const double MaxSafeTemp = 29.0;
 
         internal static int React(GameItem container)
         {

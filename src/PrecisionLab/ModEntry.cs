@@ -150,7 +150,13 @@ namespace PrecisionLab
                     && DirectoryMaster.Has<GameItem>(ItemIds.Cultivator)
                     && DirectoryMaster.Has<GameItem>(ItemIds.SupplyBox)
                     && DirectoryMaster.Has<GameItem>(Centrifuge.Id)
-                    && DirectoryMaster.Has<GameItem>(AntibioticContent.BroadId))
+                    && DirectoryMaster.Has<GameItem>(AntibioticContent.BroadId)
+                    && DirectoryMaster.Has<GameItem>(AntiRadiationContent.FinalId)
+                    && DirectoryMaster.Has<GameItem>(AntiRadiationContent.RawId)
+                    && DirectoryMaster.Has<GameItem>(DrugKitContent.AntiRadiationKitId)
+                    && DirectoryMaster.Has<GameItem>(VitaminContent.Id)
+                    && DirectoryMaster.Has<GameItem>(NutritionContent.Id)
+                    && DirectoryMaster.Has<GameItem>(DrugKitContent.NutritionKitId))
                 {
                     return;
                 }
@@ -212,6 +218,10 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
                 bool antibioticGramPos = directory.Has(AntibioticContent.GramPosId) || directory.Add(AntibioticContent.GramPosId, AntibioticContent.CreateGramPos);
                 bool antibioticGramNeg = directory.Has(AntibioticContent.GramNegId) || directory.Add(AntibioticContent.GramNegId, AntibioticContent.CreateGramNeg);
                 bool antibioticCocktail = directory.Has(AntibioticContent.CocktailId) || directory.Add(AntibioticContent.CocktailId, AntibioticContent.CreateCocktail);
+                bool antiRadWaste = directory.Has(AntiRadiationContent.RawId) || directory.Add(AntiRadiationContent.RawId, AntiRadiationContent.CreateRaw);
+                bool antiRadPill = directory.Has(AntiRadiationContent.FinalId) || directory.Add(AntiRadiationContent.FinalId, AntiRadiationContent.CreateFinal);
+                bool multivitamin = directory.Has(VitaminContent.Id) || directory.Add(VitaminContent.Id, VitaminContent.Create);
+                bool nutrition = directory.Has(NutritionContent.Id) || directory.Add(NutritionContent.Id, NutritionContent.Create);
 
                 if (extractor || purifier || cultivator || supplyBox || api || pen || waste || tourniquet || resolvingBottle || resolvingRefill
                     || naloxoneBox || naloxoneApi || birthControlBox || sannaiBox
@@ -420,6 +430,9 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
                 DrugLabContent.EnsureRecipes();
                   SmellingSaltsContent.EnsureRecipes();
                   AntibioticContent.EnsureRecipes();
+                  AntiRadiationContent.EnsureRecipes();
+                  VitaminContent.EnsureRecipes();
+                  NutritionContent.EnsureRecipes();
                 FirstAidBox.EnsureRegistered();
                 FirstAidCleanup.ClaimStaleUnownedItems();
                 PhagimycinLicense.Register();
@@ -479,6 +492,8 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
                 CultivatorStrainUI.RebindAll();
                 CultivatorNutrientMigration.EnsureAll();
                 AntibioticMigration.EnsureAll();
+                AntiRadiationContent.NormalizeAll();
+                VitaminContent.NormalizeAll();
                 ReagentKitVisuals.MigrateExistingKits();
                 // Cheat/debug spawn buttons must exist even before the MEDS unlock.
                 DebugSpawns.Register();
@@ -500,6 +515,9 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
                 DrugLabContent.EnsureRecipes();
                   SmellingSaltsContent.EnsureRecipes();
                   AntibioticContent.EnsureRecipes();
+                  AntiRadiationContent.EnsureRecipes();
+                  VitaminContent.EnsureRecipes();
+                  NutritionContent.EnsureRecipes();
                 FirstAidBox.EnsureRegistered();
                 FirstAidCleanup.ClaimStaleUnownedItems();
                 PhagimycinLicense.Register();
@@ -533,6 +551,8 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
             CultivatorStrainUI.RebindAll();
             CultivatorNutrientMigration.EnsureAll();
             AntibioticMigration.EnsureAll();
+            AntiRadiationContent.NormalizeAll();
+            VitaminContent.NormalizeAll();
             // Retry recipe-note deliveries that had no free inventory space earlier.
             NoteDelivery.EnsureAll();
             // Expire anhedonia / trigger Synaprest dependency cravings at the start of the day.
@@ -605,6 +625,15 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
                 if (AntibioticContent.IsAntibiotic(item.identifier))
                 {
                     AntibioticContent.AppendTooltip(builder, item);
+                    return;
+                }
+                if (item.identifier == AntiRadiationContent.FinalId)
+                {
+                    builder.AddLine(Loc.Get("tooltip.anti_radiation.effect",
+                        "抗辐射药片：用于清除体内放射性铯/铊污染（远征/辐射系统实装后生效）。"), true, RenderHandler.ColorPalette.LightGreen);
+                    if (item.IsTag(AntiRadiationContent.ToxicTag))
+                        builder.AddLine(Loc.Get("tooltip.anti_radiation.toxic",
+                            "毒性残留：低温反应不彻底，服用会带来毒性副作用。"), true, RenderHandler.ColorPalette.LightRed);
                     return;
                 }
                 if (item.identifier == ItemIds.Tourniquet)
@@ -940,6 +969,8 @@ bool nightingaleBox = directory.Has("nightingale_supply_box") || directory.Add("
             CultivatorStrainUI.RebindAll();
             CultivatorNutrientMigration.EnsureAll();
             AntibioticMigration.EnsureAll();
+            AntiRadiationContent.NormalizeAll();
+            VitaminContent.NormalizeAll();
 
             if (_selfTestDone)
             {

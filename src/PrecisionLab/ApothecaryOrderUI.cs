@@ -22,6 +22,7 @@ namespace PrecisionLab
         private static readonly Entry[] Catalogue =
         {
             E("adrenaline_supply_box", "肾上腺素药剂包"),
+            E("resolving_agent_refill", "拆分剂补充装（2×20mL）"),
             E("belladonna_supply_box", "颠茄药剂包"),
             E("antidepressant_supply_box", "抗抑郁药剂包"),
             E("amiodarone_supply_box", "胺碘酮药剂包"),
@@ -30,6 +31,10 @@ namespace PrecisionLab
             E("coagulant_supply_box", "促凝剂药剂包"),
             E("anticoagulant_supply_box", "抗凝剂药剂包"),
             E("smelling_salt_supply_box", "嗅盐药剂包"),
+            E("anti_radiation_supply_box", "抗辐射药剂包"),
+            E("multivitamin_bottle", "复合维生素药片瓶"),
+            E("nutrition_supply_box", "三合一营养药剂包"),
+            E("nutrition_iv_bag", "三合一营养注射液"),
 
             E("naloxone_supply_box", "纳洛酮药剂包"),
             E("birth_control_supply_box", "避孕药药剂包"),

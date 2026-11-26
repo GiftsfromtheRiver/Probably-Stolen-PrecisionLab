@@ -47,7 +47,7 @@ namespace PrecisionLab
         internal static int StepSymbioticCulture(GameItem container)
         {
             double temp = Temp(container);
-            if (temp < 26.0 || temp > 40.0)
+            if (temp < 20.0 || temp > 29.0)
             {
                 return 0;
             }
@@ -71,7 +71,7 @@ namespace PrecisionLab
         internal static int StepAntibioticPurify(GameItem container)
         {
             double temp = Temp(container);
-            if (temp < 26.0 || temp > 40.0)
+            if (temp < 20.0 || temp > 29.0)
             {
                 return 0;
             }
@@ -100,7 +100,7 @@ namespace PrecisionLab
         internal static int StepCellActivation(GameItem container)
         {
             double temp = Temp(container);
-            if (temp < 26.0)
+            if (temp < 20.0)
             {
                 return 0;
             }
@@ -115,7 +115,7 @@ namespace PrecisionLab
             Add(container, CustomLiquids.StemCell, -x * 2);
             Add(container, "water", -x);
             Add(container, "alcohol", -x);
-            if (temp > 30.0)
+            if (temp > 29.0)
             {
                 Add(container, CustomLiquids.DeadCellWaste, x);
             }
@@ -130,7 +130,7 @@ namespace PrecisionLab
         internal static int StepEssencePurify(GameItem container)
         {
             double temp = Temp(container);
-            if (temp < 26.0)
+            if (temp < 20.0)
             {
                 return 0;
             }
@@ -143,7 +143,7 @@ namespace PrecisionLab
             }
             Add(container, CustomLiquids.ActiveCellSuspension, -x);
             Add(container, "lipobond_agent", -x);
-            if (temp > 30.0)
+            if (temp > 29.0)
             {
                 Add(container, CustomLiquids.DeadCellWaste, x);
             }

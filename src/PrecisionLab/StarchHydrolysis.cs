@@ -35,6 +35,8 @@ namespace PrecisionLab
             NightingaleChemistry.React(container);
             BelladonnaChemistry.React(container);
             DrugLabChemistry.React(container);
+            AntiRadiationChemistry.React(container);
+            NutritionChemistry.React(container);
             SmellingSaltsReaction.React(container);
         }
     }

@@ -271,19 +271,19 @@ namespace PrecisionLab
     internal static class AntibioticPurify
     {
         /// <summary>Returns the amount of crude culture converted this cycle.</summary>
-        internal static int Process(GameItem c)
+        internal static int Process(GameItem c, int capacity)
         {
             if (c == null) return 0;
-            // Still dirty: the purifier must remove the contamination before concentration.
-            if (LiquidTools.GetLiquidAmount(c, "chemical_contaminant") > 0
-                || LiquidTools.GetLiquidAmount(c, "physical_contaminant") > 0)
-            {
-                return 0;
-            }
+            // Convert even if trace contamination remains: the press gate still rejects dirty
+            // concentrate, so the player can clean it in a later purifier pass. Requiring exactly
+            // 0 contaminants made low-quality purifiers appear to do nothing at all.
+            int budget = Math.Max(1, capacity);
             int converted = 0;
-            converted += Convert(c, CustomLiquids.AntibioticCultureBroad, CustomLiquids.AntibioticConcentrateBroad);
-            converted += Convert(c, CustomLiquids.AntibioticCultureGramPos, CustomLiquids.AntibioticConcentrateGramPos);
-            converted += Convert(c, CustomLiquids.AntibioticCultureGramNeg, CustomLiquids.AntibioticConcentrateGramNeg);
+            converted += Convert(c, CustomLiquids.AntibioticCultureBroad, CustomLiquids.AntibioticConcentrateBroad, budget);
+            budget -= converted;
+            if (budget > 0) converted += Convert(c, CustomLiquids.AntibioticCultureGramPos, CustomLiquids.AntibioticConcentrateGramPos, budget);
+            budget = Math.Max(0, capacity - converted);
+            if (budget > 0) converted += Convert(c, CustomLiquids.AntibioticCultureGramNeg, CustomLiquids.AntibioticConcentrateGramNeg, budget);
             return converted;
         }
 
@@ -299,11 +299,11 @@ namespace PrecisionLab
             SetAmount(c, id, LiquidTools.GetLiquidAmount(c, id) + amount);
         }
 
-        private static int Convert(GameItem c, string crudeId, string concentrateId)
+        private static int Convert(GameItem c, string crudeId, string concentrateId, int budget)
         {
             int crude = LiquidTools.GetLiquidAmount(c, crudeId);
-            if (crude <= 0) return 0;
-            int converted = Math.Min(crude, 2000);
+            if (crude <= 0 || budget <= 0) return 0;
+            int converted = Math.Min(crude, Math.Max(1, budget));
             int concentrate = (int)Math.Round(converted * 0.8);
             int waste = converted - concentrate;
             SetAmount(c, crudeId, crude - converted);

@@ -613,3 +613,26 @@ tooltip.antibiotic.gram_neg,"革兰阴性窄谱抗生素：售价50；需在培�
 tooltip.antibiotic.cocktail,"鸡尾酒抗生素：至少含两种抗生素；标签列出所有成分。售价=成分价值总和×1.1（广谱25，窄谱50）。"
 tooltip.cultivator.no_catalyst_panel,{0}% · 缺少培养环境：{1} 需≥总量10%
 apothecary.leave_warning,地上还有没带走的东西。药剂师会雇炎烁帮忙搬回后仓，确定要离开吗？
+item.radioactive_isotope_waste.name,放射性同位素废料
+item.radioactive_isotope_waste.desc,放射性同位素废料。可用于提取螯合剂或作为反向催化剂；处理时需加热到80°C。
+item.anti_radiation_pill.name,「净化」抗辐射药片
+item.anti_radiation_pill.desc,医用抗辐射药片。用于清除体内放射性铯/铊污染；低温反应残留的络合液会让成品带毒性。
+liquid.radioactive_waste,放射性同位素废料
+liquid.iron_cyanide_complex,铁氰化物络合液
+liquid.iron_cyanide_complex_low,低纯度铁氰化物络合液
+liquid.sod_crude,粗制SOD提取液
+liquid.sod_extract,高纯度SOD提取液
+liquid.targeted_microcapsule,靶向修复微囊液
+liquid.anti_radiation_crude,粗制抗辐射原料药
+liquid.anti_radiation_api,抗辐射原料药
+tooltip.anti_radiation.effect,抗辐射药片：用于清除体内放射性铯/铊污染（远征/辐射系统实装后生效）。
+tooltip.anti_radiation.toxic,毒性残留：低温反应不彻底，服用会带来毒性副作用。
+item.anti_radiation_supply_box.name,抗辐射药剂包
+item.anti_radiation_supply_box.desc,含放射性废料、碘化钾晶体、腺体粉末、酸、酒精×2、脂合剂、N-羟甲基碱、碱、水、还原剂，可完成一整条抗辐射药生产线。
+item.multivitamin_bottle.name,"复合维生素药片瓶"
+item.multivitamin_bottle.desc,"非处方复合维生素药片瓶。作为日常保健品出售；不含直接治疗剂量。"
+item.nutrition_iv_bag.name,三合一营养注射液
+item.nutrition_iv_bag.desc,乳白色营养输液：蜂蜜葡萄糖、咖啡脂蛋白、维生素与电解质。属于食物、合成食物和医疗品。
+liquid.nutrition_emulsion,三合一营养乳
+item.nutrition_supply_box.name,三合一营养药剂包
+item.nutrition_supply_box.desc,"含咖啡豆×2、复合维生素药片瓶、咖啡乳、水、医用蜂蜜，可完成三合一营养注射液。"

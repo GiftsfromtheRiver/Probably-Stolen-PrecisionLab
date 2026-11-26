@@ -129,6 +129,15 @@ namespace PrecisionLab
         internal const string SmellingSaltVolatile = "smelling_salt_volatile";
         internal const string ReedFiber = "reed_fiber";
         internal const string SmellingSaltWaste = "smelling_salt_waste";
+        internal const string RadioactiveWaste = "radioactive_isotope_waste";
+        internal const string IronCyanideComplex = "iron_cyanide_complex";
+        internal const string IronCyanideComplexLow = "iron_cyanide_complex_low";
+        internal const string SodCrude = "sod_crude";
+        internal const string SodExtract = "sod_extract";
+        internal const string TargetedMicrocapsule = "targeted_repair_microcapsule";
+        internal const string AntiRadiationCrude = "anti_radiation_crude";
+        internal const string AntiRadiationApi = "anti_radiation_api";
+        internal const string NutritionEmulsion = "nutrition_emulsion";
 
         private static bool _registered;
 
@@ -253,6 +262,15 @@ namespace PrecisionLab
                 AddLiquid(AntibioticConcentrateBroad, "liquid.antibiotic_concentrate_broad", "Concentrated Broad-spectrum Antibiotic", "6aa8d8", false);
                 AddLiquid(AntibioticConcentrateGramPos, "liquid.antibiotic_concentrate_gram_pos", "Concentrated Gram-positive Antibiotic", "c878b8", false);
                 AddLiquid(AntibioticConcentrateGramNeg, "liquid.antibiotic_concentrate_gram_neg", "Concentrated Gram-negative Antibiotic", "68c888", false);
+                AddLiquid(RadioactiveWaste, "liquid.radioactive_waste", "Radioactive Isotope Waste", "8ad868", false);
+                AddLiquid(IronCyanideComplex, "liquid.iron_cyanide_complex", "Iron Cyanide Complex Solution", "5070c8", false);
+                AddLiquid(IronCyanideComplexLow, "liquid.iron_cyanide_complex_low", "Low-purity Iron Cyanide Complex", "706090", false);
+                AddLiquid(SodCrude, "liquid.sod_crude", "Crude SOD Extract", "c8e8a0", false);
+                AddLiquid(SodExtract, "liquid.sod_extract", "High-purity SOD Extract", "a8e878", false);
+                AddLiquid(TargetedMicrocapsule, "liquid.targeted_microcapsule", "Targeted Repair Microcapsule", "b8e8e8", false);
+                AddLiquid(AntiRadiationCrude, "liquid.anti_radiation_crude", "Crude Anti-radiation Drug", "d8c870", false);
+                AddLiquid(AntiRadiationApi, "liquid.anti_radiation_api", "Anti-radiation API", "e8e8b8", false);
+                AddLiquid(NutritionEmulsion, "liquid.nutrition_emulsion", "Three-in-One Nutrition Emulsion", "f0ead8", false);
 Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (custom chain=" + 61 + ")");
             }
             catch (Exception e)
@@ -378,6 +396,15 @@ Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (cus
                 SetName(SmellingSaltVolatile, "liquid.smelling_salt_volatile", "Smelling Salts Volatile Liquid");
                 SetName(ReedFiber, "liquid.reed_fiber", "Hydroreed Fiber Slurry");
                 SetName(SmellingSaltWaste, "liquid.smelling_salt_waste", "Ammonia Wastewater");
+                SetName(RadioactiveWaste, "liquid.radioactive_waste", "Radioactive Isotope Waste");
+                SetName(IronCyanideComplex, "liquid.iron_cyanide_complex", "Iron Cyanide Complex Solution");
+                SetName(IronCyanideComplexLow, "liquid.iron_cyanide_complex_low", "Low-purity Iron Cyanide Complex");
+                SetName(SodCrude, "liquid.sod_crude", "Crude SOD Extract");
+                SetName(SodExtract, "liquid.sod_extract", "High-purity SOD Extract");
+                SetName(TargetedMicrocapsule, "liquid.targeted_microcapsule", "Targeted Repair Microcapsule");
+                SetName(AntiRadiationCrude, "liquid.anti_radiation_crude", "Crude Anti-radiation Drug");
+                SetName(AntiRadiationApi, "liquid.anti_radiation_api", "Anti-radiation API");
+                SetName(NutritionEmulsion, "liquid.nutrition_emulsion", "Three-in-One Nutrition Emulsion");
             }
             catch (Exception e)
             {
@@ -442,7 +469,10 @@ Debug.Log("[PrecisionLab] registered " + (Liquid.Liquids.Count) + " liquids (cus
                 || liquidId == AnticoagulantCrude
                 || liquidId == AnticoagulantActive
                 || liquidId == AnticoagulantSolution
-                || liquidId == Thebaine || liquidId == ContraceptiveApi || liquidId == SannaiApi;
+                || liquidId == Thebaine || liquidId == ContraceptiveApi || liquidId == SannaiApi
+                || liquidId == RadioactiveWaste || liquidId == IronCyanideComplex
+                || liquidId == IronCyanideComplexLow || liquidId == SodCrude || liquidId == SodExtract
+                || liquidId == TargetedMicrocapsule || liquidId == AntiRadiationCrude || liquidId == AntiRadiationApi || liquidId == NutritionEmulsion;
         }
 
         private static void SetName(string id, string locKey, string fallback)

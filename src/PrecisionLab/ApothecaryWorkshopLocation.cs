@@ -191,7 +191,7 @@ namespace PrecisionLab
             "blue_blood_supply_box", "biopharma_supply_box", "nightingale_supply_box",
             "belladonna_supply_box", "antidepressant_supply_box", "amiodarone_supply_box",
             "vasopressin_supply_box", "vasodilator_supply_box", "coagulant_supply_box",
-            "anticoagulant_supply_box", "smelling_salt_supply_box"
+            "anticoagulant_supply_box", "smelling_salt_supply_box", "anti_radiation_supply_box", "nutrition_supply_box"
         };
 
         private static readonly string[] MachinePool =
@@ -209,7 +209,7 @@ namespace PrecisionLab
         private static readonly string[] RawPool =
         {
             "modified_aloe_leaf", "belladonna_herb", "medical_honey_bottle",
-            "animal_gland_powder", "aromatic_compound", "potassium_iodide_crystal", "rubbing_alcohol"
+            "animal_gland_powder", "aromatic_compound", "potassium_iodide_crystal", "rubbing_alcohol", "radioactive_isotope_waste"
         };
 
         private static void PlaceWorkshopStock()
